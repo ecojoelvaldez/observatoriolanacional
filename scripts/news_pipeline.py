@@ -123,21 +123,20 @@ def fetch_with_jina(url: str) -> str | None:
 # ── Gemini extractor ──────────────────────────────────────────────────────────
 
 EXTRACTION_PROMPT = """Eres un analista de inteligencia financiera dominicana.
-Se te da el contenido markdown de una página de noticias.
-Extrae el artículo más relevante y devuelve SOLO un objeto JSON válido con esta estructura exacta:
+Recibes el contenido markdown de una PÁGINA ÍNDICE de noticias (lista de titulares con enlaces).
 
-{
-  "title": "título completo del artículo",
-  "summary": "resumen ejecutivo en 2-3 oraciones, en español, orientado a impacto para el sector financiero dominicano",
-  "published_at": "fecha ISO 8601 si la encuentras, o null",
-  "category": "una de: Monetario | Financiero | Regulatorio | Economía | Global",
-  "relevant": true
-}
+Tu tarea: identificar el titular MÁS RECIENTE Y RELEVANTE para el sector financiero/económico dominicano, y extraer sus datos.
 
-Si el contenido NO contiene ningún artículo de noticias útil (página de inicio genérica, error, paywall sin contenido), devuelve:
-{"relevant": false}
+Devuelve SOLO un objeto JSON válido, sin texto adicional, sin fences markdown. Estructura exacta:
 
-No agregues ningún texto fuera del JSON. No uses markdown fences.
+{"title": "titular exacto", "summary": "resumen de 1-2 oraciones máximo 40 palabras", "published_at": null, "category": "Monetario", "relevant": true}
+
+Reglas estrictas:
+- "summary" NUNCA debe exceder 40 palabras. Sé conciso.
+- "category" debe ser exactamente una de: Monetario, Financiero, Regulatorio, Economia, Global
+- "published_at" usa formato ISO 8601 solo si la fecha es visible y explícita; si no, null
+- Si la página no tiene ningún titular económico/financiero útil, devuelve exactamente: {"relevant": false}
+- Escapa correctamente las comillas dentro de los textos.
 
 Contenido:
 """
@@ -145,42 +144,48 @@ Contenido:
 
 def extract_with_gemini(markdown: str, source_name: str) -> dict | None:
     prompt = EXTRACTION_PROMPT + markdown
-    time.sleep(4)  # respeta 15 RPM del tier free de Gemini (max 1 req/4s)
+    time.sleep(7)  # respeta 15 RPM del tier free de Gemini (max 1 req/4s)
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {
             "temperature": 0.1,
-            "maxOutputTokens": 512,
+            "maxOutputTokens": 800,
         },
     }
-    try:
-        r = httpx.post(
-            GEMINI_ENDPOINT,
-            params={"key": GEMINI_API_KEY},
-            json=payload,
-            timeout=GEMINI_TIMEOUT,
-        )
-        if r.status_code != 200:
-            log.warning("Gemini HTTP %s para fuente '%s': %s", r.status_code, source_name, r.text[:200])
+    for intento in range(3):
+        try:
+            r = httpx.post(
+                GEMINI_ENDPOINT,
+                params={"key": GEMINI_API_KEY},
+                json=payload,
+                timeout=GEMINI_TIMEOUT,
+            )
+            if r.status_code == 503:
+                log.info("Gemini 503 (sobrecarga), reintento %d para '%s'", intento + 1, source_name)
+                time.sleep(8)
+                continue
+            if r.status_code != 200:
+                log.warning("Gemini HTTP %s para fuente '%s': %s", r.status_code, source_name, r.text[:200])
+                return None
+            data = r.json()
+            raw = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+            if raw.startswith("```"):
+                raw = raw.split("```")[1]
+                if raw.startswith("json"):
+                    raw = raw[4:]
+            raw = raw.strip()
+            extracted = json.loads(raw)
+            if not extracted.get("relevant", True):
+                log.info("Gemini: sin artículo relevante en '%s'", source_name)
+                return None
+            return extracted
+        except json.JSONDecodeError as e:
+            log.warning("Gemini JSON inválido para '%s': %s", source_name, e)
             return None
-        data = r.json()
-        raw = data["candidates"][0]["content"]["parts"][0]["text"].strip()
-        # Limpiar posibles fences
-        if raw.startswith("```"):
-            raw = raw.split("```")[1]
-            if raw.startswith("json"):
-                raw = raw[4:]
-        extracted = json.loads(raw)
-        if not extracted.get("relevant", True):
-            log.info("Gemini: sin artículo relevante en '%s'", source_name)
+        except Exception as e:
+            log.warning("Gemini error (%s) para '%s': %s", type(e).__name__, source_name, e)
             return None
-        return extracted
-    except json.JSONDecodeError as e:
-        log.warning("Gemini JSON inválido para '%s': %s", source_name, e)
-        return None
-    except Exception as e:
-        log.warning("Gemini error (%s) para '%s': %s", type(e).__name__, source_name, e)
-        return None
+    return None
 
 
 # ── Deduplicación ─────────────────────────────────────────────────────────────
