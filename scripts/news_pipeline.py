@@ -48,7 +48,7 @@ GEMINI_TIMEOUT      = 20        # segundos por request a Gemini
 MAX_MARKDOWN_CHARS  = 6000      # recorte para no exceder contexto
 MIN_CONTENT_CHARS   = 300       # mínimo para considerar que Jina devolvió algo útil
 STALENESS_HOURS     = 36        # ignorar artículos más viejos que esto
-DELAY_BETWEEN_SOURCES = 1.5     # segundos entre fuentes (rate limit Jina)
+DELAY_BETWEEN_SOURCES = 5     # segundos entre fuentes (rate limit Jina)
 
 SUPABASE_HEADERS = {
     "apikey":        SUPABASE_SERVICE_KEY,
