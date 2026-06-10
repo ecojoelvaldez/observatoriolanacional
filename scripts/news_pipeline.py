@@ -1,30 +1,32 @@
 """
-Observatorio Estratégico La Nacional — Pipeline de Noticias
-============================================================
+Observatorio Estratégico La Nacional — Pipeline de Noticias (v2)
+================================================================
 Flujo:
   1. Lee fuentes activas desde Supabase (tabla: news_sources)
-  2. Para cada fuente, obtiene el contenido via Jina Reader
-  3. Gemini Flash extrae: título, resumen, fecha, categoría
-  4. Escribe candidatos en Supabase (tabla: news_proposals)
-     con status='pending' para revisión de Nathali
+  2. Para cada fuente (página índice), obtiene el markdown via Jina Reader
+  3. Gemini Flash-Lite extrae MÚLTIPLES titulares con sus enlaces
+  4. Escribe cada titular como candidato en Supabase (tabla: news_proposals)
+     con status='pending'. Analista decide cuáles publicar.
+
+Diseño Opción A: el sistema PROPONE varios candidatos, el humano DISPONE.
+Deduplicación por URL del artículo individual (no de la página índice).
 
 Variables de entorno requeridas:
-  SUPABASE_URL        — URL del proyecto Supabase
+  SUPABASE_URL         — URL del proyecto Supabase
   SUPABASE_SERVICE_KEY — service_role key (NO la anon key)
-  GEMINI_API_KEY      — key de Google AI Studio
+  GEMINI_API_KEY       — key de Google AI Studio
 """
 
 import os
 import json
 import time
-import hashlib
 import logging
 from datetime import datetime, timezone, timedelta
-from urllib.parse import urlparse, quote
+from urllib.parse import urlparse, urljoin
 
 import httpx
 
-# ── Logging ──────────────────────────────────────────────────────────────────
+# -- Logging -------------------------------------------------------------------
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -32,23 +34,23 @@ logging.basicConfig(
 )
 log = logging.getLogger("news_pipeline")
 
-# ── Configuración ─────────────────────────────────────────────────────────────
-SUPABASE_URL        = os.environ["SUPABASE_URL"].rstrip("/")
+# -- Configuracion -------------------------------------------------------------
+SUPABASE_URL         = os.environ["SUPABASE_URL"].rstrip("/")
 SUPABASE_SERVICE_KEY = os.environ["SUPABASE_SERVICE_KEY"]
-GEMINI_API_KEY      = os.environ["GEMINI_API_KEY"]
+GEMINI_API_KEY       = os.environ["GEMINI_API_KEY"]
 
-JINA_BASE           = "https://r.jina.ai/"
-GEMINI_ENDPOINT     = (
+JINA_BASE       = "https://r.jina.ai/"
+GEMINI_ENDPOINT = (
     "https://generativelanguage.googleapis.com/v1beta/models/"
     "gemini-2.5-flash-lite:generateContent"
 )
 
-FETCH_TIMEOUT       = 30        # segundos por request a Jina
-GEMINI_TIMEOUT      = 20        # segundos por request a Gemini
-MAX_MARKDOWN_CHARS  = 6000      # recorte para no exceder contexto
-MIN_CONTENT_CHARS   = 300       # mínimo para considerar que Jina devolvió algo útil
-STALENESS_HOURS     = 36        # ignorar artículos más viejos que esto
-DELAY_BETWEEN_SOURCES = 5     # segundos entre fuentes (rate limit Jina)
+FETCH_TIMEOUT            = 30
+GEMINI_TIMEOUT           = 25
+MAX_MARKDOWN_CHARS       = 8000
+MIN_CONTENT_CHARS        = 300
+DELAY_BETWEEN_SOURCES    = 5
+MAX_HEADLINES_PER_SOURCE = 6
 
 SUPABASE_HEADERS = {
     "apikey":        SUPABASE_SERVICE_KEY,
@@ -58,25 +60,23 @@ SUPABASE_HEADERS = {
 }
 
 
-# ── Supabase helpers ──────────────────────────────────────────────────────────
-
-def sb_get(path: str, params: dict = None) -> list:
+def sb_get(path, params=None):
     url = f"{SUPABASE_URL}/rest/v1/{path}"
     r = httpx.get(url, headers=SUPABASE_HEADERS, params=params, timeout=15)
     r.raise_for_status()
     return r.json()
 
 
-def sb_upsert(table: str, rows: list, on_conflict: str = "url") -> None:
+def sb_upsert(table, rows):
     url = f"{SUPABASE_URL}/rest/v1/{table}"
-    headers = {**SUPABASE_HEADERS, "Prefer": f"resolution=ignore-duplicates,return=minimal"}
-    r = httpx.post(url, headers=headers, json=rows, timeout=15)
+    headers = {**SUPABASE_HEADERS, "Prefer": "resolution=ignore-duplicates,return=minimal"}
+    r = httpx.post(url, headers=headers, json=rows, timeout=20)
     if r.status_code not in (200, 201, 204):
         log.error("Supabase upsert error %s: %s", r.status_code, r.text[:300])
     r.raise_for_status()
 
 
-def sb_insert_log(entry: dict) -> None:
+def sb_insert_log(entry):
     url = f"{SUPABASE_URL}/rest/v1/data_update_log"
     headers = {**SUPABASE_HEADERS, "Prefer": "return=minimal"}
     r = httpx.post(url, headers=headers, json=entry, timeout=10)
@@ -84,18 +84,13 @@ def sb_insert_log(entry: dict) -> None:
         log.warning("Log insert warning %s: %s", r.status_code, r.text[:200])
 
 
-# ── Carga fuentes ─────────────────────────────────────────────────────────────
-
-def load_sources() -> list[dict]:
+def load_sources():
     rows = sb_get("news_sources", params={"enabled": "eq.true", "select": "*"})
     log.info("Fuentes activas: %d", len(rows))
     return rows
 
 
-# ── Jina Reader ───────────────────────────────────────────────────────────────
-
-def fetch_with_jina(url: str) -> str | None:
-    """Devuelve markdown limpio del artículo, o None si falla."""
+def fetch_with_jina(url):
     jina_url = JINA_BASE + url
     try:
         r = httpx.get(
@@ -109,7 +104,7 @@ def fetch_with_jina(url: str) -> str | None:
             return None
         text = r.text.strip()
         if len(text) < MIN_CONTENT_CHARS:
-            log.warning("Jina devolvió contenido muy corto (%d chars) para %s", len(text), url)
+            log.warning("Jina contenido corto (%d chars) para %s", len(text), url)
             return None
         return text[:MAX_MARKDOWN_CHARS]
     except httpx.TimeoutException:
@@ -120,37 +115,38 @@ def fetch_with_jina(url: str) -> str | None:
         return None
 
 
-# ── Gemini extractor ──────────────────────────────────────────────────────────
+EXTRACTION_PROMPT = """Eres un analista de inteligencia financiera dominicana que cura noticias para un banco.
 
-EXTRACTION_PROMPT = """Eres un analista de inteligencia financiera dominicana.
-Recibes el contenido markdown de una PÁGINA ÍNDICE de noticias (lista de titulares con enlaces).
+Recibes el markdown de una PAGINA INDICE de noticias (lista de titulares con enlaces).
 
-Tu tarea: identificar el titular MÁS RECIENTE Y RELEVANTE para el sector financiero/económico dominicano, y extraer sus datos.
+Tu tarea: identificar los titulares de NOTICIAS REALES mas relevantes para el sector financiero, monetario, bancario o macroeconomico dominicano. Prioriza:
+- Politica monetaria, tasas, inflacion, tipo de cambio
+- Decisiones del Banco Central, Superintendencia, Hacienda
+- Banca, credito, mercado de valores, remesas
+- Indicadores macroeconomicos, crecimiento, fiscal
 
-Devuelve SOLO un objeto JSON válido, sin texto adicional, sin fences markdown. Estructura exacta:
+Descarta: notas de relleno, publirreportajes, tecnologia de consumo, entretenimiento, deportes, secciones de navegacion.
 
-{"title": "titular exacto", "summary": "resumen de 1-2 oraciones máximo 40 palabras", "published_at": null, "category": "Monetario", "relevant": true}
+Devuelve SOLO un objeto JSON valido (sin texto extra, sin fences markdown) con esta estructura exacta:
+
+{"headlines": [{"title": "titular exacto", "link": "URL del articulo tal como aparece en el markdown", "summary": "resumen de maximo 35 palabras", "category": "Monetario"}]}
 
 Reglas estrictas:
-- "summary" NUNCA debe exceder 40 palabras. Sé conciso.
-- "category" debe ser exactamente una de: Monetario, Financiero, Regulatorio, Economia, Global
-- "published_at" usa formato ISO 8601 solo si la fecha es visible y explícita; si no, null
-- Si la página no tiene ningún titular económico/financiero útil, devuelve exactamente: {"relevant": false}
-- Escapa correctamente las comillas dentro de los textos.
+- Devuelve entre 1 y 6 titulares, ordenados de MAS a MENOS relevante.
+- "category" es exactamente una de: Monetario, Financiero, Regulatorio, Economia, Global
+- "summary" NUNCA excede 35 palabras. Escapa comillas internas correctamente.
+- "link" debe ser la URL del articulo individual que aparece junto al titular en el markdown. Si no hay enlace claro, omite ese titular.
+- Si la pagina no tiene ningun titular economico/financiero util, devuelve: {"headlines": []}
 
 Contenido:
 """
 
 
-def extract_with_gemini(markdown: str, source_name: str) -> dict | None:
-    prompt = EXTRACTION_PROMPT + markdown
-    time.sleep(7)  # respeta 15 RPM del tier free de Gemini (max 1 req/4s)
+def extract_headlines(markdown, source_name):
+    time.sleep(7)
     payload = {
-        "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {
-            "temperature": 0.1,
-            "maxOutputTokens": 800,
-        },
+        "contents": [{"parts": [{"text": EXTRACTION_PROMPT + markdown}]}],
+        "generationConfig": {"temperature": 0.1, "maxOutputTokens": 1500},
     }
     for intento in range(3):
         try:
@@ -161,12 +157,15 @@ def extract_with_gemini(markdown: str, source_name: str) -> dict | None:
                 timeout=GEMINI_TIMEOUT,
             )
             if r.status_code == 503:
-                log.info("Gemini 503 (sobrecarga), reintento %d para '%s'", intento + 1, source_name)
+                log.info("Gemini 503, reintento %d para '%s'", intento + 1, source_name)
                 time.sleep(8)
                 continue
+            if r.status_code == 429:
+                log.warning("Gemini 429 (quota) para '%s' — se detiene", source_name)
+                return []
             if r.status_code != 200:
-                log.warning("Gemini HTTP %s para fuente '%s': %s", r.status_code, source_name, r.text[:200])
-                return None
+                log.warning("Gemini HTTP %s para '%s': %s", r.status_code, source_name, r.text[:200])
+                return []
             data = r.json()
             raw = data["candidates"][0]["content"]["parts"][0]["text"].strip()
             if raw.startswith("```"):
@@ -174,163 +173,140 @@ def extract_with_gemini(markdown: str, source_name: str) -> dict | None:
                 if raw.startswith("json"):
                     raw = raw[4:]
             raw = raw.strip()
-            extracted = json.loads(raw)
-            if not extracted.get("relevant", True):
-                log.info("Gemini: sin artículo relevante en '%s'", source_name)
-                return None
-            return extracted
+            parsed = json.loads(raw)
+            headlines = parsed.get("headlines", [])
+            if not isinstance(headlines, list):
+                return []
+            return headlines[:MAX_HEADLINES_PER_SOURCE]
         except json.JSONDecodeError as e:
-            log.warning("Gemini JSON inválido para '%s': %s", source_name, e)
-            return None
+            log.warning("Gemini JSON invalido para '%s': %s", source_name, e)
+            return []
         except Exception as e:
             log.warning("Gemini error (%s) para '%s': %s", type(e).__name__, source_name, e)
-            return None
-    return None
+            return []
+    return []
 
 
-# ── Deduplicación ─────────────────────────────────────────────────────────────
+def resolve_link(link, base_url):
+    if not link or not isinstance(link, str):
+        return None
+    link = link.strip()
+    if link.startswith("(") and link.endswith(")"):
+        link = link[1:-1]
+    if not link.startswith("http"):
+        link = urljoin(base_url, link)
+    parsed = urlparse(link)
+    if not parsed.scheme.startswith("http") or not parsed.netloc:
+        return None
+    clean = f"{parsed.scheme}://{parsed.netloc}{parsed.path}".rstrip("/")
+    return clean
 
-def url_fingerprint(url: str) -> str:
-    """Normaliza y hashea la URL para deduplicar."""
-    parsed = urlparse(url)
-    canonical = parsed.netloc + parsed.path.rstrip("/")
-    return hashlib.md5(canonical.lower().encode()).hexdigest()
 
-
-def load_existing_urls() -> set[str]:
-    """Carga URLs ya propuestas en las últimas 72h para evitar duplicados."""
-    cutoff = (datetime.now(timezone.utc) - timedelta(hours=72)).isoformat()
-    rows = sb_get(
-        "news_proposals",
-        params={
-            "select": "url",
-            "fetched_at": f"gte.{cutoff}",
-        },
-    )
+def load_existing_urls():
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=5)).isoformat()
+    rows = sb_get("news_proposals", params={"select": "url", "fetched_at": f"gte.{cutoff}"})
     return {r["url"] for r in rows}
 
 
-# ── Pipeline principal ────────────────────────────────────────────────────────
+def process_source(source, existing_urls):
+    name     = source.get("name", source.get("source_key", "desconocida"))
+    base_url = source.get("url", "").strip()
 
-def process_source(source: dict, existing_urls: set[str]) -> dict | None:
-    """
-    Procesa una fuente y devuelve la propuesta lista para insertar, o None.
-    """
-    name = source.get("name", source.get("source_key", "desconocida"))
-    url  = source.get("url", "").strip()
-
-    if not url:
+    if not base_url:
         log.warning("Fuente '%s' sin URL, se omite", name)
-        return None
+        return []
 
-    log.info("Procesando: %s (%s)", name, url)
+    log.info("Procesando: %s (%s)", name, base_url)
 
-    # 1. Obtener contenido con Jina
-    markdown = fetch_with_jina(url)
+    markdown = fetch_with_jina(base_url)
     if not markdown:
-        log.info("  → Jina no devolvió contenido útil")
-        return None
+        log.info("  -> Jina no devolvio contenido util")
+        return []
 
-    # 2. Extraer con Gemini
-    extracted = extract_with_gemini(markdown, name)
-    if not extracted:
-        log.info("  → Gemini no encontró artículo relevante")
-        return None
+    headlines = extract_headlines(markdown, name)
+    if not headlines:
+        log.info("  -> Gemini no extrajo titulares utiles")
+        return []
 
-    title    = extracted.get("title", "").strip()
-    summary  = extracted.get("summary", "").strip()
-    category = extracted.get("category", "Economía")
-    pub_date = extracted.get("published_at")
+    proposals = []
+    for h in headlines:
+        title    = (h.get("title") or "").strip()
+        summary  = (h.get("summary") or "").strip()
+        category = (h.get("category") or "Economia").strip()
+        link     = resolve_link(h.get("link", ""), base_url)
 
-    if not title:
-        log.info("  → Título vacío, se descarta")
-        return None
+        if not title or not link:
+            continue
+        if link in existing_urls:
+            log.info("  -> ya propuesta: %s", title[:60])
+            continue
 
-    # 3. Validar frescura si hay fecha
-    if pub_date:
-        try:
-            dt = datetime.fromisoformat(pub_date.replace("Z", "+00:00"))
-            age_h = (datetime.now(timezone.utc) - dt).total_seconds() / 3600
-            if age_h > STALENESS_HOURS:
-                log.info("  → Artículo demasiado viejo (%.0fh), se descarta", age_h)
-                return None
-        except Exception:
-            pass  # si no parsea la fecha, no descartamos
+        proposals.append({
+            "source_key":   source.get("source_key", ""),
+            "source_name":  name,
+            "url":          link,
+            "title":        title,
+            "summary":      summary,
+            "category":     category,
+            "published_at": None,
+            "fetched_at":   datetime.now(timezone.utc).isoformat(),
+            "status":       "pending",
+        })
+        existing_urls.add(link)
+        log.info("  v %s", title[:80])
 
-    # 4. Deduplicar por URL de la fuente (no del artículo — Jina nos da la página index)
-    if url in existing_urls:
-        log.info("  → URL ya registrada, se omite")
-        return None
-
-    proposal = {
-        "source_key":   source.get("source_key", ""),
-        "source_name":  name,
-        "url":          url,
-        "title":        title,
-        "summary":      summary,
-        "category":     category,
-        "published_at": pub_date,
-        "fetched_at":   datetime.now(timezone.utc).isoformat(),
-        "status":       "pending",
-    }
-
-    log.info("  ✓ Propuesta: %s", title[:80])
-    return proposal
+    log.info("  -> %d candidatos nuevos de %s", len(proposals), name)
+    return proposals
 
 
 def run():
     log.info("=== Pipeline de noticias iniciado ===")
     start = time.time()
 
-    sources   = load_sources()
+    sources = load_sources()
     if not sources:
-        log.warning("No hay fuentes activas en Supabase. Verifica la tabla news_sources.")
+        log.warning("No hay fuentes activas en Supabase.")
         return
 
-    existing  = load_existing_urls()
-    log.info("URLs ya en Supabase (últimas 72h): %d", len(existing))
+    existing = load_existing_urls()
+    log.info("Articulos ya propuestos (ultimos 5 dias): %d", len(existing))
 
-    proposals = []
-    errors    = 0
+    all_proposals = []
+    errors = 0
 
     for i, source in enumerate(sources):
         try:
-            proposal = process_source(source, existing)
-            if proposal:
-                proposals.append(proposal)
-                existing.add(proposal["url"])  # evitar duplicados dentro de la misma ejecución
+            all_proposals.extend(process_source(source, existing))
         except Exception as e:
-            log.error("Error inesperado en fuente '%s': %s", source.get("name", "?"), e)
+            log.error("Error inesperado en '%s': %s", source.get("name", "?"), e)
             errors += 1
 
         if i < len(sources) - 1:
             time.sleep(DELAY_BETWEEN_SOURCES)
 
-    # Insertar en Supabase
-    if proposals:
-        log.info("Insertando %d propuestas en Supabase...", len(proposals))
-        sb_upsert("news_proposals", proposals, on_conflict="url")
+    if all_proposals:
+        log.info("Insertando %d candidatos en Supabase...", len(all_proposals))
+        sb_upsert("news_proposals", all_proposals)
     else:
-        log.info("No se generaron propuestas nuevas en esta ejecución.")
+        log.info("No se generaron candidatos nuevos.")
 
     elapsed = round(time.time() - start, 1)
 
-    # Log de auditoría
     sb_insert_log({
-        "source":        "NEWS_PIPELINE",
-        "section":       "Resumen de Noticias",
-        "rows_processed": len(proposals),
-        "message":       f"Pipeline completado: {len(proposals)} propuestas, {errors} errores, {elapsed}s",
-        "metadata":      json.dumps({
-            "proposals": len(proposals),
-            "errors":    errors,
-            "sources":   len(sources),
-            "elapsed_s": elapsed,
+        "source":         "NEWS_PIPELINE",
+        "section":        "Resumen de Noticias",
+        "rows_processed": len(all_proposals),
+        "message":        f"Pipeline: {len(all_proposals)} candidatos, {errors} errores, {elapsed}s",
+        "metadata":       json.dumps({
+            "candidatos": len(all_proposals),
+            "errores":    errors,
+            "fuentes":    len(sources),
+            "elapsed_s":  elapsed,
         }),
-        "updated_at":    datetime.now(timezone.utc).isoformat(),
+        "updated_at":     datetime.now(timezone.utc).isoformat(),
     })
 
-    log.info("=== Pipeline finalizado: %d propuestas en %.1fs ===", len(proposals), elapsed)
+    log.info("=== Finalizado: %d candidatos en %.1fs ===", len(all_proposals), elapsed)
 
 
 if __name__ == "__main__":
