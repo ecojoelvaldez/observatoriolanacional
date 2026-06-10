@@ -40,7 +40,7 @@ GEMINI_API_KEY      = os.environ["GEMINI_API_KEY"]
 JINA_BASE           = "https://r.jina.ai/"
 GEMINI_ENDPOINT     = (
     "https://generativelanguage.googleapis.com/v1beta/models/"
-    "gemini-2.5-latest:generateContent"
+    "gemini-2.5-flash:generateContent"
 )
 
 FETCH_TIMEOUT       = 30        # segundos por request a Jina
