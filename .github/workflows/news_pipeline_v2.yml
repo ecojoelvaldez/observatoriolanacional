@@ -1,4 +1,4 @@
-nname: Pipeline de Noticias v2
+name: Pipeline de Noticias v2
 
 on:
   schedule:
