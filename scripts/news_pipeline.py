@@ -40,7 +40,7 @@ GEMINI_API_KEY      = os.environ["GEMINI_API_KEY"]
 JINA_BASE           = "https://r.jina.ai/"
 GEMINI_ENDPOINT     = (
     "https://generativelanguage.googleapis.com/v1beta/models/"
-    "gemini-2.0-flash:generateContent"
+    "gemini-1.5-flash:generateContent"
 )
 
 FETCH_TIMEOUT       = 30        # segundos por request a Jina
@@ -145,6 +145,7 @@ Contenido:
 
 def extract_with_gemini(markdown: str, source_name: str) -> dict | None:
     prompt = EXTRACTION_PROMPT + markdown
+    time.sleep(4)  # respeta 15 RPM del tier free de Gemini (max 1 req/4s)
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {
