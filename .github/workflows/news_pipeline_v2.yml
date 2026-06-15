@@ -1,8 +1,10 @@
-name: Pipeline de Noticias v2
+name: Pipeline de Noticias v3 Static Candidates
 
 on:
   schedule:
+    # 6:30 AM Santo Domingo, lunes a viernes
     - cron: "30 10 * * 1-5"
+    # 12:30 PM Santo Domingo, lunes a viernes
     - cron: "30 16 * * 1-5"
   workflow_dispatch:
     inputs:
@@ -12,37 +14,47 @@ on:
         default: "false"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   news-pipeline:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
 
     steps:
       - name: Checkout repositorio
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Verificar archivos del repo
-        run: |
-          pwd
-          ls -la
-          find . -maxdepth 3 -type f | sort
-
       - name: Instalar dependencias
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Ejecutar pipeline
+      - name: Ejecutar pipeline y generar JSON estático
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_MODEL: gemini-2.5-flash
+          GEMINI_MODEL: gemini-2.5-flash-lite
+          NEWS_CANDIDATES_PATH: public/news_candidates.json
+          MAX_TOTAL_PROPOSALS: "30"
         run: python scripts/news_pipeline.py
+
+      - name: Commit de candidatos si cambiaron
+        run: |
+          if [ -n "$(git status --porcelain public/news_candidates.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add public/news_candidates.json
+            git commit -m "Actualizar candidatos de noticias [skip ci]"
+            git push
+          else
+            echo "Sin cambios en candidatos."
+          fi
