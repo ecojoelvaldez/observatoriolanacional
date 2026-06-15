@@ -4,19 +4,19 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/((?!assets/|data/|scripts/|news_candidates\.json|favicon\.ico|robots\.txt|.*\\..*).*)",
+      "source": "/((?!assets/|data/|scripts/|public/|favicon\\.ico|robots\\.txt|.*\\..*).*)",
       "destination": "/index.html"
     }
   ],
   "headers": [
     {
-      "source": "/news_candidates.json",
+      "source": "/public/news_candidates.json",
       "headers": [
         { "key": "Cache-Control", "value": "s-maxage=300, stale-while-revalidate=3600" }
       ]
     },
     {
-      "source": "/(assets|data)/(.*)",
+      "source": "/(assets|data|scripts)/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
