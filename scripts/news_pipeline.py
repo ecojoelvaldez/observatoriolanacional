@@ -8,7 +8,7 @@ Flujo:
   4. Para cada artículo, lee la URL individual con Jina.
   5. Gemini genera resumen ejecutivo + lead/cuerpo breve + fecha/categoría.
   6. NO guarda candidatos en news_proposals.
-  7. Escribe un archivo estático public/news_candidates.json.
+  7. Escribe un archivo estático news_candidates.json en la raíz del repo.
 
 El analista carga ese JSON desde el panel, lo guarda en localStorage y aprueba/rechaza localmente.
 Solo las noticias publicadas se guardan en Supabase (news_items).
@@ -20,7 +20,7 @@ Variables requeridas:
 
 Variables opcionales:
   GEMINI_MODEL=gemini-2.5-flash-lite
-  NEWS_CANDIDATES_PATH=public/news_candidates.json
+  NEWS_CANDIDATES_PATH=news_candidates.json
   MAX_TOTAL_PROPOSALS=30
 """
 
@@ -50,7 +50,7 @@ SUPABASE_SERVICE_KEY = os.environ["SUPABASE_SERVICE_KEY"]
 GEMINI_API_KEY = os.environ["GEMINI_API_KEY"]
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash-lite")
 
-NEWS_CANDIDATES_PATH = Path(os.getenv("NEWS_CANDIDATES_PATH", "public/news_candidates.json"))
+NEWS_CANDIDATES_PATH = Path(os.getenv("NEWS_CANDIDATES_PATH", "news_candidates.json"))
 
 JINA_READER_BASE = "https://r.jina.ai/"
 GEMINI_ENDPOINT = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
