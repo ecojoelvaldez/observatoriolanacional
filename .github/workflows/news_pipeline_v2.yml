@@ -43,16 +43,16 @@ jobs:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: gemini-2.5-flash-lite
-          NEWS_CANDIDATES_PATH: public/news_candidates.json
+          NEWS_CANDIDATES_PATH: news_candidates.json
           MAX_TOTAL_PROPOSALS: "30"
         run: python scripts/news_pipeline.py
 
       - name: Commit de candidatos si cambiaron
         run: |
-          if [ -n "$(git status --porcelain public/news_candidates.json)" ]; then
+          if [ -n "$(git status --porcelain news_candidates.json)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add public/news_candidates.json
+            git add news_candidates.json
             git commit -m "Actualizar candidatos de noticias [skip ci]"
             git push
           else
