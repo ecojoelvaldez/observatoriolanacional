@@ -1,11 +1,24 @@
 {
-  "generated_at": "2026-06-22T15:49:05.182452+00:00",
+  "generated_at": "2026-06-22T20:02:36.178055+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
-  "count": 7,
+  "count": 8,
   "errors": 0,
   "sources": 12,
-  "elapsed_s": 829.1,
+  "elapsed_s": 498.7,
   "candidates": [
+    {
+      "id": "n_d03093e39fcff75d",
+      "source_key": "news_diariolibre",
+      "source_name": "Diario Libre economía",
+      "url": "https://www.diariolibre.com/politica/partidos/2026/06/21/gonzalo-castillo-dice-enfrentara-delincuencia-y-migracion-irregular/3574379",
+      "title": "Gonzalo Castillo se declara listo para gobernar; advierte sobre delincuencia y migración irregular",
+      "summary": "El aspirante presidencial Gonzalo Castillo ha manifestado su preparación para asumir el gobierno, señalando la delincuencia y la migración irregular como desafíos prioritarios. Sus declaraciones sugieren un enfoque en la seguridad y el control fronterizo como pilares de su potencial gestión.",
+      "body": "El político dominicano Gonzalo Castillo ha expresado públicamente su disposición para liderar el país, identificando la creciente delincuencia y la migración irregular como los principales retos a enfrentar. Sus comentarios apuntan a la necesidad de implementar políticas firmes en materia de seguridad ciudadana y control migratorio, aspectos cruciales para la estabilidad económica y social de la República Dominicana.",
+      "category": "Economia",
+      "published_at": "2026-06-21T14:16:00-04:00",
+      "fetched_at": "2026-06-22T19:55:16.880896+00:00",
+      "status": "pending"
+    },
     {
       "id": "n_0102359db2655346",
       "source_key": "news_eldinero",
