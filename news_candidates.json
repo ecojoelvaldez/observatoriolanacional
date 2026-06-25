@@ -1,11 +1,37 @@
 {
-  "generated_at": "2026-06-24T18:27:08.140963+00:00",
+  "generated_at": "2026-06-25T12:49:12.300465+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
-  "count": 12,
+  "count": 14,
   "errors": 0,
   "sources": 12,
-  "elapsed_s": 542.2,
+  "elapsed_s": 723.5,
   "candidates": [
+    {
+      "id": "n_0463f900f7e25459",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero",
+      "url": "https://eldinero.com.do/369559/el-cambio-climatico-es-un-desafio-economico-y-fiscal-para-republica-dominicana",
+      "title": "El cambio climático es un desafío económico y fiscal para República Dominicana",
+      "summary": "La viceministra de Hacienda y Economía, María José Martínez, destacó que el cambio climático representa un desafío económico y fiscal significativo para República Dominicana, impactando la infraestructura, la producción y las finanzas públicas. La integración de la acción climática en la planificación económica y la movilización de recursos del sector privado y la cooperación internacional son cruciales para la resiliencia y el crecimiento sostenible del país.",
+      "body": "La viceministra de Hacienda y Economía, María José Martínez, enfatizó que el cambio climático ha trascendido su naturaleza ambiental para convertirse en un reto económico y fiscal primordial para República Dominicana. Los fenómenos climáticos extremos imponen costos crecientes sobre la infraestructura y la economía, haciendo indispensable la integración de medidas de adaptación y mitigación en la planificación nacional para proteger el crecimiento y el bienestar de la población.",
+      "category": "Economia",
+      "published_at": "2026-06-24T18:36:26+00:00",
+      "fetched_at": "2026-06-25T12:41:44.477830+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_56ee86997f692354",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero",
+      "url": "https://eldinero.com.do/369607/aba-considera-aumento-de-impuesto-a-las-transacciones-limitara-la-bancarizacion",
+      "title": "ABA considera aumento de impuesto a las transacciones limitará la bancarización",
+      "summary": "La Asociación de Bancos Múltiples (ABA) advierte que el incremento del impuesto a las transacciones electrónicas y cheques, de 0.15% a 0.20%, podría obstaculizar los esfuerzos de bancarización e inclusión financiera en República Dominicana. La ABA considera que esta medida, aunque recaudadora, desincentiva el uso de canales formales y va en contra de la digitalización económica del país.",
+      "body": "La Asociación de Bancos Múltiples de la República Dominicana (ABA) ha expresado su preocupación ante el reciente aumento del impuesto sobre las transferencias electrónicas y cheques, argumentando que esta medida podría frenar la bancarización. La presidente ejecutiva de la ABA, Rosanna Ruiz, señaló que el incremento del gravamen desincentiva el uso de canales financieros formales, afectando directamente los esfuerzos de inclusión financiera y la digitalización de la economía dominicana.",
+      "category": "Financiero",
+      "published_at": "2026-06-24T20:16:38+00:00",
+      "fetched_at": "2026-06-25T12:39:46.179731+00:00",
+      "status": "pending"
+    },
     {
       "id": "n_addf665477ae6c4a",
       "source_key": "news_eldinero",
