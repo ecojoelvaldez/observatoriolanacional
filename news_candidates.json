@@ -1,11 +1,76 @@
 {
-  "generated_at": "2026-06-25T18:44:35.879783+00:00",
+  "generated_at": "2026-06-26T12:39:58.690366+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
-  "count": 7,
+  "count": 11,
   "errors": 0,
   "sources": 12,
-  "elapsed_s": 667.7,
+  "elapsed_s": 517.8,
   "candidates": [
+    {
+      "id": "n_32185992fc823d1e",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero",
+      "url": "https://eldinero.com.do/369563/republica-dominicana-se-consolida-como-referente-global-en-presupuesto-abierto-segun-la-encuesta-obs-2025",
+      "title": "República Dominicana se consolida como referente global en presupuesto abierto, según la encuesta OBS 2025",
+      "summary": "La República Dominicana ha sido reconocida como un referente global en presupuesto abierto, obteniendo una alta puntuación en transparencia y participación ciudadana según la encuesta OBS 2025. Este logro posiciona al país favorablemente en el ámbito financiero internacional y subraya su compromiso con la rendición de cuentas.",
+      "body": "La República Dominicana ha alcanzado un hito significativo al consolidarse como líder global en presupuesto abierto, según la reciente encuesta OBS 2025. El país destaca por su elevada puntuación en transparencia presupuestaria y su tercer lugar mundial en participación ciudadana. Este reconocimiento subraya los avances en la publicación de información fiscal y el fortalecimiento de mecanismos de control y participación pública.",
+      "category": "Economia",
+      "published_at": "2026-06-24T19:34:59+00:00",
+      "fetched_at": "2026-06-26T12:34:34.553983+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_9b0f6c32ea64c20a",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero",
+      "url": "https://eldinero.com.do/369648/medio-ambiente-lanza-estrategia-nacional-de-financiamiento-verde-y-azul",
+      "title": "Medio Ambiente lanza Estrategia Nacional de Financiamiento Verde y Azul",
+      "summary": "El Ministerio de Medio Ambiente y Recursos Naturales ha presentado la Estrategia Nacional de Financiamiento Verde y Azul, buscando movilizar inversiones climáticas y sostenibles para fortalecer la resiliencia dominicana. Esta iniciativa es crucial para el sector financiero, ya que busca crear mecanismos que faciliten el acceso a fondos y promuevan instrumentos financieros innovadores para alcanzar las metas climáticas del país hacia 2030.",
+      "body": "El Ministerio de Medio Ambiente y Recursos Naturales ha lanzado la Estrategia Nacional de Financiamiento Verde y Azul, una iniciativa clave para movilizar inversiones climáticas y sostenibles en la República Dominicana. Presentada durante la Semana Nacional del Financiamiento Climático, busca fortalecer la resiliencia del país ante el cambio climático y acelerar el cumplimiento de sus objetivos ambientales para 2030, involucrando al sector financiero y promoviendo instrumentos innovadores.",
+      "category": "Financiero",
+      "published_at": "2026-06-24T20:50:17+00:00",
+      "fetched_at": "2026-06-26T12:34:04.490852+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_e4fc8e23c06ae4b0",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero",
+      "url": "https://eldinero.com.do/369769/superintendentes-de-bancos-de-centroamerica-debaten-en-rd-retos-de-ciberseguridad-e-inteligencia-artificial",
+      "title": "Superintendentes de bancos de Centroamérica debaten en RD retos de ciberseguridad e inteligencia artificial",
+      "summary": "Superintendentes bancarios de Centroamérica se reunieron en República Dominicana para discutir los crecientes desafíos de ciberseguridad e inteligencia artificial en el sector financiero. El encuentro busca fortalecer la supervisión regional ante las transformaciones tecnológicas y asegurar la resiliencia operativa de las entidades bancarias.",
+      "body": "La República Dominicana fue sede de la asamblea general del Consejo Centroamericano de Superintendentes de Bancos, donde se abordaron temas cruciales como la ciberseguridad, el riesgo de modelo y el impacto de la inteligencia artificial. El evento reunió a representantes de nueve países para intercambiar experiencias y mejorar la coordinación regional en la supervisión financiera, destacando la importancia de estas tecnologías para la estabilidad del sistema bancario.",
+      "category": "Financiero",
+      "published_at": "2026-06-25T15:52:01+00:00",
+      "fetched_at": "2026-06-26T12:33:47.773715+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_91069c85fcd03879",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero",
+      "url": "https://eldinero.com.do/369866/rd-debe-enfocarse-en-mejorar-sector-electrico-y-fiscal-para-atraer-mas-inversion",
+      "title": "RD debe enfocarse en mejorar sector eléctrico y fiscal para atraer más inversión",
+      "summary": "República Dominicana necesita priorizar reformas en los sectores eléctrico y fiscal para potenciar la atracción de inversión extranjera y el crecimiento económico. Si bien se reconocen avances en generación eléctrica, persisten desafíos en distribución y transmisión, así como presiones fiscales significativas.",
+      "body": "Ernesto Revilla, economista en jefe para América Latina de Citi, destacó que la República Dominicana debe enfocar sus esfuerzos de reforma en el sector eléctrico y el ámbito fiscal para fortalecer su clima de inversión. Aunque se aprecian logros en generación eléctrica, persisten debilidades estructurales en distribución y transmisión, además de retos fiscales exacerbados por choques externos.",
+      "category": "Economia",
+      "published_at": "2026-06-25T20:18:47+00:00",
+      "fetched_at": "2026-06-26T12:33:01.469221+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_353ed8e833137e00",
+      "source_key": "news_diariolibre",
+      "source_name": "Diario Libre economía",
+      "url": "https://www.diariolibre.com/economia/macroeconomia/2026/06/26/la-nomina-y-la-deuda-publica-le-quitan-espacio-a-la-inversion/3580094",
+      "title": "La nómina pública y la deuda le quitan espacio a la inversión",
+      "summary": "El aumento de la nómina pública y el incremento de la deuda gubernamental en República Dominicana están limitando significativamente el espacio fiscal para la inversión productiva. Esta situación podría afectar el crecimiento económico a largo plazo y la capacidad del país para financiar proyectos clave.",
+      "body": "El gasto público en salarios y el servicio de la deuda están consumiendo una porción considerable del presupuesto dominicano. Esta tendencia restringe la capacidad del gobierno para destinar recursos a inversiones esenciales en infraestructura, educación y salud, lo que podría tener repercusiones negativas en el desarrollo económico y social del país.",
+      "category": "Economia",
+      "published_at": "2026-06-26T00:02:00-04:00",
+      "fetched_at": "2026-06-26T12:32:25.813992+00:00",
+      "status": "pending"
+    },
     {
       "id": "n_0463f900f7e25459",
       "source_key": "news_eldinero",
@@ -82,19 +147,6 @@
       "category": "Financiero",
       "published_at": "2026-06-22T20:57:44+00:00",
       "fetched_at": "2026-06-23T13:22:47.072987+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_d03093e39fcff75d",
-      "source_key": "news_diariolibre",
-      "source_name": "Diario Libre economía",
-      "url": "https://www.diariolibre.com/politica/partidos/2026/06/21/gonzalo-castillo-dice-enfrentara-delincuencia-y-migracion-irregular/3574379",
-      "title": "Gonzalo Castillo se declara listo para gobernar; advierte sobre delincuencia y migración irregular",
-      "summary": "El aspirante presidencial Gonzalo Castillo ha manifestado su preparación para asumir el gobierno, señalando la delincuencia y la migración irregular como desafíos prioritarios. Sus declaraciones sugieren un enfoque en la seguridad y el control fronterizo como pilares de su potencial gestión.",
-      "body": "El político dominicano Gonzalo Castillo ha expresado públicamente su disposición para liderar el país, identificando la creciente delincuencia y la migración irregular como los principales retos a enfrentar. Sus comentarios apuntan a la necesidad de implementar políticas firmes en materia de seguridad ciudadana y control migratorio, aspectos cruciales para la estabilidad económica y social de la República Dominicana.",
-      "category": "Economia",
-      "published_at": "2026-06-21T14:16:00-04:00",
-      "fetched_at": "2026-06-22T19:55:16.880896+00:00",
       "status": "pending"
     }
   ]
