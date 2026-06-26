@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-26T12:39:58.690366+00:00",
+  "generated_at": "2026-06-26T18:18:38.638090+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
-  "count": 11,
+  "count": 7,
   "errors": 0,
   "sources": 12,
-  "elapsed_s": 517.8,
+  "elapsed_s": 485.2,
   "candidates": [
     {
       "id": "n_32185992fc823d1e",
@@ -95,58 +95,6 @@
       "category": "Financiero",
       "published_at": "2026-06-24T20:16:38+00:00",
       "fetched_at": "2026-06-25T12:39:46.179731+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_addf665477ae6c4a",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero",
-      "url": "https://eldinero.com.do/369178/dida-reitera-llamado-a-reclamar-fondos-acumulados-en-afp-a-familiares-de-fallecidos-afiliados",
-      "title": "DIDA reitera llamado a reclamar fondos acumulados en AFP a familiares de fallecidos afiliados",
-      "summary": "La DIDA ha entregado más de RD$855 millones a familiares de afiliados fallecidos en los últimos seis meses, reiterando el llamado a quienes tengan derecho a reclamar estos fondos. La iniciativa busca asegurar que los beneficiarios legales accedan a pensiones por sobrevivencia y aportes acumulados en el Sistema de Capitalización Individual.",
-      "body": "La Dirección General de Información y Defensa de los Afiliados a la Seguridad Social (DIDA) ha intensificado su llamado a los familiares de afiliados fallecidos para que reclamen los fondos acumulados en las Administradoras de Fondos de Pensiones (AFP). Esta exhortación surge tras la entrega de más de RD$855 millones en los últimos seis meses a herederos que desconocían estos derechos, buscando asegurar el acceso a pensiones por sobrevivencia y aportes pendientes.",
-      "category": "Financiero",
-      "published_at": "2026-06-22T17:16:31+00:00",
-      "fetched_at": "2026-06-23T13:24:49.089963+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_2bf5bfe1d06ee607",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero",
-      "url": "https://eldinero.com.do/369182/banca-dominicana-enfrenta-el-reto-de-crecer-digitalmente-sin-aumentar-la-complejidad-operativa",
-      "title": "Banca dominicana enfrenta el reto de crecer digitalmente sin aumentar la complejidad operativa",
-      "summary": "El sistema financiero dominicano se enfrenta al desafío de expandir sus servicios digitales sin complicar sus operaciones. La integración de pagos digitales e interoperabilidad son claves para el crecimiento, permitiendo a los bancos optimizar la oferta de servicios y comprender mejor los hábitos de consumo.",
-      "body": "La banca dominicana busca expandirse digitalmente sin incrementar su complejidad operativa. Pablo Pereyra, director comercial de 2innovate, destaca que la integración de servicios digitales y pagos electrónicos es un reto clave, ya que muchas soluciones operan en plataformas independientes. El aumento de transacciones digitales ofrece datos valiosos para mejorar la oferta de servicios financieros y comprender mejor a los clientes.",
-      "category": "Financiero",
-      "published_at": "2026-06-22T17:31:48+00:00",
-      "fetched_at": "2026-06-23T13:24:21.082524+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_2f6aeff80d69240c",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero",
-      "url": "https://eldinero.com.do/369179/tesoreria-nacional-capta-mas-de-rd1101-millones-a-traves-del-sistema-sirite",
-      "title": "Tesorería Nacional capta más de RD$1,101 millones a través del sistema Sirite",
-      "summary": "La Tesorería Nacional ha recaudado más de RD$1,101 millones en el primer semestre del año mediante el sistema Sirite, procesando más de 516 mil transacciones. Esta plataforma optimiza la recaudación de ingresos del Estado y mejora la transparencia fiscal.",
-      "body": "La Tesorería Nacional ha logrado captar más de RD$1,101 millones durante el primer semestre del año a través del Sistema de Recaudación de Ingresos del Tesoro (Sirite). Este sistema ha facilitado más de 516 mil transacciones de pagos de servicios en diversas instituciones estatales, destacando el Ministerio de Medio Ambiente y el Instituto Tecnológico de las Américas como los mayores generadores de ingresos. La plataforma promueve la transparencia y mejora las estadísticas fiscales.",
-      "category": "Financiero",
-      "published_at": "2026-06-22T17:35:44+00:00",
-      "fetched_at": "2026-06-23T13:24:13.232694+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_c9b6c3fe153a54dd",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero",
-      "url": "https://eldinero.com.do/369244/escuela-sb-capacita-a-cerca-de-10000-personas-en-sus-primeros-dos-anos",
-      "title": "Escuela SB capacita a cerca de 10,000 personas en sus primeros dos años",
-      "summary": "La Superintendencia de Bancos ha capacitado a casi 10,000 personas en dos años a través de su Escuela SB, ofreciendo formación gratuita en finanzas y regulación. Esta iniciativa busca fortalecer la cultura financiera y el desarrollo profesional en el sector dominicano.",
-      "body": "La Escuela SB, iniciativa de la Superintendencia de Bancos, ha alcanzado un hito al capacitar a cerca de 10,000 personas en sus primeros dos años de operación. La plataforma ofrece formación gratuita en modalidades virtuales y presenciales, abarcando temas cruciales como educación financiera, regulación e innovación, y derecho bancario, con el objetivo de mejorar las competencias en el sector financiero dominicano.",
-      "category": "Financiero",
-      "published_at": "2026-06-22T20:57:44+00:00",
-      "fetched_at": "2026-06-23T13:22:47.072987+00:00",
       "status": "pending"
     }
   ]
