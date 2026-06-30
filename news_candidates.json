@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-30T12:39:22.455315+00:00",
+  "generated_at": "2026-06-30T18:27:52.169168+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
   "count": 1,
   "errors": 0,
   "sources": 12,
-  "elapsed_s": 642.3,
+  "elapsed_s": 514.4,
   "candidates": [
     {
       "id": "n_cd2ce7fa215fdb6d",
