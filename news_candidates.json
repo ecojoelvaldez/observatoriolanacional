@@ -1,9 +1,23 @@
 {
-  "generated_at": "2026-06-29T18:38:31.344212+00:00",
+  "generated_at": "2026-06-30T12:39:22.455315+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
-  "count": 0,
+  "count": 1,
   "errors": 0,
   "sources": 12,
-  "elapsed_s": 532.4,
-  "candidates": []
+  "elapsed_s": 642.3,
+  "candidates": [
+    {
+      "id": "n_cd2ce7fa215fdb6d",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero",
+      "url": "https://eldinero.com.do/370121/banreservas-lleva-jornada-de-bancarizacion-a-san-francisco-de-macoris",
+      "title": "Banreservas lleva jornada de bancarización a San Francisco de Macorís",
+      "summary": "Banreservas ha realizado una jornada de bancarización en San Francisco de Macorís, integrando a más de un millón de dominicanos al sistema financiero nacional. Esta iniciativa busca democratizar el acceso a servicios bancarios, especialmente para mujeres, impulsando el desarrollo económico y social del país.",
+      "body": "La iniciativa \"Bancarizar es Patria\" de Banreservas llegó a San Francisco de Macorís, buscando facilitar la inclusión financiera de la ciudadanía. La jornada ofreció apertura de cuentas, educación financiera y talleres, reafirmando el compromiso del banco con la sostenibilidad y el progreso económico de miles de dominicanos, especialmente mujeres jóvenes.",
+      "category": "Financiero",
+      "published_at": "2026-06-27T16:17:14+00:00",
+      "fetched_at": "2026-06-30T12:33:41.023582+00:00",
+      "status": "pending"
+    }
+  ]
 }
