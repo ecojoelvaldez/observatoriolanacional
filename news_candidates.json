@@ -1,11 +1,37 @@
 {
-  "generated_at": "2026-06-30T18:27:52.169168+00:00",
+  "generated_at": "2026-07-01T13:28:49.273574+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
-  "count": 1,
+  "count": 3,
   "errors": 0,
   "sources": 12,
-  "elapsed_s": 514.4,
+  "elapsed_s": 732.7,
   "candidates": [
+    {
+      "id": "n_a61f6060c66b24fb",
+      "source_key": "news_diariolibre_finanzas",
+      "source_name": "Diario Libre finanzas",
+      "url": "https://www.diariolibre.com/mundo/america-latina/2026/06/30/guatemala-duplicara-su-contingente-militar-en-haiti/3585325",
+      "title": "Guatemala duplicará su contingente militar en Haití hasta los 300 soldados",
+      "summary": "Guatemala ha anunciado la duplicación de su contingente militar en Haití, elevándolo a 300 soldados. Esta medida busca reforzar la seguridad y estabilidad en la nación caribeña, lo cual podría tener implicaciones indirectas en la región y en los flujos migratorios que afectan a economías como la dominicana.",
+      "body": "Guatemala incrementará significativamente su presencia militar en Haití, pasando de 150 a 300 efectivos. Esta decisión responde a la necesidad de fortalecer las operaciones de seguridad y estabilización en el país, que atraviesa una compleja crisis. El aumento del contingente guatemalteco subraya la preocupación internacional por la situación haitiana y sus potenciales repercusiones regionales.",
+      "category": "Global",
+      "published_at": "2026-06-30T21:37:00-04:00",
+      "fetched_at": "2026-07-01T13:22:14.450013+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_bcf06e34f937996f",
+      "source_key": "news_diariolibre_finanzas",
+      "source_name": "Diario Libre finanzas",
+      "url": "https://www.diariolibre.com/economia/consumo/2026/07/01/perdida-de-alimentos-frescos-y-su-impacto-en-la-seguridad-alimentaria/3585211",
+      "title": "Advierten que el 40 % de los alimentos frescos se deterioran antes de poder ser consumidos",
+      "summary": "La pérdida del 40% de alimentos frescos antes de su consumo representa un desafío significativo para la seguridad alimentaria en República Dominicana. Esta merma impacta directamente en la disponibilidad y el costo de productos esenciales, afectando la economía familiar y la cadena de suministro.",
+      "body": "Una alarmante advertencia señala que casi la mitad de los alimentos frescos se pierden antes de llegar al consumidor, lo que genera un impacto considerable en la seguridad alimentaria. Esta situación plantea interrogantes sobre la eficiencia de la cadena de suministro y la gestión de recursos en el país, con posibles repercusiones en la inflación y el acceso a productos básicos.",
+      "category": "Economia",
+      "published_at": "2026-07-01T00:02:00-04:00",
+      "fetched_at": "2026-07-01T13:20:06.108103+00:00",
+      "status": "pending"
+    },
     {
       "id": "n_cd2ce7fa215fdb6d",
       "source_key": "news_eldinero",
