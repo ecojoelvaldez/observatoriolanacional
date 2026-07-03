@@ -1,11 +1,37 @@
 {
-  "generated_at": "2026-07-02T18:24:06.044716+00:00",
+  "generated_at": "2026-07-03T12:35:28.933013+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
-  "count": 8,
+  "count": 9,
   "errors": 0,
   "sources": 12,
-  "elapsed_s": 568.5,
+  "elapsed_s": 637.3,
   "candidates": [
+    {
+      "id": "n_1608c91a3e783581",
+      "source_key": "news_extra_9",
+      "source_name": "Fuente guardada",
+      "url": "https://hoy.com.do/economia/nuevas-iniciativas-consolidan-pais-destino-ied_1093306.html",
+      "title": "Nuevas iniciativas consolidan al país como destino de la IED",
+      "summary": "La República Dominicana se posiciona como un destino clave para la inversión extranjera directa (IED) gracias a nuevas iniciativas y acuerdos presentados en el Foro de Inversión de las Américas. Se proyectan inversiones significativas en zonas francas y el sector hotelero, superando los US$5,000 millones en IED durante el año.",
+      "body": "El país fortalece su atractivo para la inversión extranjera directa (IED) a través de la presentación de nuevas iniciativas y la firma de acuerdos en el Foro de Inversión de las Américas. Destacan la expansión de Nigua Free Zone con una inversión de US$200 millones y la fase dos del hotel Moon Palace The Grand Punta Cana, que sumará 1,229 habitaciones. Estas acciones reflejan la confianza de los inversionistas internacionales, evidenciada en un crecimiento del 11.3% en la IED.",
+      "category": "Economia",
+      "published_at": "2026-07-03T00:00:00-04:00",
+      "fetched_at": "2026-07-03T12:29:23.841607+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_c667c8b238d73369",
+      "source_key": "news_diariolibre_finanzas",
+      "source_name": "Diario Libre finanzas",
+      "url": "https://www.diariolibre.com/economia/negocios/2026/07/02/rd-se-une-a-paises-donde-gasolineras-se-quejan-por-comisiones/3587816",
+      "title": "RD se suma a los países donde las gasolineras pelean con la banca por comisiones de tarjetas",
+      "summary": "Las estaciones de servicio en República Dominicana se unen a una tendencia global al confrontar a las instituciones bancarias por las comisiones asociadas a las transacciones con tarjetas. Este conflicto podría impactar los márgenes de ganancia de ambos sectores y la experiencia de pago para los consumidores.",
+      "body": "La República Dominicana se ha convertido en un nuevo escenario de disputa entre el sector de gasolineras y la banca comercial. Las estaciones de servicio argumentan que las comisiones por el uso de tarjetas de crédito y débito merman sus beneficios, sumándose a una problemática que ya afecta a otros países. Esta situación genera incertidumbre sobre posibles ajustes en los costos de transacción y la dinámica de pagos en el país.",
+      "category": "Economia",
+      "published_at": "2026-07-02T23:02:00-04:00",
+      "fetched_at": "2026-07-03T12:28:25.781965+00:00",
+      "status": "pending"
+    },
     {
       "id": "n_6a15f03b4a81f4c9",
       "source_key": "news_eldinero",
@@ -95,19 +121,6 @@
       "category": "Economia",
       "published_at": "2026-07-01T00:02:00-04:00",
       "fetched_at": "2026-07-01T13:20:06.108103+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_cd2ce7fa215fdb6d",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero",
-      "url": "https://eldinero.com.do/370121/banreservas-lleva-jornada-de-bancarizacion-a-san-francisco-de-macoris",
-      "title": "Banreservas lleva jornada de bancarización a San Francisco de Macorís",
-      "summary": "Banreservas ha realizado una jornada de bancarización en San Francisco de Macorís, integrando a más de un millón de dominicanos al sistema financiero nacional. Esta iniciativa busca democratizar el acceso a servicios bancarios, especialmente para mujeres, impulsando el desarrollo económico y social del país.",
-      "body": "La iniciativa \"Bancarizar es Patria\" de Banreservas llegó a San Francisco de Macorís, buscando facilitar la inclusión financiera de la ciudadanía. La jornada ofreció apertura de cuentas, educación financiera y talleres, reafirmando el compromiso del banco con la sostenibilidad y el progreso económico de miles de dominicanos, especialmente mujeres jóvenes.",
-      "category": "Financiero",
-      "published_at": "2026-06-27T16:17:14+00:00",
-      "fetched_at": "2026-06-30T12:33:41.023582+00:00",
       "status": "pending"
     }
   ]
