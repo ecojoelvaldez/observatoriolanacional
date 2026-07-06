@@ -50,30 +50,29 @@ OUTPUT_PATH = os.environ.get("SIB_SNAPSHOT_PATH", "data/sib_snapshot.json")
 # espacios/puntos -> _). Si el API devuelve un nombre distinto, se
 # agrega aqui. El modo --diagnostico imprime los campos crudos.
 # ------------------------------------------------------------------
+# El endpoint indicadores/financieros devuelve un catálogo de ~80 ratios con
+# nombre exacto (verificado con --diagnostico el 2026-07-06). El mapeo es por
+# IGUALDAD EXACTA: el matching por substring colisionaba ("cti" está contenido
+# en "aCTIvos_productivos_...", "cartera" en ratios de cobertura) y contaminaba
+# el snapshot con valores de ratios equivocados.
+#
+# Nota: este endpoint NO trae el balance de cartera de créditos en RD$; solo
+# "activos_netos_totales" es un monto absoluto. La serie "cartera" del front
+# sigue alimentándose del CSV del analista u otro endpoint futuro.
 CAMPO_A_INDICADOR = {
-    # morosidad
     "indice_de_morosidad": "morosidad",
-    "indice_morosidad": "morosidad",
-    "morosidad": "morosidad",
-    # rentabilidad
     "roe_rentabilidad_del_patrimonio": "roe",
-    "rentabilidad_del_patrimonio": "roe",
-    "roe": "roe",
     "roa_rentabilidad_de_los_activos": "roa",
-    "rentabilidad_de_los_activos": "roa",
-    "roa": "roa",
-    # eficiencia
-    "cti": "cti",
     "indicador_de_eficiencia": "cti",
-    "eficiencia": "cti",
-    # balance
-    "activos": "activos",
-    "total_activos": "activos",
-    "activo_neto": "activos",
-    "cartera_total": "cartera",
-    "cartera_de_creditos_total": "cartera",
-    "cartera": "cartera",
+    "activos_netos_totales": "activos",
 }
+
+
+def mapear_indicador(nombre_normalizado):
+    """Mapea el nombre normalizado de un indicador del API al id del front."""
+    if not nombre_normalizado:
+        return None
+    return CAMPO_A_INDICADOR.get(nombre_normalizado)
 
 # Campos que identifican entidad / periodo / tipo en la respuesta del API.
 CAMPOS_ENTIDAD = ["entidad", "nombreEntidad", "nombre_entidad", "institucion",
@@ -239,15 +238,20 @@ def _num(v):
 
 def transformar_a_long(registros, tipo, periodo_fallback, diagnostico=False):
     """Convierte registros crudos del API a filas long:
-       { periodo, entidad, tipo_entidad, indicador, valor }"""
+       { periodo, entidad, tipo_entidad, indicador, valor }
+
+    El API v2 ya devuelve formato LARGO: cada registro trae los campos
+    entidad / indicador / periodo / tipoEntidad / valor, con el nombre del
+    indicador como VALOR del campo `indicador` (no como nombre de columna).
+    Se mantiene el modo ancho como fallback por si el API cambiara.
+    """
     filas = []
-    campos_vistos = set()
+    indicadores_vistos = {}
+    vistos = set()  # (periodo, entidad, indicador) para no duplicar variantes
 
     for reg in registros:
         plano = _flatten(reg)
         reg_norm = {_normalizar(k): v for k, v in plano.items()}
-        if diagnostico:
-            campos_vistos.update(reg_norm.keys())
 
         entidad = _buscar_campo(reg_norm, CAMPOS_ENTIDAD)
         periodo = _buscar_campo(reg_norm, CAMPOS_PERIODO) or periodo_fallback
@@ -259,15 +263,34 @@ def transformar_a_long(registros, tipo, periodo_fallback, diagnostico=False):
             elif len(ps) == 6 and ps.isdigit():
                 periodo = f"{ps[:4]}-{ps[4:6]}"
 
-        # cada campo que mapee a un indicador conocido -> una fila long
-        for campo_norm, valor in reg_norm.items():
-            indicador = CAMPO_A_INDICADOR.get(campo_norm)
+        ind_raw = reg_norm.get("indicador")
+        if ind_raw not in (None, ""):
+            # ---- FORMATO LARGO (caso real del API v2) ----
+            ind_norm = _normalizar(ind_raw)
+            indicador = mapear_indicador(ind_norm)
+            if diagnostico:
+                indicadores_vistos[ind_norm] = indicador
             if not indicador:
-                # intento por substring para nombres con sufijos
-                for clave, ind in CAMPO_A_INDICADOR.items():
-                    if clave in campo_norm:
-                        indicador = ind
-                        break
+                continue
+            valnum = _num(reg_norm.get("valor"))
+            if valnum is None:
+                continue
+            clave = (periodo, _normalizar(entidad), indicador)
+            if clave in vistos:
+                continue
+            vistos.add(clave)
+            filas.append({
+                "periodo": periodo,
+                "entidad": entidad,
+                "tipo_entidad": tipo,
+                "indicador": indicador,
+                "valor": valnum,
+            })
+            continue
+
+        # ---- FORMATO ANCHO (fallback): columnas = indicadores ----
+        for campo_norm, valor in reg_norm.items():
+            indicador = mapear_indicador(campo_norm)
             if not indicador:
                 continue
             valnum = _num(valor)
@@ -281,13 +304,12 @@ def transformar_a_long(registros, tipo, periodo_fallback, diagnostico=False):
                 "valor": valnum,
             })
 
-    if diagnostico and campos_vistos:
-        print("\n=== DIAGNOSTICO: campos normalizados devueltos por el API ===")
-        for c in sorted(campos_vistos):
-            marca = ""
-            if c in CAMPO_A_INDICADOR:
-                marca = f"  -> {CAMPO_A_INDICADOR[c]}"
-            print(f"  {c}{marca}")
+    if diagnostico and indicadores_vistos:
+        print("\n=== DIAGNOSTICO: indicadores devueltos por el API ===")
+        for nombre in sorted(indicadores_vistos):
+            destino = indicadores_vistos[nombre]
+            marca = f"  -> {destino}" if destino else "  (sin mapear)"
+            print(f"  {nombre}{marca}")
         print("=== fin diagnostico ===\n")
 
     return filas
