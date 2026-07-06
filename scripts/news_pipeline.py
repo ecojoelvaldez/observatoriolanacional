@@ -34,6 +34,7 @@ import json
 import time
 import hashlib
 import logging
+import threading
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -70,6 +71,10 @@ NEWS_MAX_AGE_HOURS = int(os.getenv("NEWS_MAX_AGE_HOURS", "72"))
 CANDIDATE_TTL_DAYS = int(os.getenv("CANDIDATE_TTL_DAYS", "3"))
 NEWS_MIN_RELEVANCE = int(os.getenv("NEWS_MIN_RELEVANCE", "6"))
 ARTICLE_WORKERS = max(1, int(os.getenv("ARTICLE_WORKERS", "3")))
+# El free tier de Gemini limita las peticiones por minuto; espaciar las
+# llamadas evita tormentas de 429 que agotan los reintentos y dejan fuentes
+# sin procesar (observado en el run del 2026-07-06).
+GEMINI_MIN_INTERVAL = float(os.getenv("GEMINI_MIN_INTERVAL", "6"))
 
 CATEGORY_ALLOWED = {"Monetario", "Financiero", "Regulatorio", "Economia", "Global"}
 TRACKING_PARAMS = {"utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "fbclid", "gclid", "mc_cid", "mc_eid"}
@@ -149,7 +154,33 @@ def clean_json_text(raw: str) -> str:
     return raw.strip()
 
 
-def gemini_json(prompt: str, max_tokens: int = 1500, retries: int = 3) -> dict | None:
+_gemini_lock = threading.Lock()
+_gemini_last_call = 0.0
+
+
+def _gemini_throttle() -> None:
+    """Garantiza un intervalo mínimo entre llamadas a Gemini (todas las hebras)."""
+    global _gemini_last_call
+    with _gemini_lock:
+        wait = _gemini_last_call + GEMINI_MIN_INTERVAL - time.monotonic()
+        if wait > 0:
+            time.sleep(wait)
+        _gemini_last_call = time.monotonic()
+
+
+def _gemini_retry_delay(response, attempt: int) -> float:
+    """Espera sugerida por Google (RetryInfo) o backoff exponencial."""
+    try:
+        for detail in response.json().get("error", {}).get("details", []):
+            delay = str(detail.get("retryDelay", ""))
+            if delay.endswith("s"):
+                return min(90.0, float(delay[:-1]) + 1)
+    except Exception:
+        pass
+    return min(90.0, 15.0 * attempt)
+
+
+def gemini_json(prompt: str, max_tokens: int = 1500, retries: int = 4) -> dict | None:
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
         # responseMimeType fuerza JSON valido: elimina los fallos de parseo
@@ -162,10 +193,12 @@ def gemini_json(prompt: str, max_tokens: int = 1500, retries: int = 3) -> dict |
     }
     for attempt in range(1, retries + 1):
         try:
+            _gemini_throttle()
             r = httpx.post(GEMINI_ENDPOINT, params={"key": GEMINI_API_KEY}, json=payload, timeout=GEMINI_TIMEOUT)
             if r.status_code in (429, 503):
-                log.warning("Gemini %s, reintento %d/%d", r.status_code, attempt, retries)
-                time.sleep(6 * attempt)
+                delay = _gemini_retry_delay(r, attempt)
+                log.warning("Gemini %s, reintento %d/%d (espera %.0fs)", r.status_code, attempt, retries, delay)
+                time.sleep(delay)
                 continue
             if r.status_code != 200:
                 log.warning("Gemini HTTP %s: %s", r.status_code, r.text[:300])
