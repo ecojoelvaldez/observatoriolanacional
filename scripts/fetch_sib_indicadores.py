@@ -50,56 +50,29 @@ OUTPUT_PATH = os.environ.get("SIB_SNAPSHOT_PATH", "data/sib_snapshot.json")
 # espacios/puntos -> _). Si el API devuelve un nombre distinto, se
 # agrega aqui. El modo --diagnostico imprime los campos crudos.
 # ------------------------------------------------------------------
+# El endpoint indicadores/financieros devuelve un catálogo de ~80 ratios con
+# nombre exacto (verificado con --diagnostico el 2026-07-06). El mapeo es por
+# IGUALDAD EXACTA: el matching por substring colisionaba ("cti" está contenido
+# en "aCTIvos_productivos_...", "cartera" en ratios de cobertura) y contaminaba
+# el snapshot con valores de ratios equivocados.
+#
+# Nota: este endpoint NO trae el balance de cartera de créditos en RD$; solo
+# "activos_netos_totales" es un monto absoluto. La serie "cartera" del front
+# sigue alimentándose del CSV del analista u otro endpoint futuro.
 CAMPO_A_INDICADOR = {
-    # morosidad
     "indice_de_morosidad": "morosidad",
-    "indice_morosidad": "morosidad",
-    "morosidad": "morosidad",
-    # rentabilidad
     "roe_rentabilidad_del_patrimonio": "roe",
-    "rentabilidad_del_patrimonio": "roe",
-    "roe": "roe",
     "roa_rentabilidad_de_los_activos": "roa",
-    "rentabilidad_de_los_activos": "roa",
-    "roa": "roa",
-    # eficiencia
-    "cti": "cti",
     "indicador_de_eficiencia": "cti",
-    "eficiencia": "cti",
-    "costo_ingreso": "cti",
-    "costos_ingresos": "cti",
-    "cost_to_income": "cti",
-    # balance
-    "activos": "activos",
-    "total_de_activos": "activos",
-    "total_activos": "activos",
-    "activo_neto": "activos",
-    "activos_totales": "activos",
-    "cartera_total": "cartera",
-    "cartera_de_creditos_total": "cartera",
-    "cartera_de_credito_total": "cartera",
-    "total_cartera_de_creditos": "cartera",
-    "cartera": "cartera",
+    "activos_netos_totales": "activos",
 }
-
-# Palabras que descartan variantes de un indicador (p. ej. "morosidad ampliada"
-# o "estresada" no deben pisar el índice de morosidad simple).
-CALIFICADORES_EXCLUIDOS = ("ampliada", "estresada", "ajustad", "vencida_mas")
 
 
 def mapear_indicador(nombre_normalizado):
     """Mapea el nombre normalizado de un indicador del API al id del front."""
     if not nombre_normalizado:
         return None
-    exacto = CAMPO_A_INDICADOR.get(nombre_normalizado)
-    if exacto:
-        return exacto
-    if any(c in nombre_normalizado for c in CALIFICADORES_EXCLUIDOS):
-        return None
-    for clave, ind in CAMPO_A_INDICADOR.items():
-        if clave in nombre_normalizado:
-            return ind
-    return None
+    return CAMPO_A_INDICADOR.get(nombre_normalizado)
 
 # Campos que identifican entidad / periodo / tipo en la respuesta del API.
 CAMPOS_ENTIDAD = ["entidad", "nombreEntidad", "nombre_entidad", "institucion",
