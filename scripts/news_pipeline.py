@@ -1,13 +1,13 @@
 """
-Observatorio Estratégico La Nacional — Pipeline de Noticias v3 LOCAL/STATIC
+Observatorio Estratégico La Nacional — Pipeline de Noticias v4 LOCAL/STATIC
 ============================================================================
 Flujo:
   1. Lee fuentes activas desde Supabase (news_sources). Esto es liviano.
   2. Lee cada página índice con Jina Reader.
   3. Gemini extrae URLs reales de artículos candidatos.
-  4. Para cada artículo, lee la URL individual con Jina.
-  5. Gemini genera resumen ejecutivo + lead/cuerpo breve + fecha/categoría.
-  6. NO guarda candidatos en news_proposals.
+  4. Para cada artículo, lee la URL individual con Jina (en paralelo, 3 hilos).
+  5. Gemini genera resumen ejecutivo + lead + relevancia financiera (0-10).
+  6. Solo se aceptan candidatos con relevancia >= NEWS_MIN_RELEVANCE.
   7. Escribe un archivo estático news_candidates.json en la raíz del repo.
 
 El analista carga ese JSON desde el panel, lo guarda en localStorage y aprueba/rechaza localmente.
@@ -22,6 +22,8 @@ Variables opcionales:
   GEMINI_MODEL=gemini-2.5-flash-lite
   NEWS_CANDIDATES_PATH=news_candidates.json
   MAX_TOTAL_PROPOSALS=30
+  NEWS_MIN_RELEVANCE=6        # umbral 0-10 de relevancia financiera
+  ARTICLE_WORKERS=3           # hilos por fuente para leer articulos
 """
 
 from __future__ import annotations
@@ -34,6 +36,7 @@ import hashlib
 import logging
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urlparse, urljoin, parse_qsl, urlencode, urlunparse
 
 import httpx
@@ -56,16 +59,17 @@ JINA_READER_BASE = "https://r.jina.ai/"
 GEMINI_ENDPOINT = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
 
 FETCH_TIMEOUT = 35
-GEMINI_TIMEOUT = 30
+GEMINI_TIMEOUT = 45
 MAX_INDEX_MARKDOWN_CHARS = 9000
 MAX_ARTICLE_MARKDOWN_CHARS = 12000
 MIN_CONTENT_CHARS = 250
-DELAY_BETWEEN_SOURCES = 4
-DELAY_BETWEEN_ARTICLES = 1.5
+DELAY_BETWEEN_SOURCES = 1.5
 MAX_HEADLINES_PER_SOURCE = 6
 MAX_TOTAL_PROPOSALS = int(os.getenv("MAX_TOTAL_PROPOSALS", "30"))
 NEWS_MAX_AGE_HOURS = int(os.getenv("NEWS_MAX_AGE_HOURS", "72"))
 CANDIDATE_TTL_DAYS = int(os.getenv("CANDIDATE_TTL_DAYS", "3"))
+NEWS_MIN_RELEVANCE = int(os.getenv("NEWS_MIN_RELEVANCE", "6"))
+ARTICLE_WORKERS = max(1, int(os.getenv("ARTICLE_WORKERS", "3")))
 
 CATEGORY_ALLOWED = {"Monetario", "Financiero", "Regulatorio", "Economia", "Global"}
 TRACKING_PARAMS = {"utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "fbclid", "gclid", "mc_cid", "mc_eid"}
@@ -148,7 +152,13 @@ def clean_json_text(raw: str) -> str:
 def gemini_json(prompt: str, max_tokens: int = 1500, retries: int = 3) -> dict | None:
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {"temperature": 0.1, "maxOutputTokens": max_tokens},
+        # responseMimeType fuerza JSON valido: elimina los fallos de parseo
+        # por fences ``` o texto extra alrededor de la respuesta.
+        "generationConfig": {
+            "temperature": 0.1,
+            "maxOutputTokens": max_tokens,
+            "responseMimeType": "application/json",
+        },
     }
     for attempt in range(1, retries + 1):
         try:
@@ -172,25 +182,26 @@ def gemini_json(prompt: str, max_tokens: int = 1500, retries: int = 3) -> dict |
     return None
 
 
-HEADLINE_PROMPT = """Eres un analista de inteligencia financiera dominicana que cura noticias para un banco.
+HEADLINE_PROMPT = """Eres un analista de inteligencia financiera dominicana que cura noticias para un banco (asociacion de ahorros y prestamos).
 
 Recibes el markdown de una PAGINA INDICE de noticias: lista de titulares, enlaces y fragmentos.
 
-Identifica titulares de NOTICIAS REALES relevantes para el sector financiero, monetario, bancario, regulatorio o macroeconomico dominicano.
+Identifica titulares de NOTICIAS REALES con impacto directo en el sector financiero, monetario, bancario, regulatorio o macroeconomico dominicano.
 
-Prioriza:
-- Politica monetaria, tasas, inflacion, tipo de cambio
-- Banco Central, Superintendencia, Hacienda, DGII, mercado de valores
-- Banca, credito, remesas, turismo, energia, comercio exterior
-- Indicadores macroeconomicos locales o globales con impacto para RD
+Prioriza (en este orden):
+1. Politica monetaria, tasas de interes, inflacion, tipo de cambio, liquidez
+2. Banco Central, Superintendencia de Bancos, Hacienda, DGII, mercado de valores
+3. Banca, credito, captaciones, hipotecas, remesas, morosidad
+4. Indicadores macroeconomicos de RD (PIB, IMAE, deuda, IED, empleo)
+5. Economia global SOLO si tiene canal claro hacia RD (Fed, petroleo, remesas, turismo)
 
-Descarta: navegacion, relleno, opinion sin dato economico, publirreportajes, tecnologia de consumo, deportes, entretenimiento.
+Descarta sin excepcion: navegacion, relleno, opinion sin dato economico, publirreportajes, tecnologia de consumo, deportes, entretenimiento, sucesos, politica sin componente economico, noticias militares o de seguridad sin impacto financiero cuantificable.
 
 Devuelve SOLO JSON valido con esta estructura exacta:
 {"headlines":[{"title":"titular exacto","link":"URL del articulo individual","category":"Economia"}]}
 
 Reglas:
-- Devuelve entre 0 y 6 titulares.
+- Devuelve entre 0 y 6 titulares. Menos y mejores es preferible a mas y debiles.
 - category debe ser exactamente una de: Monetario, Financiero, Regulatorio, Economia, Global.
 - link debe ser la URL del articulo individual. Si no hay enlace claro, omite el titular.
 - No inventes enlaces.
@@ -198,7 +209,7 @@ Reglas:
 Markdown de pagina indice:
 """
 
-ARTICLE_PROMPT = """Eres un analista de inteligencia financiera dominicana.
+ARTICLE_PROMPT = """Eres un analista de inteligencia financiera dominicana que trabaja para una asociacion de ahorros y prestamos.
 
 Recibes el markdown de un ARTICULO individual. Extrae informacion util para que un analista lo apruebe o descarte en un panel editorial.
 
@@ -209,11 +220,17 @@ Devuelve SOLO JSON valido con esta estructura exacta:
   "body": "lead propio de 1 parrafo, 45-90 palabras, basado en el cuerpo de la noticia, no repitas el titulo y no copies texto largo literalmente",
   "published_at": "fecha ISO 8601 si aparece, o null",
   "category": "Economia",
+  "relevance": 7,
   "relevant": true
 }
 
 Reglas:
 - category debe ser exactamente una de: Monetario, Financiero, Regulatorio, Economia, Global.
+- relevance es un entero 0-10 que mide el impacto para el SECTOR FINANCIERO dominicano:
+  * 9-10: decision de politica monetaria/regulatoria, datos de banca o credito, tasas, tipo de cambio
+  * 7-8: macro RD relevante (PIB, inflacion, deuda, IED, remesas) o global con canal directo a RD
+  * 5-6: economia general RD con impacto indirecto (sectores, comercio, energia)
+  * 0-4: sin impacto financiero claro (seguridad, politica, social, curiosidades)
 - Si el articulo no tiene contenido noticioso util, devuelve {"relevant": false}.
 - Si no encuentras fecha, usa null; no inventes fechas.
 - El body debe ser un parrafo informativo, no una lista ni el titular.
@@ -233,6 +250,15 @@ def extract_headlines(index_markdown: str) -> list[dict]:
 def extract_article_details(article_markdown: str) -> dict | None:
     parsed = gemini_json(ARTICLE_PROMPT + article_markdown, max_tokens=1800)
     if not parsed or not parsed.get("relevant", True):
+        return None
+    try:
+        relevance = int(parsed.get("relevance", 7))
+    except (TypeError, ValueError):
+        relevance = 7
+    parsed["relevance"] = max(0, min(10, relevance))
+    if parsed["relevance"] < NEWS_MIN_RELEVANCE:
+        log.info("  -> relevancia %d < %d, descartado: %s",
+                 parsed["relevance"], NEWS_MIN_RELEVANCE, (parsed.get("title") or "")[:70])
         return None
     return parsed
 
@@ -336,6 +362,7 @@ def build_candidate(source: dict, headline: dict, base_url: str) -> dict | None:
         "summary": (details.get("summary") or "").strip(),
         "body": (details.get("body") or "").strip(),
         "category": normalize_category(details.get("category") or headline.get("category")),
+        "relevance": details.get("relevance", NEWS_MIN_RELEVANCE),
         "published_at": published_at,
         "fetched_at": now_iso(),
         "status": "pending",
@@ -360,24 +387,38 @@ def process_source(source: dict, existing_urls: set[str]) -> list[dict]:
         log.info("  -> Gemini no extrajo titulares utiles")
         return []
 
-    candidates: list[dict] = []
+    # Filtrar titulares nuevos ANTES de lanzar trabajo pesado (Jina + Gemini).
+    pending: list[dict] = []
+    seen_in_batch: set[str] = set()
     for headline in headlines:
         link = canonicalize_url(headline.get("link") or "", base_url)
         title = (headline.get("title") or "").strip()
         if not link or not title:
             continue
-        if link in existing_urls:
+        if link in existing_urls or link in seen_in_batch:
             log.info("  -> ya vista: %s", title[:70])
             continue
-        candidate = build_candidate(source, headline, base_url)
-        if not candidate:
-            continue
-        candidates.append(candidate)
-        existing_urls.add(candidate["url"])
-        log.info("  ✓ candidato: %s", candidate["title"][:90])
-        time.sleep(DELAY_BETWEEN_ARTICLES)
-        if len(candidates) >= MAX_HEADLINES_PER_SOURCE:
-            break
+        seen_in_batch.add(link)
+        pending.append(headline)
+
+    # Cada articulo requiere 1 lectura Jina + 1 llamada Gemini; se procesan
+    # en paralelo con pocos hilos para no disparar los limites de tasa.
+    candidates: list[dict] = []
+    if pending:
+        with ThreadPoolExecutor(max_workers=ARTICLE_WORKERS) as pool:
+            futures = {pool.submit(build_candidate, source, h, base_url): h for h in pending}
+            for future in as_completed(futures):
+                try:
+                    candidate = future.result()
+                except Exception as exc:
+                    log.warning("  -> error procesando articulo: %s", exc)
+                    continue
+                if not candidate or candidate["url"] in existing_urls:
+                    continue
+                candidates.append(candidate)
+                existing_urls.add(candidate["url"])
+                log.info("  ✓ candidato (rel %s): %s", candidate.get("relevance", "?"), candidate["title"][:90])
+    candidates = candidates[:MAX_HEADLINES_PER_SOURCE]
     log.info("  -> %d candidatos nuevos de %s", len(candidates), name)
     return candidates
 
@@ -422,6 +463,7 @@ def write_candidates(candidates: list[dict], errors: int, sources_count: int, el
     payload = {
         "generated_at": now_iso(),
         "gemini_model": GEMINI_MODEL,
+        "min_relevance": NEWS_MIN_RELEVANCE,
         "count": len(merged),
         "errors": errors,
         "sources": sources_count,
