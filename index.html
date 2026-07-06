@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
@@ -2314,12 +2315,95 @@ body.analyst-logged .chart-data-card.analyst-only { animation: fadeUp 0.42s var(
 
   <!-- Subtabs SIB: operación de créditos + resumen ejecutivo general -->
   <div class="macro-tabs" id="sib-subtabs">
-    <button class="macro-tab active" data-sub="cartera">Créditos</button>
-    <button class="macro-tab" data-sub="resumen">Resumen General</button>
+    <button class="macro-tab active" data-sub="resumen">Resumen General</button>
+    <button class="macro-tab" data-sub="cartera">Créditos</button>
   </div>
 
+  <!-- RESUMEN GENERAL -->
+  <div class="subview active" data-subview="resumen">
+    <div class="sib-table-wrap" id="peer-table-wrap">
+    <div class="sib-table-head">
+      <div>
+        <h3 class="serif">Peer group AAyP · indicadores de cierre</h3>
+        <div class="sub" style="font-size:11px;color:var(--cyan-deep);letter-spacing:1px;text-transform:uppercase;margin-top:4px;font-weight:600">Fuente SIB · abril 2026</div>
+      </div>
+      <div class="peer-table-tools">
+        <div class="source" id="peer-sort-label" style="font-size:11px;color:var(--cyan-deep);font-style:italic;font-weight:500">Esperando datos SIB · orden por ROE</div>
+        <div class="peer-filter-row" aria-label="Filtros del ranking SIB">
+          <div class="peer-filter compact" aria-label="Filtro de universo del peer group">
+            <div class="premium-select" id="peer-scope-select-ui">
+              <input type="hidden" id="peer-scope-select" value="asociaciones">
+              <button class="premium-select-trigger" id="peer-scope-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="peer-scope-menu">
+                <span class="select-text"><span class="select-kicker">Universo</span><span class="select-value" id="peer-scope-value">Asociaciones</span></span>
+                <span class="select-chev" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </button>
+              <div class="premium-select-menu" id="peer-scope-menu" role="listbox" aria-label="Universo para ranking SIB">
+                <button class="premium-option" type="button" role="option" data-value="sector" aria-selected="false"><span>Sector</span></button>
+                <button class="premium-option" type="button" role="option" data-value="asociaciones" aria-selected="true"><span>Asociaciones</span></button>
+              </div>
+            </div>
+          </div>
+          <div class="peer-filter compact" aria-label="Filtro de indicadores del peer group">
+            <div class="premium-select" id="peer-filter-select-ui">
+              <input type="hidden" id="peer-filter-select" value="roe">
+              <button class="premium-select-trigger" id="peer-filter-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="peer-filter-menu">
+                <span class="select-text"><span class="select-kicker">Ordenar por</span><span class="select-value" id="peer-filter-value">ROE</span></span>
+                <span class="select-chev" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </button>
+              <div class="premium-select-menu" id="peer-filter-menu" role="listbox" aria-label="Indicador para ordenar peer group">
+                <button class="premium-option" type="button" role="option" data-value="activos" aria-selected="false"><span>Activos</span></button>
+                <button class="premium-option" type="button" role="option" data-value="morosidad" aria-selected="false"><span>Morosidad</span></button>
+                <button class="premium-option" type="button" role="option" data-value="cti" aria-selected="false"><span>CTI</span></button>
+                <button class="premium-option" type="button" role="option" data-value="roe" aria-selected="true"><span>ROE</span></button>
+                <button class="premium-option" type="button" role="option" data-value="roa" aria-selected="false"><span>ROA</span></button>
+              </div>
+            </div>
+            <button class="btn-filter" id="peer-filter-btn" type="button">Filtrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <table class="sib" id="peer-group-table">
+      <thead>
+        <tr>
+          <th style="width: 28%">Institución</th>
+          <th class="num" data-metric="activos">Activos (MM RD$)</th>
+          <th class="num" data-metric="morosidad">Morosidad</th>
+          <th class="num" data-metric="cti">CTI</th>
+          <th class="num sort-active" data-metric="roe">ROE</th>
+          <th class="num" data-metric="roa">ROA</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="6" style="text-align:center;padding:26px 14px;color:var(--gray,#8A8A8A);font-size:12px">Cargando datos de la SIB… El ranking se llena automáticamente con el snapshot del API (días 5 y 20) o con el CSV del panel del analista.</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="peer-summary-chart" id="peer-summary-chart-card">
+      <div class="chart-block">
+        <div class="chart-block-head">
+          <div>
+            <h3 class="serif" id="peer-summary-title">Evolución de ROE</h3>
+            <div class="sub" id="peer-summary-sub">Serie comparativa según el indicador seleccionado en la tabla · últimos 24 meses</div>
+          </div>
+          <div class="source">Fuente: SIB</div>
+        </div>
+        <div class="chart-container" style="height:320px"><canvas id="sib-peer-summary-chart"></canvas></div>
+        <div class="bm-legend">
+          <div class="item"><span class="swatch" style="background:var(--bm-cibao)"></span>Asoc. Cibao</div>
+          <div class="item"><span class="swatch" style="background:var(--bm-apap)"></span>APAP</div>
+          <div class="item us"><span class="swatch us" style="background:var(--yellow-dark)"></span>La Nacional</div>
+          <div class="item"><span class="swatch" style="background:var(--bm-aayp)"></span>AAyP (promedio)</div>
+          <div class="item"><span class="swatch" style="background:var(--bm-bmult)"></span>Banca múltiple (promedio)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <!-- CARTERA -->
-  <div class="subview active" data-subview="cartera">
+  <div class="subview" data-subview="cartera">
     <div class="cartera-mode-tabs" id="cartera-mode-tabs" aria-label="Opciones SIB">
       <button class="cartera-mode-tab active" type="button" data-cartera-panel="tipo">Créditos</button>
       <button class="cartera-mode-tab" type="button" data-cartera-panel="captacion">Captación</button>
@@ -2517,89 +2601,6 @@ body.analyst-logged .chart-data-card.analyst-only { animation: fadeUp 0.42s var(
             <div class="source">Mix</div>
           </div>
           <div class="chart-container" style="height:320px"><canvas id="cap-chart-mix"></canvas></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- RESUMEN GENERAL -->
-  <div class="subview" data-subview="resumen">
-    <div class="sib-table-wrap" id="peer-table-wrap">
-    <div class="sib-table-head">
-      <div>
-        <h3 class="serif">Peer group AAyP · indicadores de cierre</h3>
-        <div class="sub" style="font-size:11px;color:var(--cyan-deep);letter-spacing:1px;text-transform:uppercase;margin-top:4px;font-weight:600">Fuente SIB · abril 2026</div>
-      </div>
-      <div class="peer-table-tools">
-        <div class="source" id="peer-sort-label" style="font-size:11px;color:var(--cyan-deep);font-style:italic;font-weight:500">Esperando datos SIB · orden por ROE</div>
-        <div class="peer-filter-row" aria-label="Filtros del ranking SIB">
-          <div class="peer-filter compact" aria-label="Filtro de universo del peer group">
-            <div class="premium-select" id="peer-scope-select-ui">
-              <input type="hidden" id="peer-scope-select" value="asociaciones">
-              <button class="premium-select-trigger" id="peer-scope-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="peer-scope-menu">
-                <span class="select-text"><span class="select-kicker">Universo</span><span class="select-value" id="peer-scope-value">Asociaciones</span></span>
-                <span class="select-chev" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              </button>
-              <div class="premium-select-menu" id="peer-scope-menu" role="listbox" aria-label="Universo para ranking SIB">
-                <button class="premium-option" type="button" role="option" data-value="sector" aria-selected="false"><span>Sector</span></button>
-                <button class="premium-option" type="button" role="option" data-value="asociaciones" aria-selected="true"><span>Asociaciones</span></button>
-              </div>
-            </div>
-          </div>
-          <div class="peer-filter compact" aria-label="Filtro de indicadores del peer group">
-            <div class="premium-select" id="peer-filter-select-ui">
-              <input type="hidden" id="peer-filter-select" value="roe">
-              <button class="premium-select-trigger" id="peer-filter-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="peer-filter-menu">
-                <span class="select-text"><span class="select-kicker">Ordenar por</span><span class="select-value" id="peer-filter-value">ROE</span></span>
-                <span class="select-chev" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              </button>
-              <div class="premium-select-menu" id="peer-filter-menu" role="listbox" aria-label="Indicador para ordenar peer group">
-                <button class="premium-option" type="button" role="option" data-value="activos" aria-selected="false"><span>Activos</span></button>
-                <button class="premium-option" type="button" role="option" data-value="morosidad" aria-selected="false"><span>Morosidad</span></button>
-                <button class="premium-option" type="button" role="option" data-value="cti" aria-selected="false"><span>CTI</span></button>
-                <button class="premium-option" type="button" role="option" data-value="roe" aria-selected="true"><span>ROE</span></button>
-                <button class="premium-option" type="button" role="option" data-value="roa" aria-selected="false"><span>ROA</span></button>
-              </div>
-            </div>
-            <button class="btn-filter" id="peer-filter-btn" type="button">Filtrar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <table class="sib" id="peer-group-table">
-      <thead>
-        <tr>
-          <th style="width: 28%">Institución</th>
-          <th class="num" data-metric="activos">Activos (MM RD$)</th>
-          <th class="num" data-metric="morosidad">Morosidad</th>
-          <th class="num" data-metric="cti">CTI</th>
-          <th class="num sort-active" data-metric="roe">ROE</th>
-          <th class="num" data-metric="roa">ROA</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td colspan="6" style="text-align:center;padding:26px 14px;color:var(--gray,#8A8A8A);font-size:12px">Cargando datos de la SIB… El ranking se llena automáticamente con el snapshot del API (días 5 y 20) o con el CSV del panel del analista.</td></tr>
-      </tbody>
-    </table>
-    </div>
-
-    <div class="peer-summary-chart" id="peer-summary-chart-card">
-      <div class="chart-block">
-        <div class="chart-block-head">
-          <div>
-            <h3 class="serif" id="peer-summary-title">Evolución de ROE</h3>
-            <div class="sub" id="peer-summary-sub">Serie comparativa según el indicador seleccionado en la tabla · últimos 24 meses</div>
-          </div>
-          <div class="source">Fuente: SIB</div>
-        </div>
-        <div class="chart-container" style="height:320px"><canvas id="sib-peer-summary-chart"></canvas></div>
-        <div class="bm-legend">
-          <div class="item"><span class="swatch" style="background:var(--bm-cibao)"></span>Asoc. Cibao</div>
-          <div class="item"><span class="swatch" style="background:var(--bm-apap)"></span>APAP</div>
-          <div class="item us"><span class="swatch us" style="background:var(--yellow-dark)"></span>La Nacional</div>
-          <div class="item"><span class="swatch" style="background:var(--bm-aayp)"></span>AAyP (promedio)</div>
-          <div class="item"><span class="swatch" style="background:var(--bm-bmult)"></span>Banca múltiple (promedio)</div>
         </div>
       </div>
     </div>
@@ -4005,15 +4006,128 @@ function startCountdown() {
    ==================================================================== */
 const MONTHS24 = ['May 24','Jun','Jul','Ago','Sep','Oct','Nov','Dic','Ene 25','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic','Ene 26','Feb','Mar','Abr'];
 
+/* ====================================================================
+   DATA LABELS — estilo compartido para todos los gráficos con etiquetas.
+   Una sola regla de coherencia visual en todo el sitio:
+     · Texto siempre en tinta oscura (--ink) sobre un "chip" redondeado,
+       para garantizar contraste aunque el color de la serie sea claro
+       (ej. el dorado de La Nacional es ilegible como texto en blanco).
+     · El chip se tiñe con el color de la serie/barra para mantener la
+       asociación visual con leyendas y tooltips existentes.
+     · Series largas (>10 puntos, ej. comparativos de 24 meses) solo
+       etiquetan el último dato válido: mostrar los 24 puntos de 5
+       series a la vez satura el gráfico y no aporta lectura.
+   ==================================================================== */
+function dlHexToRgba(hex, alpha = 1) {
+  const h = String(hex || '#8A8A8A').replace('#', '');
+  const r = parseInt(h.substring(0, 2), 16) || 0;
+  const g = parseInt(h.substring(2, 4), 16) || 0;
+  const b = parseInt(h.substring(4, 6), 16) || 0;
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+const DL_FONT = { family: 'JetBrains Mono', size: 10, weight: '600' };
+function dlLastFiniteIndex(arr) {
+  for (let i = (arr || []).length - 1; i >= 0; i--) {
+    if (Number.isFinite(Number(arr[i]))) return i;
+  }
+  return -1;
+}
+function dlChip(accentFn) {
+  const accent = (ctx) => (typeof accentFn === 'function' ? accentFn(ctx) : (ctx.dataset.borderColor || ctx.dataset.backgroundColor || '#8A8A8A'));
+  return {
+    color: '#2A2A2A', font: DL_FONT,
+    backgroundColor: (ctx) => dlHexToRgba(accent(ctx), 0.14),
+    borderColor: (ctx) => dlHexToRgba(accent(ctx), 0.55),
+    borderWidth: 1, borderRadius: 4,
+    padding: { top: 2, bottom: 2, left: 5, right: 5 },
+    clip: false
+  };
+}
+/* Línea con muchos puntos (24 meses): solo el último dato real por serie. */
+function dlLineLastPoint(fmt) {
+  return {
+    ...dlChip(), anchor: 'end', align: 'top', offset: 6,
+    display: (ctx) => ctx.dataIndex === dlLastFiniteIndex(ctx.dataset.data),
+    formatter: (value) => (Number.isFinite(Number(value)) ? fmt(value) : null)
+  };
+}
+/* Igual que dlLineLastPoint pero la etiqueta cae DEBAJO del punto. Se usa
+   cuando esa línea comparte espacio con una barra cuya etiqueta ya ocupa
+   la parte de arriba (ej. combo "Sistema financiero" + "La Nacional"). */
+function dlLineLastPointBelow(fmt) {
+  return {
+    ...dlChip(), anchor: 'start', align: 'bottom', offset: 6,
+    display: (ctx) => ctx.dataIndex === dlLastFiniteIndex(ctx.dataset.data),
+    formatter: (value) => (Number.isFinite(Number(value)) ? fmt(value) : null)
+  };
+}
+/* Comparativo de 5 series (Cibao/APAP/La Nacional/AAyP/Bmúlt): los últimos
+   valores suelen converger muy cerca entre sí, así que 5 chips apilados en
+   el mismo punto se vuelven ilegibles. Se etiqueta solo la serie destacada
+   (La Nacional, datasetIndex 2 según buildBenchmarkDatasets) y las otras 4
+   se leen igual que siempre: leyenda + tooltip al pasar el mouse. */
+function dlLineLastPointHighlight(fmt, datasetIndex = 2) {
+  return {
+    ...dlChip(), anchor: 'end', align: 'top', offset: 8,
+    font: { ...DL_FONT, size: 11, weight: '700' },
+    display: (ctx) => ctx.datasetIndex === datasetIndex && ctx.dataIndex === dlLastFiniteIndex(ctx.dataset.data),
+    formatter: (value) => (Number.isFinite(Number(value)) ? fmt(value) : null)
+  };
+}
+/* Línea con pocos puntos (≤10): se etiqueta cada uno. */
+function dlLineAllPoints(fmt) {
+  return {
+    ...dlChip(), anchor: 'end', align: 'top', offset: 6,
+    display: (ctx) => Number.isFinite(Number(ctx.dataset.data[ctx.dataIndex])),
+    formatter: (value) => (Number.isFinite(Number(value)) ? fmt(value) : null)
+  };
+}
+/* Barra vertical: valor sobre el extremo de la barra. */
+function dlBarTop(fmt) {
+  return {
+    ...dlChip(), anchor: 'end', align: 'top', offset: 6,
+    formatter: (value) => (Number.isFinite(Number(value)) ? fmt(value) : null)
+  };
+}
+/* Barra horizontal (indexAxis:'y'): valor a la derecha del extremo. */
+function dlBarRight(fmt) {
+  return {
+    ...dlChip(), anchor: 'end', align: 'right', offset: 6,
+    formatter: (value) => (Number.isFinite(Number(value)) ? fmt(value) : null)
+  };
+}
+/* Barra apilada: valor centrado dentro del segmento. */
+function dlBarCenter(fmt) {
+  return {
+    ...dlChip(), anchor: 'center', align: 'center',
+    formatter: (value) => (Number.isFinite(Number(value)) ? fmt(value) : null)
+  };
+}
+/* Dona: chip neutro (blanco) porque el fondo bajo la etiqueta cambia
+   con cada porción; un chip teñido perdería contraste en algunas. */
+function dlDoughnut(fmt) {
+  return {
+    color: '#2A2A2A', font: DL_FONT,
+    backgroundColor: 'rgba(255,255,255,0.92)', borderColor: 'rgba(0,0,0,0.08)',
+    borderWidth: 1, borderRadius: 4,
+    padding: { top: 2, bottom: 2, left: 5, right: 5 },
+    anchor: 'center', align: 'center',
+    formatter: (value) => (Number.isFinite(Number(value)) ? fmt(value) : null)
+  };
+}
+
 function baseOpts(yPct) {
   return {
     responsive: true, maintainAspectRatio: false,
     animation: { duration: 700, easing: 'easeOutQuart' },
     interaction: { mode: 'index', intersect: false },
+    layout: { padding: { top: 24, right: 40 } },
     plugins: { legend: { display: false }, tooltip: { backgroundColor: '#0098BF', padding: 10, titleFont: { family: 'Inter', size: 11 }, bodyFont: { family: 'JetBrains Mono', size: 12 } } },
     scales: {
       x: { grid: { display: false }, ticks: { color: '#8A8A8A', font: { family: 'Inter', size: 10 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } },
-      y: { grid: { color: '#EEEEEE' }, ticks: { color: '#8A8A8A', font: { family: 'JetBrains Mono', size: 10 }, callback: v => v + (yPct?'%':'') } }
+      // toFixed evita artefactos de coma flotante en los ticks (ej. 3.5000000000000004%)
+      // que Chart.js puede generar al calcular pasos automáticos sobre ciertos rangos.
+      y: { grid: { color: '#EEEEEE' }, ticks: { color: '#8A8A8A', font: { family: 'JetBrains Mono', size: 10 }, callback: v => Number(v).toFixed(1) + (yPct?'%':'') } }
     }
   };
 }
@@ -4025,25 +4139,30 @@ function initMacroCharts() {
   const imaeData = [3.8,4.1,4.3,4.6,4.2,4.0,4.4,4.8,5.1,4.9,4.7,4.5,4.3,4.4,4.6,4.8,5.0,4.7,4.5,4.8,5.1,4.8,4.6,4.9];
   const ipcData  = [3.5,3.6,3.7,3.8,3.9,4.0,3.9,3.8,3.7,3.6,3.5,3.4,3.5,3.6,3.7,3.8,3.9,3.8,3.7,3.6,3.5,3.6,3.6,3.8];
 
+  const pctFmt = v => Number(v).toFixed(1) + '%';
   macroCharts.imae = new Chart(document.getElementById('chart-imae'), {
     type: 'line',
     data: { labels: MONTHS24, datasets: [{ data: imaeData, borderColor: '#00B5E2', backgroundColor: 'rgba(0,181,226,0.10)', tension: 0.35, fill: true, borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 5, pointHoverBackgroundColor: '#FFD500', pointHoverBorderColor: '#00B5E2', pointHoverBorderWidth: 2 }] },
-    options: baseOpts(true)
+    options: { ...baseOpts(true), plugins: { ...baseOpts(true).plugins, datalabels: dlLineLastPoint(pctFmt) } },
+    plugins: [ChartDataLabels]
   });
   macroCharts.ipc = new Chart(document.getElementById('chart-ipc'), {
     type: 'line',
     data: { labels: MONTHS24, datasets: [
       { data: ipcData, borderColor: '#00B5E2', backgroundColor: 'rgba(0,181,226,0.08)', tension: 0.35, fill: true, borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 5 }
     ] },
-    options: baseOpts(true)
+    options: { ...baseOpts(true), plugins: { ...baseOpts(true).plugins, datalabels: dlLineLastPoint(pctFmt) } },
+    plugins: [ChartDataLabels]
   });
 
   const fxLabels = FX_SERIES.usd.labels || ['L','M','M','J','V','S','D'];
   const fxData = FX_SERIES.usd.series;
+  const fxFmt = v => 'RD$ ' + Number(v).toFixed(2);
   macroCharts.fx = new Chart(document.getElementById('chart-fx'), {
     type: 'line',
     data: { labels: fxLabels, datasets: [{ data: fxData, borderColor: '#00B5E2', backgroundColor: 'rgba(0,181,226,0.08)', tension: 0.3, fill: true, borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 4 }] },
-    options: { ...baseOpts(false), scales: { x: { grid: { display: false }, ticks: { color: '#8A8A8A', font: { size: 10 }, maxTicksLimit: 12 } }, y: { grid: { color: '#EEEEEE' }, ticks: { color: '#8A8A8A', font: { family: 'JetBrains Mono', size: 10 }, callback: v => 'RD$ '+Number(v).toFixed(2) } } } }
+    options: { ...baseOpts(false), scales: { x: { grid: { display: false }, ticks: { color: '#8A8A8A', font: { size: 10 }, maxTicksLimit: 12 } }, y: { grid: { color: '#EEEEEE' }, ticks: { color: '#8A8A8A', font: { family: 'JetBrains Mono', size: 10 }, callback: v => 'RD$ '+Number(v).toFixed(2) } } }, plugins: { ...baseOpts(false).plugins, datalabels: dlLineAllPoints(fxFmt) } },
+    plugins: [ChartDataLabels]
   });
 }
 
@@ -4118,6 +4237,7 @@ function renderBenchmarkChart(canvasId, series, yFmt, labels = MONTHS24) {
       responsive: true, maintainAspectRatio: false,
       animation: { duration: 750, easing: 'easeOutQuart' },
       interaction: { mode: 'index', intersect: false },
+      layout: { padding: { top: 26, right: 56 } },
       plugins: { legend: { display: false }, tooltip: {
         backgroundColor: '#0098BF', padding: 10,
         titleFont: { family: 'Inter', size: 11 }, bodyFont: { family: 'JetBrains Mono', size: 11 },
@@ -4128,12 +4248,13 @@ function renderBenchmarkChart(canvasId, series, yFmt, labels = MONTHS24) {
             return names[ctx.datasetIndex] + ': ' + yFmt(ctx.parsed.y);
           }
         }
-      }},
+      }, datalabels: dlLineLastPointHighlight(yFmt, 2) },
       scales: {
         x: { grid: { display: false }, ticks: { color: '#8A8A8A', font: { family: 'Inter', size: 10 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } },
         y: { grid: { color: '#EEEEEE' }, ticks: { color: '#8A8A8A', font: { family: 'JetBrains Mono', size: 10 }, callback: yFmt } }
       }
-    }
+    },
+    plugins: [ChartDataLabels]
   });
 }
 
@@ -4250,37 +4371,45 @@ function drawCarteraTipoDashboard(productKey = carteraTipoActiveProduct) {
   const regionMissing = carteraTipoAllMissing(d.region2026);
   ['car-chart-evolucion','car-chart-share','car-chart-region','car-chart-ranking','car-chart-mix'].forEach(id => carteraTipoSetEmpty(id, false));
 
+  // La línea "La Nacional" (eje y1) solo etiqueta su último punto: en años
+  // recientes su valor sube lo bastante en su propia escala como para caer
+  // pixel-cerca del tope de la barra "Sistema financiero" (eje y) y las
+  // etiquetas de ambas series chocan si se muestran todas.
   const evol = carteraTipoCanvas('car-chart-evolucion');
   if (evol) carteraTipoCharts.evolucion = new Chart(evol, {
     data: { labels:d.years, datasets:[
-      { type:'bar', label:'Sistema financiero', data:d.sectorMM, backgroundColor:'rgba(0,152,191,.16)', borderColor:'#0098BF', borderWidth:1, yAxisID:'y' },
-      { type:'line', label:'La Nacional', data:d.lnMM, borderColor:BM.us, backgroundColor:'transparent', tension:.35, borderWidth:3, pointRadius:3, yAxisID:'y1' }
+      { type:'bar', label:'Sistema financiero', data:d.sectorMM, backgroundColor:'rgba(0,152,191,.16)', borderColor:'#0098BF', borderWidth:1, yAxisID:'y', datalabels: dlBarTop(carteraTipoFmtMM) },
+      { type:'line', label:'La Nacional', data:d.lnMM, borderColor:BM.us, backgroundColor:'transparent', tension:.35, borderWidth:3, pointRadius:3, yAxisID:'y1', datalabels: dlLineLastPointBelow(carteraTipoFmtMM) }
     ] },
-    options: carteraTipoBaseOptions({ scales: {
+    options: carteraTipoBaseOptions({ layout:{ padding:{ top:22 } }, scales: {
       x: { grid:{display:false}, ticks:{color:'#8A8A8A', font:{family:'JetBrains Mono', size:10}} },
       y: { position:'left', grid:{color:'#EEEEEE'}, ticks:{ color:'#8A8A8A', font:{family:'JetBrains Mono', size:10}, callback:v => Number(v).toLocaleString('es-DO', {maximumFractionDigits:0}) } },
       y1: { position:'right', grid:{drawOnChartArea:false}, ticks:{ color:'#8A8A8A', font:{family:'JetBrains Mono', size:10}, callback:v => Number(v).toLocaleString('es-DO', {maximumFractionDigits:0}) } }
-    }, plugins: { legend: { position:'bottom' }, tooltip: { backgroundColor:'#0098BF', padding:10, callbacks: { label: ctx => ctx.dataset.label + ': ' + carteraTipoFmtMM(ctx.parsed.y) } } } })
+    }, plugins: { legend: { position:'bottom' }, tooltip: { backgroundColor:'#0098BF', padding:10, callbacks: { label: ctx => ctx.dataset.label + ': ' + carteraTipoFmtMM(ctx.parsed.y) } } } }),
+    plugins: [ChartDataLabels]
   });
 
   const share = carteraTipoCanvas('car-chart-share');
   if (share) carteraTipoCharts.share = new Chart(share, {
     type:'line', data:{ labels:d.years, datasets:[{ label:'Market share LN', data:d.sharePct, borderColor:BM.us, backgroundColor:'rgba(230,190,0,.12)', tension:.35, fill:true, borderWidth:3, pointRadius:3 }] },
-    options: carteraTipoBaseOptions({ plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => carteraTipoFmtPct(ctx.parsed.y) } } }, scales:{ x:{grid:{display:false}}, y:{ grid:{color:'#EEEEEE'}, ticks:{ callback:v=>Number(v).toFixed(1)+'%' } } } })
+    options: carteraTipoBaseOptions({ layout:{ padding:{ top:22 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => carteraTipoFmtPct(ctx.parsed.y) } }, datalabels: dlLineAllPoints(carteraTipoFmtPct) }, scales:{ x:{grid:{display:false}}, y:{ grid:{color:'#EEEEEE'}, ticks:{ callback:v=>Number(v).toFixed(1)+'%' } } } }),
+    plugins: [ChartDataLabels]
   });
   carteraTipoSetEmpty('car-chart-share', shareMissing, 'La participación de La Nacional no está disponible para este segmento.');
 
   const region = carteraTipoCanvas('car-chart-region');
   if (region) carteraTipoCharts.region = new Chart(region, {
-    type:'bar', data:{ labels:d.regionLabels || [], datasets:[{ label:'La Nacional 2026', data:d.region2026 || [], backgroundColor:['#0A6B84','#0098BF','#E6BE00','#8A8A8A'], borderWidth:0, borderRadius:6 }] },
-    options: carteraTipoBaseOptions({ plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => carteraTipoFmtMM(ctx.parsed.y) } } }, scales:{ x:{grid:{display:false}, ticks:{color:'#8A8A8A', font:{family:'Inter', size:10}}}, y:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }} } })
+    type:'bar', data:{ labels:d.regionLabels || [], datasets:[{ label:'La Nacional 2026', data:d.region2026 || [], backgroundColor:['#0A6B84','#0098BF','#E6BE00','#8A8A8A'], borderWidth:0, borderRadius:6, datalabels: dlBarTop(carteraTipoFmtMM) }] },
+    options: carteraTipoBaseOptions({ layout:{ padding:{ top:22 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => carteraTipoFmtMM(ctx.parsed.y) } } }, scales:{ x:{grid:{display:false}, ticks:{color:'#8A8A8A', font:{family:'Inter', size:10}}}, y:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }} } }),
+    plugins: [ChartDataLabels]
   });
   carteraTipoSetEmpty('car-chart-region', regionMissing, 'La Nacional no registra balance regional para este segmento en el corte disponible.');
 
   const ranking = carteraTipoCanvas('car-chart-ranking');
   if (ranking) carteraTipoCharts.ranking = new Chart(ranking, {
-    type:'bar', data:{ labels:(d.ranking||[]).map(x=>x.entidad), datasets:[{ label:'Balance 2026', data:(d.ranking||[]).map(x=>x.valueMM), backgroundColor:(d.ranking||[]).map((x,i)=>x.entidad==='LA NACIONAL' ? BM.us : CARTERA_TIPO_COLORS[i % CARTERA_TIPO_COLORS.length]), borderRadius:6 }] },
-    options: carteraTipoBaseOptions({ indexAxis:'y', plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => carteraTipoFmtMM(ctx.parsed.x) } } }, scales:{ x:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }}, y:{grid:{display:false}, ticks:{font:{family:'Inter', size:10}}} } })
+    type:'bar', data:{ labels:(d.ranking||[]).map(x=>x.entidad), datasets:[{ label:'Balance 2026', data:(d.ranking||[]).map(x=>x.valueMM), backgroundColor:(d.ranking||[]).map((x,i)=>x.entidad==='LA NACIONAL' ? BM.us : CARTERA_TIPO_COLORS[i % CARTERA_TIPO_COLORS.length]), borderRadius:6, datalabels: dlBarRight(carteraTipoFmtMM) }] },
+    options: carteraTipoBaseOptions({ indexAxis:'y', layout:{ padding:{ right:56 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => carteraTipoFmtMM(ctx.parsed.x) } } }, scales:{ x:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }}, y:{grid:{display:false}, ticks:{font:{family:'Inter', size:10}}} } }),
+    plugins: [ChartDataLabels]
   });
 
   const mix = carteraTipoCanvas('car-chart-mix');
@@ -4290,15 +4419,17 @@ function drawCarteraTipoDashboard(productKey = carteraTipoActiveProduct) {
     if (titleMix) titleMix.textContent = 'Mix de cartera LN';
     if (subMix) subMix.textContent = 'Composición de La Nacional por tipo de crédito · 2026';
     carteraTipoCharts.mix = new Chart(mix, {
-      type:'doughnut', data:{ labels:CARTERA_TIPO_DATA.productMixLN2026.map(x=>x.label), datasets:[{ data:CARTERA_TIPO_DATA.productMixLN2026.map(x=>x.valueMM), backgroundColor:['#0098BF','#E6BE00','#0A6B84'], borderColor:'#FFFFFF', borderWidth:3 }] },
-      options: carteraTipoBaseOptions({ cutout:'62%', scales:{ x:{display:false}, y:{display:false} }, plugins:{ legend:{position:'bottom'}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => ctx.label + ': ' + carteraTipoFmtMM(ctx.parsed) } } } })
+      type:'doughnut', data:{ labels:CARTERA_TIPO_DATA.productMixLN2026.map(x=>x.label), datasets:[{ data:CARTERA_TIPO_DATA.productMixLN2026.map(x=>x.valueMM), backgroundColor:['#0098BF','#E6BE00','#0A6B84'], borderColor:'#FFFFFF', borderWidth:3, datalabels: dlDoughnut(carteraTipoFmtMM) }] },
+      options: carteraTipoBaseOptions({ cutout:'62%', scales:{ x:{display:false}, y:{display:false} }, plugins:{ legend:{position:'bottom'}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => ctx.label + ': ' + carteraTipoFmtMM(ctx.parsed) } } } }),
+      plugins: [ChartDataLabels]
     });
   } else if (mix) {
     if (titleMix) titleMix.textContent = 'Mix regional LN';
     if (subMix) subMix.textContent = 'Distribución del segmento seleccionado · 2026';
     carteraTipoCharts.mix = new Chart(mix, {
-      type:'doughnut', data:{ labels:d.regionLabels || [], datasets:[{ data:d.region2026 || [], backgroundColor:['#0A6B84','#0098BF','#E6BE00','#8A8A8A'], borderColor:'#FFFFFF', borderWidth:3 }] },
-      options: carteraTipoBaseOptions({ cutout:'62%', scales:{ x:{display:false}, y:{display:false} }, plugins:{ legend:{position:'bottom'}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => ctx.label + ': ' + carteraTipoFmtMM(ctx.parsed) } } } })
+      type:'doughnut', data:{ labels:d.regionLabels || [], datasets:[{ data:d.region2026 || [], backgroundColor:['#0A6B84','#0098BF','#E6BE00','#8A8A8A'], borderColor:'#FFFFFF', borderWidth:3, datalabels: dlDoughnut(carteraTipoFmtMM) }] },
+      options: carteraTipoBaseOptions({ cutout:'62%', scales:{ x:{display:false}, y:{display:false} }, plugins:{ legend:{position:'bottom'}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => ctx.label + ': ' + carteraTipoFmtMM(ctx.parsed) } } } }),
+      plugins: [ChartDataLabels]
     });
   }
 }
@@ -4389,36 +4520,40 @@ function drawCaptacionDashboard(productKey = captacionActiveProduct) {
   const evol = captaCanvas('cap-chart-evolucion');
   if (evol) captacionCharts.evolucion = new Chart(evol, {
     data: { labels:d.years, datasets:[
-      { type:'bar', label:'Sistema financiero', data:d.sectorMM, backgroundColor:'rgba(0,152,191,.16)', borderColor:'#0098BF', borderWidth:1, yAxisID:'y' },
-      { type:'line', label:'La Nacional', data:d.lnMM, borderColor:BM.us, backgroundColor:'transparent', tension:.35, borderWidth:3, pointRadius:3, yAxisID:'y1' }
+      { type:'bar', label:'Sistema financiero', data:d.sectorMM, backgroundColor:'rgba(0,152,191,.16)', borderColor:'#0098BF', borderWidth:1, yAxisID:'y', datalabels: dlBarTop(captaFmtMM) },
+      { type:'line', label:'La Nacional', data:d.lnMM, borderColor:BM.us, backgroundColor:'transparent', tension:.35, borderWidth:3, pointRadius:3, yAxisID:'y1', datalabels: dlLineLastPointBelow(captaFmtMM) }
     ] },
-    options: captaBaseOptions({ scales: {
+    options: captaBaseOptions({ layout:{ padding:{ top:22 } }, scales: {
       x: { grid:{display:false}, ticks:{color:'#8A8A8A', font:{family:'JetBrains Mono', size:10}} },
       y: { position:'left', grid:{color:'#EEEEEE'}, ticks:{ color:'#8A8A8A', font:{family:'JetBrains Mono', size:10}, callback:v => Number(v).toLocaleString('es-DO', {maximumFractionDigits:0}) } },
       y1: { position:'right', grid:{drawOnChartArea:false}, ticks:{ color:'#8A8A8A', font:{family:'JetBrains Mono', size:10}, callback:v => Number(v).toLocaleString('es-DO', {maximumFractionDigits:0}) } }
-    }, plugins: { legend: { position:'bottom' }, tooltip: { backgroundColor:'#0098BF', padding:10, callbacks: { label: ctx => ctx.dataset.label + ': ' + captaFmtMM(ctx.parsed.y) } } } })
+    }, plugins: { legend: { position:'bottom' }, tooltip: { backgroundColor:'#0098BF', padding:10, callbacks: { label: ctx => ctx.dataset.label + ': ' + captaFmtMM(ctx.parsed.y) } } } }),
+    plugins: [ChartDataLabels]
   });
 
   const share = captaCanvas('cap-chart-share');
   if (share) captacionCharts.share = new Chart(share, {
     type:'line', data:{ labels:d.years, datasets:[{ label:'Market share LN', data:d.sharePct, borderColor:BM.us, backgroundColor:'rgba(230,190,0,.12)', tension:.35, fill:true, borderWidth:3, pointRadius:3 }] },
-    options: captaBaseOptions({ plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => captaFmtPct(ctx.parsed.y) } } }, scales:{ x:{grid:{display:false}}, y:{ grid:{color:'#EEEEEE'}, ticks:{ callback:v=>Number(v).toFixed(1)+'%' } } } })
+    options: captaBaseOptions({ layout:{ padding:{ top:22 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => captaFmtPct(ctx.parsed.y) } }, datalabels: dlLineAllPoints(captaFmtPct) }, scales:{ x:{grid:{display:false}}, y:{ grid:{color:'#EEEEEE'}, ticks:{ callback:v=>Number(v).toFixed(1)+'%' } } } }),
+    plugins: [ChartDataLabels]
   });
 
   captaSetEmpty('cap-chart-share', shareMissing, 'La Nacional no registra participación para este producto en el corte disponible.');
 
   const region = captaCanvas('cap-chart-region');
   if (region) captacionCharts.region = new Chart(region, {
-    type:'bar', data:{ labels:d.regionLabels || [], datasets:[{ label:'La Nacional 2026', data:d.region2026 || [], backgroundColor:['#0A6B84','#0098BF','#E6BE00','#8A8A8A'], borderWidth:0, borderRadius:6 }] },
-    options: captaBaseOptions({ plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => captaFmtMM(ctx.parsed.y) } } }, scales:{ x:{grid:{display:false}, ticks:{color:'#8A8A8A', font:{family:'Inter', size:10}}}, y:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }} } })
+    type:'bar', data:{ labels:d.regionLabels || [], datasets:[{ label:'La Nacional 2026', data:d.region2026 || [], backgroundColor:['#0A6B84','#0098BF','#E6BE00','#8A8A8A'], borderWidth:0, borderRadius:6, datalabels: dlBarTop(captaFmtMM) }] },
+    options: captaBaseOptions({ layout:{ padding:{ top:22 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => captaFmtMM(ctx.parsed.y) } } }, scales:{ x:{grid:{display:false}, ticks:{color:'#8A8A8A', font:{family:'Inter', size:10}}}, y:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }} } }),
+    plugins: [ChartDataLabels]
   });
 
   captaSetEmpty('cap-chart-region', regionMissing, 'La Nacional no registra balance regional para este producto en el corte disponible.');
 
   const ranking = captaCanvas('cap-chart-ranking');
   if (ranking) captacionCharts.ranking = new Chart(ranking, {
-    type:'bar', data:{ labels:(d.ranking||[]).map(x=>x.entidad), datasets:[{ label:'Balance 2026', data:(d.ranking||[]).map(x=>x.valueMM), backgroundColor:(d.ranking||[]).map((x,i)=>x.entidad==='LA NACIONAL' ? BM.us : CAPTACION_COLORS[i % CAPTACION_COLORS.length]), borderRadius:6 }] },
-    options: captaBaseOptions({ indexAxis:'y', plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => captaFmtMM(ctx.parsed.x) } } }, scales:{ x:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }}, y:{grid:{display:false}, ticks:{font:{family:'Inter', size:10}}} } })
+    type:'bar', data:{ labels:(d.ranking||[]).map(x=>x.entidad), datasets:[{ label:'Balance 2026', data:(d.ranking||[]).map(x=>x.valueMM), backgroundColor:(d.ranking||[]).map((x,i)=>x.entidad==='LA NACIONAL' ? BM.us : CAPTACION_COLORS[i % CAPTACION_COLORS.length]), borderRadius:6, datalabels: dlBarRight(captaFmtMM) }] },
+    options: captaBaseOptions({ indexAxis:'y', layout:{ padding:{ right:56 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => captaFmtMM(ctx.parsed.x) } } }, scales:{ x:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }}, y:{grid:{display:false}, ticks:{font:{family:'Inter', size:10}}} } }),
+    plugins: [ChartDataLabels]
   });
 
   const mix = captaCanvas('cap-chart-mix');
@@ -4428,8 +4563,9 @@ function drawCaptacionDashboard(productKey = captacionActiveProduct) {
     if (titleMix) titleMix.textContent = 'Mix producto LN';
     if (subMix) subMix.textContent = 'Distribución de captaciones de La Nacional · 2026';
     captacionCharts.mix = new Chart(mix, {
-      type:'doughnut', data:{ labels:CAPTACION_DATA.productMixLN2026.map(x=>x.label), datasets:[{ data:CAPTACION_DATA.productMixLN2026.map(x=>x.valueMM), backgroundColor:['#0098BF','#E6BE00','#8A8A8A'], borderColor:'#FFFFFF', borderWidth:3 }] },
-      options: captaBaseOptions({ cutout:'62%', scales:{ x:{display:false}, y:{display:false} }, plugins:{ legend:{position:'bottom'}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => ctx.label + ': ' + captaFmtMM(ctx.parsed) } } } })
+      type:'doughnut', data:{ labels:CAPTACION_DATA.productMixLN2026.map(x=>x.label), datasets:[{ data:CAPTACION_DATA.productMixLN2026.map(x=>x.valueMM), backgroundColor:['#0098BF','#E6BE00','#8A8A8A'], borderColor:'#FFFFFF', borderWidth:3, datalabels: dlDoughnut(captaFmtMM) }] },
+      options: captaBaseOptions({ cutout:'62%', scales:{ x:{display:false}, y:{display:false} }, plugins:{ legend:{position:'bottom'}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => ctx.label + ': ' + captaFmtMM(ctx.parsed) } } } }),
+      plugins: [ChartDataLabels]
     });
   } else if (mix) {
     if (titleMix) titleMix.textContent = 'Mix moneda por región';
@@ -4437,10 +4573,11 @@ function drawCaptacionDashboard(productKey = captacionActiveProduct) {
     const m = d.monedaMix || [];
     captacionCharts.mix = new Chart(mix, {
       type:'bar', data:{ labels:m.map(x=>x.region), datasets:[
-        { label:'Moneda nacional', data:m.map(x=>x.mn), backgroundColor:'#0098BF', stack:'moneda', borderRadius:4 },
-        { label:'Moneda extranjera', data:m.map(x=>x.me), backgroundColor:'#E6BE00', stack:'moneda', borderRadius:4 }
+        { label:'Moneda nacional', data:m.map(x=>x.mn), backgroundColor:'#0098BF', stack:'moneda', borderRadius:4, datalabels: dlBarCenter(captaFmtPct) },
+        { label:'Moneda extranjera', data:m.map(x=>x.me), backgroundColor:'#E6BE00', stack:'moneda', borderRadius:4, datalabels: dlBarCenter(captaFmtPct) }
       ] },
-      options: captaBaseOptions({ plugins:{ tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => ctx.dataset.label + ': ' + captaFmtPct(ctx.parsed.y) } } }, scales:{ x:{stacked:true, grid:{display:false}, ticks:{font:{family:'Inter', size:10}}}, y:{stacked:true, max:100, ticks:{ callback:v=>v+'%' }} } })
+      options: captaBaseOptions({ plugins:{ tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => ctx.dataset.label + ': ' + captaFmtPct(ctx.parsed.y) } } }, scales:{ x:{stacked:true, grid:{display:false}, ticks:{font:{family:'Inter', size:10}}}, y:{stacked:true, max:100, ticks:{ callback:v=>v+'%' }} } }),
+      plugins: [ChartDataLabels]
     });
   }
 }
