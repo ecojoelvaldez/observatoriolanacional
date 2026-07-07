@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -318,7 +319,7 @@ a { color: inherit; text-decoration: none; }
 }
 .mkt-interactive:hover {
   transform: translateY(-4px);
-  box-shadow: 0 14px 28px -10px rgba(0,181,226,0.30);
+  box-shadow: 0 14px 28px -10px rgba(0,112,192,0.30);
   z-index: 2;
 }
 .mkt-interactive.featured:hover {
@@ -372,7 +373,7 @@ a { color: inherit; text-decoration: none; }
   grid-template-rows: 1fr;
   margin: 14px 0 48px;
   border-color: var(--line);
-  box-shadow: 0 6px 20px -10px rgba(0,181,226,0.25);
+  box-shadow: 0 6px 20px -10px rgba(0,112,192,0.25);
 }
 .mkt-spark-inner { overflow: hidden; }
 .mkt-spark.open .mkt-spark-inner { padding: 20px 24px; }
@@ -474,7 +475,7 @@ a { color: inherit; text-decoration: none; }
   cursor: pointer;
 }
 @media (hover: hover) and (pointer: fine) {
-  .news-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,181,226,0.14); }
+  .news-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,112,192,0.14); }
 }
 .news-card .cat { font-size: 10px; letter-spacing: 1.8px; text-transform: uppercase; font-weight: 700; margin-bottom: 12px; }
 .news-card h4 {
@@ -551,7 +552,7 @@ a { color: inherit; text-decoration: none; }
   transition: border-color 0.25s var(--ease-out), transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
-  .kpi-card:hover { border-color: var(--cyan); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,181,226,0.10); }
+  .kpi-card:hover { border-color: var(--cyan); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,112,192,0.10); }
 }
 .kpi-card.featured { border-color: var(--cyan); background: linear-gradient(to bottom, var(--cyan-soft) 0%, var(--white) 100%); }
 .kpi-card.featured::before {
@@ -589,7 +590,7 @@ a { color: inherit; text-decoration: none; }
   gap: 18px;
   align-items: center;
   background:
-    radial-gradient(circle at 4% 0%, rgba(0,181,226,0.12), transparent 28%),
+    radial-gradient(circle at 4% 0%, rgba(0,112,192,0.12), transparent 28%),
     linear-gradient(135deg, var(--white) 0%, #F8FCFD 100%);
   border: 1px solid var(--cyan-line);
   border-left: 4px solid var(--yellow);
@@ -679,7 +680,7 @@ a { color: inherit; text-decoration: none; }
   transform: translateX(-112%);
   transition: transform 0.65s var(--ease-out-quint);
 }
-.sib-upload-btn:hover { background: var(--cyan-dark); box-shadow: 0 10px 22px rgba(0,181,226,0.18); }
+.sib-upload-btn:hover { background: var(--cyan-dark); box-shadow: 0 10px 22px rgba(0,112,192,0.18); }
 .sib-upload-btn:hover::after { transform: translateX(112%); }
 .sib-upload-btn:active { transform: scale(0.975); }
 .sib-upload-btn input { position:absolute; inset:0; opacity:0; cursor:pointer; }
@@ -700,7 +701,7 @@ a { color: inherit; text-decoration: none; }
   gap: 10px;
   grid-column: 1 / -1;
   padding-top: 14px;
-  border-top: 1px solid rgba(0,181,226,0.14);
+  border-top: 1px solid rgba(0,112,192,0.14);
   color: var(--ink-soft);
   font-size: 12px;
 }
@@ -795,7 +796,7 @@ table.sib tr.us .rank { background: var(--yellow); color: var(--ink); }
 }
 .peer-filter::before {
   content: ''; position: absolute; inset: -1px; border-radius: 9px; pointer-events: none;
-  background: linear-gradient(135deg, rgba(0,181,226,0.20), rgba(255,213,0,0.26), rgba(0,181,226,0.08));
+  background: linear-gradient(135deg, rgba(0,112,192,0.20), rgba(255,213,0,0.26), rgba(0,112,192,0.08));
   opacity: 0; transition: opacity 0.35s var(--ease-out-quint);
   z-index: -1;
 }
@@ -810,7 +811,7 @@ table.sib tr.us .rank { background: var(--yellow); color: var(--ink); }
 .premium-select-trigger {
   width: 100%; min-height: 38px;
   display: inline-flex; align-items: center; justify-content: space-between; gap: 12px;
-  border: 1px solid rgba(0,181,226,0.20);
+  border: 1px solid rgba(0,112,192,0.20);
   background: linear-gradient(180deg, var(--white) 0%, var(--cyan-soft) 170%);
   color: var(--cyan-deep);
   border-radius: 6px;
@@ -824,7 +825,7 @@ table.sib tr.us .rank { background: var(--yellow); color: var(--ink); }
 .premium-select-trigger:hover,
 .premium-select.open .premium-select-trigger {
   transform: translateY(-1px);
-  border-color: rgba(0,181,226,0.55);
+  border-color: rgba(0,112,192,0.55);
   background: linear-gradient(180deg, var(--white) 0%, var(--cyan-soft) 100%);
   box-shadow: 0 10px 24px -16px rgba(0,122,153,0.55), inset 0 1px 0 rgba(255,255,255,0.95);
 }
@@ -880,7 +881,7 @@ table.sib tr.us .rank { background: var(--yellow); color: var(--ink); }
 }
 .premium-option::before {
   content: ''; width: 6px; height: 6px; border-radius: 50%;
-  background: var(--cyan-line); box-shadow: 0 0 0 0 rgba(0,181,226,0);
+  background: var(--cyan-line); box-shadow: 0 0 0 0 rgba(0,112,192,0);
   transition: background 0.22s var(--ease-out), box-shadow 0.22s var(--ease-out);
 }
 .premium-option span { flex: 1; text-align: left; }
@@ -934,7 +935,7 @@ table.sib tr.us .rank { background: var(--yellow); color: var(--ink); }
 }
 .btn-filter:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px -8px rgba(0,181,226,0.50);
+  box-shadow: 0 10px 24px -8px rgba(0,112,192,0.50);
 }
 .btn-filter:hover::before { background-position: 100% 0; }
 .btn-filter:hover::after { transform: translateX(260%) skewX(-18deg); }
@@ -953,7 +954,7 @@ table.sib tbody tr {
   transition: background 0.2s var(--ease-out), box-shadow 0.25s var(--ease-out);
 }
 table.sib tbody tr.row-moving td {
-  box-shadow: inset 0 -1px 0 rgba(0,181,226,0.06);
+  box-shadow: inset 0 -1px 0 rgba(0,112,192,0.06);
 }
 table.sib th.sort-active {
   background: linear-gradient(180deg, var(--yellow-soft), rgba(255,248,214,0.45)); color: var(--ink);
@@ -1061,7 +1062,7 @@ table.sib th.metric-fresh, table.sib td.metric-fresh { animation: metricFresh 0.
 .btn-publish:active { transform: scale(0.98); }
 
 .proposal { background: var(--white); border: 1px solid var(--line); padding: 22px 26px; margin-bottom: 12px; transition: border-color 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out); border-radius: 6px; }
-.proposal:hover { border-color: var(--cyan-line); box-shadow: 0 4px 14px rgba(0,181,226,0.07); }
+.proposal:hover { border-color: var(--cyan-line); box-shadow: 0 4px 14px rgba(0,112,192,0.07); }
 .proposal.approved { border-left: 4px solid var(--green); background: #F4FBF6; }
 .proposal.rejected { border-left: 4px solid var(--red); background: #FCF4F3; opacity: 0.65; }
 .proposal-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; margin-bottom: 10px; }
@@ -1089,7 +1090,7 @@ table.sib th.metric-fresh, table.sib td.metric-fresh { animation: metricFresh 0.
 
 .rescrape { background: var(--cyan-soft); border: 1px dashed var(--cyan); padding: 18px 22px; margin-top: 22px; display: flex; align-items: center; gap: 12px; border-radius: 6px; }
 .rescrape input { flex: 1; border: 1px solid var(--cyan-line); background: var(--white); padding: 10px 14px; font-family: inherit; font-size: 13px; border-radius: 4px; transition: box-shadow 0.2s var(--ease-out); }
-.rescrape input:focus { outline: none; box-shadow: 0 0 0 3px rgba(0,181,226,0.15); border-color: var(--cyan); }
+.rescrape input:focus { outline: none; box-shadow: 0 0 0 3px rgba(0,112,192,0.15); border-color: var(--cyan); }
 .btn-rescrape { background: var(--cyan); color: var(--white); border: none; padding: 10px 20px; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; border-radius: 4px; transition: background 0.2s var(--ease-out), transform 0.1s var(--ease-out); }
 .btn-rescrape:hover { background: var(--cyan-dark); }
 .btn-rescrape:active { transform: scale(0.97); }
@@ -1192,7 +1193,7 @@ table.sib th.metric-fresh, table.sib td.metric-fresh { animation: metricFresh 0.
   transform: translateX(-110%);
   transition: transform 0.65s var(--ease-out-quint);
 }
-.ops-btn:hover { background: var(--cyan-dark); box-shadow: 0 8px 20px rgba(0,181,226,0.20); }
+.ops-btn:hover { background: var(--cyan-dark); box-shadow: 0 8px 20px rgba(0,112,192,0.20); }
 .ops-btn:hover::after { transform: translateX(110%); }
 .ops-btn:active { transform: scale(0.975); }
 .ops-btn.yellow { background: var(--yellow); color: var(--ink); }
@@ -1313,7 +1314,7 @@ table.sib th.metric-fresh, table.sib td.metric-fresh { animation: metricFresh 0.
 .news-source-field input:focus {
   outline: none;
   border-color: var(--cyan);
-  box-shadow: 0 0 0 3px rgba(0,181,226,0.12);
+  box-shadow: 0 0 0 3px rgba(0,112,192,0.12);
 }
 @media (max-width: 980px) {
   .ops-grid { grid-template-columns: 1fr; }
@@ -1425,7 +1426,7 @@ footer .right .dot { color: var(--yellow); }
   position:relative; overflow:hidden; border:1px solid rgba(255,255,255,.16); border-radius:24px;
   background:
     radial-gradient(circle at 84% 0%, rgba(230,190,0,.24), transparent 34%),
-    radial-gradient(circle at 0% 110%, rgba(0,152,191,.42), transparent 42%),
+    radial-gradient(circle at 0% 110%, rgba(0,112,192,.42), transparent 42%),
     linear-gradient(135deg,#003644 0%,#00576D 48%,#007A99 100%);
   padding:28px 30px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:flex-start; gap:24px;
   color:var(--white); box-shadow:0 22px 52px rgba(0,73,92,.22);
@@ -1465,7 +1466,7 @@ footer .right .dot { color: var(--yellow); }
   border-radius:18px; padding:18px 18px 16px; box-shadow:0 16px 34px rgba(0,73,92,.055), inset 0 1px 0 rgba(255,255,255,.92);
 }
 .capta-kpi::before { content:""; position:absolute; inset:0 auto 0 0; width:4px; background:linear-gradient(180deg,var(--cyan),var(--yellow-dark)); opacity:.85; }
-.capta-kpi::after { content:""; position:absolute; right:-36px; top:-44px; width:110px; height:110px; border-radius:50%; background:rgba(0,152,191,.055); }
+.capta-kpi::after { content:""; position:absolute; right:-36px; top:-44px; width:110px; height:110px; border-radius:50%; background:rgba(0,112,192,.055); }
 .capta-kpi span { display:block; color:var(--ink-mute); font-size:9px; letter-spacing:.15em; text-transform:uppercase; font-weight:900; margin-bottom:10px; }
 .capta-kpi strong { display:block; color:var(--cyan-deep); font-family:'JetBrains Mono',monospace; font-size:22px; letter-spacing:-.04em; font-weight:800; }
 .capta-kpi em { display:block; color:var(--ink-soft); font-size:11px; line-height:1.42; font-style:normal; margin-top:7px; }
@@ -1476,7 +1477,7 @@ footer .right .dot { color: var(--yellow); }
 }
 .capta-grid .chart-block-head { border-bottom:1px solid rgba(0,73,92,.07); }
 .capta-grid .chart-block-head .source {
-  border-radius:999px; background:rgba(0,152,191,.08); color:var(--cyan-deep); border:1px solid rgba(0,152,191,.12);
+  border-radius:999px; background:rgba(0,112,192,.08); color:var(--cyan-deep); border:1px solid rgba(0,112,192,.12);
   padding:6px 9px; font-size:9px; letter-spacing:.12em; text-transform:uppercase; font-weight:900;
 }
 .capta-chart-wide { grid-column:1 / -1; }
@@ -1486,7 +1487,7 @@ footer .right .dot { color: var(--yellow); }
 .cartera-command {
   background:
     radial-gradient(circle at 86% 0%, rgba(230,190,0,.25), transparent 34%),
-    radial-gradient(circle at 0% 112%, rgba(0,152,191,.34), transparent 42%),
+    radial-gradient(circle at 0% 112%, rgba(0,112,192,.34), transparent 42%),
     linear-gradient(135deg,#002F3B 0%,#00495C 48%,#006F8C 100%);
 }
 .cartera-command::after { width:210px; height:210px; right:18px; opacity:.75; }
@@ -1581,7 +1582,7 @@ body.analyst-logged .chart-data-card.analyst-only { animation: fadeUp 0.42s var(
 .bcrd-loader-premium { grid-template-columns: minmax(0, 1fr); gap: 16px; }
 .bcrd-action-rail { position:relative; z-index:1; display:flex; gap:10px; flex-wrap:wrap; align-items:stretch; }
 .bcrd-panel-toggle {
-  appearance:none; border:1px solid rgba(0,181,226,.24); background:rgba(255,255,255,.78); color:var(--ink);
+  appearance:none; border:1px solid rgba(0,112,192,.24); background:rgba(255,255,255,.78); color:var(--ink);
   border-radius:10px; padding:12px 14px; min-width:190px; text-align:left; box-shadow:0 8px 22px rgba(0,122,153,.06);
   transition:transform .22s var(--ease-out-quint), border-color .22s var(--ease-out), background .22s var(--ease-out), box-shadow .22s var(--ease-out);
 }
@@ -1589,7 +1590,7 @@ body.analyst-logged .chart-data-card.analyst-only { animation: fadeUp 0.42s var(
 .bcrd-panel-toggle.active { background:linear-gradient(135deg,var(--cyan) 0%,var(--cyan-dark) 100%); color:#fff; border-color:transparent; }
 .bcrd-panel-toggle .toggle-kicker { display:block; font-size:9px; letter-spacing:1.4px; text-transform:uppercase; opacity:.72; font-weight:800; margin-bottom:2px; }
 .bcrd-panel-toggle strong { font-size:12px; letter-spacing:.2px; }
-.bcrd-panel { position:relative; z-index:1; display:none; opacity:0; transform:translateY(10px) scale(.985); padding:16px; border-radius:14px; border:1px solid rgba(0,181,226,.18); background:linear-gradient(180deg,rgba(255,255,255,.86),rgba(250,248,242,.74)); box-shadow:inset 0 1px 0 rgba(255,255,255,.7); }
+.bcrd-panel { position:relative; z-index:1; display:none; opacity:0; transform:translateY(10px) scale(.985); padding:16px; border-radius:14px; border:1px solid rgba(0,112,192,.18); background:linear-gradient(180deg,rgba(255,255,255,.86),rgba(250,248,242,.74)); box-shadow:inset 0 1px 0 rgba(255,255,255,.7); }
 .bcrd-panel.active { display:block; animation:bcrdPanelIn .52s var(--ease-out-quint) forwards; }
 @keyframes bcrdPanelIn { to { opacity:1; transform:translateY(0) scale(1); } }
 .bcrd-panel-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; margin-bottom:13px; }
@@ -1598,7 +1599,7 @@ body.analyst-logged .chart-data-card.analyst-only { animation: fadeUp 0.42s var(
 .bcrd-contract { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--ink-mute); background:#fff; border:1px solid var(--line-soft); border-radius:999px; padding:6px 9px; white-space:nowrap; }
 .bcrd-upload-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
 .bcrd-upload-grid.compact { grid-template-columns:repeat(2,minmax(0,1fr)); }
-.bcrd-file-drop { position:relative; display:flex; align-items:center; gap:11px; min-height:82px; padding:14px; border-radius:12px; border:1px dashed rgba(0,181,226,.46); background:rgba(255,255,255,.82); cursor:pointer; overflow:hidden; transition:transform .2s var(--ease-out-quint), border-color .2s var(--ease-out), background .2s var(--ease-out), box-shadow .2s var(--ease-out); }
+.bcrd-file-drop { position:relative; display:flex; align-items:center; gap:11px; min-height:82px; padding:14px; border-radius:12px; border:1px dashed rgba(0,112,192,.46); background:rgba(255,255,255,.82); cursor:pointer; overflow:hidden; transition:transform .2s var(--ease-out-quint), border-color .2s var(--ease-out), background .2s var(--ease-out), box-shadow .2s var(--ease-out); }
 .bcrd-file-drop::after { content:''; position:absolute; inset:0; background:linear-gradient(120deg,transparent 0%,rgba(255,213,0,.16) 45%,transparent 75%); transform:translateX(-110%); transition:transform .72s var(--ease-out-quint); }
 .bcrd-file-drop:hover { transform:translateY(-2px); border-color:var(--yellow-dark); background:#fff; box-shadow:0 16px 28px rgba(0,122,153,.09); }
 .bcrd-file-drop:hover::after { transform:translateX(110%); }
@@ -1622,7 +1623,7 @@ body.analyst-logged .chart-data-card.analyst-only { animation: fadeUp 0.42s var(
 @media (max-width: 900px) { .bcrd-panel-actions { justify-content:flex-start; margin-left:0; } .bcrd-source-btn { padding:8px 10px; } }
 .bcrd-loader-premium .sib-status-card.loading .sib-spinner { animation:sibSpin .75s linear infinite; }
 .kpi-card.data-fresh, .market-cell.data-fresh { animation:dataFreshPulse .9s var(--ease-out-quint); }
-@keyframes dataFreshPulse { 0%{ transform:translateY(0); box-shadow:0 0 0 rgba(0,181,226,0); } 35%{ transform:translateY(-3px); box-shadow:0 16px 32px rgba(0,181,226,.16); } 100%{ transform:translateY(0); box-shadow:0 0 0 rgba(0,181,226,0); } }
+@keyframes dataFreshPulse { 0%{ transform:translateY(0); box-shadow:0 0 0 rgba(0,112,192,0); } 35%{ transform:translateY(-3px); box-shadow:0 16px 32px rgba(0,112,192,.16); } 100%{ transform:translateY(0); box-shadow:0 0 0 rgba(0,112,192,0); } }
 @media (max-width: 900px) { .bcrd-upload-grid, .bcrd-upload-grid.compact { grid-template-columns:1fr; } .bcrd-panel-head { flex-direction:column; } .bcrd-panel-toggle { min-width:100%; } }
 
 
@@ -1705,7 +1706,7 @@ body.analyst-logged .chart-data-card.analyst-only { animation: fadeUp 0.42s var(
   background:#fff; outline:none; transition:.18s var(--ease-out);
 }
 .composer-card textarea { min-height:86px; resize:vertical; line-height:1.5; }
-.composer-card input:focus, .composer-card textarea:focus, .composer-card select:focus { border-color:var(--cyan); box-shadow:0 0 0 3px rgba(0,181,226,.10); }
+.composer-card input:focus, .composer-card textarea:focus, .composer-card select:focus { border-color:var(--cyan); box-shadow:0 0 0 3px rgba(0,112,192,.10); }
 .composer-feature-toggle { margin-top:10px; display:flex; align-items:center; gap:9px; font-size:12px; color:var(--ink-soft); }
 .composer-feature-toggle input { width:auto; }
 .news-composer-preview { overflow:auto; padding:26px; background: var(--off-white); }
@@ -1977,6 +1978,579 @@ body.analyst-logged .chart-data-card.analyst-only { animation: fadeUp 0.42s var(
   .bm-legend { grid-template-columns: 1fr; }
   .bm-legend .item.us { grid-column: auto; }
 }
+
+</style>
+
+<style id="ln-institutional-frontend">
+/* ================================================================
+   La Nacional · Capa visual institucional
+   Scope: visual layer only. No backend, data, Supabase, storage or JS flow touched.
+   ================================================================ */
+:root {
+  --ln-yellow:#FFDD00;
+  --ln-blue:#0070C0;
+  --ln-sky:#00B0F0;
+  --ln-medium-blue:#0098D7;
+  --ln-navy:#1F4E79;
+  --ln-deep-navy:#002060;
+  --ln-red:#FF3300;
+  --ln-rule:#E8E8E8;
+  --ln-soft-blue:#F2F8FC;
+  --ln-page-gutter:clamp(20px,4vw,72px);
+  --ln-content-max:1440px;
+  --ln-radius-data:10px;
+  --ln-radius-emphasis:20px;
+  --ln-ease-out:cubic-bezier(.16,1,.3,1);
+
+  /* map legacy variables to the institutional system */
+  --cyan:var(--ln-blue);
+  --cyan-dark:var(--ln-navy);
+  --cyan-deep:var(--ln-deep-navy);
+  --cyan-soft:var(--ln-soft-blue);
+  --cyan-line:#9DC3E6;
+  --yellow:var(--ln-yellow);
+  --yellow-dark:#F2DA59;
+  --yellow-soft:#FFF9C7;
+  --yellow-line:#F2DA59;
+  --off-white:#F7FAFD;
+  --cream:#F8FBFE;
+  --black:#001A33;
+  --ink:#0D2742;
+  --ink-soft:#38546E;
+  --ink-mute:#71859A;
+  --line:var(--ln-rule);
+  --line-soft:#F0F4F7;
+  --red:var(--ln-red);
+  --green:var(--ln-blue);
+}
+
+html { scroll-behavior:smooth; }
+body {
+  font-family:'DM Sans','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif !important;
+  color:var(--ink);
+  background:
+    linear-gradient(180deg,#F7FAFD 0%,#FFFFFF 420px,#F8FAFC 100%) !important;
+  background-size:auto !important;
+  letter-spacing:-.01em;
+}
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  background:
+    linear-gradient(90deg,rgba(0,112,192,.055) 1px,transparent 1px),
+    linear-gradient(180deg,rgba(0,112,192,.04) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:linear-gradient(180deg,rgba(0,0,0,.55),transparent 58%);
+}
+.serif,
+.brand-product .title,
+.date-header h1,
+.date-tag .day,
+.news-lead-title,
+.chart-block h3,
+.chart-block-head h3,
+.admin-login h2,
+/* Refinamiento: el preview dejaba estos titulares en Fraunces serif.
+   Los unificamos a Poppins para cohesión tipográfica total. */
+.section-head h2,
+.news-feature h3,
+.news-item h4,
+.news-card h4,
+.sib-table-head h3,
+.admin-main-head h2,
+.proposal h4,
+.capta-command h3,
+.capta-filter-label strong,
+.bcrd-panel-head h4,
+.news-composer-top h2,
+.preview-feature h3 {
+  font-family:'Poppins','Inter',-apple-system,sans-serif !important;
+  letter-spacing:-.04em;
+}
+/* Los titulares serif de mayor tamaño llevan menos peso en Poppins para
+   no cargar la mancha tipográfica (Poppins pesa más que Fraunces). */
+.date-header h1, .section-head h2, .news-feature h3,
+.sib-table-head h3, .capta-command h3, .news-composer-top h2 {
+  font-weight:700 !important;
+}
+
+/* Header: institutional command bar */
+.topbar {
+  background:rgba(255,255,255,.94) !important;
+  border-bottom:1px solid rgba(31,78,121,.14) !important;
+  box-shadow:0 1px 0 rgba(255,255,255,.85) inset;
+}
+.topbar-strip {
+  background:var(--ln-deep-navy) !important;
+  color:#fff !important;
+  padding:7px 0 !important;
+  letter-spacing:.08em !important;
+  text-transform:uppercase;
+}
+.topbar-strip-inner,
+.topbar-main,
+.shell {
+  max-width:var(--ln-content-max) !important;
+  padding-left:var(--ln-page-gutter) !important;
+  padding-right:var(--ln-page-gutter) !important;
+}
+.topbar-strip .live-dot {
+  background:var(--ln-yellow) !important;
+  box-shadow:none !important;
+  animation:none !important;
+}
+.strip-quote { color:rgba(255,255,255,.76); }
+.strip-quote strong { color:var(--ln-yellow) !important; }
+.topbar-main { padding-top:14px !important; padding-bottom:14px !important; }
+.brand { gap:16px !important; }
+.brand-logo {
+  width:174px !important;
+  height:48px !important;
+  padding:6px 10px;
+  background:#fff !important;
+  border:1px solid rgba(31,78,121,.12);
+  border-radius:12px !important;
+  box-shadow:0 10px 28px rgba(31,78,121,.08);
+}
+.brand-divider { background:rgba(31,78,121,.18) !important; }
+.brand-product .title {
+  color:var(--ln-deep-navy) !important;
+  font-size:18px !important;
+  font-weight:700 !important;
+}
+.brand-product .sub {
+  color:var(--ln-navy) !important;
+  font-weight:700 !important;
+  opacity:.68;
+}
+.nav-tabs {
+  padding:4px;
+  gap:2px !important;
+  background:#F3F7FA;
+  border:1px solid rgba(31,78,121,.10);
+  border-radius:999px;
+}
+.nav-tab {
+  margin:0 !important;
+  padding:9px 15px !important;
+  border-radius:999px !important;
+  color:#49657D !important;
+  font-weight:700 !important;
+}
+.nav-tab::after { display:none !important; }
+.nav-tab:hover { color:var(--ln-blue) !important; background:#fff; }
+.nav-tab.active {
+  background:var(--ln-blue) !important;
+  color:#fff !important;
+  box-shadow:0 12px 22px rgba(0,112,192,.18);
+}
+.user-badge {
+  background:#fff !important;
+  color:var(--ln-navy) !important;
+  border:1px solid rgba(31,78,121,.12);
+  box-shadow:0 8px 20px rgba(31,78,121,.06);
+}
+.user-badge .av { background:var(--ln-yellow) !important; color:var(--ln-deep-navy) !important; }
+.btn-logout,
+.ops-btn,
+.bcrd-run-btn,
+button[class*='btn'] {
+  border-radius:999px !important;
+}
+
+/* Page shells and leads */
+.shell { padding-top:42px !important; padding-bottom:88px !important; }
+.date-header {
+  align-items:stretch !important;
+  min-height:210px;
+  padding:34px clamp(24px,4vw,46px) !important;
+  margin-bottom:30px !important;
+  border:1px solid rgba(31,78,121,.14) !important;
+  border-bottom:none !important;
+  border-radius:28px !important;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(255,221,0,.34),transparent 31%),
+    linear-gradient(135deg,#FFFFFF 0%,#F4F9FE 48%,#EAF4FB 100%) !important;
+  box-shadow:0 28px 70px rgba(31,78,121,.10);
+}
+.date-header::before {
+  content:'';
+  position:absolute;
+  right:-80px;
+  bottom:-110px;
+  width:360px;
+  height:360px;
+  border-radius:48px;
+  background:var(--ln-blue);
+  opacity:.08;
+  transform:rotate(-18deg);
+}
+.date-header::after {
+  left:34px !important;
+  right:auto !important;
+  bottom:0 !important;
+  width:clamp(180px,24vw,360px) !important;
+  height:8px !important;
+  background:linear-gradient(90deg,var(--ln-yellow),var(--ln-blue)) !important;
+  border-radius:999px 999px 0 0;
+}
+.date-header .eyebrow,
+.eyebrow,
+.chart-data-kicker,
+.mini-eyebrow {
+  color:var(--ln-blue) !important;
+  font-weight:800 !important;
+  letter-spacing:.16em !important;
+}
+.date-header h1 {
+  color:var(--ln-deep-navy) !important;
+  font-size:clamp(38px,5.2vw,72px) !important;
+  line-height:.95 !important;
+  max-width:780px;
+}
+.date-tag {
+  position:relative;
+  min-width:210px;
+  align-self:flex-end;
+  padding:18px 20px;
+  text-align:left !important;
+  background:var(--ln-yellow);
+  color:var(--ln-deep-navy);
+  border-radius:20px;
+  box-shadow:0 18px 36px rgba(255,221,0,.26);
+}
+.date-tag .day { font-size:22px !important; color:var(--ln-deep-navy) !important; }
+.date-tag .meta { color:var(--ln-deep-navy) !important; opacity:.72; }
+
+/* Cards and metric surfaces */
+.market-strip,
+.kpi-grid,
+.capta-kpi-grid,
+.admin-stats {
+  gap:14px !important;
+}
+.market-strip {
+  border:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  overflow:visible !important;
+  margin-bottom:38px !important;
+}
+.market-cell,
+.kpi-card,
+.capta-kpi,
+.chart-block,
+.chart-data-card,
+.sib-status-card,
+.news-side,
+.news-front,
+.admin-login,
+.admin-workspace,
+.admin-main,
+.admin-side,
+.news-editor-card,
+.bcrd-panel {
+  border:1px solid rgba(31,78,121,.12) !important;
+  border-radius:var(--ln-radius-emphasis) !important;
+  background:#fff !important;
+  box-shadow:0 18px 50px rgba(31,78,121,.08) !important;
+}
+.market-cell {
+  padding:22px 24px 24px !important;
+  border-right:1px solid rgba(31,78,121,.12) !important;
+  overflow:hidden;
+}
+.market-cell::before {
+  content:'';
+  position:absolute;
+  left:0; top:0; bottom:0;
+  width:5px;
+  height:auto !important;
+  background:var(--ln-blue) !important;
+}
+.market-cell.featured {
+  background:var(--ln-deep-navy) !important;
+  color:#fff !important;
+}
+.market-cell.featured::before { background:var(--ln-yellow) !important; width:7px; }
+.market-cell .label,
+.kpi-card .label,
+.capta-kpi span {
+  color:#62788D !important;
+  font-weight:800 !important;
+  letter-spacing:.12em !important;
+}
+.market-cell .value,
+.kpi-card .value,
+.capta-kpi strong {
+  color:var(--ln-deep-navy) !important;
+  font-family:'Poppins','Inter',sans-serif !important;
+  font-weight:800 !important;
+  letter-spacing:-.055em !important;
+}
+.market-cell.featured .value,
+.market-cell.featured .label { color:#fff !important; }
+.market-cell.featured .source { color:rgba(255,255,255,.66) !important; }
+.delta.up { color:var(--ln-blue) !important; }
+.delta.down { color:var(--ln-red) !important; }
+.market-cell.featured .delta.up { color:var(--ln-yellow) !important; }
+.market-cell.featured .delta.down { color:#FF8A72 !important; }
+
+/* News: editorial but internal */
+.news-layout { gap:22px !important; }
+.news-front {
+  padding:0 !important;
+  overflow:hidden;
+}
+.news-front::before {
+  content:'';
+  display:block;
+  height:10px;
+  background:linear-gradient(90deg,var(--ln-blue),var(--ln-yellow));
+}
+.news-front-inner,
+.news-front > *:not(style):not(script) { }
+.news-lead {
+  background:#fff !important;
+  border-bottom:1px solid rgba(31,78,121,.12) !important;
+}
+.news-lead-title {
+  color:var(--ln-deep-navy) !important;
+  font-weight:800 !important;
+}
+.news-item,
+.admin-side-item,
+.news-log-item {
+  border-radius:14px !important;
+  border-color:rgba(31,78,121,.10) !important;
+}
+.news-item:hover,
+.admin-side-item:hover {
+  border-color:rgba(0,112,192,.30) !important;
+  box-shadow:0 14px 30px rgba(31,78,121,.08) !important;
+}
+.cat,
+.date-tag-mini,
+.news-source-pill,
+.status-pill {
+  border-radius:999px !important;
+  font-weight:800 !important;
+}
+.cat-glo,
+.cat-local,
+.cat-fin,
+.cat-int { background:#EFF6FC !important; color:var(--ln-navy) !important; }
+
+/* Analytical workspace */
+.macro-tabs,
+.cartera-mode-tabs,
+.capta-product-tabs,
+.bcrd-panel-toggle {
+  background:#F3F7FA !important;
+  border:1px solid rgba(31,78,121,.10) !important;
+  border-radius:999px !important;
+  padding:4px !important;
+}
+.macro-tab,
+.capta-product-tab,
+.cartera-mode-tab,
+.bcrd-source-btn {
+  border-radius:999px !important;
+  font-weight:800 !important;
+  color:#526B84 !important;
+}
+.macro-tab.active,
+.capta-product-tab.active,
+.cartera-mode-tab.active,
+.bcrd-source-btn.active,
+.premium-option.active {
+  background:var(--ln-blue) !important;
+  color:#fff !important;
+  box-shadow:0 12px 24px rgba(0,112,192,.18) !important;
+}
+.chart-block {
+  padding:24px !important;
+  overflow:hidden;
+}
+.chart-block-head {
+  border-bottom:1px solid rgba(31,78,121,.10);
+  padding-bottom:16px;
+  margin-bottom:16px;
+}
+.chart-block h3 {
+  color:var(--ln-deep-navy) !important;
+  font-weight:800 !important;
+}
+.chart-block .sub,
+.sub,
+.source,
+.chart-data-copy,
+.sib-status-meta,
+.capta-kpi em {
+  color:#61778C !important;
+}
+.chart-container {
+  border-radius:16px;
+  background:linear-gradient(180deg,#FFFFFF,#FBFDFF);
+}
+.kpi-card.featured {
+  background:var(--ln-yellow) !important;
+  color:var(--ln-deep-navy) !important;
+  box-shadow:0 24px 54px rgba(255,221,0,.24) !important;
+}
+.kpi-card.featured .value,
+.kpi-card.featured .label { color:var(--ln-deep-navy) !important; }
+.chart-data-card {
+  background:linear-gradient(135deg,#fff 0%,#F4F9FE 100%) !important;
+}
+.bcrd-file-drop,
+.sib-upload-card,
+.premium-source-row {
+  border-radius:16px !important;
+  border-color:rgba(31,78,121,.14) !important;
+}
+.ops-btn.primary,
+.bcrd-run-btn,
+.login-btn,
+.publish-btn,
+.btn-primary {
+  background:var(--ln-blue) !important;
+  color:#fff !important;
+  border-color:var(--ln-blue) !important;
+  box-shadow:0 14px 26px rgba(0,112,192,.20) !important;
+}
+.ops-btn.primary:hover,
+.bcrd-run-btn:hover,
+.login-btn:hover,
+.publish-btn:hover {
+  background:var(--ln-deep-navy) !important;
+  transform:translateY(-1px);
+}
+.ops-btn.yellow,
+button.yellow {
+  background:var(--ln-yellow) !important;
+  color:var(--ln-deep-navy) !important;
+  border-color:var(--ln-yellow) !important;
+}
+
+/* Captación section: turn note into analytical lens */
+.capta-insight {
+  background:linear-gradient(135deg,var(--ln-deep-navy),var(--ln-navy)) !important;
+  color:#fff !important;
+  border-radius:24px !important;
+  border:none !important;
+  box-shadow:0 24px 60px rgba(0,32,96,.18) !important;
+}
+.capta-insight .source,
+.capta-insight em,
+.capta-insight p,
+.capta-insight span { color:rgba(255,255,255,.75) !important; }
+.capta-insight strong { color:var(--ln-yellow) !important; }
+.capta-kpi:first-child {
+  background:var(--ln-yellow) !important;
+  border-color:var(--ln-yellow) !important;
+}
+.capta-kpi:first-child span,
+.capta-kpi:first-child strong,
+.capta-kpi:first-child em { color:var(--ln-deep-navy) !important; }
+
+/* Tables and ranking */
+table,
+.rank-table,
+.peer-table {
+  border-collapse:separate !important;
+  border-spacing:0 !important;
+}
+th {
+  color:var(--ln-navy) !important;
+  font-weight:800 !important;
+  background:#F3F7FA !important;
+}
+td, th { border-color:rgba(31,78,121,.10) !important; }
+
+/* Admin/login: internal tool, not campaign */
+.admin-login {
+  max-width:520px !important;
+  padding:34px !important;
+  background:linear-gradient(180deg,#FFFFFF,#F7FAFD) !important;
+}
+.admin-login .mark {
+  border-radius:18px !important;
+  box-shadow:0 20px 50px rgba(31,78,121,.14);
+}
+.admin-workspace { overflow:hidden; }
+.admin-side {
+  background:var(--ln-deep-navy) !important;
+  color:#fff !important;
+}
+.admin-side * { border-color:rgba(255,255,255,.14) !important; }
+.admin-side .admin-side-item { background:rgba(255,255,255,.06) !important; color:#fff !important; box-shadow:none !important; }
+.admin-side .admin-side-item.active { background:var(--ln-yellow) !important; color:var(--ln-deep-navy) !important; }
+input, textarea, select {
+  border-radius:14px !important;
+  border-color:rgba(31,78,121,.16) !important;
+  background:#fff !important;
+}
+input:focus, textarea:focus, select:focus {
+  outline:2px solid rgba(0,174,239,.28) !important;
+  border-color:var(--ln-blue) !important;
+}
+
+footer {
+  background:var(--ln-deep-navy) !important;
+  color:rgba(255,255,255,.76) !important;
+  border-top:none !important;
+  padding:26px var(--ln-page-gutter) !important;
+}
+footer strong, footer b { color:#fff; }
+.toast { border-radius:18px !important; box-shadow:0 20px 60px rgba(0,32,96,.22) !important; }
+
+/* Motion restraint */
+.mkt-interactive:hover,
+.news-item:hover,
+.chart-block:hover,
+.kpi-card:hover {
+  transform:translateY(-2px) !important;
+  transition:transform .35s var(--ln-ease-out), box-shadow .35s var(--ln-ease-out), border-color .35s var(--ln-ease-out) !important;
+}
+.mkt-interactive::after { display:none !important; }
+
+@media (max-width:980px) {
+  .topbar-main { flex-wrap:wrap; gap:14px; }
+  .nav-tabs { order:3; width:100%; overflow:auto; justify-content:flex-start; }
+  .date-header { min-height:auto; flex-direction:column; gap:24px; }
+  .date-tag { width:100%; }
+  .market-strip { grid-template-columns:1fr 1fr !important; }
+}
+@media (max-width:640px) {
+  .brand-divider,.user-area { display:none !important; }
+  .brand-logo { width:148px !important; }
+  .date-header { border-radius:22px !important; padding:26px 22px !important; }
+  .market-strip { grid-template-columns:1fr !important; }
+  .chart-block { padding:18px !important; }
+}
+
+/* ================================================================
+   Refinamientos sobre el preview
+   ================================================================ */
+
+/* Eyebrows/kickers y etiquetas sobre superficies OSCURAS: el preview los
+   forzaba a azul institucional con !important, dejándolos casi ilegibles
+   sobre los banners navy (Mapa de créditos / Mapa de captación) y la tarjeta
+   WTI destacada. Restaurar contraste con blanco translúcido. */
+.cartera-command .eyebrow,
+.capta-command .eyebrow {
+  color:rgba(255,255,255,.72) !important;
+}
+
+/* El benchmark de La Nacional se dibuja en dorado (#E6BE00, BM.us). El swatch
+   de la leyenda debe leerse con ese mismo dorado exacto, no con el amarillo
+   institucional más claro que resolvería var(--yellow-dark). */
+.bm-legend .swatch.us { background:#E6BE00 !important; }
 
 </style>
 </head>
@@ -2815,7 +3389,7 @@ function drawMktSpark(key) {
       animation: { duration: 650, easing: 'easeOutQuart' },
       plugins: { legend: { display: false }, tooltip: {
         enabled: true,
-        backgroundColor: '#0098BF', padding: 8,
+        backgroundColor: '#1F4E79', padding: 8,
         titleFont: { family: 'Inter', size: 10 }, bodyFont: { family: 'JetBrains Mono', size: 11 },
         callbacks: { title: items => periodos?.[items?.[0]?.dataIndex] || items?.[0]?.label || '', label: ctx => fmtFx(ctx.parsed.y, fx) }
       }},
@@ -4035,7 +4609,7 @@ function dlLastFiniteIndex(arr) {
 function dlChip(accentFn) {
   const accent = (ctx) => (typeof accentFn === 'function' ? accentFn(ctx) : (ctx.dataset.borderColor || ctx.dataset.backgroundColor || '#8A8A8A'));
   return {
-    color: '#2A2A2A', font: DL_FONT,
+    color: '#0D2742', font: DL_FONT,
     backgroundColor: (ctx) => dlHexToRgba(accent(ctx), 0.14),
     borderColor: (ctx) => dlHexToRgba(accent(ctx), 0.55),
     borderWidth: 1, borderRadius: 4,
@@ -4107,7 +4681,7 @@ function dlBarCenter(fmt) {
    con cada porción; un chip teñido perdería contraste en algunas. */
 function dlDoughnut(fmt) {
   return {
-    color: '#2A2A2A', font: DL_FONT,
+    color: '#0D2742', font: DL_FONT,
     backgroundColor: 'rgba(255,255,255,0.92)', borderColor: 'rgba(0,0,0,0.08)',
     borderWidth: 1, borderRadius: 4,
     padding: { top: 2, bottom: 2, left: 5, right: 5 },
@@ -4122,7 +4696,7 @@ function baseOpts(yPct) {
     animation: { duration: 700, easing: 'easeOutQuart' },
     interaction: { mode: 'index', intersect: false },
     layout: { padding: { top: 24, right: 40 } },
-    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#0098BF', padding: 10, titleFont: { family: 'Inter', size: 11 }, bodyFont: { family: 'JetBrains Mono', size: 12 } } },
+    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1F4E79', padding: 10, titleFont: { family: 'Inter', size: 11 }, bodyFont: { family: 'JetBrains Mono', size: 12 } } },
     scales: {
       x: { grid: { display: false }, ticks: { color: '#8A8A8A', font: { family: 'Inter', size: 10 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } },
       // toFixed evita artefactos de coma flotante en los ticks (ej. 3.5000000000000004%)
@@ -4142,14 +4716,14 @@ function initMacroCharts() {
   const pctFmt = v => Number(v).toFixed(1) + '%';
   macroCharts.imae = new Chart(document.getElementById('chart-imae'), {
     type: 'line',
-    data: { labels: MONTHS24, datasets: [{ data: imaeData, borderColor: '#00B5E2', backgroundColor: 'rgba(0,181,226,0.10)', tension: 0.35, fill: true, borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 5, pointHoverBackgroundColor: '#FFD500', pointHoverBorderColor: '#00B5E2', pointHoverBorderWidth: 2 }] },
+    data: { labels: MONTHS24, datasets: [{ data: imaeData, borderColor: '#0070C0', backgroundColor: 'rgba(0,112,192,0.10)', tension: 0.35, fill: true, borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 5, pointHoverBackgroundColor: '#FFD500', pointHoverBorderColor: '#0070C0', pointHoverBorderWidth: 2 }] },
     options: { ...baseOpts(true), plugins: { ...baseOpts(true).plugins, datalabels: dlLineLastPoint(pctFmt) } },
     plugins: [ChartDataLabels]
   });
   macroCharts.ipc = new Chart(document.getElementById('chart-ipc'), {
     type: 'line',
     data: { labels: MONTHS24, datasets: [
-      { data: ipcData, borderColor: '#00B5E2', backgroundColor: 'rgba(0,181,226,0.08)', tension: 0.35, fill: true, borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 5 }
+      { data: ipcData, borderColor: '#0070C0', backgroundColor: 'rgba(0,112,192,0.08)', tension: 0.35, fill: true, borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 5 }
     ] },
     options: { ...baseOpts(true), plugins: { ...baseOpts(true).plugins, datalabels: dlLineLastPoint(pctFmt) } },
     plugins: [ChartDataLabels]
@@ -4160,7 +4734,7 @@ function initMacroCharts() {
   const fxFmt = v => 'RD$ ' + Number(v).toFixed(2);
   macroCharts.fx = new Chart(document.getElementById('chart-fx'), {
     type: 'line',
-    data: { labels: fxLabels, datasets: [{ data: fxData, borderColor: '#00B5E2', backgroundColor: 'rgba(0,181,226,0.08)', tension: 0.3, fill: true, borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 4 }] },
+    data: { labels: fxLabels, datasets: [{ data: fxData, borderColor: '#0070C0', backgroundColor: 'rgba(0,112,192,0.08)', tension: 0.3, fill: true, borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 4 }] },
     options: { ...baseOpts(false), scales: { x: { grid: { display: false }, ticks: { color: '#8A8A8A', font: { size: 10 }, maxTicksLimit: 12 } }, y: { grid: { color: '#EEEEEE' }, ticks: { color: '#8A8A8A', font: { family: 'JetBrains Mono', size: 10 }, callback: v => 'RD$ '+Number(v).toFixed(2) } } }, plugins: { ...baseOpts(false).plugins, datalabels: dlLineAllPoints(fxFmt) } },
     plugins: [ChartDataLabels]
   });
@@ -4239,7 +4813,7 @@ function renderBenchmarkChart(canvasId, series, yFmt, labels = MONTHS24) {
       interaction: { mode: 'index', intersect: false },
       layout: { padding: { top: 26, right: 56 } },
       plugins: { legend: { display: false }, tooltip: {
-        backgroundColor: '#0098BF', padding: 10,
+        backgroundColor: '#1F4E79', padding: 10,
         titleFont: { family: 'Inter', size: 11 }, bodyFont: { family: 'JetBrains Mono', size: 11 },
         callbacks: {
           labelColor: () => ({ borderColor:'transparent', backgroundColor:'#fff' }),
@@ -4294,7 +4868,7 @@ console.info('Observatorio La Nacional · SIB v3.8 verificado cargado');
 
 
 const CARTERA_TIPO_DATA = {"cut":"Abril 2026","products":{"total":{"label":"Total cartera","years":["2022","2023","2024","2025","2026"],"sectorMM":[1266370.9,1528488.5,1683188.59,1818208.28,1888976.53],"lnMM":[27492.08,30728.44,34407.64,38255.93,39082.38],"sharePct":[2.171,2.01,2.044,2.104,2.069],"regionLabels":["Región Este","Región Metropolitana","Región Norte","Región Sur"],"regionSeries":{"Región Este":[3864.25,4426.97,3755.48,4959.28,5009.84],"Región Metropolitana":[19780.08,24736.29,26912.01,26874.16,27367.81],"Región Norte":[3321.49,1218.6,3118.72,5582.62,5856.35],"Región Sur":[526.26,346.58,620.67,839.04,847.58]},"region2026":[5009.84,27367.81,5856.35,847.58],"ranking":[{"entidad":"BANRESERVAS","valueMM":531537.32},{"entidad":"POPULAR","valueMM":402567.88},{"entidad":"BHD","valueMM":287502.21},{"entidad":"APAP","valueMM":122248.47},{"entidad":"SCOTIABANK","valueMM":91814.82},{"entidad":"SANTA CRUZ","valueMM":72282.96},{"entidad":"CIBAO","valueMM":70817.91},{"entidad":"LA NACIONAL","valueMM":39082.38},{"entidad":"PROMERICA","valueMM":32604.1},{"entidad":"CARIBE","valueMM":27755.77}]},"hipotecario":{"label":"Créditos hipotecarios","years":["2022","2023","2024","2025","2026"],"sectorMM":[279061.08,320966.16,358680.08,399919.83,411456.14],"lnMM":[17980.09,20323.54,22528.06,23349.75,23761.12],"sharePct":[6.443,6.332,6.281,5.839,5.775],"regionLabels":["Región Este","Región Metropolitana","Región Norte","Región Sur"],"regionSeries":{"Región Este":[2112.49,2984.74,2246.73,3170.53,3222.17],"Región Metropolitana":[13814.6,16766.11,18580.32,17097.02,17305.6],"Región Norte":[1675.02,421.96,1363.8,2488.52,2623.26],"Región Sur":[377.97,150.73,337.21,593.67,610.09]},"region2026":[3222.17,17305.6,2623.26,610.09],"ranking":[{"entidad":"BANRESERVAS","valueMM":102974.21},{"entidad":"POPULAR","valueMM":75402.35},{"entidad":"APAP","valueMM":62978.05},{"entidad":"CIBAO","valueMM":44561.89},{"entidad":"BHD","valueMM":36990.1},{"entidad":"LA NACIONAL","valueMM":23761.12},{"entidad":"SCOTIABANK","valueMM":21714.35},{"entidad":"SANTA CRUZ","valueMM":7816.56},{"entidad":"ALAVER","valueMM":3876.45},{"entidad":"DUARTE","valueMM":3873.57}]},"consumo":{"label":"Créditos de consumo","years":["2022","2023","2024","2025","2026"],"sectorMM":[422994.09,509081.97,582917.3,607253.77,614585.17],"lnMM":[4750.62,4910.72,4590.24,5016.16,5053.51],"sharePct":[1.123,0.965,0.787,0.826,0.822],"regionLabels":["Región Este","Región Metropolitana","Región Norte","Región Sur"],"regionSeries":{"Región Este":[945.86,922.95,761.11,810.76,810.09],"Región Metropolitana":[2709.67,3325.76,2800.14,3079.81,3132.69],"Región Norte":[967.38,551.53,884.72,942.14,939.37],"Región Sur":[127.71,110.48,143.52,182.62,170.55]},"region2026":[810.09,3132.69,939.37,170.55],"ranking":[{"entidad":"BANRESERVAS","valueMM":170137.7},{"entidad":"POPULAR","valueMM":124056.58},{"entidad":"BHD","valueMM":107543.49},{"entidad":"APAP","valueMM":35555.89},{"entidad":"SCOTIABANK","valueMM":35141.05},{"entidad":"SANTA CRUZ","valueMM":24469.02},{"entidad":"PROMERICA","valueMM":14125.12},{"entidad":"CARIBE","valueMM":13577.04},{"entidad":"CIBAO","valueMM":12573.28},{"entidad":"MOTOR CREDITO","valueMM":11700.63}]},"comercial":{"label":"Créditos comerciales","years":["2022","2023","2024","2025","2026"],"sectorMM":[564315.73,698440.37,741591.2,811034.68,862935.22],"lnMM":[4761.38,5494.18,7289.34,9890.01,10267.75],"sharePct":[0.844,0.787,0.983,1.219,1.19],"regionLabels":["Región Este","Región Metropolitana","Región Norte","Región Sur"],"regionSeries":{"Región Este":[805.91,519.28,747.64,977.99,977.59],"Región Metropolitana":[3255.8,4644.42,5531.55,6697.32,6929.52],"Región Norte":[679.09,245.11,870.21,2151.96,2293.72],"Región Sur":[20.58,85.37,139.94,62.74,66.93]},"region2026":[977.59,6929.52,2293.72,66.93],"ranking":[{"entidad":"BANRESERVAS","valueMM":258425.41},{"entidad":"POPULAR","valueMM":203108.95},{"entidad":"BHD","valueMM":142968.61},{"entidad":"SANTA CRUZ","valueMM":39997.39},{"entidad":"SCOTIABANK","valueMM":34959.41},{"entidad":"APAP","valueMM":23714.52},{"entidad":"PROMERICA","valueMM":16886.69},{"entidad":"CIBAO","valueMM":13682.73},{"entidad":"CARIBE","valueMM":11169.42},{"entidad":"BANDEX","valueMM":11011.01}]}},"productMixLN2026":[{"label":"Comercial","valueMM":10267.75},{"label":"Consumo","valueMM":5053.51},{"label":"Hipotecario","valueMM":23761.12}],"productMixSystem2026":[{"label":"Comercial","valueMM":862935.22},{"label":"Consumo","valueMM":614585.17},{"label":"Hipotecario","valueMM":411456.14}]};
-const CARTERA_TIPO_COLORS = ['#0098BF', '#E6BE00', '#0A6B84', '#8A8A8A', '#2563EB', '#15803D', '#C0392B', '#6B7280', '#9CA3AF', '#D6B54C'];
+const CARTERA_TIPO_COLORS = ['#0070C0', '#E6BE00', '#1F4E79', '#8A8A8A', '#2563EB', '#15803D', '#C0392B', '#6B7280', '#9CA3AF', '#D6B54C'];
 let carteraTipoActiveProduct = 'total';
 const carteraTipoCharts = {};
 
@@ -4322,7 +4896,7 @@ function carteraTipoBaseOptions(extra = {}) {
     interaction: { mode:'index', intersect:false },
     plugins: {
       legend: { position:'bottom', labels: { color:'#3E4A4F', boxWidth:10, usePointStyle:true, font:{ family:'Inter', size:11 } } },
-      tooltip: { backgroundColor:'#0098BF', padding:10, titleFont:{family:'Inter', size:11}, bodyFont:{family:'JetBrains Mono', size:11} }
+      tooltip: { backgroundColor:'#1F4E79', padding:10, titleFont:{family:'Inter', size:11}, bodyFont:{family:'JetBrains Mono', size:11} }
     },
     scales: {
       x: { grid:{ display:false }, ticks:{ color:'#8A8A8A', font:{ family:'JetBrains Mono', size:10 } } },
@@ -4378,29 +4952,29 @@ function drawCarteraTipoDashboard(productKey = carteraTipoActiveProduct) {
   const evol = carteraTipoCanvas('car-chart-evolucion');
   if (evol) carteraTipoCharts.evolucion = new Chart(evol, {
     data: { labels:d.years, datasets:[
-      { type:'bar', label:'Sistema financiero', data:d.sectorMM, backgroundColor:'rgba(0,152,191,.16)', borderColor:'#0098BF', borderWidth:1, yAxisID:'y', datalabels: dlBarTop(carteraTipoFmtMM) },
+      { type:'bar', label:'Sistema financiero', data:d.sectorMM, backgroundColor:'rgba(0,112,192,.16)', borderColor:'#0070C0', borderWidth:1, yAxisID:'y', datalabels: dlBarTop(carteraTipoFmtMM) },
       { type:'line', label:'La Nacional', data:d.lnMM, borderColor:BM.us, backgroundColor:'transparent', tension:.35, borderWidth:3, pointRadius:3, yAxisID:'y1', datalabels: dlLineLastPointBelow(carteraTipoFmtMM) }
     ] },
     options: carteraTipoBaseOptions({ layout:{ padding:{ top:22 } }, scales: {
       x: { grid:{display:false}, ticks:{color:'#8A8A8A', font:{family:'JetBrains Mono', size:10}} },
       y: { position:'left', grid:{color:'#EEEEEE'}, ticks:{ color:'#8A8A8A', font:{family:'JetBrains Mono', size:10}, callback:v => Number(v).toLocaleString('es-DO', {maximumFractionDigits:0}) } },
       y1: { position:'right', grid:{drawOnChartArea:false}, ticks:{ color:'#8A8A8A', font:{family:'JetBrains Mono', size:10}, callback:v => Number(v).toLocaleString('es-DO', {maximumFractionDigits:0}) } }
-    }, plugins: { legend: { position:'bottom' }, tooltip: { backgroundColor:'#0098BF', padding:10, callbacks: { label: ctx => ctx.dataset.label + ': ' + carteraTipoFmtMM(ctx.parsed.y) } } } }),
+    }, plugins: { legend: { position:'bottom' }, tooltip: { backgroundColor:'#1F4E79', padding:10, callbacks: { label: ctx => ctx.dataset.label + ': ' + carteraTipoFmtMM(ctx.parsed.y) } } } }),
     plugins: [ChartDataLabels]
   });
 
   const share = carteraTipoCanvas('car-chart-share');
   if (share) carteraTipoCharts.share = new Chart(share, {
     type:'line', data:{ labels:d.years, datasets:[{ label:'Market share LN', data:d.sharePct, borderColor:BM.us, backgroundColor:'rgba(230,190,0,.12)', tension:.35, fill:true, borderWidth:3, pointRadius:3 }] },
-    options: carteraTipoBaseOptions({ layout:{ padding:{ top:22 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => carteraTipoFmtPct(ctx.parsed.y) } }, datalabels: dlLineAllPoints(carteraTipoFmtPct) }, scales:{ x:{grid:{display:false}}, y:{ grid:{color:'#EEEEEE'}, ticks:{ callback:v=>Number(v).toFixed(1)+'%' } } } }),
+    options: carteraTipoBaseOptions({ layout:{ padding:{ top:22 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#1F4E79', callbacks:{ label:ctx => carteraTipoFmtPct(ctx.parsed.y) } }, datalabels: dlLineAllPoints(carteraTipoFmtPct) }, scales:{ x:{grid:{display:false}}, y:{ grid:{color:'#EEEEEE'}, ticks:{ callback:v=>Number(v).toFixed(1)+'%' } } } }),
     plugins: [ChartDataLabels]
   });
   carteraTipoSetEmpty('car-chart-share', shareMissing, 'La participación de La Nacional no está disponible para este segmento.');
 
   const region = carteraTipoCanvas('car-chart-region');
   if (region) carteraTipoCharts.region = new Chart(region, {
-    type:'bar', data:{ labels:d.regionLabels || [], datasets:[{ label:'La Nacional 2026', data:d.region2026 || [], backgroundColor:['#0A6B84','#0098BF','#E6BE00','#8A8A8A'], borderWidth:0, borderRadius:6, datalabels: dlBarTop(carteraTipoFmtMM) }] },
-    options: carteraTipoBaseOptions({ layout:{ padding:{ top:22 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => carteraTipoFmtMM(ctx.parsed.y) } } }, scales:{ x:{grid:{display:false}, ticks:{color:'#8A8A8A', font:{family:'Inter', size:10}}}, y:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }} } }),
+    type:'bar', data:{ labels:d.regionLabels || [], datasets:[{ label:'La Nacional 2026', data:d.region2026 || [], backgroundColor:['#1F4E79','#0070C0','#E6BE00','#8A8A8A'], borderWidth:0, borderRadius:6, datalabels: dlBarTop(carteraTipoFmtMM) }] },
+    options: carteraTipoBaseOptions({ layout:{ padding:{ top:22 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#1F4E79', callbacks:{ label:ctx => carteraTipoFmtMM(ctx.parsed.y) } } }, scales:{ x:{grid:{display:false}, ticks:{color:'#8A8A8A', font:{family:'Inter', size:10}}}, y:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }} } }),
     plugins: [ChartDataLabels]
   });
   carteraTipoSetEmpty('car-chart-region', regionMissing, 'La Nacional no registra balance regional para este segmento en el corte disponible.');
@@ -4408,7 +4982,7 @@ function drawCarteraTipoDashboard(productKey = carteraTipoActiveProduct) {
   const ranking = carteraTipoCanvas('car-chart-ranking');
   if (ranking) carteraTipoCharts.ranking = new Chart(ranking, {
     type:'bar', data:{ labels:(d.ranking||[]).map(x=>x.entidad), datasets:[{ label:'Balance 2026', data:(d.ranking||[]).map(x=>x.valueMM), backgroundColor:(d.ranking||[]).map((x,i)=>x.entidad==='LA NACIONAL' ? BM.us : CARTERA_TIPO_COLORS[i % CARTERA_TIPO_COLORS.length]), borderRadius:6, datalabels: dlBarRight(carteraTipoFmtMM) }] },
-    options: carteraTipoBaseOptions({ indexAxis:'y', layout:{ padding:{ right:56 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => carteraTipoFmtMM(ctx.parsed.x) } } }, scales:{ x:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }}, y:{grid:{display:false}, ticks:{font:{family:'Inter', size:10}}} } }),
+    options: carteraTipoBaseOptions({ indexAxis:'y', layout:{ padding:{ right:56 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#1F4E79', callbacks:{ label:ctx => carteraTipoFmtMM(ctx.parsed.x) } } }, scales:{ x:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }}, y:{grid:{display:false}, ticks:{font:{family:'Inter', size:10}}} } }),
     plugins: [ChartDataLabels]
   });
 
@@ -4419,16 +4993,16 @@ function drawCarteraTipoDashboard(productKey = carteraTipoActiveProduct) {
     if (titleMix) titleMix.textContent = 'Mix de cartera LN';
     if (subMix) subMix.textContent = 'Composición de La Nacional por tipo de crédito · 2026';
     carteraTipoCharts.mix = new Chart(mix, {
-      type:'doughnut', data:{ labels:CARTERA_TIPO_DATA.productMixLN2026.map(x=>x.label), datasets:[{ data:CARTERA_TIPO_DATA.productMixLN2026.map(x=>x.valueMM), backgroundColor:['#0098BF','#E6BE00','#0A6B84'], borderColor:'#FFFFFF', borderWidth:3, datalabels: dlDoughnut(carteraTipoFmtMM) }] },
-      options: carteraTipoBaseOptions({ cutout:'62%', scales:{ x:{display:false}, y:{display:false} }, plugins:{ legend:{position:'bottom'}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => ctx.label + ': ' + carteraTipoFmtMM(ctx.parsed) } } } }),
+      type:'doughnut', data:{ labels:CARTERA_TIPO_DATA.productMixLN2026.map(x=>x.label), datasets:[{ data:CARTERA_TIPO_DATA.productMixLN2026.map(x=>x.valueMM), backgroundColor:['#0070C0','#E6BE00','#1F4E79'], borderColor:'#FFFFFF', borderWidth:3, datalabels: dlDoughnut(carteraTipoFmtMM) }] },
+      options: carteraTipoBaseOptions({ cutout:'62%', scales:{ x:{display:false}, y:{display:false} }, plugins:{ legend:{position:'bottom'}, tooltip:{ backgroundColor:'#1F4E79', callbacks:{ label:ctx => ctx.label + ': ' + carteraTipoFmtMM(ctx.parsed) } } } }),
       plugins: [ChartDataLabels]
     });
   } else if (mix) {
     if (titleMix) titleMix.textContent = 'Mix regional LN';
     if (subMix) subMix.textContent = 'Distribución del segmento seleccionado · 2026';
     carteraTipoCharts.mix = new Chart(mix, {
-      type:'doughnut', data:{ labels:d.regionLabels || [], datasets:[{ data:d.region2026 || [], backgroundColor:['#0A6B84','#0098BF','#E6BE00','#8A8A8A'], borderColor:'#FFFFFF', borderWidth:3, datalabels: dlDoughnut(carteraTipoFmtMM) }] },
-      options: carteraTipoBaseOptions({ cutout:'62%', scales:{ x:{display:false}, y:{display:false} }, plugins:{ legend:{position:'bottom'}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => ctx.label + ': ' + carteraTipoFmtMM(ctx.parsed) } } } }),
+      type:'doughnut', data:{ labels:d.regionLabels || [], datasets:[{ data:d.region2026 || [], backgroundColor:['#1F4E79','#0070C0','#E6BE00','#8A8A8A'], borderColor:'#FFFFFF', borderWidth:3, datalabels: dlDoughnut(carteraTipoFmtMM) }] },
+      options: carteraTipoBaseOptions({ cutout:'62%', scales:{ x:{display:false}, y:{display:false} }, plugins:{ legend:{position:'bottom'}, tooltip:{ backgroundColor:'#1F4E79', callbacks:{ label:ctx => ctx.label + ': ' + carteraTipoFmtMM(ctx.parsed) } } } }),
       plugins: [ChartDataLabels]
     });
   }
@@ -4439,7 +5013,7 @@ function initCarteraTipoCharts() {
 }
 
 const CAPTACION_DATA = {"source":"SIB · Abril 2026","cut":"Abril 2026","products":{"total":{"label":"Total captación","years":["2022","2023","2024","2025","2026"],"sectorMM":[1646450.67,1869935.71,2078998.06,2255657.11,2388146.46],"lnMM":[27724.34,30147.33,33966.17,39666.74,39855.57],"sharePct":[1.684,1.612,1.634,1.759,1.669],"regionLabels":["Región Este","Región Metropolitana","Región Norte","Región Sur"],"regionSeries":{"Región Este":[2455.33,2693.18,2942.13,3638.45,3726.97],"Región Metropolitana":[20013.86,21625.66,24169.79,27725.86,27778.42],"Región Norte":[4799.19,5337.84,6222.09,7557.86,7597.43],"Región Sur":[455.96,490.64,632.16,744.58,752.75]},"region2026":[3726.97,27778.42,7597.43,752.75],"ranking":[{"entidad":"BANRESERVAS","valueMM":900426.01},{"entidad":"POPULAR","valueMM":423295.43},{"entidad":"BHD","valueMM":340644.44},{"entidad":"APAP","valueMM":127551.19},{"entidad":"SCOTIABANK","valueMM":86506.23},{"entidad":"CIBAO","valueMM":86157.05},{"entidad":"SANTA CRUZ","valueMM":77114.12},{"entidad":"LA NACIONAL","valueMM":39855.57},{"entidad":"PROMERICA","valueMM":38177.53},{"entidad":"CARIBE","valueMM":33009.88}],"monedaMix":[]},"ahorros":{"label":"Cuentas de ahorro","years":["2022","2023","2024","2025","2026"],"sectorMM":[468708.93,509137.82,538007.72,603596.04,611135.29],"lnMM":[12173.26,12365.34,12133.03,13432.32,13488.7],"sharePct":[2.597,2.429,2.255,2.225,2.207],"regionLabels":["Región Este","Región Metropolitana","Región Norte","Región Sur"],"regionSeries":{"Región Este":[1518.31,1658.23,1715.66,1948.29,1936.87],"Región Metropolitana":[8555.37,8381.91,8275.7,9088.24,9145.28],"Región Norte":[1864.74,2084.37,1883.46,2090.73,2098.52],"Región Sur":[234.84,240.83,258.22,305.06,308.03]},"region2026":[1936.87,9145.28,2098.52,308.03],"ranking":[{"entidad":"BANRESERVAS","valueMM":243552.63},{"entidad":"POPULAR","valueMM":102891.84},{"entidad":"BHD","valueMM":91249.34},{"entidad":"APAP","valueMM":36672.22},{"entidad":"CIBAO","valueMM":31893.2},{"entidad":"SCOTIABANK","valueMM":17979.96},{"entidad":"SANTA CRUZ","valueMM":14265.1},{"entidad":"LA NACIONAL","valueMM":13488.7},{"entidad":"QIK BANCO DIGITAL","valueMM":5853.09},{"entidad":"ALAVER","valueMM":5227.1}],"monedaMix":[{"region":"Región Sur","mn":70.65,"me":29.35},{"region":"Región Este","mn":44.005,"me":55.995},{"region":"Región Norte","mn":64.243,"me":35.757},{"region":"Región Metropolitana","mn":46.498,"me":53.502}]},"corrientes":{"label":"Cuentas corrientes","years":["2022","2023","2024","2025","2026"],"sectorMM":[483144.11,478057.31,501490.76,515073.72,589573.31],"lnMM":[null,null,null,null,null],"sharePct":[null,null,null,null,null],"regionLabels":["Región Este","Región Metropolitana","Región Norte","Región Sur"],"regionSeries":{"Región Este":[null,null,null,null,null],"Región Metropolitana":[null,null,null,null,null],"Región Norte":[null,null,null,null,null],"Región Sur":[null,null,null,null,null]},"region2026":[null,null,null,null],"ranking":[{"entidad":"BANRESERVAS","valueMM":270235.34},{"entidad":"POPULAR","valueMM":169699.55},{"entidad":"BHD","valueMM":78094.18},{"entidad":"SCOTIABANK","valueMM":22026.3},{"entidad":"CITIBANK","valueMM":14811.71},{"entidad":"SANTA CRUZ","valueMM":10687.83},{"entidad":"PROMERICA","valueMM":8397.68},{"entidad":"CARIBE","valueMM":2956.24},{"entidad":"BANESCO","valueMM":2746.7},{"entidad":"VIMENCA","valueMM":2122.78}],"monedaMix":[{"region":"Región Sur","mn":100.0,"me":0.0},{"region":"Región Este","mn":100.0,"me":0.0},{"region":"Región Norte","mn":100.0,"me":0.0},{"region":"Región Metropolitana","mn":93.868,"me":6.132}]},"depositos":{"label":"Depósitos","years":["2022","2023","2024","2025","2026"],"sectorMM":[694597.63,882740.58,1039499.58,1136987.34,1187437.86],"lnMM":[15551.07,17781.99,21833.14,26234.43,26366.87],"sharePct":[2.239,2.014,2.1,2.307,2.22],"regionLabels":["Región Este","Región Metropolitana","Región Norte","Región Sur"],"regionSeries":{"Región Este":[937.02,1034.95,1226.48,1690.16,1790.1],"Región Metropolitana":[11458.49,13243.76,15894.09,18637.62,18633.14],"Región Norte":[2934.45,3253.47,4338.63,5467.13,5498.9],"Región Sur":[221.12,249.81,373.94,439.52,444.73]},"region2026":[1790.1,18633.14,5498.9,444.73],"ranking":[{"entidad":"BANRESERVAS","valueMM":386638.04},{"entidad":"BHD","valueMM":171300.93},{"entidad":"POPULAR","valueMM":150704.04},{"entidad":"APAP","valueMM":90878.97},{"entidad":"CIBAO","valueMM":54263.85},{"entidad":"SANTA CRUZ","valueMM":52161.19},{"entidad":"SCOTIABANK","valueMM":46499.96},{"entidad":"PROMERICA","valueMM":26877.83},{"entidad":"LA NACIONAL","valueMM":26366.87},{"entidad":"CARIBE","valueMM":24914.42}],"monedaMix":[{"region":"Región Sur","mn":86.874,"me":13.126},{"region":"Región Este","mn":59.151,"me":40.849},{"region":"Región Norte","mn":82.029,"me":17.971},{"region":"Región Metropolitana","mn":72.771,"me":27.229}]}},"productMixLN2026":[{"label":"Ahorros","valueMM":13488.7},{"label":"Depósitos","valueMM":26366.87}]};
-const CAPTACION_COLORS = ['#0098BF', '#E6BE00', '#0A6B84', '#8A8A8A', '#2563EB', '#15803D', '#C0392B', '#6B7280', '#9CA3AF', '#D6B54C'];
+const CAPTACION_COLORS = ['#0070C0', '#E6BE00', '#1F4E79', '#8A8A8A', '#2563EB', '#15803D', '#C0392B', '#6B7280', '#9CA3AF', '#D6B54C'];
 let captacionActiveProduct = 'total';
 const captacionCharts = {};
 
@@ -4467,7 +5041,7 @@ function captaBaseOptions(extra = {}) {
     interaction: { mode:'index', intersect:false },
     plugins: {
       legend: { position:'bottom', labels: { color:'#3E4A4F', boxWidth:10, usePointStyle:true, font:{ family:'Inter', size:11 } } },
-      tooltip: { backgroundColor:'#0098BF', padding:10, titleFont:{family:'Inter', size:11}, bodyFont:{family:'JetBrains Mono', size:11} }
+      tooltip: { backgroundColor:'#1F4E79', padding:10, titleFont:{family:'Inter', size:11}, bodyFont:{family:'JetBrains Mono', size:11} }
     },
     scales: {
       x: { grid:{ display:false }, ticks:{ color:'#8A8A8A', font:{ family:'JetBrains Mono', size:10 } } },
@@ -4520,21 +5094,21 @@ function drawCaptacionDashboard(productKey = captacionActiveProduct) {
   const evol = captaCanvas('cap-chart-evolucion');
   if (evol) captacionCharts.evolucion = new Chart(evol, {
     data: { labels:d.years, datasets:[
-      { type:'bar', label:'Sistema financiero', data:d.sectorMM, backgroundColor:'rgba(0,152,191,.16)', borderColor:'#0098BF', borderWidth:1, yAxisID:'y', datalabels: dlBarTop(captaFmtMM) },
+      { type:'bar', label:'Sistema financiero', data:d.sectorMM, backgroundColor:'rgba(0,112,192,.16)', borderColor:'#0070C0', borderWidth:1, yAxisID:'y', datalabels: dlBarTop(captaFmtMM) },
       { type:'line', label:'La Nacional', data:d.lnMM, borderColor:BM.us, backgroundColor:'transparent', tension:.35, borderWidth:3, pointRadius:3, yAxisID:'y1', datalabels: dlLineLastPointBelow(captaFmtMM) }
     ] },
     options: captaBaseOptions({ layout:{ padding:{ top:22 } }, scales: {
       x: { grid:{display:false}, ticks:{color:'#8A8A8A', font:{family:'JetBrains Mono', size:10}} },
       y: { position:'left', grid:{color:'#EEEEEE'}, ticks:{ color:'#8A8A8A', font:{family:'JetBrains Mono', size:10}, callback:v => Number(v).toLocaleString('es-DO', {maximumFractionDigits:0}) } },
       y1: { position:'right', grid:{drawOnChartArea:false}, ticks:{ color:'#8A8A8A', font:{family:'JetBrains Mono', size:10}, callback:v => Number(v).toLocaleString('es-DO', {maximumFractionDigits:0}) } }
-    }, plugins: { legend: { position:'bottom' }, tooltip: { backgroundColor:'#0098BF', padding:10, callbacks: { label: ctx => ctx.dataset.label + ': ' + captaFmtMM(ctx.parsed.y) } } } }),
+    }, plugins: { legend: { position:'bottom' }, tooltip: { backgroundColor:'#1F4E79', padding:10, callbacks: { label: ctx => ctx.dataset.label + ': ' + captaFmtMM(ctx.parsed.y) } } } }),
     plugins: [ChartDataLabels]
   });
 
   const share = captaCanvas('cap-chart-share');
   if (share) captacionCharts.share = new Chart(share, {
     type:'line', data:{ labels:d.years, datasets:[{ label:'Market share LN', data:d.sharePct, borderColor:BM.us, backgroundColor:'rgba(230,190,0,.12)', tension:.35, fill:true, borderWidth:3, pointRadius:3 }] },
-    options: captaBaseOptions({ layout:{ padding:{ top:22 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => captaFmtPct(ctx.parsed.y) } }, datalabels: dlLineAllPoints(captaFmtPct) }, scales:{ x:{grid:{display:false}}, y:{ grid:{color:'#EEEEEE'}, ticks:{ callback:v=>Number(v).toFixed(1)+'%' } } } }),
+    options: captaBaseOptions({ layout:{ padding:{ top:22 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#1F4E79', callbacks:{ label:ctx => captaFmtPct(ctx.parsed.y) } }, datalabels: dlLineAllPoints(captaFmtPct) }, scales:{ x:{grid:{display:false}}, y:{ grid:{color:'#EEEEEE'}, ticks:{ callback:v=>Number(v).toFixed(1)+'%' } } } }),
     plugins: [ChartDataLabels]
   });
 
@@ -4542,8 +5116,8 @@ function drawCaptacionDashboard(productKey = captacionActiveProduct) {
 
   const region = captaCanvas('cap-chart-region');
   if (region) captacionCharts.region = new Chart(region, {
-    type:'bar', data:{ labels:d.regionLabels || [], datasets:[{ label:'La Nacional 2026', data:d.region2026 || [], backgroundColor:['#0A6B84','#0098BF','#E6BE00','#8A8A8A'], borderWidth:0, borderRadius:6, datalabels: dlBarTop(captaFmtMM) }] },
-    options: captaBaseOptions({ layout:{ padding:{ top:22 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => captaFmtMM(ctx.parsed.y) } } }, scales:{ x:{grid:{display:false}, ticks:{color:'#8A8A8A', font:{family:'Inter', size:10}}}, y:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }} } }),
+    type:'bar', data:{ labels:d.regionLabels || [], datasets:[{ label:'La Nacional 2026', data:d.region2026 || [], backgroundColor:['#1F4E79','#0070C0','#E6BE00','#8A8A8A'], borderWidth:0, borderRadius:6, datalabels: dlBarTop(captaFmtMM) }] },
+    options: captaBaseOptions({ layout:{ padding:{ top:22 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#1F4E79', callbacks:{ label:ctx => captaFmtMM(ctx.parsed.y) } } }, scales:{ x:{grid:{display:false}, ticks:{color:'#8A8A8A', font:{family:'Inter', size:10}}}, y:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }} } }),
     plugins: [ChartDataLabels]
   });
 
@@ -4552,7 +5126,7 @@ function drawCaptacionDashboard(productKey = captacionActiveProduct) {
   const ranking = captaCanvas('cap-chart-ranking');
   if (ranking) captacionCharts.ranking = new Chart(ranking, {
     type:'bar', data:{ labels:(d.ranking||[]).map(x=>x.entidad), datasets:[{ label:'Balance 2026', data:(d.ranking||[]).map(x=>x.valueMM), backgroundColor:(d.ranking||[]).map((x,i)=>x.entidad==='LA NACIONAL' ? BM.us : CAPTACION_COLORS[i % CAPTACION_COLORS.length]), borderRadius:6, datalabels: dlBarRight(captaFmtMM) }] },
-    options: captaBaseOptions({ indexAxis:'y', layout:{ padding:{ right:56 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => captaFmtMM(ctx.parsed.x) } } }, scales:{ x:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }}, y:{grid:{display:false}, ticks:{font:{family:'Inter', size:10}}} } }),
+    options: captaBaseOptions({ indexAxis:'y', layout:{ padding:{ right:56 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#1F4E79', callbacks:{ label:ctx => captaFmtMM(ctx.parsed.x) } } }, scales:{ x:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }}, y:{grid:{display:false}, ticks:{font:{family:'Inter', size:10}}} } }),
     plugins: [ChartDataLabels]
   });
 
@@ -4563,8 +5137,8 @@ function drawCaptacionDashboard(productKey = captacionActiveProduct) {
     if (titleMix) titleMix.textContent = 'Mix producto LN';
     if (subMix) subMix.textContent = 'Distribución de captaciones de La Nacional · 2026';
     captacionCharts.mix = new Chart(mix, {
-      type:'doughnut', data:{ labels:CAPTACION_DATA.productMixLN2026.map(x=>x.label), datasets:[{ data:CAPTACION_DATA.productMixLN2026.map(x=>x.valueMM), backgroundColor:['#0098BF','#E6BE00','#8A8A8A'], borderColor:'#FFFFFF', borderWidth:3, datalabels: dlDoughnut(captaFmtMM) }] },
-      options: captaBaseOptions({ cutout:'62%', scales:{ x:{display:false}, y:{display:false} }, plugins:{ legend:{position:'bottom'}, tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => ctx.label + ': ' + captaFmtMM(ctx.parsed) } } } }),
+      type:'doughnut', data:{ labels:CAPTACION_DATA.productMixLN2026.map(x=>x.label), datasets:[{ data:CAPTACION_DATA.productMixLN2026.map(x=>x.valueMM), backgroundColor:['#0070C0','#E6BE00','#8A8A8A'], borderColor:'#FFFFFF', borderWidth:3, datalabels: dlDoughnut(captaFmtMM) }] },
+      options: captaBaseOptions({ cutout:'62%', scales:{ x:{display:false}, y:{display:false} }, plugins:{ legend:{position:'bottom'}, tooltip:{ backgroundColor:'#1F4E79', callbacks:{ label:ctx => ctx.label + ': ' + captaFmtMM(ctx.parsed) } } } }),
       plugins: [ChartDataLabels]
     });
   } else if (mix) {
@@ -4573,10 +5147,10 @@ function drawCaptacionDashboard(productKey = captacionActiveProduct) {
     const m = d.monedaMix || [];
     captacionCharts.mix = new Chart(mix, {
       type:'bar', data:{ labels:m.map(x=>x.region), datasets:[
-        { label:'Moneda nacional', data:m.map(x=>x.mn), backgroundColor:'#0098BF', stack:'moneda', borderRadius:4, datalabels: dlBarCenter(captaFmtPct) },
+        { label:'Moneda nacional', data:m.map(x=>x.mn), backgroundColor:'#1F4E79', stack:'moneda', borderRadius:4, datalabels: dlBarCenter(captaFmtPct) },
         { label:'Moneda extranjera', data:m.map(x=>x.me), backgroundColor:'#E6BE00', stack:'moneda', borderRadius:4, datalabels: dlBarCenter(captaFmtPct) }
       ] },
-      options: captaBaseOptions({ plugins:{ tooltip:{ backgroundColor:'#0098BF', callbacks:{ label:ctx => ctx.dataset.label + ': ' + captaFmtPct(ctx.parsed.y) } } }, scales:{ x:{stacked:true, grid:{display:false}, ticks:{font:{family:'Inter', size:10}}}, y:{stacked:true, max:100, ticks:{ callback:v=>v+'%' }} } }),
+      options: captaBaseOptions({ plugins:{ tooltip:{ backgroundColor:'#1F4E79', callbacks:{ label:ctx => ctx.dataset.label + ': ' + captaFmtPct(ctx.parsed.y) } } }, scales:{ x:{stacked:true, grid:{display:false}, ticks:{font:{family:'Inter', size:10}}}, y:{stacked:true, max:100, ticks:{ callback:v=>v+'%' }} } }),
       plugins: [ChartDataLabels]
     });
   }
