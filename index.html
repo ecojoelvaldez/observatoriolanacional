@@ -2592,35 +2592,42 @@ footer strong, footer b { color:#fff; }
    amarillo de radio 20px. El card ya es amarillo sólido, la barra sobra. --- */
 .kpi-card.featured::before { display:none !important; }
 
-/* --- "Otras Noticias" en la portada: fila HORIZONTAL a todo el ancho ---
-   Antes la sección iba en la columna estrecha (1fr) del news-layout (2fr 1fr),
-   lo que comprimía las 3 tarjetas y dejaba un espacio vacío por el estirado
-   del grid. Se apila el layout en un solo bloque y las notas se muestran como
-   tarjetas horizontales. Especificidad con #view-hoy para ganar a los polish
-   posteriores sin depender del orden. */
-#view-hoy .news-layout { display:block !important; }
-#view-hoy .news-feature-grid { margin-bottom:22px !important; }
+/* --- "Otras Noticias" en la portada ---
+   Se mantiene a la DERECHA del reportaje (layout de 2 columnas), pero las
+   notas se organizan en forma horizontal (pares) dentro de esa columna y
+   SIN el recuadro/fondo blanco que las envolvía: solo las tarjetas flotan.
+   Especificidad con #view-hoy para ganar a los polish posteriores. */
+#view-hoy .news-layout {
+  display:grid !important;
+  grid-template-columns:minmax(0,1.65fr) minmax(0,1fr) !important;
+  gap:26px !important; align-items:start !important;
+}
+/* Contenedor de "Otras Noticias": transparente, sin borde ni sombra ni caja. */
 #view-hoy .news-side,
 #view-hoy .news-side.compact {
+  background:transparent !important; border:none !important; box-shadow:none !important;
+  border-left:none !important; padding:0 !important; margin:0 !important;
   display:grid !important;
-  grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)) !important;
-  column-gap:18px !important; row-gap:16px !important;
-  border-left:none !important; padding-left:0 !important;
-  margin-top:24px !important; align-items:stretch !important;
+  grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+  gap:14px !important; align-content:start !important;
 }
 #view-hoy .news-side .news-side-head,
 #view-hoy .news-side.compact .news-side-head {
   grid-column:1 / -1 !important;
   border-bottom:2px solid var(--ln-blue) !important;
-  padding-bottom:10px !important; margin-bottom:0 !important;
+  padding-bottom:10px !important; margin:0 0 2px !important;
 }
+/* Cada nota es una tarjeta independiente (sin fondo colectivo detrás). */
 #view-hoy .news-side .news-item {
   border:1px solid rgba(31,78,121,.12) !important;
-  border-radius:14px !important; padding:16px 18px !important;
+  border-radius:14px !important; padding:15px 16px !important;
   background:#fff !important; margin:0 !important;
   box-shadow:0 8px 22px rgba(31,78,121,.05);
 }
-@media (max-width:640px){
+@media (max-width:900px){
+  #view-hoy .news-layout { grid-template-columns:1fr !important; }
+}
+@media (max-width:600px){
   #view-hoy .news-side, #view-hoy .news-side.compact { grid-template-columns:1fr !important; }
 }
 
