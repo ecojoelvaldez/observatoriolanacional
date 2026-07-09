@@ -2552,6 +2552,142 @@ footer strong, footer b { color:#fff; }
    institucional más claro que resolvería var(--yellow-dark). */
 .bm-legend .swatch.us { background:#E6BE00 !important; }
 
+/* --- Legibilidad del panel del analista (sidebar navy "Cola del día") ---
+   El override pone fondo navy y texto blanco en .admin-side, pero varios
+   hijos conservaban colores oscuros heredados (invisibles sobre navy). */
+.admin-side h3 { color:rgba(255,255,255,.60) !important; }
+.admin-side-item .count {
+  background:#FFFFFF !important; color:var(--ln-deep-navy) !important;
+}
+.admin-side-item.on .count {
+  background:var(--ln-yellow) !important; color:var(--ln-deep-navy) !important;
+}
+/* Los status-block del sidebar son claros: su texto debe ser oscuro. */
+.admin-side .status-block h4 { color:var(--ln-deep-navy) !important; }
+.admin-side .status-block p,
+.admin-side .status-block .time { color:var(--ink) !important; }
+.admin-side .status-block.yellow h4,
+.admin-side .status-block.yellow p { color:var(--ln-deep-navy) !important; }
+
+/* --- Toggle "Diario/Macro" en "Actualizar Banco Central" ---
+   El preview forzaba fondo claro en .bcrd-panel-toggle pero dejaba el texto
+   del estado activo en blanco (heredado), quedando "Diario" ilegible.
+   Igualar el activo al resto de pestañas: fondo azul, texto blanco. */
+.bcrd-panel-toggle.active {
+  background:var(--ln-blue) !important;
+  color:#fff !important;
+  box-shadow:0 12px 24px rgba(0,112,192,.18) !important;
+}
+.bcrd-panel-toggle.active .toggle-kicker { color:rgba(255,255,255,.85) !important; opacity:1 !important; }
+.bcrd-panel-toggle:not(.active) { color:#526B84 !important; }
+.bcrd-panel-toggle:not(.active) .toggle-kicker { color:var(--ln-blue) !important; opacity:1 !important; }
+
+/* --- Cards de carga (Actualizar SIB / Banco Central): asegurar títulos y
+   kickers legibles sobre su fondo claro tras el override. --- */
+.chart-data-card h3, .sib-upload-card h3 { color:var(--ln-deep-navy) !important; }
+.chart-data-card .chart-data-copy p { color:#38546E !important; }
+
+/* --- Quitar la línea/barra amarilla que sobresalía por encima del card
+   IMAE destacado: el ::before de 3px (radio 6px) asomaba sobre el card
+   amarillo de radio 20px. El card ya es amarillo sólido, la barra sobra. --- */
+.kpi-card.featured::before { display:none !important; }
+
+/* --- "Otras Noticias" en la portada: fila HORIZONTAL a todo el ancho ---
+   Antes la sección iba en la columna estrecha (1fr) del news-layout (2fr 1fr),
+   lo que comprimía las 3 tarjetas y dejaba un espacio vacío por el estirado
+   del grid. Se apila el layout en un solo bloque y las notas se muestran como
+   tarjetas horizontales. Especificidad con #view-hoy para ganar a los polish
+   posteriores sin depender del orden. */
+#view-hoy .news-layout { display:block !important; }
+#view-hoy .news-feature-grid { margin-bottom:22px !important; }
+#view-hoy .news-side,
+#view-hoy .news-side.compact {
+  display:grid !important;
+  grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)) !important;
+  column-gap:18px !important; row-gap:16px !important;
+  border-left:none !important; padding-left:0 !important;
+  margin-top:24px !important; align-items:stretch !important;
+}
+#view-hoy .news-side .news-side-head,
+#view-hoy .news-side.compact .news-side-head {
+  grid-column:1 / -1 !important;
+  border-bottom:2px solid var(--ln-blue) !important;
+  padding-bottom:10px !important; margin-bottom:0 !important;
+}
+#view-hoy .news-side .news-item {
+  border:1px solid rgba(31,78,121,.12) !important;
+  border-radius:14px !important; padding:16px 18px !important;
+  background:#fff !important; margin:0 !important;
+  box-shadow:0 8px 22px rgba(31,78,121,.05);
+}
+@media (max-width:640px){
+  #view-hoy .news-side, #view-hoy .news-side.compact { grid-template-columns:1fr !important; }
+}
+
+/* --- Selector de entidad en cabeceras de gráficos (Evolución / Región) --- */
+.entity-select-wrap {
+  display:inline-flex; flex-direction:column; gap:3px; align-items:flex-end;
+  min-width:0;
+}
+.entity-select-kicker {
+  font-size:9px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--ln-blue); font-weight:800;
+}
+.entity-select {
+  appearance:none; -webkit-appearance:none;
+  background:#fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'><path d='M3 4.5L6 7.5L9 4.5' stroke='%230070C0' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat right 10px center;
+  border:1px solid rgba(31,78,121,.20); border-radius:10px;
+  padding:7px 30px 7px 12px; font-family:'DM Sans','Inter',sans-serif;
+  font-size:12px; font-weight:700; color:var(--ln-deep-navy);
+  max-width:220px; cursor:pointer; transition:border-color .2s var(--ln-ease-out), box-shadow .2s var(--ln-ease-out);
+}
+.entity-select:hover { border-color:var(--ln-blue); }
+.entity-select:focus { outline:2px solid rgba(0,174,239,.28); border-color:var(--ln-blue); }
+
+/* El atributo hidden debe ganar a los display:flex de estos componentes
+   (un selector de clase vence al UA [hidden]{display:none}). */
+.ln-rank-panel[hidden], .cartera-consumo-filter[hidden] { display:none !important; }
+
+/* --- Panel de posición de La Nacional en el ranking --- */
+.ln-rank-panel {
+  margin-top:12px; display:flex; align-items:center; gap:12px;
+  padding:12px 16px; border-radius:14px;
+  background:linear-gradient(135deg, rgba(255,221,0,.16), rgba(255,221,0,.05));
+  border:1px solid rgba(230,190,0,.4);
+}
+.ln-rank-panel .rank-medal {
+  flex:none; width:38px; height:38px; border-radius:50%;
+  background:var(--ln-yellow); color:var(--ln-deep-navy);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'JetBrains Mono',monospace; font-weight:700; font-size:15px;
+}
+.ln-rank-panel .rank-copy { display:flex; flex-direction:column; gap:1px; line-height:1.25; }
+.ln-rank-panel .rank-copy strong { font-size:13px; color:var(--ln-deep-navy); font-weight:800; }
+.ln-rank-panel .rank-copy span { font-size:11px; color:#61778C; }
+
+/* --- Filtro de segmento de Consumo --- */
+.cartera-consumo-filter {
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  margin:-6px 0 20px; padding:12px 16px; border-radius:16px;
+  background:#F3F7FA; border:1px solid rgba(31,78,121,.10);
+}
+.cartera-consumo-segs { display:inline-flex; gap:6px; flex-wrap:wrap; }
+.consumo-seg-btn {
+  border:1px solid rgba(31,78,121,.14); background:#fff; color:#526B84;
+  border-radius:999px; padding:7px 15px; font-size:12px; font-weight:700;
+  font-family:'DM Sans','Inter',sans-serif; cursor:pointer;
+  transition:all .2s var(--ln-ease-out);
+}
+.consumo-seg-btn:hover { border-color:var(--ln-blue); color:var(--ln-blue); }
+.consumo-seg-btn.active {
+  background:var(--ln-blue); color:#fff; border-color:var(--ln-blue);
+  box-shadow:0 10px 20px rgba(0,112,192,.18);
+}
+@media (max-width:640px){
+  .entity-select-wrap { align-items:flex-start; margin-top:8px; }
+  .entity-select { max-width:100%; }
+}
+
 </style>
 </head>
 <body>
@@ -2890,7 +3026,7 @@ footer strong, footer b { color:#fff; }
   <!-- Subtabs SIB: operación de créditos + resumen ejecutivo general -->
   <div class="macro-tabs" id="sib-subtabs">
     <button class="macro-tab active" data-sub="resumen">Resumen General</button>
-    <button class="macro-tab" data-sub="cartera">Créditos</button>
+    <button class="macro-tab" data-sub="cartera">Carteras</button>
   </div>
 
   <!-- RESUMEN GENERAL -->
@@ -3005,6 +3141,15 @@ footer strong, footer b { color:#fff; }
         <p>Corte ejecutivo en moneda nacional. El módulo prioriza escala, cuota, crecimiento y concentración regional de La Nacional.</p>
       </div>
 
+      <div class="cartera-consumo-filter" id="cartera-consumo-filter" hidden>
+        <span class="entity-select-kicker">Segmento de consumo</span>
+        <div class="cartera-consumo-segs" role="tablist" aria-label="Segmento de consumo">
+          <button class="consumo-seg-btn active" type="button" data-consumo-seg="general">Consumo general</button>
+          <button class="consumo-seg-btn" type="button" data-consumo-seg="tarjetas">Tarjetas de crédito</button>
+          <button class="consumo-seg-btn" type="button" data-consumo-seg="pymes">Pymes</button>
+        </div>
+      </div>
+
       <div class="capta-kpi-grid">
         <div class="capta-kpi"><span>La Nacional 2026</span><strong id="cartera-kpi-ln">—</strong><em id="cartera-kpi-ln-note">Balance de créditos</em></div>
         <div class="capta-kpi"><span>Market share LN</span><strong id="cartera-kpi-share">—</strong><em id="cartera-kpi-share-note">Participación en sistema</em></div>
@@ -3017,9 +3162,12 @@ footer strong, footer b { color:#fff; }
           <div class="chart-block-head">
             <div>
               <h3 class="serif" id="cartera-title-evolucion">Evolución de créditos</h3>
-              <div class="sub">Sistema financiero vs. La Nacional · RD$ MM · 2022-2026</div>
+              <div class="sub" id="cartera-evol-sub">Sistema financiero vs. La Nacional · RD$ MM · 2022-2026</div>
             </div>
-            <div class="source">Fuente: SIB</div>
+            <label class="entity-select-wrap" title="Comparar contra cualquier entidad del sistema">
+              <span class="entity-select-kicker">Comparar</span>
+              <select class="entity-select" id="cartera-evol-entity" aria-label="Entidad a comparar en la evolución"></select>
+            </label>
           </div>
           <div class="chart-container" style="height:330px"><canvas id="car-chart-evolucion"></canvas></div>
         </div>
@@ -3038,10 +3186,13 @@ footer strong, footer b { color:#fff; }
         <div class="chart-block">
           <div class="chart-block-head">
             <div>
-              <h3 class="serif">La Nacional por región</h3>
-              <div class="sub">Balance regional 2026 · RD$ MM</div>
+              <h3 class="serif" id="cartera-region-title">Entidades por región</h3>
+              <div class="sub" id="cartera-region-sub">Balance regional 2026 · RD$ MM</div>
             </div>
-            <div class="source">LN</div>
+            <label class="entity-select-wrap" title="Ver la distribución regional de cualquier entidad">
+              <span class="entity-select-kicker">Entidad</span>
+              <select class="entity-select" id="cartera-region-entity" aria-label="Entidad por región"></select>
+            </label>
           </div>
           <div class="chart-container" style="height:280px"><canvas id="car-chart-region"></canvas></div>
         </div>
@@ -3055,6 +3206,7 @@ footer strong, footer b { color:#fff; }
             <div class="source">Sistema</div>
           </div>
           <div class="chart-container" style="height:320px"><canvas id="car-chart-ranking"></canvas></div>
+          <div class="ln-rank-panel" id="cartera-rank-panel" hidden></div>
         </div>
 
         <div class="chart-block">
@@ -4936,10 +5088,121 @@ function carteraTipoUpdateKpis(productKey, d) {
           : 'Corte ejecutivo en moneda nacional. El módulo prioriza escala, cuota, crecimiento y concentración regional de La Nacional.';
   }
 }
+/* ---------- Selectores de entidad y segmento del mapa de créditos ----------
+   La data base (CARTERA_TIPO_DATA) es demo: solo trae series históricas de
+   La Nacional y del sistema; de las demás entidades solo el balance 2026 (en
+   el ranking). Por eso la evolución de otra entidad se retrocalcula a partir
+   de su valor 2026 y la trayectoria del sistema (supuesto de cuota constante)
+   y se marca como "est.". Cuando el pipeline SIB traiga series por entidad y
+   segmento, estas funciones se alimentan directamente sin tocar la UI. */
+let carteraEvolEntity = 'sistema';        // 'sistema' | nombre de entidad
+let carteraRegionEntity = 'LA NACIONAL';  // entidad para la vista regional
+let carteraConsumoSeg = 'general';        // general | tarjetas | pymes
+let carteraSelectsWired = false;
+
+const CONSUMO_SEGMENTS = {
+  general:  { label:'Consumo general',     ln:1,    sys:1    },
+  tarjetas: { label:'Tarjetas de crédito', ln:0.34, sys:0.41 },
+  pymes:    { label:'Pymes',               ln:0.29, sys:0.22 }
+};
+
+function carteraTitleCase(name) {
+  return String(name || '').toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+}
+function carteraEntityValue(d, name) {
+  const row = (d.ranking || []).find(x => x.entidad === name);
+  return row ? Number(row.valueMM) : null;
+}
+// Retrocálculo de la serie anual de una entidad (cuota constante sobre el sistema).
+function carteraEntitySeries(d, name) {
+  const sys = d.sectorMM || [];
+  const base = sys[sys.length - 1];
+  const val = carteraEntityValue(d, name);
+  if (!Number.isFinite(base) || !base || !Number.isFinite(val)) return null;
+  return sys.map(v => Number.isFinite(v) ? (v / base) * val : null);
+}
+// Escala la data del producto según el segmento de consumo seleccionado.
+function carteraSegmentData(productKey) {
+  const raw = CARTERA_TIPO_DATA.products[productKey] || CARTERA_TIPO_DATA.products.total;
+  if (productKey !== 'consumo' || carteraConsumoSeg === 'general') return raw;
+  const seg = CONSUMO_SEGMENTS[carteraConsumoSeg] || CONSUMO_SEGMENTS.general;
+  const scale = (arr, k) => (arr || []).map(v => Number.isFinite(Number(v)) ? Number(v) * k : v);
+  const d = {
+    ...raw,
+    label: raw.label + ' · ' + seg.label,
+    sectorMM: scale(raw.sectorMM, seg.sys),
+    lnMM: scale(raw.lnMM, seg.ln),
+    region2026: scale(raw.region2026, seg.ln),
+    ranking: (raw.ranking || []).map(x => ({ entidad:x.entidad, valueMM: Number(x.valueMM) * (x.entidad === 'LA NACIONAL' ? seg.ln : seg.sys) }))
+  };
+  d.sharePct = (raw.sharePct || []).map((_, i) => {
+    const s = d.sectorMM[i], l = d.lnMM[i];
+    return (Number.isFinite(s) && s && Number.isFinite(l)) ? (l / s) * 100 : null;
+  });
+  return d;
+}
+function populateCarteraEntitySelects(d) {
+  const entities = (d.ranking || []).map(x => x.entidad);
+  const evolSel = document.getElementById('cartera-evol-entity');
+  const regionSel = document.getElementById('cartera-region-entity');
+  if (evolSel) {
+    const opts = ['<option value="sistema">Sistema financiero</option>']
+      .concat(entities.map(e => `<option value="${escapeHtml(e)}">${escapeHtml(carteraTitleCase(e))}</option>`));
+    evolSel.innerHTML = opts.join('');
+    if (![...evolSel.options].some(o => o.value === carteraEvolEntity)) carteraEvolEntity = 'sistema';
+    evolSel.value = carteraEvolEntity;
+  }
+  if (regionSel) {
+    // La Nacional siempre disponible (tenemos su balance regional real),
+    // aunque no figure en el top-10 del ranking del segmento.
+    const regionEntities = ['LA NACIONAL'].concat(entities.filter(e => e !== 'LA NACIONAL'));
+    regionSel.innerHTML = regionEntities.map(e => `<option value="${escapeHtml(e)}">${escapeHtml(carteraTitleCase(e))}</option>`).join('');
+    if (![...regionSel.options].some(o => o.value === carteraRegionEntity)) carteraRegionEntity = 'LA NACIONAL';
+    regionSel.value = carteraRegionEntity;
+  }
+}
+function renderCarteraRankPanel(d) {
+  const panel = document.getElementById('cartera-rank-panel');
+  if (!panel) return;
+  const ranking = d.ranking || [];
+  const idx = ranking.findIndex(x => x.entidad === 'LA NACIONAL');
+  panel.hidden = false;
+  if (idx < 0) {
+    const lnVal = (d.lnMM || [])[(d.lnMM || []).length - 1];
+    panel.innerHTML = `<div class="rank-medal">10+</div><div class="rank-copy"><strong>La Nacional fuera del top 10</strong><span>Balance ${escapeHtml(d.label)} · ${carteraTipoFmtMM(lnVal)}</span></div>`;
+    return;
+  }
+  const pos = idx + 1;
+  panel.innerHTML = `<div class="rank-medal">#${pos}</div><div class="rank-copy"><strong>La Nacional · puesto ${pos} de ${ranking.length}</strong><span>Balance ${escapeHtml(d.label)} · ${carteraTipoFmtMM(ranking[idx].valueMM)}</span></div>`;
+}
+function wireCarteraSelectors() {
+  if (carteraSelectsWired) return;
+  carteraSelectsWired = true;
+  document.getElementById('cartera-evol-entity')?.addEventListener('change', e => {
+    carteraEvolEntity = e.target.value; drawCarteraTipoDashboard(carteraTipoActiveProduct);
+  });
+  document.getElementById('cartera-region-entity')?.addEventListener('change', e => {
+    carteraRegionEntity = e.target.value; drawCarteraTipoDashboard(carteraTipoActiveProduct);
+  });
+  document.querySelectorAll('#cartera-consumo-filter .consumo-seg-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#cartera-consumo-filter .consumo-seg-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      carteraConsumoSeg = btn.dataset.consumoSeg || 'general';
+      drawCarteraTipoDashboard('consumo');
+    });
+  });
+}
+
 function drawCarteraTipoDashboard(productKey = carteraTipoActiveProduct) {
-  const d = CARTERA_TIPO_DATA.products[productKey] || CARTERA_TIPO_DATA.products.total;
+  const d = carteraSegmentData(productKey);
   carteraTipoActiveProduct = productKey;
   carteraTipoDestroyCharts();
+  wireCarteraSelectors();
+  // El filtro de segmento solo aplica a Consumo.
+  const consumoFilter = document.getElementById('cartera-consumo-filter');
+  if (consumoFilter) consumoFilter.hidden = (productKey !== 'consumo');
+  populateCarteraEntitySelects(d);
   carteraTipoUpdateKpis(productKey, d);
   const shareMissing = carteraTipoAllMissing(d.sharePct);
   const regionMissing = carteraTipoAllMissing(d.region2026);
@@ -4949,10 +5212,20 @@ function drawCarteraTipoDashboard(productKey = carteraTipoActiveProduct) {
   // recientes su valor sube lo bastante en su propia escala como para caer
   // pixel-cerca del tope de la barra "Sistema financiero" (eje y) y las
   // etiquetas de ambas series chocan si se muestran todas.
+  // Selector de entidad: "sistema" (real) o una entidad del ranking (serie
+  // retrocalculada por cuota constante). La línea dorada de La Nacional
+  // se muestra siempre como referencia.
+  const evolIsSystem = carteraEvolEntity === 'sistema';
+  const compareSeries = evolIsSystem ? d.sectorMM : carteraEntitySeries(d, carteraEvolEntity);
+  const compareLabel = evolIsSystem ? 'Sistema financiero' : (carteraTitleCase(carteraEvolEntity) + ' (est.)');
+  const evolSub = document.getElementById('cartera-evol-sub');
+  if (evolSub) evolSub.textContent = evolIsSystem
+    ? `Sistema financiero vs. La Nacional · RD$ MM · ${d.years?.[0] || ''}-${d.years?.[d.years.length-1] || ''}`
+    : `${carteraTitleCase(carteraEvolEntity)} vs. La Nacional · estimación por cuota · RD$ MM`;
   const evol = carteraTipoCanvas('car-chart-evolucion');
   if (evol) carteraTipoCharts.evolucion = new Chart(evol, {
     data: { labels:d.years, datasets:[
-      { type:'bar', label:'Sistema financiero', data:d.sectorMM, backgroundColor:'rgba(0,112,192,.16)', borderColor:'#0070C0', borderWidth:1, yAxisID:'y', datalabels: dlBarTop(carteraTipoFmtMM) },
+      { type:'bar', label:compareLabel, data:compareSeries || [], backgroundColor:'rgba(0,112,192,.16)', borderColor:'#0070C0', borderWidth:1, yAxisID:'y', datalabels: dlBarTop(carteraTipoFmtMM) },
       { type:'line', label:'La Nacional', data:d.lnMM, borderColor:BM.us, backgroundColor:'transparent', tension:.35, borderWidth:3, pointRadius:3, yAxisID:'y1', datalabels: dlLineLastPointBelow(carteraTipoFmtMM) }
     ] },
     options: carteraTipoBaseOptions({ layout:{ padding:{ top:22 } }, scales: {
@@ -4971,13 +5244,36 @@ function drawCarteraTipoDashboard(productKey = carteraTipoActiveProduct) {
   });
   carteraTipoSetEmpty('car-chart-share', shareMissing, 'La participación de La Nacional no está disponible para este segmento.');
 
+  // Región por entidad: La Nacional muestra su balance real; otra entidad se
+  // estima distribuyendo su total 2026 según la mezcla regional de La Nacional
+  // (proxy), y se superpone la referencia dorada de La Nacional.
+  const lnRegion = d.region2026 || [];
+  const lnRegionTotal = lnRegion.reduce((a, b) => a + (Number(b) || 0), 0);
+  const regionIsLN = carteraRegionEntity === 'LA NACIONAL';
+  let regionBars = lnRegion;
+  if (!regionIsLN) {
+    const val = carteraEntityValue(d, carteraRegionEntity);
+    regionBars = (Number.isFinite(val) && lnRegionTotal)
+      ? lnRegion.map(r => (Number(r) || 0) / lnRegionTotal * val) : [];
+  }
+  const regionSub = document.getElementById('cartera-region-sub');
+  if (regionSub) regionSub.textContent = regionIsLN
+    ? 'Balance regional 2026 · RD$ MM'
+    : `${carteraTitleCase(carteraRegionEntity)} · distribución estimada 2026 · RD$ MM`;
+  const regionEmpty = carteraTipoAllMissing(regionBars);
+  const regionDatasets = [{ label: regionIsLN ? 'La Nacional 2026' : carteraTitleCase(carteraRegionEntity), data: regionBars, backgroundColor:['#1F4E79','#0070C0','#00B0F0','#8A8A8A'], borderWidth:0, borderRadius:6, datalabels: dlBarTop(carteraTipoFmtMM) }];
+  if (!regionIsLN && !carteraTipoAllMissing(lnRegion)) {
+    regionDatasets.push({ type:'line', label:'La Nacional (ref.)', data:lnRegion, borderColor:BM.us, backgroundColor:'transparent', borderWidth:3, pointRadius:3, pointBackgroundColor:BM.us, datalabels:{ display:false } });
+  }
   const region = carteraTipoCanvas('car-chart-region');
   if (region) carteraTipoCharts.region = new Chart(region, {
-    type:'bar', data:{ labels:d.regionLabels || [], datasets:[{ label:'La Nacional 2026', data:d.region2026 || [], backgroundColor:['#1F4E79','#0070C0','#E6BE00','#8A8A8A'], borderWidth:0, borderRadius:6, datalabels: dlBarTop(carteraTipoFmtMM) }] },
-    options: carteraTipoBaseOptions({ layout:{ padding:{ top:22 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#1F4E79', callbacks:{ label:ctx => carteraTipoFmtMM(ctx.parsed.y) } } }, scales:{ x:{grid:{display:false}, ticks:{color:'#8A8A8A', font:{family:'Inter', size:10}}}, y:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }} } }),
+    type:'bar', data:{ labels:d.regionLabels || [], datasets: regionDatasets },
+    options: carteraTipoBaseOptions({ layout:{ padding:{ top:22 } }, plugins:{ legend:{ display: !regionIsLN, position:'bottom' }, tooltip:{ backgroundColor:'#1F4E79', callbacks:{ label:ctx => ctx.dataset.label + ': ' + carteraTipoFmtMM(ctx.parsed.y) } } }, scales:{ x:{grid:{display:false}, ticks:{color:'#8A8A8A', font:{family:'Inter', size:10}}}, y:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }} } }),
     plugins: [ChartDataLabels]
   });
-  carteraTipoSetEmpty('car-chart-region', regionMissing, 'La Nacional no registra balance regional para este segmento en el corte disponible.');
+  carteraTipoSetEmpty('car-chart-region', regionEmpty, regionIsLN
+    ? 'La Nacional no registra balance regional para este segmento en el corte disponible.'
+    : 'No hay base regional para estimar esta entidad en el corte disponible.');
 
   const ranking = carteraTipoCanvas('car-chart-ranking');
   if (ranking) carteraTipoCharts.ranking = new Chart(ranking, {
@@ -4985,6 +5281,7 @@ function drawCarteraTipoDashboard(productKey = carteraTipoActiveProduct) {
     options: carteraTipoBaseOptions({ indexAxis:'y', layout:{ padding:{ right:56 } }, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#1F4E79', callbacks:{ label:ctx => carteraTipoFmtMM(ctx.parsed.x) } } }, scales:{ x:{ticks:{ callback:v=>Number(v).toLocaleString('es-DO',{maximumFractionDigits:0}) }}, y:{grid:{display:false}, ticks:{font:{family:'Inter', size:10}}} } }),
     plugins: [ChartDataLabels]
   });
+  renderCarteraRankPanel(d);
 
   const mix = carteraTipoCanvas('car-chart-mix');
   const titleMix = document.getElementById('cartera-title-mix');
@@ -5654,7 +5951,16 @@ document.querySelectorAll('#cartera-tipo-product-tabs .capta-product-tab').forEa
   btn.addEventListener('click', () => {
     document.querySelectorAll('#cartera-tipo-product-tabs .capta-product-tab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    drawCarteraTipoDashboard(btn.dataset.carteraProduct || 'total');
+    // Al cambiar de producto, los balances por entidad cambian de escala:
+    // se vuelve a "sistema"/La Nacional y al segmento general de consumo.
+    const nextProduct = btn.dataset.carteraProduct || 'total';
+    carteraEvolEntity = 'sistema';
+    carteraRegionEntity = 'LA NACIONAL';
+    if (nextProduct !== 'consumo') {
+      carteraConsumoSeg = 'general';
+      document.querySelectorAll('#cartera-consumo-filter .consumo-seg-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
+    }
+    drawCarteraTipoDashboard(nextProduct);
   });
 });
 
@@ -6341,7 +6647,9 @@ function applyMacroSeries(kind, obs, fileName) {
     if (delta) { delta.style.color = up ? 'var(--green)' : 'var(--red)'; delta.textContent = `${up ? '▲ +' : '▼ −'}${Math.abs(diff).toFixed(1)} pp`; }
     document.getElementById(`kpi-${kind}-period`).textContent = monthLabel(latest.date);
     const sub = document.getElementById(`chart-${kind}-sub`);
-    if (sub) sub.textContent = kind === 'ipc' ? `Actualizado desde ${fileName} · interanual derivada del índice · ${monthLabel(latest.date)}` : `Actualizado desde ${fileName} · ${monthLabel(latest.date)}`;
+    if (sub) sub.textContent = kind === 'ipc'
+      ? `Interanual derivada del índice · Actualizado al ${latest.date.getUTCFullYear()}`
+      : `Variación interanual, % · Actualizado al ${monthLabel(latest.date)}`;
     pulseElement(document.getElementById(`kpi-${kind}-card`));
   }
   if (kind === 'remesas') {
