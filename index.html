@@ -262,6 +262,75 @@ a { color: inherit; text-decoration: none; }
   margin-top: 6px;
 }
 
+/* ========= RESUMEN EJECUTIVO IA (Gemini) ========= */
+.ai-brief {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--yellow);
+  border-radius: 6px;
+  padding: 24px 28px 20px;
+  margin: -14px 0 36px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+.ai-brief[hidden] { display: none; }
+.ai-brief-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 12px; margin-bottom: 10px;
+}
+.ai-brief-kicker {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 10px; letter-spacing: 2.4px; text-transform: uppercase;
+  color: var(--cyan-dark); font-weight: 700;
+}
+.ai-brief-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 0 4px var(--cyan-soft);
+}
+.ai-brief-period {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; color: var(--ink-mute);
+  letter-spacing: 1px; text-transform: uppercase;
+}
+.ai-brief h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 23px; font-weight: 600; line-height: 1.2;
+  letter-spacing: -0.4px; color: var(--ink);
+  margin-bottom: 8px; text-wrap: balance;
+}
+.ai-brief-lead {
+  font-size: 14px; line-height: 1.6; color: var(--ink-soft);
+  max-width: 78ch; margin-bottom: 16px;
+}
+.ai-brief-cols {
+  display: grid; grid-template-columns: 1.2fr 1fr; gap: 26px;
+  padding-top: 14px; border-top: 1px solid var(--line-soft);
+}
+.ai-brief-col h5 {
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--ink-mute); font-weight: 700; margin-bottom: 9px;
+}
+.ai-brief-col ul { list-style: none; }
+.ai-brief-col li {
+  position: relative; padding-left: 16px; margin-bottom: 7px;
+  font-size: 13px; line-height: 1.5; color: var(--ink-soft);
+}
+.ai-brief-col li::before {
+  content: ''; position: absolute; left: 0; top: 8px;
+  width: 6px; height: 6px; background: var(--yellow);
+}
+.ai-brief-col.watch li::before { background: var(--cyan); border-radius: 50%; }
+.ai-brief-foot {
+  margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line-soft);
+  font-size: 10px; color: var(--ink-mute); font-style: italic;
+  letter-spacing: 0.3px;
+}
+@media (max-width: 760px) {
+  .ai-brief { padding: 20px 18px 16px; }
+  .ai-brief-cols { grid-template-columns: 1fr; gap: 16px; }
+  .ai-brief h3 { font-size: 20px; }
+}
+
 /* ========= MARKET STRIP ========= */
 .market-strip {
   display: grid;
@@ -3017,6 +3086,27 @@ footer .mark{
     </div>
   </div>
 
+  <!-- Resumen ejecutivo IA (data/gemini_summaries.json · scripts/generate_gemini_summaries.py) -->
+  <section class="ai-brief" id="ai-brief-macro" hidden aria-live="polite">
+    <div class="ai-brief-head">
+      <span class="ai-brief-kicker"><span class="ai-brief-dot"></span> Resumen ejecutivo · IA</span>
+      <span class="ai-brief-period" id="ai-brief-macro-period"></span>
+    </div>
+    <h3 id="ai-brief-macro-title"></h3>
+    <p class="ai-brief-lead" id="ai-brief-macro-lead"></p>
+    <div class="ai-brief-cols">
+      <div class="ai-brief-col">
+        <h5>Qué está pasando</h5>
+        <ul id="ai-brief-macro-points"></ul>
+      </div>
+      <div class="ai-brief-col watch">
+        <h5>Tener pendiente</h5>
+        <ul id="ai-brief-macro-watch"></ul>
+      </div>
+    </div>
+    <div class="ai-brief-foot" id="ai-brief-macro-foot"></div>
+  </section>
+
   <div class="chart-data-card analyst-only bcrd-loader-premium" id="bcrd-upload-card" aria-live="polite">
     <div class="chart-data-copy">
       <div class="chart-data-kicker"><span class="chart-data-dot"></span> Carga operativa · BCRD</div>
@@ -3182,6 +3272,27 @@ footer .mark{
       <div class="meta">Cierre · pendiente</div>
     </div>
   </div>
+
+  <!-- Resumen ejecutivo IA (data/gemini_summaries.json · scripts/generate_gemini_summaries.py) -->
+  <section class="ai-brief" id="ai-brief-sib" hidden aria-live="polite">
+    <div class="ai-brief-head">
+      <span class="ai-brief-kicker"><span class="ai-brief-dot"></span> Resumen ejecutivo · IA</span>
+      <span class="ai-brief-period" id="ai-brief-sib-period"></span>
+    </div>
+    <h3 id="ai-brief-sib-title"></h3>
+    <p class="ai-brief-lead" id="ai-brief-sib-lead"></p>
+    <div class="ai-brief-cols">
+      <div class="ai-brief-col">
+        <h5>Qué está pasando</h5>
+        <ul id="ai-brief-sib-points"></ul>
+      </div>
+      <div class="ai-brief-col watch">
+        <h5>Tener pendiente</h5>
+        <ul id="ai-brief-sib-watch"></ul>
+      </div>
+    </div>
+    <div class="ai-brief-foot" id="ai-brief-sib-foot"></div>
+  </section>
 
   <div class="chart-data-card analyst-only" id="sib-upload-card" aria-live="polite">
     <div class="chart-data-copy">
@@ -5894,9 +6005,57 @@ async function loadSibSnapshot() {
     console.info('[LN-SIB] Snapshot automático no disponible:', error.message);
   }
 }
+/* Resumen ejecutivo IA: pinta data/gemini_summaries.json (workflow
+   gemini_summaries.yml) debajo de los títulos de Macro y SIB.
+   Todo el contenido del modelo entra vía textContent: nunca como HTML. */
+function renderAiBrief(key, seccion, meta) {
+  const card = document.getElementById(`ai-brief-${key}`);
+  if (!card || !seccion || !seccion.resumen) return;
+  const set = (suffix, text) => {
+    const el = document.getElementById(`ai-brief-${key}-${suffix}`);
+    if (el) el.textContent = text || '';
+  };
+  set('title', seccion.titulo || 'Resumen ejecutivo');
+  set('lead', seccion.resumen);
+  set('period', seccion.periodo ? `Corte ${seccion.periodo}` : '');
+  const fillList = (suffix, items) => {
+    const ul = document.getElementById(`ai-brief-${key}-${suffix}`);
+    if (!ul) return;
+    ul.replaceChildren(...(Array.isArray(items) ? items : []).map(text => {
+      const li = document.createElement('li');
+      li.textContent = String(text);
+      return li;
+    }));
+  };
+  fillList('points', seccion.puntos);
+  fillList('watch', seccion.vigilar);
+  const fecha = seccion.generado_en || meta.generado_en;
+  let stamp = '';
+  try {
+    stamp = new Intl.DateTimeFormat('es-DO', { day: '2-digit', month: 'long', year: 'numeric' })
+      .format(new Date(fecha));
+  } catch (_e) { /* fecha ausente o inválida: se omite el sello */ }
+  set('foot', `Generado con ${meta.modelo || 'Gemini'}${stamp ? ' · ' + stamp : ''} · Borrador automático de IA: verificar cifras contra la fuente oficial antes de citar.`);
+  card.hidden = false;
+}
+
+async function loadGeminiSummaries() {
+  try {
+    const res = await fetch('/data/gemini_summaries.json', { cache: 'no-cache' });
+    if (!res.ok) return;
+    const data = await res.json();
+    const secciones = data.secciones || {};
+    renderAiBrief('macro', secciones.macro, data);
+    renderAiBrief('sib', secciones.sib, data);
+  } catch (error) {
+    console.info('[LN-IA] Resumen ejecutivo no disponible:', error.message);
+  }
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   restoreSibCsvFromLocalStorage();
   loadSibSnapshot();
+  loadGeminiSummaries();
 });
 
 /* Subtabs de Superintendencia */
@@ -8524,6 +8683,85 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
 .log-drawer-backdrop:not(.open) { opacity:0 !important; visibility:hidden; pointer-events:none !important; }
 .composer-card input { width:100%; border:1px solid var(--line-soft); border-radius:8px; padding:10px 11px; font:inherit; font-size:12px; background:#fff; color:var(--ink); outline:none; transition:border-color .18s var(--ease-out), box-shadow .18s var(--ease-out); }
 .composer-card input:focus { border-color:var(--cyan-line); box-shadow:0 0 0 3px rgba(72,171,213,.10); }
+</style>
+<style id="ln-analyst-panel-polish">
+/* =====================================================================
+   Panel del analista · pulido de contraste y layout
+   La capa institucional pinta .admin-side en navy profundo, pero varios
+   estilos base quedaron pensados para fondo claro: título y hover en azul
+   navy (invisibles sobre navy), contadores blanco-sobre-blanco, cero
+   padding interno y la caja estirada a toda la altura de la columna.
+   El toggle BCRD activo heredaba texto blanco sobre el fondo gris claro
+   que fuerza la capa institucional. Este bloque va al final para ganar
+   la cascada sobre todas las capas anteriores.
+   ===================================================================== */
+
+/* Sidebar: caja compacta con aire interno; ya no se estira a lo alto */
+.admin-side {
+  align-self:start !important;
+  padding:24px 22px 26px !important;
+}
+@media (min-width: 981px) {
+  .admin-side { position:sticky; top:126px; }
+}
+.admin-side h3 { color:rgba(255,255,255,.92) !important; }
+
+/* Items de la cola: pastillas legibles sobre navy, sin separadores */
+.admin-side .admin-side-item {
+  padding:11px 14px !important;
+  border-bottom:none !important;
+  margin-bottom:8px;
+  border-radius:12px !important;
+}
+.admin-side .admin-side-item:hover,
+.admin-side .admin-side-item#side-item-log:hover {
+  color:#fff !important;
+  background:rgba(255,255,255,.14) !important;
+}
+.admin-side .admin-side-item.on,
+.admin-side .admin-side-item.on:hover {
+  background:var(--ln-yellow) !important;
+  color:var(--ln-deep-navy) !important;
+  font-weight:800;
+}
+.admin-side .admin-side-item .count {
+  background:rgba(255,255,255,.16) !important;
+  color:#fff !important;
+}
+.admin-side .admin-side-item.on .count {
+  background:rgba(0,32,96,.16) !important;
+  color:var(--ln-deep-navy) !important;
+}
+
+/* Bloques de estado: recuperar el acento de color sobre navy */
+.admin-side .status-block { border-left-color:var(--ln-sky) !important; border-radius:12px !important; margin-top:22px !important; }
+.admin-side .status-block.yellow { border-left-color:var(--ln-yellow) !important; }
+
+/* Columna principal: aire interno para que la cabecera y la cola
+   no toquen las esquinas redondeadas de la tarjeta blanca */
+.admin-main { padding:28px 30px 32px !important; }
+.admin-main-head { margin-bottom:24px !important; }
+
+/* Cohesión tipográfica: los títulos de las tarjetas de carga operativa
+   (Actualizar Banco Central / SIB / cola editorial) quedaron fuera de la
+   lista que unificó los titulares a Poppins; se suman aquí */
+.chart-data-card h3,
+.ops-card h3 {
+  font-family:'Poppins','Inter',-apple-system,sans-serif !important;
+  letter-spacing:-.03em;
+  color:var(--ln-deep-navy) !important;
+  font-weight:700 !important;
+}
+
+/* Toggle BCRD activo: azul institucional con texto blanco
+   (antes: texto blanco sobre el gris claro forzado por la capa) */
+.bcrd-panel-toggle.active {
+  background:var(--ln-blue) !important;
+  color:#fff !important;
+  border-color:transparent !important;
+  box-shadow:0 12px 24px rgba(0,112,192,.20) !important;
+}
+.bcrd-panel-toggle.active .toggle-kicker { opacity:.85; }
 </style>
 <script id="ln-v39-final-fixes">
 (function(){

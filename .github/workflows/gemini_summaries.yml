@@ -1,0 +1,68 @@
+name: Resumen Ejecutivo Gemini
+
+on:
+  schedule:
+    # Día 6 y 21 de cada mes, 8:00 AM Santo Domingo (12:00 UTC):
+    # un día después del pipeline SIB (día 5 y 20), para resumir el dato nuevo.
+    - cron: "0 12 6,21 * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Solo imprimir contexto, sin llamar a Gemini (true/false)"
+        required: false
+        default: "false"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gemini-summaries
+  cancel-in-progress: false
+
+jobs:
+  gemini-summaries:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Generar resúmenes ejecutivos
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: gemini-2.5-flash-lite
+          GEMINI_SUMMARY_PATH: data/gemini_summaries.json
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            python scripts/generate_gemini_summaries.py --dry-run
+          else
+            python scripts/generate_gemini_summaries.py
+          fi
+
+      - name: Commit del resumen si cambió
+        run: |
+          if [ -n "$(git status --porcelain data/gemini_summaries.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/gemini_summaries.json
+            git commit -m "Actualizar resúmenes ejecutivos Gemini [skip ci]"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push
+          else
+            echo "Sin cambios en los resúmenes."
+          fi
