@@ -1,0 +1,37 @@
+{
+  "generado_en": "2026-07-10T12:11:00.138946+00:00",
+  "modelo": "gemini-2.5-flash-lite",
+  "secciones": {
+    "macro": {
+      "periodo": "2026-07",
+      "titulo": "Crédito industrial crece y amnistías fiscales recaudan menos",
+      "resumen": "El financiamiento a la industria manufacturera dominicana mostró un dinamismo significativo, superando los RD$120,000 millones a abril de 2026. Paralelamente, se observa una tendencia decreciente en la recaudación de las amnistías fiscales para el gobierno en los últimos cinco años y medio.",
+      "puntos": [
+        "La cartera de crédito para la manufactura creció 16.7% interanual.",
+        "El crédito en moneda nacional representa el 75.6% del financiamiento industrial.",
+        "Las amnistías fiscales han recaudado cada vez menos fondos para el Estado."
+      ],
+      "vigilar": [
+        "Evolución del financiamiento al sector industrial.",
+        "Impacto de la menor recaudación de amnistías fiscales en las finanzas públicas."
+      ],
+      "generado_en": "2026-07-10T12:11:06.697054+00:00"
+    },
+    "sib": {
+      "periodo": "2026-05",
+      "titulo": "Sistema financiero muestra estabilidad en cartera y rentabilidad",
+      "resumen": "El sistema financiero dominicano, en su conjunto, mantiene indicadores de salud general estables, con una morosidad contenida y una rentabilidad que se recupera. Las Asociaciones de Ahorros y Préstamos (AAyP) exhiben un comportamiento similar, con activos en crecimiento y una eficiencia que ha mejorado respecto a meses previos.",
+      "puntos": [
+        "La morosidad general del sistema se ubica en 2.08% para las AAyP y 1.86% para los Bancos Múltiples al cierre de mayo 2026.",
+        "La rentabilidad (ROE) de las AAyP alcanzó 8.53% y la de los Bancos Múltiples fue de 19.94% en mayo 2026.",
+        "La eficiencia (CTI) de las AAyP mejoró a 65.20% en mayo 2026, mientras que la de los Bancos Múltiples se situó en 57.00%."
+      ],
+      "vigilar": [
+        "La morosidad de las AAyP ha fluctuado en torno al 2.00% en los últimos meses.",
+        "La eficiencia de las AAyP, aunque mejoró, se mantiene por encima de la de los Bancos Múltiples.",
+        "Se observa una tendencia de crecimiento en los activos totales de las AAyP, alcanzando 419.2 MMM RD$ en mayo 2026."
+      ],
+      "generado_en": "2026-07-10T12:11:32.735977+00:00"
+    }
+  }
+}
