@@ -8684,6 +8684,85 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
 .composer-card input { width:100%; border:1px solid var(--line-soft); border-radius:8px; padding:10px 11px; font:inherit; font-size:12px; background:#fff; color:var(--ink); outline:none; transition:border-color .18s var(--ease-out), box-shadow .18s var(--ease-out); }
 .composer-card input:focus { border-color:var(--cyan-line); box-shadow:0 0 0 3px rgba(72,171,213,.10); }
 </style>
+<style id="ln-analyst-panel-polish">
+/* =====================================================================
+   Panel del analista · pulido de contraste y layout
+   La capa institucional pinta .admin-side en navy profundo, pero varios
+   estilos base quedaron pensados para fondo claro: título y hover en azul
+   navy (invisibles sobre navy), contadores blanco-sobre-blanco, cero
+   padding interno y la caja estirada a toda la altura de la columna.
+   El toggle BCRD activo heredaba texto blanco sobre el fondo gris claro
+   que fuerza la capa institucional. Este bloque va al final para ganar
+   la cascada sobre todas las capas anteriores.
+   ===================================================================== */
+
+/* Sidebar: caja compacta con aire interno; ya no se estira a lo alto */
+.admin-side {
+  align-self:start !important;
+  padding:24px 22px 26px !important;
+}
+@media (min-width: 981px) {
+  .admin-side { position:sticky; top:126px; }
+}
+.admin-side h3 { color:rgba(255,255,255,.92) !important; }
+
+/* Items de la cola: pastillas legibles sobre navy, sin separadores */
+.admin-side .admin-side-item {
+  padding:11px 14px !important;
+  border-bottom:none !important;
+  margin-bottom:8px;
+  border-radius:12px !important;
+}
+.admin-side .admin-side-item:hover,
+.admin-side .admin-side-item#side-item-log:hover {
+  color:#fff !important;
+  background:rgba(255,255,255,.14) !important;
+}
+.admin-side .admin-side-item.on,
+.admin-side .admin-side-item.on:hover {
+  background:var(--ln-yellow) !important;
+  color:var(--ln-deep-navy) !important;
+  font-weight:800;
+}
+.admin-side .admin-side-item .count {
+  background:rgba(255,255,255,.16) !important;
+  color:#fff !important;
+}
+.admin-side .admin-side-item.on .count {
+  background:rgba(0,32,96,.16) !important;
+  color:var(--ln-deep-navy) !important;
+}
+
+/* Bloques de estado: recuperar el acento de color sobre navy */
+.admin-side .status-block { border-left-color:var(--ln-sky) !important; border-radius:12px !important; margin-top:22px !important; }
+.admin-side .status-block.yellow { border-left-color:var(--ln-yellow) !important; }
+
+/* Columna principal: aire interno para que la cabecera y la cola
+   no toquen las esquinas redondeadas de la tarjeta blanca */
+.admin-main { padding:28px 30px 32px !important; }
+.admin-main-head { margin-bottom:24px !important; }
+
+/* Cohesión tipográfica: los títulos de las tarjetas de carga operativa
+   (Actualizar Banco Central / SIB / cola editorial) quedaron fuera de la
+   lista que unificó los titulares a Poppins; se suman aquí */
+.chart-data-card h3,
+.ops-card h3 {
+  font-family:'Poppins','Inter',-apple-system,sans-serif !important;
+  letter-spacing:-.03em;
+  color:var(--ln-deep-navy) !important;
+  font-weight:700 !important;
+}
+
+/* Toggle BCRD activo: azul institucional con texto blanco
+   (antes: texto blanco sobre el gris claro forzado por la capa) */
+.bcrd-panel-toggle.active {
+  background:var(--ln-blue) !important;
+  color:#fff !important;
+  border-color:transparent !important;
+  box-shadow:0 12px 24px rgba(0,112,192,.20) !important;
+}
+.bcrd-panel-toggle.active .toggle-kicker { opacity:.85; }
+</style>
 <script id="ln-v39-final-fixes">
 (function(){
   const originalOpen = window.openNewsLogDrawer;
