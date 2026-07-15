@@ -3668,31 +3668,9 @@ footer .mark{
         <button class="capta-product-tab" type="button" data-captacion-product="depositos">Depósitos</button>
       </div>
 
-      <div class="capta-insight capta-filter-panel" id="capta-insight">
+      <div class="capta-insight" id="capta-insight">
         <span class="capta-insight-dot"></span>
-        <div class="capta-filter-label">
-          <span class="capta-filter-kicker">Filtrar visualización</span>
-          <strong>Selecciona el gráfico del mapa de captación</strong>
-        </div>
-        <div class="capta-chart-filter-row" id="captacion-chart-filter" aria-label="Filtro de gráfico de captación">
-          <div class="peer-filter compact" aria-label="Seleccionar gráfico de captación">
-            <div class="premium-select" id="capta-chart-select-ui">
-              <input type="hidden" id="capta-chart-select" value="evolucion">
-              <button class="premium-select-trigger" id="capta-chart-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="capta-chart-menu">
-                <span class="select-text"><span class="select-kicker">Gráfico</span><span class="select-value" id="capta-chart-value">Evolución</span></span>
-                <span class="select-chev" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              </button>
-              <div class="premium-select-menu" id="capta-chart-menu" role="listbox" aria-label="Gráfico del mapa de captación">
-                <button class="premium-option" type="button" role="option" data-value="evolucion" aria-selected="true"><span>Evolución</span></button>
-                <button class="premium-option" type="button" role="option" data-value="share" aria-selected="false"><span>Market share</span></button>
-                <button class="premium-option" type="button" role="option" data-value="region" aria-selected="false"><span>Región</span></button>
-                <button class="premium-option" type="button" role="option" data-value="ranking" aria-selected="false"><span>Ranking</span></button>
-                <button class="premium-option" type="button" role="option" data-value="mix" aria-selected="false"><span>Mix</span></button>
-              </div>
-            </div>
-          </div>
-          <button class="btn-filter" id="capta-chart-filter-btn" type="button">Ver gráfico</button>
-        </div>
+        <p>Corte ejecutivo en moneda nacional. El módulo prioriza balance captado, cuota de La Nacional y composición competitiva por entidad.</p>
       </div>
 
       <div class="capta-kpi-grid">
@@ -3706,10 +3684,13 @@ footer .mark{
         <div class="chart-block capta-chart-wide" data-capta-chart="evolucion">
           <div class="chart-block-head">
             <div>
-              <h3 class="serif" id="capta-title-evolucion">Evolución de captaciones</h3>
-              <div class="sub">Sistema financiero vs. La Nacional · RD$ MM · 2022-2026</div>
+              <h3 class="serif" id="capta-title-evolucion">Comparación de entidades · captación</h3>
+              <div class="sub" id="capta-sub-evolucion">Balance captado por entidad · RD$ MM</div>
             </div>
-            <div class="source">Fuente: SIB</div>
+            <div class="source chart-entity-toolbar" id="capta-evolucion-toolbar">
+              <span>Fuente: SIB</span>
+              <div class="ln-entity-picker" data-entity-picker="capta-evolucion"></div>
+            </div>
           </div>
           <div class="chart-container" style="height:330px"><canvas id="cap-chart-evolucion"></canvas></div>
         </div>
@@ -12159,9 +12140,28 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     return OTHER_PALETTE[otherCounter.i++ % OTHER_PALETTE.length];
   }
 
+  // Entidades "comparables/materiales" del tipo en el segmento actual:
+  // se excluye la cola de jugadores marginales (< 5% del líder de su tipo),
+  // para que el promedio refleje la banca realmente comparable y no lo
+  // arrastren bancos pequeños/digitales que casi no participan del segmento.
+  var MATERIAL_FRACTION = 0.05;
+  function materialMembers(d, tipo) {
+    var es = (d && d.entitySeries) || {};
+    var li = ((d && d.years) || []).length - 1;
+    if (li < 0) return [];
+    var vals = Object.keys(es)
+      .filter(function (e) { return ENTITY_TIPO[String(e).toUpperCase()] === tipo; })
+      .map(function (e) { return { e: e, v: Number(es[e] && es[e][li]) }; })
+      .filter(function (x) { return Number.isFinite(x.v) && x.v > 0; });
+    if (!vals.length) return [];
+    var leader = vals.reduce(function (mx, x) { return x.v > mx ? x.v : mx; }, 0);
+    var thr = MATERIAL_FRACTION * leader;
+    return vals.filter(function (x) { return x.v >= thr; }).map(function (x) { return x.e; });
+  }
   function aggregate(d, tipo, field, len) {
     var map = (d && d[field]) || {};
-    var members = Object.keys(map).filter(function (e) { return ENTITY_TIPO[String(e).toUpperCase()] === tipo; });
+    var members = materialMembers(d, tipo).filter(function (e) { return map[e]; });
+    if (!members.length) return new Array(len).fill(null);
     var sums = new Array(len).fill(0), counts = new Array(len).fill(0);
     members.forEach(function (e) {
       var arr = map[e] || [];
@@ -12368,9 +12368,10 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     });
   }
 
+  var CREDIT_PICKERS = '.ln-entity-picker[data-entity-picker="evolucion"], .ln-entity-picker[data-entity-picker="region"]';
   function syncPickers() {
     var count = selectedEntities.length;
-    document.querySelectorAll('.ln-entity-picker').forEach(function (mount) {
+    document.querySelectorAll(CREDIT_PICKERS).forEach(function (mount) {
       if (!mount.__lnBuilt) return;
       var countEl = mount.querySelector('.ln-entity-count');
       if (countEl) countEl.textContent = String(count);
@@ -12391,7 +12392,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   function ensurePickers() {
     var data = creditData();
     if (!data || !Array.isArray(data.entityOptions) || !data.entityOptions.length) return false;
-    var mounts = document.querySelectorAll('.ln-entity-picker');
+    var mounts = document.querySelectorAll(CREDIT_PICKERS);
     if (!mounts.length) return false;
     mounts.forEach(function (mount) { if (!mount.__lnBuilt) buildPicker(mount); });
     syncPickers();
@@ -12939,6 +12940,254 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   [600, 1400, 2400].forEach(function (t) { setTimeout(function () { KEYS.forEach(ensureInject); wrapPublish(); wrapLiveSync(); }, t); });
 
   window.LN_AI_CURATION = { onBaseRender: onBaseRender, generate: generate, buildSib: buildSib, buildMacro: buildMacro, applyRemoteAi: applyRemoteAi, wrapLiveSync: wrapLiveSync };
+})();
+</script>
+
+<script id="ln-capta-multientity-controller">
+(function () {
+  'use strict';
+
+  // Mismo patrón que Créditos, adaptado a Captación. Captación solo tiene datos
+  // por entidad en el último corte (ranking), por eso la comparación es del
+  // corte más reciente (no serie histórica ni regional por entidad).
+  var MAX = 5;
+  var COL_LN = (typeof BM !== 'undefined' && BM.us) ? BM.us : '#E6BE00';
+  var COL_BM = (typeof BM !== 'undefined' && BM.bmult) ? BM.bmult : '#15803D';
+  var COL_AAYP = (typeof BM !== 'undefined' && BM.aayp) ? BM.aayp : '#8A8A8A';
+  var COL_SYS = '#1F4E79';
+  var OTHER_PALETTE = ['#0070C0', '#2563EB', '#7C3AED', '#0EA5E9', '#C0392B', '#EA580C'];
+  var SPECIAL_COLORS = { 'LA NACIONAL': COL_LN, 'BM_AGG': COL_BM, 'AAYP_AGG': COL_AAYP, 'SISTEMA_FINANCIERO': COL_SYS };
+  var MATERIAL_FRACTION = 0.05;
+
+  var ENTITY_TIPO = {
+    'ADEMI':'BM','BANESCO':'BM','BANRESERVAS':'BM','BDI':'BM','BHD':'BM','BLH':'BM','CARIBE':'BM','CITIBANK':'BM',
+    'JMMB':'BM','LAFISE':'BM','POPULAR':'BM','PROMERICA':'BM','QIK BANCO DIGITAL':'BM','SANTA CRUZ':'BM','SCOTIABANK':'BM','VIMENCA':'BM',
+    'ALAVER':'AAyP','APAP':'AAyP','BONAO':'AAyP','CIBAO':'AAyP','DUARTE':'AAyP','LA NACIONAL':'AAyP','MAGUANA':'AAyP','MOCANA':'AAyP','PERAVIA':'AAyP','ROMANA':'AAyP'
+  };
+
+  var TOKEN_LN = 'LA NACIONAL';
+  var selected = [TOKEN_LN, 'BM_AGG', 'AAYP_AGG'];
+  var redrawTimer = null;
+
+  function captaData() { try { if (typeof CAPTACION_DATA !== 'undefined' && CAPTACION_DATA.products) return CAPTACION_DATA; } catch (_) {} return null; }
+  function num(v) { var n = Number(v); return Number.isFinite(n) ? n : null; }
+  function currentProduct() {
+    var data = captaData(); if (!data) return null;
+    var key = 'total';
+    try { if (typeof captacionActiveProduct !== 'undefined' && captacionActiveProduct) key = captacionActiveProduct; } catch (_) {}
+    return data.products[key] || data.products.total;
+  }
+  function fmtMM(v) {
+    if (typeof captaFmtMM === 'function') { try { return captaFmtMM(v); } catch (_) {} }
+    if (!Number.isFinite(Number(v))) return 'N/D';
+    return 'RD$' + Number(v).toLocaleString('es-DO', { maximumFractionDigits: 0 }) + ' MM';
+  }
+  function chartStore() { try { if (typeof captacionCharts !== 'undefined') return captacionCharts; } catch (_) {} window.__lnCaptaCharts = window.__lnCaptaCharts || {}; return window.__lnCaptaCharts; }
+  function clearEmpty(id) { try { if (typeof captaSetEmpty === 'function') captaSetEmpty(id, false); } catch (_) {} }
+
+  // ── Opciones y valores por entidad (último corte, desde ranking) ───────
+  function allRankingEntities() {
+    var data = captaData(); if (!data) return [];
+    var seen = {};
+    Object.keys(data.products || {}).forEach(function (k) {
+      (data.products[k].ranking || []).forEach(function (r) {
+        var e = String(r.entidad || '').toUpperCase().trim();
+        if (e && e !== TOKEN_LN) seen[e] = true;
+      });
+    });
+    return Object.keys(seen).sort();
+  }
+  function captaAgg(d, tipo) {
+    var vals = (d.ranking || []).filter(function (x) { return ENTITY_TIPO[String(x.entidad).toUpperCase()] === tipo; })
+      .map(function (x) { return num(x.valueMM); }).filter(function (v) { return v !== null && v > 0; });
+    if (!vals.length) return null;
+    var leader = vals.reduce(function (mx, v) { return v > mx ? v : mx; }, 0);
+    var thr = MATERIAL_FRACTION * leader;
+    var keep = vals.filter(function (v) { return v >= thr; });
+    return keep.length ? keep.reduce(function (a, b) { return a + b; }, 0) / keep.length : null;
+  }
+  function captaValue(d, token) {
+    var li = (d.years || []).length - 1;
+    if (token === TOKEN_LN) return num(d.lnMM && d.lnMM[li]);
+    if (token === 'SISTEMA_FINANCIERO') return num(d.sectorMM && d.sectorMM[li]);
+    if (token === 'BM_AGG') return captaAgg(d, 'BM');
+    if (token === 'AAYP_AGG') return captaAgg(d, 'AAyP');
+    var r = (d.ranking || []).find(function (x) { return String(x.entidad).toUpperCase() === token; });
+    return r ? num(r.valueMM) : null;
+  }
+  function labelFor(token) {
+    if (token === TOKEN_LN) return 'La Nacional';
+    if (token === 'BM_AGG') return 'Bancos Múltiples (prom.)';
+    if (token === 'AAYP_AGG') return 'Asociaciones (prom.)';
+    if (token === 'SISTEMA_FINANCIERO') return 'Sistema financiero';
+    return String(token || '').replace(/_/g, ' ');
+  }
+  function colorFor(token, counter) { return SPECIAL_COLORS[token] || OTHER_PALETTE[counter.i++ % OTHER_PALETTE.length]; }
+
+  // ── Dibujo de la comparación (último corte) ────────────────────────────
+  function redraw() {
+    var d = currentProduct();
+    if (!d || !window.Chart) return;
+    var canvas = document.getElementById('cap-chart-evolucion');
+    if (!canvas) return;
+    clearEmpty('cap-chart-evolucion');
+    var charts = chartStore();
+    var yrs = d.years || [];
+    var cutLabel = String(yrs[yrs.length - 1] || (captaData() && captaData().cut) || 'Último corte');
+    var counter = { i: 0 };
+    var datasets = selected.slice(0, MAX).map(function (tok) {
+      var c = colorFor(tok, counter);
+      return { label: labelFor(tok), data: [captaValue(d, tok)], backgroundColor: c, borderColor: c, borderWidth: 0, borderRadius: 5, maxBarThickness: 68, categoryPercentage: 0.7, barPercentage: 0.9 };
+    });
+    try { if (charts.evolucion) charts.evolucion.destroy(); } catch (_) {}
+    charts.evolucion = new Chart(canvas, {
+      type: 'bar',
+      data: { labels: [cutLabel], datasets: datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        animation: { duration: 480, easing: 'easeOutQuart' },
+        interaction: { mode: 'index', intersect: false },
+        layout: { padding: { top: 12 } },
+        plugins: {
+          legend: { position: 'bottom', labels: { boxWidth: 12, boxHeight: 12, font: { family: 'Inter', size: 11 }, color: '#5a5a5a', usePointStyle: true, pointStyle: 'rectRounded' } },
+          tooltip: { backgroundColor: '#1F4E79', padding: 10, callbacks: { label: function (ctx) { return ctx.dataset.label + ': ' + fmtMM(ctx.parsed.y); } } }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#8A8A8A', font: { family: 'Inter', size: 10 } } },
+          y: { grid: { color: '#EEEEEE' }, ticks: { color: '#8A8A8A', font: { family: 'JetBrains Mono', size: 10 }, callback: function (v) { return Number(v).toLocaleString('es-DO', { maximumFractionDigits: 0 }); } } }
+        }
+      }
+    });
+    var title = document.getElementById('capta-title-evolucion');
+    if (title) title.textContent = 'Comparación de entidades · captación';
+    var sub = document.getElementById('capta-sub-evolucion');
+    if (sub) sub.textContent = 'Balance captado por entidad · último corte · RD$ MM';
+    syncPickers();
+  }
+  function scheduleRedraw(delay) { if (redrawTimer) clearTimeout(redrawTimer); redrawTimer = setTimeout(redraw, delay || 90); }
+
+  // ── Checklist (reutiliza estilos .ln-entity-picker) ────────────────────
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function optionRows() {
+    var rows = [
+      { value: TOKEN_LN, label: 'La Nacional', color: COL_LN, locked: true },
+      { value: 'BM_AGG', label: 'Bancos Múltiples (prom.)', color: COL_BM },
+      { value: 'AAYP_AGG', label: 'Asociaciones (prom.)', color: COL_AAYP },
+      { value: 'SISTEMA_FINANCIERO', label: 'Sistema financiero', color: COL_SYS },
+      { divider: true }
+    ];
+    allRankingEntities().forEach(function (e) { rows.push({ value: e, label: e }); });
+    return rows;
+  }
+  function buildPicker(mount) {
+    var rows = optionRows();
+    var trigger = document.createElement('button');
+    trigger.type = 'button'; trigger.className = 'ln-entity-trigger';
+    trigger.setAttribute('aria-haspopup', 'true'); trigger.setAttribute('aria-expanded', 'false');
+    trigger.innerHTML = '<span class="ln-entity-count">0</span><span class="ln-entity-label">Entidades</span>' +
+      '<span class="ln-entity-chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+    var panel = document.createElement('div');
+    panel.className = 'ln-entity-panel'; panel.setAttribute('role', 'group');
+    panel.setAttribute('aria-label', 'Seleccionar entidades (hasta ' + MAX + ')');
+    var html = '<div class="ln-entity-panel-head">Elige hasta <b>' + MAX + '</b> · La Nacional siempre incluida</div>';
+    rows.forEach(function (r) {
+      if (r.divider) { html += '<div class="ln-entity-divider"></div>'; return; }
+      var checked = selected.indexOf(r.value) >= 0;
+      var swatch = '<span class="ln-entity-swatch" style="background:' + (r.color || 'transparent') + '"></span>';
+      html += '<label class="ln-entity-row' + (r.locked ? ' locked' : '') + '" data-value="' + esc(r.value) + '">' +
+        '<input type="checkbox" value="' + esc(r.value) + '"' + (checked ? ' checked' : '') + (r.locked ? ' disabled' : '') + '>' +
+        swatch + '<span class="ln-entity-name">' + esc(r.label) + '</span></label>';
+    });
+    panel.innerHTML = html;
+    mount.innerHTML = ''; mount.appendChild(trigger); mount.appendChild(panel); mount.__lnBuilt = true;
+    trigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = mount.classList.contains('open');
+      closeAll();
+      if (!isOpen) { mount.classList.add('open'); trigger.setAttribute('aria-expanded', 'true'); }
+    });
+    panel.addEventListener('change', function (e) {
+      var input = e.target; if (!input || input.type !== 'checkbox') return;
+      var value = input.value;
+      if (value === TOKEN_LN) { input.checked = true; return; }
+      if (input.checked) {
+        if (selected.length >= MAX) { input.checked = false; return; }
+        if (selected.indexOf(value) < 0) selected.push(value);
+      } else { selected = selected.filter(function (v) { return v !== value; }); }
+      redraw();
+    });
+  }
+  function closeAll() {
+    document.querySelectorAll('.ln-entity-picker.open').forEach(function (p) {
+      p.classList.remove('open');
+      var t = p.querySelector('.ln-entity-trigger'); if (t) t.setAttribute('aria-expanded', 'false');
+    });
+  }
+  function syncPickers() {
+    var count = selected.length;
+    document.querySelectorAll('.ln-entity-picker[data-entity-picker="capta-evolucion"]').forEach(function (mount) {
+      if (!mount.__lnBuilt) return;
+      var countEl = mount.querySelector('.ln-entity-count'); if (countEl) countEl.textContent = String(count);
+      mount.querySelectorAll('.ln-entity-row').forEach(function (row) {
+        var input = row.querySelector('input'); if (!input) return;
+        var value = input.value, isSel = selected.indexOf(value) >= 0, locked = value === TOKEN_LN;
+        input.checked = isSel || locked;
+        var disableUnchecked = !isSel && !locked && count >= MAX;
+        input.disabled = locked || disableUnchecked;
+        row.classList.toggle('disabled', disableUnchecked);
+      });
+    });
+  }
+  function ensurePickers() {
+    var mounts = document.querySelectorAll('.ln-entity-picker[data-entity-picker="capta-evolucion"]');
+    if (!mounts.length || !captaData()) return false;
+    mounts.forEach(function (m) { if (!m.__lnBuilt) buildPicker(m); });
+    syncPickers();
+    return true;
+  }
+
+  // ── Mostrar toda la grilla (quita el filtro de un solo gráfico) ────────
+  function showAllCharts() {
+    var grid = document.querySelector('[data-cartera-panel-view="captacion"] .capta-grid');
+    if (!grid) return;
+    grid.classList.remove('is-filtered');
+    grid.querySelectorAll('[data-capta-chart]').forEach(function (b) { b.classList.remove('capta-chart-hidden'); });
+  }
+  window.applyCaptaChartFilter = showAllCharts;
+
+  // ── Envolver el dibujo de captación para superponer la comparación ─────
+  function ensureWrap() {
+    var cur = window.drawCaptacionDashboard;
+    if (typeof cur !== 'function' || cur.__lnCaptaWrap) return;
+    var inner = cur;
+    var wrapped = function () {
+      var out;
+      try { out = inner.apply(this, arguments); } catch (err) { console.warn('[LN-capta] draw base:', err); }
+      try { showAllCharts(); } catch (_) {}
+      try { redraw(); } catch (err2) { console.warn('[LN-capta] redraw:', err2); }
+      return out;
+    };
+    wrapped.__lnCaptaWrap = true;
+    window.drawCaptacionDashboard = wrapped;
+    try { drawCaptacionDashboard = wrapped; } catch (_) {}
+  }
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest) return;
+    if (e.target.closest('#cartera-mode-tabs [data-cartera-panel="captacion"]') ||
+        e.target.closest('#captacion-product-tabs [data-captacion-product]')) {
+      ensureWrap();
+      scheduleRedraw(180);
+    }
+  }, true);
+
+  function boot() { ensureWrap(); showAllCharts(); if (ensurePickers()) scheduleRedraw(120); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
+  else boot();
+  [300, 700, 1200, 1900, 2600, 3400].forEach(function (t) { setTimeout(function () { ensureWrap(); showAllCharts(); if (ensurePickers()) scheduleRedraw(80); }, t); });
+  setInterval(ensureWrap, 800);
+
+  window.LN_CAPTA_MULTIENTITY = { redraw: redraw, get selection() { return selected.slice(); } };
 })();
 </script>
 
