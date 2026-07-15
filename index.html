@@ -3538,7 +3538,7 @@ footer .mark{
   <!-- CARTERA -->
   <div class="subview" data-subview="cartera">
     <div class="cartera-mode-tabs" id="cartera-mode-tabs" aria-label="Opciones SIB">
-      <button class="cartera-mode-tab active" type="button" data-cartera-panel="tipo">Carteras</button>
+      <button class="cartera-mode-tab active" type="button" data-cartera-panel="tipo">Créditos</button>
       <button class="cartera-mode-tab" type="button" data-cartera-panel="captacion">Captación</button>
     </div>
 
@@ -3593,8 +3593,8 @@ footer .mark{
             </div>
             <div class="source chart-entity-toolbar" id="cartera-evolucion-toolbar">
               <span>Fuente: SIB</span>
-              <select id="cartera-entity-evol-select" aria-label="Elegir entidad para evolución de cartera"></select>
-              <button type="button" onclick="lnApplyCarteraEntityChoice('evolucion')">Graficar</button>
+              <div class="ln-entity-picker" data-entity-picker="evolucion"></div>
+              <select id="cartera-entity-evol-select" aria-label="Elegir entidad para evolución de cartera" hidden></select>
             </div>
           </div>
           <div class="chart-container" style="height:330px"><canvas id="car-chart-evolucion"></canvas></div>
@@ -3619,8 +3619,8 @@ footer .mark{
             </div>
             <div class="source chart-entity-toolbar" id="cartera-region-toolbar">
               <span>Fuente: SIB</span>
-              <select id="cartera-entity-region-select" aria-label="Elegir entidad para distribución regional de cartera"></select>
-              <button type="button" onclick="lnApplyCarteraEntityChoice('region')">Graficar</button>
+              <div class="ln-entity-picker" data-entity-picker="region"></div>
+              <select id="cartera-entity-region-select" aria-label="Elegir entidad para distribución regional de cartera" hidden></select>
             </div>
           </div>
           <div class="chart-container" style="height:280px"><canvas id="car-chart-region"></canvas></div>
@@ -6173,8 +6173,9 @@ function renderAiBrief(key, seccion, meta) {
     stamp = new Intl.DateTimeFormat('es-DO', { day: '2-digit', month: 'long', year: 'numeric' })
       .format(new Date(fecha));
   } catch (_e) { /* fecha ausente o inválida: se omite el sello */ }
-  set('foot', `Generado con ${meta.modelo || 'Gemini'}${stamp ? ' · ' + stamp : ''} · Borrador automático de IA: verificar cifras contra la fuente oficial antes de citar.`);
+  set('foot', `Generado con ${meta.modelo || 'Gemini'}${stamp ? ' · ' + stamp : ''} · Verificar cifras contra la fuente oficial antes de citar.`);
   card.hidden = false;
+  try { if (window.LN_AI_CURATION && typeof window.LN_AI_CURATION.onBaseRender === 'function') window.LN_AI_CURATION.onBaseRender(key); } catch (_) {}
 }
 
 async function loadGeminiSummaries() {
@@ -12019,6 +12020,925 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   } else {
     bind();
   }
+})();
+</script>
+
+<style id="ln-entity-multiselect-style">
+  .chart-entity-toolbar { flex-wrap: wrap; gap: 8px; }
+  .ln-entity-picker { position: relative; display: inline-flex; font-family: 'Inter', sans-serif; }
+  .ln-entity-trigger {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--white, #fff); border: 1px solid var(--line, #E4E4E4);
+    border-radius: 8px; padding: 7px 12px; cursor: pointer;
+    font-size: 12px; font-weight: 600; color: var(--ink, #1a1a1a);
+    letter-spacing: .2px; line-height: 1; min-height: 34px;
+    -webkit-tap-highlight-color: transparent; transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .ln-entity-trigger:hover, .ln-entity-trigger:focus-visible { border-color: var(--yellow, #E6BE00); box-shadow: 0 0 0 3px rgba(230,190,0,.14); outline: none; }
+  .ln-entity-trigger .ln-entity-count {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px;
+    background: var(--yellow, #E6BE00); color: #4a3c00; font-size: 10.5px; font-weight: 800;
+  }
+  .ln-entity-trigger .ln-entity-chev { transition: transform .18s ease; }
+  .ln-entity-picker.open .ln-entity-trigger .ln-entity-chev { transform: rotate(180deg); }
+  .ln-entity-panel {
+    position: absolute; top: calc(100% + 6px); right: 0; z-index: 60;
+    width: 268px; max-width: 82vw; max-height: 340px; overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background: var(--white, #fff); border: 1px solid var(--line, #E4E4E4);
+    border-radius: 10px; box-shadow: 0 14px 40px rgba(15,40,60,.16);
+    padding: 8px; display: none;
+  }
+  .ln-entity-picker.open .ln-entity-panel { display: block; }
+  .ln-entity-panel-head {
+    font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase;
+    color: var(--ink-mute, #8A8A8A); font-weight: 700; padding: 6px 8px 8px;
+  }
+  .ln-entity-panel-head b { color: var(--ink, #1a1a1a); }
+  .ln-entity-divider { height: 1px; background: var(--line-soft, #EFEFEF); margin: 6px 4px; }
+  .ln-entity-row {
+    display: flex; align-items: center; gap: 10px; padding: 9px 8px;
+    border-radius: 7px; cursor: pointer; font-size: 13px; color: var(--ink-soft, #333);
+    user-select: none; -webkit-tap-highlight-color: transparent;
+  }
+  .ln-entity-row:hover { background: rgba(0,73,92,.05); }
+  .ln-entity-row input { width: 17px; height: 17px; flex: 0 0 auto; accent-color: var(--yellow, #E6BE00); margin: 0; cursor: pointer; }
+  .ln-entity-row .ln-entity-swatch { width: 10px; height: 10px; border-radius: 3px; flex: 0 0 auto; }
+  .ln-entity-row .ln-entity-name { flex: 1; }
+  .ln-entity-row.locked { color: var(--ink, #1a1a1a); font-weight: 600; }
+  .ln-entity-row.locked input { accent-color: var(--yellow, #E6BE00); }
+  .ln-entity-row.disabled { opacity: .38; cursor: not-allowed; }
+  .ln-entity-row.disabled input { cursor: not-allowed; }
+  @media (max-width: 760px) {
+    .ln-entity-panel { width: 240px; }
+  }
+</style>
+
+<script id="ln-credit-multientity-controller">
+(function () {
+  'use strict';
+
+  // ── Máximo de barras/series simultáneas ────────────────────────────────
+  var MAX = 5;
+
+  // Colores solicitados: La Nacional amarillo, Bancos Múltiples verde, Asociaciones gris.
+  var COL_LN   = (typeof BM !== 'undefined' && BM.us)    ? BM.us    : '#E6BE00';
+  var COL_BM   = (typeof BM !== 'undefined' && BM.bmult) ? BM.bmult : '#15803D';
+  var COL_AAYP = (typeof BM !== 'undefined' && BM.aayp)  ? BM.aayp  : '#8A8A8A';
+  var COL_SYS  = '#1F4E79';
+  var OTHER_PALETTE = ['#0070C0', '#2563EB', '#7C3AED', '#0EA5E9', '#C0392B', '#EA580C'];
+
+  var SPECIAL_COLORS = {
+    'LA NACIONAL': COL_LN,
+    'BM_AGG': COL_BM,
+    'AAYP_AGG': COL_AAYP,
+    'SISTEMA_FINANCIERO': COL_SYS
+  };
+
+  // Clasificación de entidades por tipo (fuente: snapshot SIB · tipo_entidad).
+  var ENTITY_TIPO = {
+    // Bancos Múltiples
+    'ADEMI':'BM','BANESCO':'BM','BANRESERVAS':'BM','BDI':'BM','BHD':'BM','BLH':'BM',
+    'CARIBE':'BM','CITIBANK':'BM','JMMB':'BM','LAFISE':'BM','POPULAR':'BM','PROMERICA':'BM',
+    'QIK BANCO DIGITAL':'BM','SANTA CRUZ':'BM','SCOTIABANK':'BM','VIMENCA':'BM',
+    // Asociaciones de Ahorros y Préstamos
+    'ALAVER':'AAyP','APAP':'AAyP','BONAO':'AAyP','CIBAO':'AAyP','DUARTE':'AAyP',
+    'LA NACIONAL':'AAyP','MAGUANA':'AAyP','MOCANA':'AAyP','PERAVIA':'AAyP','ROMANA':'AAyP'
+  };
+
+  var TOKEN_LN = 'LA NACIONAL';
+  // Selección por defecto: La Nacional (amarillo) + agregados verde/gris.
+  var selectedEntities = [TOKEN_LN, 'BM_AGG', 'AAYP_AGG'];
+  var redrawTimer = null;
+
+  function creditData() {
+    try {
+      if (window.LN_CREDIT_EXCEL_DATA && window.LN_CREDIT_EXCEL_DATA.products) return window.LN_CREDIT_EXCEL_DATA;
+      if (typeof CARTERA_TIPO_DATA !== 'undefined' && CARTERA_TIPO_DATA.products) return CARTERA_TIPO_DATA;
+    } catch (_) {}
+    return null;
+  }
+
+  function parentForKey(key) {
+    if (['consumo', 'consumo_general', 'tarjetas_credito'].indexOf(key) >= 0) return 'consumo';
+    if (['comercial', 'pymes', 'mayores_deudores'].indexOf(key) >= 0) return 'comercial';
+    return key || 'total';
+  }
+
+  function currentProduct() {
+    var data = creditData();
+    if (!data) return { key: 'total', d: null };
+    var prods = data.products || {};
+    var key = 'total';
+    try { if (typeof carteraTipoActiveProduct !== 'undefined' && carteraTipoActiveProduct) key = carteraTipoActiveProduct; } catch (_) {}
+    var d = prods[key];
+    if (!d) d = prods[parentForKey(key)];
+    if (!d) { key = 'total'; d = prods.total; }
+    return { key: key, d: d };
+  }
+
+  function entityOptions() {
+    var data = creditData();
+    var opts = (data && Array.isArray(data.entityOptions)) ? data.entityOptions : [];
+    return opts.filter(function (o) {
+      return o && o.value && o.value !== TOKEN_LN && o.value !== 'SISTEMA_FINANCIERO';
+    });
+  }
+
+  function labelFor(token) {
+    if (token === TOKEN_LN) return 'La Nacional';
+    if (token === 'BM_AGG') return 'Bancos Múltiples (prom.)';
+    if (token === 'AAYP_AGG') return 'Asociaciones (prom.)';
+    if (token === 'SISTEMA_FINANCIERO') return 'Sistema financiero';
+    return String(token || '').replace(/_/g, ' ');
+  }
+
+  function colorForToken(token, otherCounter) {
+    if (SPECIAL_COLORS[token]) return SPECIAL_COLORS[token];
+    return OTHER_PALETTE[otherCounter.i++ % OTHER_PALETTE.length];
+  }
+
+  function aggregate(d, tipo, field, len) {
+    var map = (d && d[field]) || {};
+    var members = Object.keys(map).filter(function (e) { return ENTITY_TIPO[String(e).toUpperCase()] === tipo; });
+    var sums = new Array(len).fill(0), counts = new Array(len).fill(0);
+    members.forEach(function (e) {
+      var arr = map[e] || [];
+      for (var i = 0; i < len; i++) {
+        var v = Number(arr[i]);
+        if (Number.isFinite(v)) { sums[i] += v; counts[i]++; }
+      }
+    });
+    return sums.map(function (s, i) { return counts[i] ? s / counts[i] : null; });
+  }
+
+  function evolSeries(d, token) {
+    var len = (d.years || []).length;
+    if (token === TOKEN_LN) return d.lnMM || [];
+    if (token === 'SISTEMA_FINANCIERO') return d.sectorMM || [];
+    if (token === 'BM_AGG') return aggregate(d, 'BM', 'entitySeries', len);
+    if (token === 'AAYP_AGG') return aggregate(d, 'AAyP', 'entitySeries', len);
+    return (d.entitySeries && d.entitySeries[token]) || [];
+  }
+
+  function regionSeries(d, token) {
+    var len = (d.regionLabels || []).length;
+    if (token === TOKEN_LN) return d.region2026 || [];
+    if (token === 'SISTEMA_FINANCIERO') return d.systemRegion2026 || [];
+    if (token === 'BM_AGG') return aggregate(d, 'BM', 'regionByEntity', len);
+    if (token === 'AAYP_AGG') return aggregate(d, 'AAyP', 'regionByEntity', len);
+    return (d.regionByEntity && d.regionByEntity[token]) || [];
+  }
+
+  function fmtMM(v) {
+    if (typeof carteraTipoFmtMM === 'function') { try { return carteraTipoFmtMM(v); } catch (_) {} }
+    if (!Number.isFinite(Number(v))) return 'N/D';
+    return 'RD$' + Number(v).toLocaleString('es-DO', { maximumFractionDigits: 0 }) + ' MM';
+  }
+
+  function chartStore() {
+    try { if (typeof carteraTipoCharts !== 'undefined') return carteraTipoCharts; } catch (_) {}
+    window.__lnMultiCharts = window.__lnMultiCharts || {};
+    return window.__lnMultiCharts;
+  }
+
+  function clearEmpty(id) { try { if (typeof carteraTipoSetEmpty === 'function') carteraTipoSetEmpty(id, false); } catch (_) {} }
+
+  function barOptions(yMoney) {
+    return {
+      responsive: true, maintainAspectRatio: false,
+      animation: { duration: 480, easing: 'easeOutQuart' },
+      interaction: { mode: 'index', intersect: false },
+      layout: { padding: { top: 12 } },
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 12, boxHeight: 12, font: { family: 'Inter', size: 11 }, color: '#5a5a5a', usePointStyle: true, pointStyle: 'rectRounded' } },
+        tooltip: { backgroundColor: '#1F4E79', padding: 10, callbacks: { label: function (ctx) { return ctx.dataset.label + ': ' + fmtMM(ctx.parsed.y); } } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#8A8A8A', font: { family: 'Inter', size: 10 }, maxRotation: 0, autoSkip: false } },
+        y: { grid: { color: '#EEEEEE' }, ticks: { color: '#8A8A8A', font: { family: 'JetBrains Mono', size: 10 }, callback: function (v) { return Number(v).toLocaleString('es-DO', { maximumFractionDigits: 0 }); } } }
+      }
+    };
+  }
+
+  function buildDatasets(d, getter) {
+    var counter = { i: 0 };
+    return selectedEntities.slice(0, MAX).map(function (tok) {
+      var c = colorForToken(tok, counter);
+      return {
+        label: labelFor(tok),
+        data: getter(d, tok),
+        backgroundColor: c,
+        borderColor: c,
+        borderWidth: 0,
+        borderRadius: 5,
+        maxBarThickness: 46,
+        categoryPercentage: 0.84,
+        barPercentage: 0.92
+      };
+    });
+  }
+
+  function setSub(el, text) { if (el) el.textContent = text; }
+
+  function redraw() {
+    var res = currentProduct();
+    var d = res.d;
+    if (!d || !window.Chart) return;
+    var charts = chartStore();
+
+    // Corrige la etiqueta de corte (el dataset trae latestPeriod solo con el año).
+    try {
+      var srcNote = document.getElementById('cartera-source-note');
+      var cut = (creditData() && creditData().cut) || '';
+      if (srcNote && cut) srcNote.textContent = 'SIB · ' + cut;
+    } catch (_) {}
+
+    // Evolución (barras agrupadas por año) ───────────────────────────────
+    var evolCanvas = document.getElementById('car-chart-evolucion');
+    if (evolCanvas) {
+      clearEmpty('car-chart-evolucion');
+      try { if (charts.evolucion) charts.evolucion.destroy(); } catch (_) {}
+      charts.evolucion = new Chart(evolCanvas, {
+        type: 'bar',
+        data: { labels: d.years || [], datasets: buildDatasets(d, evolSeries) },
+        options: barOptions(true)
+      });
+      var evolTitle = document.getElementById('cartera-title-evolucion');
+      setSub(evolTitle ? evolTitle.nextElementSibling : null, 'Comparación de hasta ' + MAX + ' entidades · RD$ MM · ' + ((d.years && d.years[0]) || '') + '-' + ((d.years && d.years[d.years.length - 1]) || ''));
+    }
+
+    // Región (barras agrupadas por región) ───────────────────────────────
+    var regionCanvas = document.getElementById('car-chart-region');
+    if (regionCanvas) {
+      clearEmpty('car-chart-region');
+      try { if (charts.region) charts.region.destroy(); } catch (_) {}
+      charts.region = new Chart(regionCanvas, {
+        type: 'bar',
+        data: { labels: d.regionLabels || [], datasets: buildDatasets(d, regionSeries) },
+        options: barOptions(true)
+      });
+      var regionSub = null;
+      try { regionSub = regionCanvas.closest('.chart-block').querySelector('.chart-block-head .sub'); } catch (_) {}
+      setSub(regionSub, 'Balance regional por entidad seleccionada · RD$ MM');
+    }
+
+    syncPickers();
+  }
+
+  function scheduleRedraw(delay) {
+    if (redrawTimer) clearTimeout(redrawTimer);
+    redrawTimer = setTimeout(redraw, delay || 90);
+  }
+
+  // ── Construcción del checklist táctil ──────────────────────────────────
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+  function optionRows() {
+    var rows = [];
+    rows.push({ value: TOKEN_LN, label: 'La Nacional', color: COL_LN, locked: true });
+    rows.push({ value: 'BM_AGG', label: 'Bancos Múltiples (prom.)', color: COL_BM });
+    rows.push({ value: 'AAYP_AGG', label: 'Asociaciones (prom.)', color: COL_AAYP });
+    rows.push({ value: 'SISTEMA_FINANCIERO', label: 'Sistema financiero', color: COL_SYS });
+    rows.push({ divider: true });
+    entityOptions().forEach(function (o) { rows.push({ value: o.value, label: o.label }); });
+    return rows;
+  }
+
+  function buildPicker(mount) {
+    var rows = optionRows();
+    var trigger = document.createElement('button');
+    trigger.type = 'button';
+    trigger.className = 'ln-entity-trigger';
+    trigger.setAttribute('aria-haspopup', 'true');
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.innerHTML = '<span class="ln-entity-count">0</span><span class="ln-entity-label">Entidades</span>' +
+      '<span class="ln-entity-chev" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+
+    var panel = document.createElement('div');
+    panel.className = 'ln-entity-panel';
+    panel.setAttribute('role', 'group');
+    panel.setAttribute('aria-label', 'Seleccionar entidades (hasta ' + MAX + ')');
+    var html = '<div class="ln-entity-panel-head">Elige hasta <b>' + MAX + '</b> · La Nacional siempre incluida</div>';
+    rows.forEach(function (r) {
+      if (r.divider) { html += '<div class="ln-entity-divider"></div>'; return; }
+      var checked = selectedEntities.indexOf(r.value) >= 0;
+      var swatch = r.color ? '<span class="ln-entity-swatch" style="background:' + r.color + '"></span>' : '<span class="ln-entity-swatch" style="background:transparent"></span>';
+      html += '<label class="ln-entity-row' + (r.locked ? ' locked' : '') + '" data-value="' + esc(r.value) + '">' +
+        '<input type="checkbox" value="' + esc(r.value) + '"' + (checked ? ' checked' : '') + (r.locked ? ' disabled' : '') + '>' +
+        swatch + '<span class="ln-entity-name">' + esc(r.label) + '</span></label>';
+    });
+    panel.innerHTML = html;
+
+    mount.innerHTML = '';
+    mount.appendChild(trigger);
+    mount.appendChild(panel);
+    mount.__lnBuilt = true;
+
+    trigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = mount.classList.contains('open');
+      closeAllPickers();
+      if (!isOpen) { mount.classList.add('open'); trigger.setAttribute('aria-expanded', 'true'); }
+    });
+
+    panel.addEventListener('change', function (e) {
+      var input = e.target;
+      if (!input || input.type !== 'checkbox') return;
+      var value = input.value;
+      if (value === TOKEN_LN) { input.checked = true; return; }
+      if (input.checked) {
+        if (selectedEntities.length >= MAX) { input.checked = false; return; }
+        if (selectedEntities.indexOf(value) < 0) selectedEntities.push(value);
+      } else {
+        selectedEntities = selectedEntities.filter(function (v) { return v !== value; });
+      }
+      redraw();
+    });
+
+    return mount;
+  }
+
+  function closeAllPickers() {
+    document.querySelectorAll('.ln-entity-picker.open').forEach(function (p) {
+      p.classList.remove('open');
+      var t = p.querySelector('.ln-entity-trigger');
+      if (t) t.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  function syncPickers() {
+    var count = selectedEntities.length;
+    document.querySelectorAll('.ln-entity-picker').forEach(function (mount) {
+      if (!mount.__lnBuilt) return;
+      var countEl = mount.querySelector('.ln-entity-count');
+      if (countEl) countEl.textContent = String(count);
+      mount.querySelectorAll('.ln-entity-row').forEach(function (row) {
+        var input = row.querySelector('input');
+        if (!input) return;
+        var value = input.value;
+        var isSel = selectedEntities.indexOf(value) >= 0;
+        var locked = value === TOKEN_LN;
+        input.checked = isSel || locked;
+        var disableUnchecked = !isSel && !locked && count >= MAX;
+        input.disabled = locked || disableUnchecked;
+        row.classList.toggle('disabled', disableUnchecked);
+      });
+    });
+  }
+
+  function ensurePickers() {
+    var data = creditData();
+    if (!data || !Array.isArray(data.entityOptions) || !data.entityOptions.length) return false;
+    var mounts = document.querySelectorAll('.ln-entity-picker');
+    if (!mounts.length) return false;
+    mounts.forEach(function (mount) { if (!mount.__lnBuilt) buildPicker(mount); });
+    syncPickers();
+    return true;
+  }
+
+  // ── Mantener el override de dibujo por encima de otros controladores ───
+  function ensureWrap() {
+    var cur = window.drawCarteraTipoDashboard;
+    if (typeof cur !== 'function' || cur.__lnMultiWrap) return;
+    var inner = cur;
+    var wrapped = function () {
+      var out;
+      try { out = inner.apply(this, arguments); } catch (err) { console.warn('[LN-multi] draw base falló:', err); }
+      try { redraw(); } catch (err2) { console.warn('[LN-multi] redraw falló:', err2); }
+      return out;
+    };
+    wrapped.__lnMultiWrap = true;
+    wrapped.__lnInner = inner;
+    window.drawCarteraTipoDashboard = wrapped;
+    try { drawCarteraTipoDashboard = wrapped; } catch (_) {}
+  }
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest || !e.target.closest('.ln-entity-picker')) closeAllPickers();
+  });
+
+  // Redibujar cuando cambian pestañas/segmentos de Créditos.
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest) return;
+    if (e.target.closest('#cartera-mode-tabs [data-cartera-panel="tipo"]') ||
+        e.target.closest('#cartera-tipo-product-tabs [data-cartera-product]') ||
+        e.target.closest('#consumo-subfilter [data-consumo-slice]') ||
+        e.target.closest('#comercial-subfilter [data-comercial-slice]')) {
+      ensureWrap();
+      scheduleRedraw(160);
+    }
+  }, true);
+
+  function boot() {
+    ensureWrap();
+    if (ensurePickers()) scheduleRedraw(120);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
+  else boot();
+
+  // Reintentos: los datos de crédito y otros controladores se instalan con timers.
+  [300, 700, 1200, 1900, 2600, 3400].forEach(function (t) {
+    setTimeout(function () { ensureWrap(); if (ensurePickers()) scheduleRedraw(80); }, t);
+  });
+  // Guard permanente y económico: reinstala el wrapper si otro patch lo reemplaza.
+  setInterval(ensureWrap, 800);
+
+  window.LN_CREDIT_MULTIENTITY = { redraw: redraw, get selection() { return selectedEntities.slice(); } };
+})();
+</script>
+
+<style id="ln-ai-curation-style">
+  .ai-brief-compare {
+    margin: -6px 0 14px; padding: 9px 13px; border-radius: 7px;
+    background: rgba(0,73,92,.05); border-left: 3px solid var(--cyan, #00B7C4);
+    font-size: 12.5px; line-height: 1.5; color: var(--ink-soft, #333);
+    font-family: 'JetBrains Mono', monospace; letter-spacing: .1px;
+  }
+  .ai-brief-compare[hidden] { display: none; }
+  .ai-brief-compare b { color: var(--ink, #1a1a1a); font-weight: 700; }
+  .ai-brief-approval {
+    display: none; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    margin-top: 14px; padding: 10px 12px; border-radius: 8px;
+    background: linear-gradient(180deg, rgba(230,190,0,.10), rgba(230,190,0,.04));
+    border: 1px dashed rgba(230,190,0,.55);
+  }
+  body.analyst-logged .ai-brief-approval.is-active { display: flex; }
+  .ai-approval-state { display: inline-flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 600; color: var(--ink, #1a1a1a); letter-spacing: .2px; }
+  .ai-approval-state .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--yellow, #E6BE00); flex: 0 0 auto; }
+  .ai-brief-approval.state-approved { background: linear-gradient(180deg, rgba(21,128,61,.10), rgba(21,128,61,.03)); border-color: rgba(21,128,61,.4); }
+  .ai-brief-approval.state-approved .ai-approval-state .dot { background: #15803D; }
+  .ai-approval-actions { display: inline-flex; gap: 7px; }
+  .ai-approval-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px; border-radius: 8px; cursor: pointer;
+    border: 1px solid var(--line, #E4E4E4); background: #fff; font-size: 15px; line-height: 1;
+    transition: transform .12s ease, border-color .12s ease, background .12s ease;
+    -webkit-tap-highlight-color: transparent; color: var(--ink, #1a1a1a);
+  }
+  .ai-approval-btn:hover { transform: translateY(-1px); }
+  .ai-approval-btn.approve:hover { border-color: #15803D; background: rgba(21,128,61,.08); color: #15803D; }
+  .ai-approval-btn.edit:hover { border-color: var(--cyan-dark, #00495c); background: rgba(0,73,92,.06); }
+  .ai-approval-btn.discard:hover { border-color: #C0392B; background: rgba(192,57,43,.07); color: #C0392B; }
+  .ai-approval-btn.save { border-color: #15803D; background: rgba(21,128,61,.10); color: #15803D; font-weight: 700; }
+  .ai-approval-btn.text { width: auto; padding: 0 12px; font-size: 12px; font-weight: 600; gap: 6px; }
+  .ai-brief.is-editing [contenteditable="true"] {
+    outline: 2px solid rgba(0,183,196,.4); outline-offset: 3px; border-radius: 4px;
+    background: rgba(0,183,196,.05);
+  }
+  .ai-brief.is-editing .ai-brief-col li { cursor: text; }
+</style>
+
+<script id="ln-ai-brief-curation">
+(function () {
+  'use strict';
+
+  var KEYS = ['macro', 'sib'];
+  var currentSec = {};
+  var editing = {};
+  var lastAiApplied = {};
+
+  function isAnalyst() { try { return document.body.classList.contains('analyst-logged'); } catch (_) { return false; } }
+  function loadJson(k) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (_) { return null; } }
+  function saveJson(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (_) {} }
+  function delKey(k) { try { localStorage.removeItem(k); } catch (_) {} }
+  function mesEs(p) { try { return (typeof formatMonthYearEs === 'function') ? formatMonthYearEs(p) : (p || ''); } catch (_) { return p || ''; } }
+  function getLS(k, f) { try { return (typeof localGetJson === 'function') ? localGetJson(k, f) : f; } catch (_) { return f; } }
+
+  // ── Formato numérico ───────────────────────────────────────────────────
+  function pct1(v) { return Number.isFinite(Number(v)) ? Number(v).toFixed(1) + '%' : 'N/D'; }
+  function pct2(v) { return Number.isFinite(Number(v)) ? Number(v).toFixed(2) + '%' : 'N/D'; }
+  function rdmm(v) { return Number.isFinite(Number(v)) ? 'RD$' + Number(v).toLocaleString('es-DO', { maximumFractionDigits: 0 }) + ' MM' : 'N/D'; }
+  function ppDelta(cur, prev, dec) {
+    if (!Number.isFinite(Number(cur)) || !Number.isFinite(Number(prev))) return null;
+    return Number(cur) - Number(prev);
+  }
+  function signPP(d, dec) {
+    if (d === null || !Number.isFinite(Number(d))) return 's/d';
+    var n = Number(d), a = Math.abs(n).toFixed(dec == null ? 2 : dec);
+    if (Math.abs(n) < (dec === 1 ? 0.05 : 0.005)) return 'estable';
+    return (n > 0 ? '+' : '−') + a + ' pp';
+  }
+
+  // ── Lectores de datos SIB ──────────────────────────────────────────────
+  function sibSeries(metric) { try { return (typeof SIB_DATA === 'object' && SIB_DATA && SIB_DATA[metric]) || null; } catch (_) { return null; } }
+  function sibMonths(metric) {
+    try {
+      if (typeof SIB_MONTHS_BY_METRIC === 'object' && SIB_MONTHS_BY_METRIC && SIB_MONTHS_BY_METRIC[metric]) return SIB_MONTHS_BY_METRIC[metric];
+      if (typeof SIB_MONTHS !== 'undefined' && Array.isArray(SIB_MONTHS)) return SIB_MONTHS;
+    } catch (_) {}
+    return [];
+  }
+  function latestPrev(arr) {
+    if (!Array.isArray(arr)) return null;
+    var li = -1;
+    for (var i = arr.length - 1; i >= 0; i--) { if (Number.isFinite(Number(arr[i]))) { li = i; break; } }
+    if (li < 0) return null;
+    var pi = -1;
+    for (var j = li - 1; j >= 0; j--) { if (Number.isFinite(Number(arr[j]))) { pi = j; break; } }
+    return { latest: Number(arr[li]), latestIdx: li, prev: pi >= 0 ? Number(arr[pi]) : null, prevIdx: pi };
+  }
+  function metricSnap(metric) {
+    var s = sibSeries(metric);
+    if (!s) return null;
+    var months = sibMonths(metric);
+    var us = latestPrev(s.us), aayp = latestPrev(s.aayp), bmult = latestPrev(s.bmult);
+    if (!us) return null;
+    return {
+      us: us, aayp: aayp, bmult: bmult,
+      periodo: months[us.latestIdx] || (getLatestPeriod()),
+      prevPeriodo: us.prevIdx >= 0 ? (months[us.prevIdx] || null) : null
+    };
+  }
+  function getLatestPeriod() { try { return localStorage.getItem('ln-sib-latest-period') || null; } catch (_) { return null; } }
+
+  function buildSib() {
+    var roe = metricSnap('roe'), mor = metricSnap('morosidad'), cti = metricSnap('cti'), act = metricSnap('activos');
+    if (!roe && !mor && !act) return null;
+    var ref = roe || mor || cti || act;
+    var periodo = ref.periodo, mes = mesEs(periodo), mesPrev = ref.prevPeriodo ? mesEs(ref.prevPeriodo) : null;
+
+    var titulo = 'La Nacional' + (roe ? ' cierra ' + mes + ' con ROE de ' + pct1(roe.us.latest) : ' · cierre ' + mes);
+
+    var resumenParts = [];
+    if (roe) resumenParts.push('Al cierre de ' + mes + ', La Nacional registra un ROE de ' + pct1(roe.us.latest) +
+      (roe.aayp ? ' frente a ' + pct1(roe.aayp.latest) + ' del promedio de Asociaciones' : '') +
+      (roe.bmult ? ' y ' + pct1(roe.bmult.latest) + ' de la banca múltiple' : '') + '.');
+    if (mor) resumenParts.push('La morosidad se ubica en ' + pct2(mor.us.latest) + (cti ? ' y la eficiencia (CTI) en ' + pct1(cti.us.latest) : '') + '.');
+    var resumen = resumenParts.join(' ');
+
+    var puntos = [];
+    if (roe) puntos.push('ROE de La Nacional: ' + pct1(roe.us.latest) + (roe.prevPeriodo ? ' (' + signPP(ppDelta(roe.us.latest, roe.us.prev), 1) + ' vs. ' + mesPrev + ')' : '') + '.');
+    if (mor) puntos.push('Morosidad: ' + pct2(mor.us.latest) + (mor.us.prev !== null ? ' (' + signPP(ppDelta(mor.us.latest, mor.us.prev), 2) + ')' : '') + '.');
+    if (cti) puntos.push('Eficiencia (CTI): ' + pct1(cti.us.latest) + (cti.us.prev !== null ? ' (' + signPP(ppDelta(cti.us.latest, cti.us.prev), 1) + ')' : '') + '.');
+    else if (act) puntos.push('Activos: ' + rdmm(act.us.latest) + '.');
+
+    var vigilar = [];
+    if (mor && mor.us.prev !== null && (mor.us.latest - mor.us.prev) > 0.02) vigilar.push('La morosidad subió ' + Math.abs(mor.us.latest - mor.us.prev).toFixed(2) + ' pp respecto a ' + mesPrev + '.');
+    if (roe && roe.us.prev !== null && (roe.us.latest - roe.us.prev) < -0.05) vigilar.push('El ROE cedió ' + Math.abs(roe.us.latest - roe.us.prev).toFixed(1) + ' pp frente a ' + mesPrev + '.');
+    if (cti && cti.us.prev !== null && (cti.us.latest - cti.us.prev) > 0.05) vigilar.push('La eficiencia (CTI) se deterioró ' + Math.abs(cti.us.latest - cti.us.prev).toFixed(1) + ' pp.');
+    if (!vigilar.length) vigilar.push('Sin deterioros relevantes frente a ' + (mesPrev || 'el corte previo') + '; mantener seguimiento del margen y la cobertura.');
+
+    var comparacion = '';
+    if (mesPrev) {
+      var bits = [];
+      if (roe) bits.push('ROE ' + signPP(ppDelta(roe.us.latest, roe.us.prev), 1));
+      if (mor) bits.push('morosidad ' + signPP(ppDelta(mor.us.latest, mor.us.prev), 2));
+      if (cti) bits.push('CTI ' + signPP(ppDelta(cti.us.latest, cti.us.prev), 1));
+      comparacion = 'Frente a ' + mesPrev + ': ' + bits.join(' · ') + '.';
+    } else {
+      comparacion = 'Primer corte disponible; aún sin comparación mensual.';
+    }
+
+    return { periodo: periodo, titulo: titulo, resumen: resumen, puntos: puntos, vigilar: vigilar, comparacion: comparacion, generado_en: new Date().toISOString(), origen: 'auto-sib' };
+  }
+
+  // ── Macro (BCRD) ───────────────────────────────────────────────────────
+  function macroObs(kind) { var o = getLS('ln-bcrd-macro-series-' + kind, null); return (o && Array.isArray(o.obs)) ? o.obs : []; }
+  function dailyObs(kind) { var a = getLS('ln-bcrd-daily-series-' + kind, []); return Array.isArray(a) ? a : []; }
+  function obsLP(obs) { return latestPrev((obs || []).map(function (o) { return Number(o && o.value); })); }
+  function obsPeriodo(obs) { if (!obs || !obs.length) return null; var last = obs[obs.length - 1]; return (last && last.periodo) || null; }
+
+  function buildMacro() {
+    var ipc = obsLP(macroObs('ipc')), imae = obsLP(macroObs('imae')), rem = obsLP(macroObs('remesas'));
+    var usd = obsLP(dailyObs('usd'));
+    var anyO = macroObs('ipc').length ? macroObs('ipc') : (macroObs('imae').length ? macroObs('imae') : macroObs('remesas'));
+    var periodo = obsPeriodo(anyO);
+    var mes = periodo ? mesEs(periodo) : 'el último corte';
+    if (!ipc && !imae && !rem && !usd) return null;
+
+    var titulo = 'Coyuntura macro' + (periodo ? ' · ' + mes : '');
+    var lead = [];
+    if (ipc) lead.push('La inflación (IPC) se ubica en ' + pct2(ipc.latest) + ' interanual');
+    if (imae) lead.push('el IMAE marca ' + Number(imae.latest).toFixed(1));
+    if (usd) lead.push('el dólar ventanilla promedia RD$' + Number(usd.latest).toFixed(2));
+    var resumen = lead.length ? (lead.join(', ') + '.') : 'Indicadores macro del BCRD actualizados con la última carga.';
+
+    var puntos = [];
+    if (ipc) puntos.push('IPC (interanual): ' + pct2(ipc.latest) + (ipc.prev !== null ? ' (' + signPP(ppDelta(ipc.latest, ipc.prev), 2) + ')' : '') + '.');
+    if (imae) puntos.push('IMAE: ' + Number(imae.latest).toFixed(1) + (imae.prev !== null ? ' (' + signPP(ppDelta(imae.latest, imae.prev), 1) + ')' : '') + '.');
+    if (usd) puntos.push('Dólar ventanilla: RD$' + Number(usd.latest).toFixed(2) + (usd.prev !== null ? ' (' + (usd.latest - usd.prev >= 0 ? '+' : '−') + Math.abs(usd.latest - usd.prev).toFixed(2) + ')' : '') + '.');
+    if (rem) puntos.push('Remesas: ' + Number(rem.latest).toLocaleString('es-DO', { maximumFractionDigits: 1 }) + '.');
+    if (!puntos.length) puntos.push('Series macro cargadas desde el BCRD.');
+
+    var vigilar = [];
+    if (ipc && ipc.prev !== null && (ipc.latest - ipc.prev) > 0.05) vigilar.push('La inflación repuntó frente al mes anterior.');
+    if (imae && imae.prev !== null && (imae.latest - imae.prev) < -0.05) vigilar.push('El IMAE se desaceleró respecto al corte previo.');
+    if (!vigilar.length) vigilar.push('Sin señales macro adversas frente al corte anterior; mantener monitoreo de tipo de cambio e inflación.');
+
+    var comparacion = '';
+    var cbits = [];
+    if (ipc && ipc.prev !== null) cbits.push('IPC ' + signPP(ppDelta(ipc.latest, ipc.prev), 2));
+    if (imae && imae.prev !== null) cbits.push('IMAE ' + signPP(ppDelta(imae.latest, imae.prev), 1));
+    if (usd && usd.prev !== null) cbits.push('USD ' + (usd.latest - usd.prev >= 0 ? '+' : '−') + 'RD$' + Math.abs(usd.latest - usd.prev).toFixed(2));
+    comparacion = cbits.length ? ('Frente al corte anterior: ' + cbits.join(' · ') + '.') : 'Sin comparación mensual disponible aún.';
+
+    return { periodo: periodo, titulo: titulo, resumen: resumen, puntos: puntos, vigilar: vigilar, comparacion: comparacion, generado_en: new Date().toISOString(), origen: 'auto-macro' };
+  }
+
+  // ── Inyección de la línea comparativa y la barra de aprobación ─────────
+  function ensureInject(key) {
+    var card = document.getElementById('ai-brief-' + key);
+    if (!card || card.__lnAiInjected) return;
+    var lead = document.getElementById('ai-brief-' + key + '-lead');
+    if (lead && !document.getElementById('ai-brief-' + key + '-compare')) {
+      var cmp = document.createElement('div');
+      cmp.className = 'ai-brief-compare';
+      cmp.id = 'ai-brief-' + key + '-compare';
+      cmp.hidden = true;
+      lead.insertAdjacentElement('afterend', cmp);
+    }
+    var foot = document.getElementById('ai-brief-' + key + '-foot');
+    if (foot && !document.getElementById('ai-brief-' + key + '-approval')) {
+      var bar = document.createElement('div');
+      bar.className = 'ai-brief-approval';
+      bar.id = 'ai-brief-' + key + '-approval';
+      bar.innerHTML =
+        '<span class="ai-approval-state"><span class="dot"></span><span class="ai-approval-label">Resumen automático</span></span>' +
+        '<span class="ai-approval-actions">' +
+        '<button type="button" class="ai-approval-btn approve" data-ai-act="approve" title="Aprobar y publicar" aria-label="Aprobar">✓</button>' +
+        '<button type="button" class="ai-approval-btn edit" data-ai-act="edit" title="Editar resumen" aria-label="Editar">✎</button>' +
+        '<button type="button" class="ai-approval-btn discard" data-ai-act="discard" title="Descartar" aria-label="Descartar">✕</button>' +
+        '</span>';
+      foot.insertAdjacentElement('beforebegin', bar);
+      bar.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-ai-act]');
+        if (!b) return;
+        handleAction(key, b.dataset.aiAct);
+      });
+    }
+    card.__lnAiInjected = true;
+  }
+
+  function setText(id, t) { var el = document.getElementById(id); if (el) el.textContent = t || ''; }
+  function fillList(id, items) {
+    var ul = document.getElementById(id);
+    if (!ul) return;
+    ul.replaceChildren.apply(ul, (Array.isArray(items) ? items : []).map(function (t) {
+      var li = document.createElement('li'); li.textContent = String(t); return li;
+    }));
+  }
+
+  function render(key, sec, state) {
+    var card = document.getElementById('ai-brief-' + key);
+    if (!card || !sec) return;
+    ensureInject(key);
+    currentSec[key] = sec;
+    setText('ai-brief-' + key + '-title', sec.titulo || 'Resumen ejecutivo');
+    setText('ai-brief-' + key + '-lead', sec.resumen || '');
+    setText('ai-brief-' + key + '-period', sec.periodo ? ('Corte ' + mesEs(sec.periodo)) : '');
+    fillList('ai-brief-' + key + '-points', sec.puntos);
+    fillList('ai-brief-' + key + '-watch', sec.vigilar);
+    var cmp = document.getElementById('ai-brief-' + key + '-compare');
+    if (cmp) { cmp.textContent = sec.comparacion || ''; cmp.hidden = !sec.comparacion; }
+    card.hidden = false;
+    updateBar(key, state, sec);
+  }
+
+  function updateBar(key, state, sec) {
+    var bar = document.getElementById('ai-brief-' + key + '-approval');
+    if (!bar) return;
+    bar.classList.add('is-active');
+    bar.classList.toggle('state-approved', state === 'approved');
+    var label = bar.querySelector('.ai-approval-label');
+    var foot = document.getElementById('ai-brief-' + key + '-foot');
+    if (state === 'approved') {
+      var who = sec && sec.aprobado_por ? sec.aprobado_por : 'Analista';
+      var when = sec && sec.aprobado_en ? new Date(sec.aprobado_en) : null;
+      var stamp = '';
+      try { if (when) stamp = ' · ' + new Intl.DateTimeFormat('es-DO', { day: '2-digit', month: 'short', year: 'numeric' }).format(when); } catch (_) {}
+      if (label) label.textContent = 'Aprobado por ' + who + stamp;
+      if (foot) foot.textContent = 'Curado y aprobado en el panel del analista' + stamp + '.';
+    } else if (state === 'draft') {
+      if (label) label.textContent = 'Borrador generado al publicar · pendiente de aprobación';
+      if (foot) foot.textContent = 'Generado automáticamente desde los datos publicados · pendiente de curaduría del analista.';
+    } else {
+      if (label) label.textContent = 'Resumen automático · pendiente de curaduría';
+    }
+    bar.dataset.state = state || 'base';
+  }
+
+  // ── Acciones del analista ──────────────────────────────────────────────
+  function handleAction(key, act) {
+    if (act === 'approve') return approve(key);
+    if (act === 'discard') return discard(key);
+    if (act === 'edit') return editing[key] ? saveEdit(key) : startEdit(key);
+    if (act === 'cancel') return cancelEdit(key);
+  }
+
+  function editableEls(key) {
+    return [
+      document.getElementById('ai-brief-' + key + '-title'),
+      document.getElementById('ai-brief-' + key + '-lead'),
+      document.getElementById('ai-brief-' + key + '-compare'),
+      document.getElementById('ai-brief-' + key + '-points'),
+      document.getElementById('ai-brief-' + key + '-watch')
+    ].filter(Boolean);
+  }
+
+  function startEdit(key) {
+    editing[key] = true;
+    var card = document.getElementById('ai-brief-' + key);
+    if (card) card.classList.add('is-editing');
+    editableEls(key).forEach(function (el) { el.setAttribute('contenteditable', 'true'); });
+    var cmp = document.getElementById('ai-brief-' + key + '-compare');
+    if (cmp) cmp.hidden = false;
+    var bar = document.getElementById('ai-brief-' + key + '-approval');
+    if (bar) {
+      var actions = bar.querySelector('.ai-approval-actions');
+      if (actions) actions.innerHTML =
+        '<button type="button" class="ai-approval-btn save text" data-ai-act="edit" title="Guardar">✓ Guardar</button>' +
+        '<button type="button" class="ai-approval-btn discard text" data-ai-act="cancel" title="Cancelar">Cancelar</button>';
+      var label = bar.querySelector('.ai-approval-label');
+      if (label) label.textContent = 'Editando resumen…';
+    }
+  }
+
+  function readEdited(key) {
+    var sec = Object.assign({}, currentSec[key] || {});
+    var t = document.getElementById('ai-brief-' + key + '-title'); if (t) sec.titulo = t.textContent.trim();
+    var l = document.getElementById('ai-brief-' + key + '-lead'); if (l) sec.resumen = l.textContent.trim();
+    var c = document.getElementById('ai-brief-' + key + '-compare'); if (c) sec.comparacion = c.textContent.trim();
+    var p = document.getElementById('ai-brief-' + key + '-points'); if (p) sec.puntos = Array.from(p.querySelectorAll('li')).map(function (li) { return li.textContent.trim(); }).filter(Boolean);
+    var w = document.getElementById('ai-brief-' + key + '-watch'); if (w) sec.vigilar = Array.from(w.querySelectorAll('li')).map(function (li) { return li.textContent.trim(); }).filter(Boolean);
+    return sec;
+  }
+
+  function endEditMode(key) {
+    editing[key] = false;
+    var card = document.getElementById('ai-brief-' + key);
+    if (card) card.classList.remove('is-editing');
+    editableEls(key).forEach(function (el) { el.removeAttribute('contenteditable'); });
+    var bar = document.getElementById('ai-brief-' + key + '-approval');
+    if (bar) {
+      var actions = bar.querySelector('.ai-approval-actions');
+      if (actions) actions.innerHTML =
+        '<button type="button" class="ai-approval-btn approve" data-ai-act="approve" title="Aprobar y publicar" aria-label="Aprobar">✓</button>' +
+        '<button type="button" class="ai-approval-btn edit" data-ai-act="edit" title="Editar resumen" aria-label="Editar">✎</button>' +
+        '<button type="button" class="ai-approval-btn discard" data-ai-act="discard" title="Descartar" aria-label="Descartar">✕</button>';
+    }
+  }
+
+  function saveEdit(key) {
+    var sec = readEdited(key);
+    sec.editado_en = new Date().toISOString();
+    currentSec[key] = sec;
+    saveJson('ln-ai-draft-' + key, sec);
+    endEditMode(key);
+    render(key, sec, 'draft');
+    notify('Resumen editado · pendiente de aprobar.');
+  }
+
+  function cancelEdit(key) {
+    endEditMode(key);
+    var bar = document.getElementById('ai-brief-' + key + '-approval');
+    var prevState = (bar && bar.dataset && bar.dataset.state) || 'draft';
+    render(key, currentSec[key], prevState);
+  }
+
+  function approve(key) {
+    if (editing[key]) { var s = readEdited(key); currentSec[key] = s; endEditMode(key); }
+    var sec = Object.assign({}, currentSec[key] || {});
+    sec.aprobado_en = new Date().toISOString();
+    try { sec.aprobado_por = (document.querySelector('#user-area .user-badge') ? document.querySelector('#user-area .user-badge').textContent.replace('Salir', '').trim() : 'Analista') || 'Analista'; } catch (_) { sec.aprobado_por = 'Analista'; }
+    saveJson('ln-ai-approved-' + key, sec);
+    delKey('ln-ai-draft-' + key);
+    lastAiApplied[key] = aiStamp(sec);
+    render(key, sec, 'approved');
+    // Publicar en vivo para que el resumen curado viaje a todos los dispositivos.
+    try {
+      if (typeof window.publishLiveState === 'function') {
+        window.publishLiveState(key === 'sib' ? 'sib' : 'bcrd', 'Resumen ejecutivo IA aprobado');
+      }
+    } catch (_) {}
+    notify('Resumen aprobado y publicado para todos los dispositivos.');
+  }
+
+  function discard(key) {
+    delKey('ln-ai-draft-' + key);
+    endEditMode(key);
+    var approved = loadJson('ln-ai-approved-' + key);
+    if (approved) { render(key, approved, 'approved'); notify('Borrador descartado · se mantiene el aprobado.'); return; }
+    var card = document.getElementById('ai-brief-' + key);
+    if (card) card.hidden = true;
+    notify('Borrador descartado.');
+  }
+
+  function notify(msg) { try { if (typeof window.notify === 'function') window.notify(msg, 'success'); else if (typeof window.toast === 'function') window.toast(msg, 'success'); } catch (_) {} }
+
+  // ── Generación al publicar ─────────────────────────────────────────────
+  function generate(key) {
+    var sec = key === 'sib' ? buildSib() : buildMacro();
+    if (!sec) { console.info('[LN-IA] Sin datos suficientes para generar resumen', key); return; }
+    currentSec[key] = sec;
+    saveJson('ln-ai-draft-' + key, sec);
+    render(key, sec, 'draft');
+    var card = document.getElementById('ai-brief-' + key);
+    try { if (card && card.scrollIntoView) card.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (_) {}
+    notify('Resumen ejecutivo generado · revisa y aprueba en el panel.');
+  }
+
+  // ── Sincronización entre dispositivos (Supabase live-state) ───────────
+  function aiStamp(sec) {
+    if (!sec) return 0;
+    return Date.parse(sec.aprobado_en || sec.editado_en || sec.generado_en || 0) || 0;
+  }
+
+  function applyRemoteAi(state) {
+    if (!state || !state.ai) return;
+    KEYS.forEach(function (key) {
+      var incoming = state.ai[key];
+      if (!incoming || editing[key]) return; // no pisar una edición en curso
+      var local = loadJson('ln-ai-approved-' + key);
+      var incT = aiStamp(incoming);
+      var locT = local ? aiStamp(local) : -1;
+      if (incT <= (lastAiApplied[key] || -1) && incT <= locT) return; // ya aplicado / no más nuevo
+      if (incT < locT) return; // lo local es más reciente
+      lastAiApplied[key] = incT;
+      saveJson('ln-ai-approved-' + key, incoming);
+      delKey('ln-ai-draft-' + key);
+      render(key, incoming, 'approved');
+    });
+  }
+
+  function wrapLiveSync() {
+    if (typeof window.captureLiveState === 'function' && !window.captureLiveState.__lnAiCapture) {
+      var origCapture = window.captureLiveState;
+      var wrappedCapture = function () {
+        var st = origCapture.apply(this, arguments) || {};
+        try {
+          var ai = {};
+          var s = loadJson('ln-ai-approved-sib'); if (s) ai.sib = s;
+          var m = loadJson('ln-ai-approved-macro'); if (m) ai.macro = m;
+          if (Object.keys(ai).length) st.ai = ai;
+        } catch (_) {}
+        return st;
+      };
+      wrappedCapture.__lnAiCapture = true;
+      window.captureLiveState = wrappedCapture;
+    }
+    if (typeof window.applyLiveState === 'function' && !window.applyLiveState.__lnAiApply) {
+      var origApply = window.applyLiveState;
+      var wrappedApply = function (state) {
+        var out;
+        try { out = origApply.apply(this, arguments); } catch (e) { console.warn('[LN-IA] applyLiveState base:', e); }
+        try { applyRemoteAi(state); } catch (e2) { console.warn('[LN-IA] applyRemoteAi:', e2); }
+        return out;
+      };
+      wrappedApply.__lnAiApply = true;
+      window.applyLiveState = wrappedApply;
+    }
+  }
+
+  // Hook llamado por renderAiBrief (base Gemini) para superponer curaduría.
+  function onBaseRender(key) {
+    ensureInject(key);
+    var approved = loadJson('ln-ai-approved-' + key);
+    if (approved) { render(key, approved, 'approved'); return; }
+    var draft = loadJson('ln-ai-draft-' + key);
+    if (draft && isAnalyst()) { render(key, draft, 'draft'); return; }
+    currentSec[key] = readEdited(key);
+    updateBar(key, 'base', currentSec[key]);
+  }
+
+  // Enlazar el botón de Publicar SIB/BCRD.
+  function wrapPublish() {
+    var orig = window.runDataWorkflow;
+    if (typeof orig !== 'function' || orig.__lnAiWrapped) return;
+    var wrapped = async function (type) {
+      var out;
+      try { out = await orig.apply(this, arguments); } catch (e) { out = undefined; }
+      try {
+        setTimeout(function () {
+          if (type === 'sib') generate('sib');
+          else if (type === 'bcrd') generate('macro');
+        }, 350);
+      } catch (_) {}
+      return out;
+    };
+    wrapped.__lnAiWrapped = true;
+    window.runDataWorkflow = wrapped;
+  }
+
+  function init() {
+    KEYS.forEach(function (key) {
+      ensureInject(key);
+      var approved = loadJson('ln-ai-approved-' + key);
+      var draft = loadJson('ln-ai-draft-' + key);
+      if (approved) { lastAiApplied[key] = aiStamp(approved); render(key, approved, 'approved'); }
+      else if (draft && isAnalyst()) render(key, draft, 'draft');
+    });
+    wrapPublish();
+    wrapLiveSync();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
+  else init();
+  [600, 1400, 2400].forEach(function (t) { setTimeout(function () { KEYS.forEach(ensureInject); wrapPublish(); wrapLiveSync(); }, t); });
+
+  window.LN_AI_CURATION = { onBaseRender: onBaseRender, generate: generate, buildSib: buildSib, buildMacro: buildMacro, applyRemoteAi: applyRemoteAi, wrapLiveSync: wrapLiveSync };
 })();
 </script>
 
