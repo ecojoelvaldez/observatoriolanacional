@@ -12498,6 +12498,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   var KEYS = ['macro', 'sib'];
   var currentSec = {};
   var editing = {};
+  var lastAiApplied = {};
 
   function isAnalyst() { try { return document.body.classList.contains('analyst-logged'); } catch (_) { return false; } }
   function loadJson(k) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (_) { return null; } }
@@ -12804,8 +12805,15 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     try { sec.aprobado_por = (document.querySelector('#user-area .user-badge') ? document.querySelector('#user-area .user-badge').textContent.replace('Salir', '').trim() : 'Analista') || 'Analista'; } catch (_) { sec.aprobado_por = 'Analista'; }
     saveJson('ln-ai-approved-' + key, sec);
     delKey('ln-ai-draft-' + key);
+    lastAiApplied[key] = aiStamp(sec);
     render(key, sec, 'approved');
-    notify('Resumen aprobado y publicado.');
+    // Publicar en vivo para que el resumen curado viaje a todos los dispositivos.
+    try {
+      if (typeof window.publishLiveState === 'function') {
+        window.publishLiveState(key === 'sib' ? 'sib' : 'bcrd', 'Resumen ejecutivo IA aprobado');
+      }
+    } catch (_) {}
+    notify('Resumen aprobado y publicado para todos los dispositivos.');
   }
 
   function discard(key) {
@@ -12830,6 +12838,58 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     var card = document.getElementById('ai-brief-' + key);
     try { if (card && card.scrollIntoView) card.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (_) {}
     notify('Resumen ejecutivo generado · revisa y aprueba en el panel.');
+  }
+
+  // ── Sincronización entre dispositivos (Supabase live-state) ───────────
+  function aiStamp(sec) {
+    if (!sec) return 0;
+    return Date.parse(sec.aprobado_en || sec.editado_en || sec.generado_en || 0) || 0;
+  }
+
+  function applyRemoteAi(state) {
+    if (!state || !state.ai) return;
+    KEYS.forEach(function (key) {
+      var incoming = state.ai[key];
+      if (!incoming || editing[key]) return; // no pisar una edición en curso
+      var local = loadJson('ln-ai-approved-' + key);
+      var incT = aiStamp(incoming);
+      var locT = local ? aiStamp(local) : -1;
+      if (incT <= (lastAiApplied[key] || -1) && incT <= locT) return; // ya aplicado / no más nuevo
+      if (incT < locT) return; // lo local es más reciente
+      lastAiApplied[key] = incT;
+      saveJson('ln-ai-approved-' + key, incoming);
+      delKey('ln-ai-draft-' + key);
+      render(key, incoming, 'approved');
+    });
+  }
+
+  function wrapLiveSync() {
+    if (typeof window.captureLiveState === 'function' && !window.captureLiveState.__lnAiCapture) {
+      var origCapture = window.captureLiveState;
+      var wrappedCapture = function () {
+        var st = origCapture.apply(this, arguments) || {};
+        try {
+          var ai = {};
+          var s = loadJson('ln-ai-approved-sib'); if (s) ai.sib = s;
+          var m = loadJson('ln-ai-approved-macro'); if (m) ai.macro = m;
+          if (Object.keys(ai).length) st.ai = ai;
+        } catch (_) {}
+        return st;
+      };
+      wrappedCapture.__lnAiCapture = true;
+      window.captureLiveState = wrappedCapture;
+    }
+    if (typeof window.applyLiveState === 'function' && !window.applyLiveState.__lnAiApply) {
+      var origApply = window.applyLiveState;
+      var wrappedApply = function (state) {
+        var out;
+        try { out = origApply.apply(this, arguments); } catch (e) { console.warn('[LN-IA] applyLiveState base:', e); }
+        try { applyRemoteAi(state); } catch (e2) { console.warn('[LN-IA] applyRemoteAi:', e2); }
+        return out;
+      };
+      wrappedApply.__lnAiApply = true;
+      window.applyLiveState = wrappedApply;
+    }
   }
 
   // Hook llamado por renderAiBrief (base Gemini) para superponer curaduría.
@@ -12867,17 +12927,18 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
       ensureInject(key);
       var approved = loadJson('ln-ai-approved-' + key);
       var draft = loadJson('ln-ai-draft-' + key);
-      if (approved) render(key, approved, 'approved');
+      if (approved) { lastAiApplied[key] = aiStamp(approved); render(key, approved, 'approved'); }
       else if (draft && isAnalyst()) render(key, draft, 'draft');
     });
     wrapPublish();
+    wrapLiveSync();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
   else init();
-  [600, 1400, 2400].forEach(function (t) { setTimeout(function () { KEYS.forEach(ensureInject); wrapPublish(); }, t); });
+  [600, 1400, 2400].forEach(function (t) { setTimeout(function () { KEYS.forEach(ensureInject); wrapPublish(); wrapLiveSync(); }, t); });
 
-  window.LN_AI_CURATION = { onBaseRender: onBaseRender, generate: generate, buildSib: buildSib, buildMacro: buildMacro };
+  window.LN_AI_CURATION = { onBaseRender: onBaseRender, generate: generate, buildSib: buildSib, buildMacro: buildMacro, applyRemoteAi: applyRemoteAi, wrapLiveSync: wrapLiveSync };
 })();
 </script>
 
