@@ -1,0 +1,812 @@
+{
+  "fuente": "Superintendencia de Bancos de la Republica Dominicana (SIB) - API v2",
+  "endpoint": "estadisticas/v2/indicadores/financieros",
+  "indicador": "margen_de_intermediacion_neto",
+  "descripcion": "Margen de intermediacion neto (%)",
+  "unidad": "porcentaje",
+  "tipo_entidad": "AAyP (Asociaciones de Ahorros y Prestamos)",
+  "generado_en": "2026-07-16T20:46:37.912478+00:00",
+  "periodo_inicial": "2021-01",
+  "periodo_final": "2026-06",
+  "n_periodos": 66,
+  "entidades": {
+    "APAP": [
+      {
+        "periodo": "2021-01",
+        "valor": 9.18
+      },
+      {
+        "periodo": "2021-02",
+        "valor": 9.17
+      },
+      {
+        "periodo": "2021-03",
+        "valor": 9.32
+      },
+      {
+        "periodo": "2021-04",
+        "valor": 9.66
+      },
+      {
+        "periodo": "2021-05",
+        "valor": 9.56
+      },
+      {
+        "periodo": "2021-06",
+        "valor": 9.88
+      },
+      {
+        "periodo": "2021-07",
+        "valor": 9.79
+      },
+      {
+        "periodo": "2021-08",
+        "valor": 9.64
+      },
+      {
+        "periodo": "2021-09",
+        "valor": 9.55
+      },
+      {
+        "periodo": "2021-10",
+        "valor": 9.62
+      },
+      {
+        "periodo": "2021-11",
+        "valor": 9.53
+      },
+      {
+        "periodo": "2021-12",
+        "valor": 9.31
+      },
+      {
+        "periodo": "2022-01",
+        "valor": 6.83
+      },
+      {
+        "periodo": "2022-02",
+        "valor": 6.87
+      },
+      {
+        "periodo": "2022-03",
+        "valor": 6.99
+      },
+      {
+        "periodo": "2022-04",
+        "valor": 7.06
+      },
+      {
+        "periodo": "2022-05",
+        "valor": 7.17
+      },
+      {
+        "periodo": "2022-06",
+        "valor": 7.52
+      },
+      {
+        "periodo": "2022-07",
+        "valor": 7.68
+      },
+      {
+        "periodo": "2022-08",
+        "valor": 7.78
+      },
+      {
+        "periodo": "2022-09",
+        "valor": 7.87
+      },
+      {
+        "periodo": "2022-10",
+        "valor": 7.95
+      },
+      {
+        "periodo": "2022-11",
+        "valor": 8.12
+      },
+      {
+        "periodo": "2022-12",
+        "valor": 8.27
+      },
+      {
+        "periodo": "2023-01",
+        "valor": 10.41
+      },
+      {
+        "periodo": "2023-02",
+        "valor": 9.36
+      },
+      {
+        "periodo": "2023-03",
+        "valor": 8.87
+      },
+      {
+        "periodo": "2023-04",
+        "valor": 8.47
+      },
+      {
+        "periodo": "2023-05",
+        "valor": 8.24
+      },
+      {
+        "periodo": "2023-06",
+        "valor": 7.97
+      },
+      {
+        "periodo": "2023-07",
+        "valor": 7.83
+      },
+      {
+        "periodo": "2023-08",
+        "valor": 7.77
+      },
+      {
+        "periodo": "2023-09",
+        "valor": 7.76
+      },
+      {
+        "periodo": "2023-10",
+        "valor": 7.84
+      },
+      {
+        "periodo": "2023-11",
+        "valor": 7.8
+      },
+      {
+        "periodo": "2023-12",
+        "valor": 7.93
+      },
+      {
+        "periodo": "2024-01",
+        "valor": 6.74
+      },
+      {
+        "periodo": "2024-02",
+        "valor": 6.86
+      },
+      {
+        "periodo": "2024-03",
+        "valor": 6.92
+      },
+      {
+        "periodo": "2024-04",
+        "valor": 6.92
+      },
+      {
+        "periodo": "2024-05",
+        "valor": 6.92
+      },
+      {
+        "periodo": "2024-06",
+        "valor": 7.25
+      },
+      {
+        "periodo": "2024-07",
+        "valor": 7.19
+      },
+      {
+        "periodo": "2024-08",
+        "valor": 7.13
+      },
+      {
+        "periodo": "2024-09",
+        "valor": 7.11
+      },
+      {
+        "periodo": "2024-10",
+        "valor": 7.1
+      },
+      {
+        "periodo": "2024-11",
+        "valor": 7.15
+      },
+      {
+        "periodo": "2024-12",
+        "valor": 7.17
+      },
+      {
+        "periodo": "2025-01",
+        "valor": 7.34
+      },
+      {
+        "periodo": "2025-02",
+        "valor": 7.1
+      },
+      {
+        "periodo": "2025-03",
+        "valor": 7.32
+      },
+      {
+        "periodo": "2025-04",
+        "valor": 7.43
+      },
+      {
+        "periodo": "2025-05",
+        "valor": 7.47
+      },
+      {
+        "periodo": "2025-06",
+        "valor": 7.47
+      },
+      {
+        "periodo": "2025-07",
+        "valor": 7.51
+      },
+      {
+        "periodo": "2025-08",
+        "valor": 7.56
+      },
+      {
+        "periodo": "2025-09",
+        "valor": 7.58
+      },
+      {
+        "periodo": "2025-10",
+        "valor": 7.69
+      },
+      {
+        "periodo": "2025-11",
+        "valor": 7.74
+      },
+      {
+        "periodo": "2025-12",
+        "valor": 7.91
+      },
+      {
+        "periodo": "2026-01",
+        "valor": 8.97
+      },
+      {
+        "periodo": "2026-02",
+        "valor": 8.76
+      },
+      {
+        "periodo": "2026-03",
+        "valor": 8.96
+      },
+      {
+        "periodo": "2026-04",
+        "valor": 9.03
+      },
+      {
+        "periodo": "2026-05",
+        "valor": 9.04
+      },
+      {
+        "periodo": "2026-06",
+        "valor": 8.96
+      }
+    ],
+    "CIBAO": [
+      {
+        "periodo": "2021-01",
+        "valor": 7.66
+      },
+      {
+        "periodo": "2021-02",
+        "valor": 7.75
+      },
+      {
+        "periodo": "2021-03",
+        "valor": 7.89
+      },
+      {
+        "periodo": "2021-04",
+        "valor": 7.88
+      },
+      {
+        "periodo": "2021-05",
+        "valor": 7.9
+      },
+      {
+        "periodo": "2021-06",
+        "valor": 7.9
+      },
+      {
+        "periodo": "2021-07",
+        "valor": 7.95
+      },
+      {
+        "periodo": "2021-08",
+        "valor": 7.95
+      },
+      {
+        "periodo": "2021-09",
+        "valor": 7.99
+      },
+      {
+        "periodo": "2021-10",
+        "valor": 8.03
+      },
+      {
+        "periodo": "2021-11",
+        "valor": 8.02
+      },
+      {
+        "periodo": "2021-12",
+        "valor": 7.99
+      },
+      {
+        "periodo": "2022-01",
+        "valor": 6.93
+      },
+      {
+        "periodo": "2022-02",
+        "valor": 6.86
+      },
+      {
+        "periodo": "2022-03",
+        "valor": 7.14
+      },
+      {
+        "periodo": "2022-04",
+        "valor": 7.09
+      },
+      {
+        "periodo": "2022-05",
+        "valor": 7.05
+      },
+      {
+        "periodo": "2022-06",
+        "valor": 7.08
+      },
+      {
+        "periodo": "2022-07",
+        "valor": 7.09
+      },
+      {
+        "periodo": "2022-08",
+        "valor": 7.11
+      },
+      {
+        "periodo": "2022-09",
+        "valor": 7.15
+      },
+      {
+        "periodo": "2022-10",
+        "valor": 7.2
+      },
+      {
+        "periodo": "2022-11",
+        "valor": 7.23
+      },
+      {
+        "periodo": "2022-12",
+        "valor": 7.15
+      },
+      {
+        "periodo": "2023-01",
+        "valor": 7.54
+      },
+      {
+        "periodo": "2023-02",
+        "valor": 7.55
+      },
+      {
+        "periodo": "2023-03",
+        "valor": 7.99
+      },
+      {
+        "periodo": "2023-04",
+        "valor": 8.0
+      },
+      {
+        "periodo": "2023-05",
+        "valor": 8.02
+      },
+      {
+        "periodo": "2023-06",
+        "valor": 8.09
+      },
+      {
+        "periodo": "2023-07",
+        "valor": 8.06
+      },
+      {
+        "periodo": "2023-08",
+        "valor": 8.1
+      },
+      {
+        "periodo": "2023-09",
+        "valor": 8.1
+      },
+      {
+        "periodo": "2023-10",
+        "valor": 8.08
+      },
+      {
+        "periodo": "2023-11",
+        "valor": 8.05
+      },
+      {
+        "periodo": "2023-12",
+        "valor": 8.03
+      },
+      {
+        "periodo": "2024-01",
+        "valor": 7.9
+      },
+      {
+        "periodo": "2024-02",
+        "valor": 7.89
+      },
+      {
+        "periodo": "2024-03",
+        "valor": 8.13
+      },
+      {
+        "periodo": "2024-04",
+        "valor": 8.14
+      },
+      {
+        "periodo": "2024-05",
+        "valor": 8.2
+      },
+      {
+        "periodo": "2024-06",
+        "valor": 8.17
+      },
+      {
+        "periodo": "2024-07",
+        "valor": 8.18
+      },
+      {
+        "periodo": "2024-08",
+        "valor": 8.19
+      },
+      {
+        "periodo": "2024-09",
+        "valor": 8.15
+      },
+      {
+        "periodo": "2024-10",
+        "valor": 8.17
+      },
+      {
+        "periodo": "2024-11",
+        "valor": 8.16
+      },
+      {
+        "periodo": "2024-12",
+        "valor": 8.21
+      },
+      {
+        "periodo": "2025-01",
+        "valor": 8.36
+      },
+      {
+        "periodo": "2025-02",
+        "valor": 7.95
+      },
+      {
+        "periodo": "2025-03",
+        "valor": 8.27
+      },
+      {
+        "periodo": "2025-04",
+        "valor": 8.33
+      },
+      {
+        "periodo": "2025-05",
+        "valor": 8.37
+      },
+      {
+        "periodo": "2025-06",
+        "valor": 8.33
+      },
+      {
+        "periodo": "2025-07",
+        "valor": 8.37
+      },
+      {
+        "periodo": "2025-08",
+        "valor": 8.39
+      },
+      {
+        "periodo": "2025-09",
+        "valor": 8.37
+      },
+      {
+        "periodo": "2025-10",
+        "valor": 8.41
+      },
+      {
+        "periodo": "2025-11",
+        "valor": 8.42
+      },
+      {
+        "periodo": "2025-12",
+        "valor": 8.46
+      },
+      {
+        "periodo": "2026-01",
+        "valor": 8.55
+      },
+      {
+        "periodo": "2026-02",
+        "valor": 8.24
+      },
+      {
+        "periodo": "2026-03",
+        "valor": 8.49
+      },
+      {
+        "periodo": "2026-04",
+        "valor": 8.48
+      },
+      {
+        "periodo": "2026-05",
+        "valor": 8.52
+      },
+      {
+        "periodo": "2026-06",
+        "valor": 8.49
+      }
+    ],
+    "LA NACIONAL": [
+      {
+        "periodo": "2021-01",
+        "valor": 8.27
+      },
+      {
+        "periodo": "2021-02",
+        "valor": 8.23
+      },
+      {
+        "periodo": "2021-03",
+        "valor": 8.31
+      },
+      {
+        "periodo": "2021-04",
+        "valor": 8.36
+      },
+      {
+        "periodo": "2021-05",
+        "valor": 8.43
+      },
+      {
+        "periodo": "2021-06",
+        "valor": 8.51
+      },
+      {
+        "periodo": "2021-07",
+        "valor": 8.58
+      },
+      {
+        "periodo": "2021-08",
+        "valor": 8.57
+      },
+      {
+        "periodo": "2021-09",
+        "valor": 8.6
+      },
+      {
+        "periodo": "2021-10",
+        "valor": 8.6
+      },
+      {
+        "periodo": "2021-11",
+        "valor": 8.6
+      },
+      {
+        "periodo": "2021-12",
+        "valor": 8.59
+      },
+      {
+        "periodo": "2022-01",
+        "valor": 8.71
+      },
+      {
+        "periodo": "2022-02",
+        "valor": 8.47
+      },
+      {
+        "periodo": "2022-03",
+        "valor": 8.29
+      },
+      {
+        "periodo": "2022-04",
+        "valor": 8.39
+      },
+      {
+        "periodo": "2022-05",
+        "valor": 8.37
+      },
+      {
+        "periodo": "2022-06",
+        "valor": 8.37
+      },
+      {
+        "periodo": "2022-07",
+        "valor": 8.37
+      },
+      {
+        "periodo": "2022-08",
+        "valor": 8.36
+      },
+      {
+        "periodo": "2022-09",
+        "valor": 8.35
+      },
+      {
+        "periodo": "2022-10",
+        "valor": 8.3
+      },
+      {
+        "periodo": "2022-11",
+        "valor": 8.27
+      },
+      {
+        "periodo": "2022-12",
+        "valor": 8.26
+      },
+      {
+        "periodo": "2023-01",
+        "valor": 8.05
+      },
+      {
+        "periodo": "2023-02",
+        "valor": 8.15
+      },
+      {
+        "periodo": "2023-03",
+        "valor": 8.24
+      },
+      {
+        "periodo": "2023-04",
+        "valor": 8.24
+      },
+      {
+        "periodo": "2023-05",
+        "valor": 8.28
+      },
+      {
+        "periodo": "2023-06",
+        "valor": 8.34
+      },
+      {
+        "periodo": "2023-07",
+        "valor": 8.36
+      },
+      {
+        "periodo": "2023-08",
+        "valor": 8.38
+      },
+      {
+        "periodo": "2023-09",
+        "valor": 8.37
+      },
+      {
+        "periodo": "2023-10",
+        "valor": 8.38
+      },
+      {
+        "periodo": "2023-11",
+        "valor": 8.35
+      },
+      {
+        "periodo": "2023-12",
+        "valor": 8.35
+      },
+      {
+        "periodo": "2024-01",
+        "valor": 8.04
+      },
+      {
+        "periodo": "2024-02",
+        "valor": 7.9
+      },
+      {
+        "periodo": "2024-03",
+        "valor": 8.0
+      },
+      {
+        "periodo": "2024-04",
+        "valor": 8.14
+      },
+      {
+        "periodo": "2024-05",
+        "valor": 8.23
+      },
+      {
+        "periodo": "2024-06",
+        "valor": 8.25
+      },
+      {
+        "periodo": "2024-07",
+        "valor": 8.28
+      },
+      {
+        "periodo": "2024-08",
+        "valor": 8.27
+      },
+      {
+        "periodo": "2024-09",
+        "valor": 8.27
+      },
+      {
+        "periodo": "2024-10",
+        "valor": 8.23
+      },
+      {
+        "periodo": "2024-11",
+        "valor": 8.2
+      },
+      {
+        "periodo": "2024-12",
+        "valor": 8.16
+      },
+      {
+        "periodo": "2025-01",
+        "valor": 7.98
+      },
+      {
+        "periodo": "2025-02",
+        "valor": 7.97
+      },
+      {
+        "periodo": "2025-03",
+        "valor": 8.01
+      },
+      {
+        "periodo": "2025-04",
+        "valor": 8.04
+      },
+      {
+        "periodo": "2025-05",
+        "valor": 8.05
+      },
+      {
+        "periodo": "2025-06",
+        "valor": 8.03
+      },
+      {
+        "periodo": "2025-07",
+        "valor": 8.02
+      },
+      {
+        "periodo": "2025-08",
+        "valor": 8.0
+      },
+      {
+        "periodo": "2025-09",
+        "valor": 7.99
+      },
+      {
+        "periodo": "2025-10",
+        "valor": 7.99
+      },
+      {
+        "periodo": "2025-11",
+        "valor": 8.01
+      },
+      {
+        "periodo": "2025-12",
+        "valor": 8.04
+      },
+      {
+        "periodo": "2026-01",
+        "valor": 8.48
+      },
+      {
+        "periodo": "2026-02",
+        "valor": 8.51
+      },
+      {
+        "periodo": "2026-03",
+        "valor": 8.64
+      },
+      {
+        "periodo": "2026-04",
+        "valor": 8.73
+      },
+      {
+        "periodo": "2026-05",
+        "valor": 8.8
+      },
+      {
+        "periodo": "2026-06",
+        "valor": 8.85
+      }
+    ]
+  }
+}
