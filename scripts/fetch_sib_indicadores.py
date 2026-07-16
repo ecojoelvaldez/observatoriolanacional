@@ -71,6 +71,7 @@ CAMPO_A_INDICADOR = {
     "roa_rentabilidad_de_los_activos": "roa",
     "indicador_de_eficiencia": "cti",
     "activos_netos_totales": "activos",
+    "cobertura_de_cartera_de_credito_vencida_mayor_a_90_dias": "cobertura_vencida_90d",
 }
 
 
