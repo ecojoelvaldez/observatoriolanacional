@@ -72,6 +72,7 @@ CAMPO_A_INDICADOR = {
     "indicador_de_eficiencia": "cti",
     "activos_netos_totales": "activos",
     "cobertura_de_cartera_de_credito_vencida_mayor_a_90_dias": "cobertura_vencida_90d",
+    "margen_de_intermediacion_neto": "margen_intermediacion_neto",
 }
 
 
