@@ -27,8 +27,14 @@ import httpx
 SIB_BASE_URL = "https://apis.sb.gob.do/estadisticas/v2/"
 ENDPOINT = "indicadores/financieros"
 
-# Tipos de entidad (espejo del pipeline R)
+# Tipos de entidad (espejo del pipeline R).
+# Se puede acotar con la variable de entorno SIB_TIPOS (lista separada por
+# comas, ej. "AAyP" para descargar solo asociaciones de ahorros y prestamos:
+# APAP, La Nacional, Cibao, etc.). Reduce el tiempo de descarga.
 TIPOS_ENTIDAD = ["BM", "AAyP", "BAyC"]
+_tipos_env = os.environ.get("SIB_TIPOS", "").strip()
+if _tipos_env:
+    TIPOS_ENTIDAD = [t.strip() for t in _tipos_env.split(",") if t.strip()]
 
 SIB_REGISTROS = 300
 TIMEOUT_SEC = 90

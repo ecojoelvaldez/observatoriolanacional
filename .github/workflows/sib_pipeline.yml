@@ -23,6 +23,10 @@ on:
         description: "Ruta del snapshot de salida"
         required: false
         default: "data/sib_snapshot.json"
+      tipos:
+        description: "Tipos de entidad separados por coma (vacio = BM,AAyP,BAyC)"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -54,6 +58,7 @@ jobs:
           SIB_SNAPSHOT_PATH: ${{ github.event.inputs.salida || 'data/sib_snapshot.json' }}
           SIB_PERIODO_INICIAL: ${{ github.event.inputs.periodo_inicial }}
           SIB_PERIODO_FINAL: ${{ github.event.inputs.periodo_final }}
+          SIB_TIPOS: ${{ github.event.inputs.tipos }}
         run: |
           if [ "${{ github.event.inputs.diagnostico }}" = "true" ]; then
             python scripts/fetch_sib_indicadores.py --diagnostico
