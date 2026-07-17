@@ -73,6 +73,9 @@ CAMPO_A_INDICADOR = {
     "activos_netos_totales": "activos",
     "cobertura_de_cartera_de_credito_vencida_mayor_a_90_dias": "cobertura_vencida_90d",
     "margen_de_intermediacion_neto": "margen_intermediacion_neto",
+    "roa_utilidades_antes_de_impuestos_sobre_activos": "roa_antes_impuestos",
+    "roe_utilidades_antes_de_impuestos_sobre_patrimonio": "roe_antes_impuestos",
+    "indice_de_morosidad_capital": "morosidad_capital",
 }
 
 
