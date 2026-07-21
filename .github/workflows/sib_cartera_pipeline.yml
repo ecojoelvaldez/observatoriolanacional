@@ -1,0 +1,62 @@
+name: Pipeline SIB Cartera de Creditos
+
+on:
+  schedule:
+    # Dia 5 y 20 de cada mes, 7:30 AM Santo Domingo (11:30 UTC).
+    # 30 min despues del pipeline de indicadores para no competir por el
+    # push a main (ambos commitean snapshots al mismo branch).
+    - cron: "30 11 5,20 * *"
+  workflow_dispatch:
+    inputs:
+      diagnostico:
+        description: "Sondear endpoints carteras/* con la key real (true/false)"
+        required: false
+        default: "false"
+
+permissions:
+  contents: write
+
+jobs:
+  sib-cartera-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Descargar cartera de creditos y generar snapshot
+        env:
+          SIB_SUBSCRIPTION_KEY: ${{ secrets.SIB_SUBSCRIPTION_KEY }}
+          SIB_CARTERA_SNAPSHOT_PATH: data/sib_cartera_snapshot.json
+        run: |
+          if [ "${{ github.event.inputs.diagnostico }}" = "true" ]; then
+            python scripts/fetch_sib_cartera.py --diagnostico
+          else
+            python scripts/fetch_sib_cartera.py
+          fi
+
+      - name: Commit del snapshot si cambio
+        run: |
+          if [ -n "$(git status --porcelain data/sib_cartera_snapshot.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/sib_cartera_snapshot.json
+            git commit -m "Actualizar snapshot SIB cartera de creditos [skip ci]"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push
+          else
+            echo "Sin cambios en el snapshot de cartera SIB."
+          fi
