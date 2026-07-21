@@ -1,21 +1,22 @@
 {
-  "generado_en": "2026-07-10T12:11:00.138946+00:00",
+  "generado_en": "2026-07-21T14:06:22.444354+00:00",
   "modelo": "gemini-2.5-flash-lite",
   "secciones": {
     "macro": {
       "periodo": "2026-07",
-      "titulo": "Crédito industrial crece y amnistías fiscales recaudan menos",
-      "resumen": "El financiamiento a la industria manufacturera dominicana mostró un dinamismo significativo, superando los RD$120,000 millones a abril de 2026. Paralelamente, se observa una tendencia decreciente en la recaudación de las amnistías fiscales para el gobierno en los últimos cinco años y medio.",
+      "titulo": "Panorama macroeconómico dominicano: Dólar estable, impulso a mipymes y formalización",
+      "resumen": "El tipo de cambio del dólar se mantiene estable, con tasas de compra y venta publicadas por el Banco Central. Se observa un impulso al financiamiento de las mipymes, sector clave para la economía, y la implementación de la Ley 30-26 busca fomentar la formalización empresarial y ampliar la base tributaria.",
       "puntos": [
-        "La cartera de crédito para la manufactura creció 16.7% interanual.",
-        "El crédito en moneda nacional representa el 75.6% del financiamiento industrial.",
-        "Las amnistías fiscales han recaudado cada vez menos fondos para el Estado."
+        "Tasas de cambio del dólar publicadas por el BCRD para el 20 de julio de 2026.",
+        "Crecimiento interanual del 4.1% en financiamiento para mipymes.",
+        "Ley 30-26 promueve la formalización empresarial con incentivos."
       ],
       "vigilar": [
-        "Evolución del financiamiento al sector industrial.",
-        "Impacto de la menor recaudación de amnistías fiscales en las finanzas públicas."
+        "Impacto de la suspensión de importaciones de mango a EE. UU. en exportaciones agrícolas.",
+        "Evolución de la ejecución de la inversión pública en provincias.",
+        "Tendencia de cotización a la TSS de personas mayores de 64 años."
       ],
-      "generado_en": "2026-07-10T12:11:06.697054+00:00"
+      "generado_en": "2026-07-21T14:06:29.296877+00:00"
     },
     "sib": {
       "periodo": "2026-05",
