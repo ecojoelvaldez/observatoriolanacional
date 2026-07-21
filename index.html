@@ -6104,25 +6104,39 @@ async function restoreSibCsvFromLocalStorage() {
 /* Último período SIB aplicado ('YYYY-MM'); evita que datos más viejos pisen a los nuevos. */
 let SIB_LATEST_APPLIED = null;
 
-/* Carga automática del snapshot que publica GitHub Actions (scripts/fetch_sib_indicadores.py).
+/* Carga automática de los snapshots que publica GitHub Actions:
+     - data/sib_snapshot.json          (fetch_sib_indicadores.py: ratios + activos)
+     - data/sib_cartera_snapshot.json  (fetch_sib_cartera.py: balance de cartera,
+                                        endpoint carteras/creditos/moneda)
+   Se fusionan en una sola aplicación porque applySibCsvRows reemplaza SIB_DATA
+   completo: aplicarlos por separado dejaría solo las métricas del último.
    Hace la vista SIB autosuficiente: sin CSV manual ni sesión de analista.
    Solo se aplica si es igual o más reciente que lo ya cargado (localStorage/live). */
 async function loadSibSnapshot() {
-  try {
-    const res = await fetch('/data/sib_snapshot.json', { cache: 'no-cache' });
-    if (!res.ok) return;
-    const snap = await res.json();
-    const rows = Array.isArray(snap.rows) ? snap.rows : [];
-    if (!rows.length) return;
-    if (SIB_LATEST_APPLIED && snap.ultimo_periodo && snap.ultimo_periodo < SIB_LATEST_APPLIED) {
-      console.info('[LN-SIB] Snapshot automático más viejo que los datos actuales; se omite.');
-      return;
+  const fetchSnap = async (url) => {
+    try {
+      const res = await fetch(url, { cache: 'no-cache' });
+      if (!res.ok) return null;
+      const snap = await res.json();
+      return (snap && Array.isArray(snap.rows) && snap.rows.length) ? snap : null;
+    } catch (error) {
+      console.info('[LN-SIB] Snapshot no disponible:', url, error.message);
+      return null;
     }
-    applySibCsvRows(rows, `Snapshot SIB automático · ${snap.ultimo_periodo || ''}`.trim());
-    console.info('[LN-SIB] Snapshot automático aplicado:', snap.ultimo_periodo, '·', rows.length, 'filas');
-  } catch (error) {
-    console.info('[LN-SIB] Snapshot automático no disponible:', error.message);
+  };
+  const snaps = (await Promise.all([
+    fetchSnap('/data/sib_snapshot.json'),
+    fetchSnap('/data/sib_cartera_snapshot.json')
+  ])).filter(Boolean);
+  if (!snaps.length) return;
+  const rows = snaps.flatMap(s => s.rows);
+  const ultimo = snaps.map(s => s.ultimo_periodo || '').filter(Boolean).sort().pop() || '';
+  if (SIB_LATEST_APPLIED && ultimo && ultimo < SIB_LATEST_APPLIED) {
+    console.info('[LN-SIB] Snapshot automático más viejo que los datos actuales; se omite.');
+    return;
   }
+  applySibCsvRows(rows, `Snapshot SIB automático · ${ultimo}`.trim());
+  console.info('[LN-SIB] Snapshot automático aplicado:', ultimo, '·', rows.length, 'filas', '·', snaps.length, 'snapshot(s)');
 }
 /* Resumen ejecutivo IA: pinta data/gemini_summaries.json (workflow
    gemini_summaries.yml) debajo de los títulos de Macro y SIB.
