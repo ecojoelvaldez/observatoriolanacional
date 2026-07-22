@@ -24,6 +24,26 @@ on:
         description: "Endpoints extra a sondear en diagnostico (coma-separados)"
         required: false
         default: ""
+      desglose:
+        description: "Correr el desglose granular (cartera+captacion) (true/false)"
+        required: false
+        default: "false"
+      periodo_inicial:
+        description: "Desglose: mes inicial YYYY-MM (def 2021-01)"
+        required: false
+        default: ""
+      periodo_final:
+        description: "Desglose: mes final YYYY-MM (def mes actual)"
+        required: false
+        default: ""
+      tipos:
+        description: "Desglose: tipos de entidad coma-sep (def AAyP)"
+        required: false
+        default: "AAyP"
+      solo:
+        description: "Desglose: cartera | captacion | both"
+        required: false
+        default: "both"
 
 permissions:
   contents: write
@@ -55,8 +75,15 @@ jobs:
           SIB_CARTERA_SNAPSHOT_PATH: ${{ github.event.inputs.salida || 'data/sib_cartera_snapshot.json' }}
           SIB_CARTERA_MESES: ${{ github.event.inputs.ventana_meses }}
           SIB_PROBE_ENDPOINTS: ${{ github.event.inputs.probe_endpoints }}
+          SIB_DESGLOSE_SNAPSHOT_PATH: ${{ github.event.inputs.salida || 'data/sib_cartera_snapshot.json' }}
+          SIB_PERIODO_INICIAL: ${{ github.event.inputs.periodo_inicial }}
+          SIB_PERIODO_FINAL: ${{ github.event.inputs.periodo_final }}
+          SIB_TIPOS: ${{ github.event.inputs.tipos }}
+          SIB_DESGLOSE_SOLO: ${{ github.event.inputs.solo }}
         run: |
-          if [ "${{ github.event.inputs.diagnostico }}" = "true" ]; then
+          if [ "${{ github.event.inputs.desglose }}" = "true" ]; then
+            python scripts/fetch_sib_cartera_desglose.py
+          elif [ "${{ github.event.inputs.diagnostico }}" = "true" ]; then
             python scripts/fetch_sib_cartera.py --diagnostico
           else
             python scripts/fetch_sib_cartera.py
