@@ -9,12 +9,12 @@
 #
 # Fuente:
 #   - Cartera  : endpoint granular  carteras/creditos  (trae tipoCartera,
-#                tipoCredito, facilidad, tipoCliente por fila micro). Se agrega
-#                AL VUELO sumando `deuda` por
-#                (periodo, entidad, tipoCartera, tipoCredito, facilidad,
-#                 tipoCliente), colapsando las dimensiones geograficas/
-#                demograficas que no se usan. Asi el snapshot es chico aunque
-#                el endpoint devuelva millones de filas micro.
+#                tipoCredito, moneda, region, provincia, facilidad,
+#                tipoCliente, genero por fila micro). Se agrega AL VUELO
+#                sumando `deuda` por
+#                (periodo, entidad, tipoCartera, tipoCredito, moneda, region),
+#                colapsando el resto de dimensiones. Asi el snapshot es chico
+#                aunque el endpoint devuelva millones de filas micro.
 #   - Captacion: endpoint  captaciones/moneda  (trae instrumentoCaptacion y
 #                balance). Se agrega sumando `balance` por
 #                (periodo, entidad, partidaNivel2, instrumentoCaptacion).
@@ -258,8 +258,8 @@ def main():
     print(f">> Tipos: {', '.join(tipos)} | solo={solo}")
 
     # Agregadores
-    cartera = {}   # (periodo, entidad, tipoCartera, tipoCredito, facilidad, tipoCliente) -> suma deuda
-    cart_meta = {}  # clave -> (entidad, tipo, tc, tcred, fac, tcli)
+    cartera = {}   # (periodo, entidad, tipoCartera, tipoCredito, moneda, region) -> suma deuda
+    cart_meta = {}  # clave -> tipo de entidad
     captacion = {}  # (periodo, entidad, partida, instrumento) -> suma balance
     capt_meta = {}
 
@@ -273,14 +273,18 @@ def main():
                 return
             tc = (rn.get("tipocartera") or "N/D")
             tcred = (rn.get("tipocredito") or "N/D")
-            fac = (rn.get("facilidad") or "N/D")
-            tcli = (rn.get("tipocliente") or "N/D")
             # La moneda se conserva en la clave: el front del Observatorio
             # grafica solo moneda nacional, asi que sin esta dimension no se
             # puede reproducir su corte (la diferencia aparece en consumo).
             mon = (rn.get("moneda") or "N/D")
+            # La region alimenta el drilldown regional y el market share por
+            # producto/region del reporte. Se agrega solo region (4 valores);
+            # provincia multiplicaria el snapshot por ~32 sin usarse hoy.
+            # A cambio se sueltan facilidad y tipoCliente: ningun producto se
+            # clasifica con ellos (el clasificador usa tipoCartera/tipoCredito).
+            reg_geo = (rn.get("region") or "N/D")
             clave = (periodo, str(entidad), str(tc), str(tcred),
-                     str(fac), str(tcli), str(mon))
+                     str(mon), str(reg_geo))
             cartera[clave] = cartera.get(clave, 0.0) + deuda
             if clave not in cart_meta:
                 cart_meta[clave] = tipo
@@ -322,12 +326,12 @@ def main():
 
     cartera_rows = []
     for clave, val in cartera.items():
-        periodo, entidad, tc, tcred, fac, tcli, mon = clave
+        periodo, entidad, tc, tcred, mon, reg_geo = clave
         cartera_rows.append({
             "periodo": periodo, "entidad": entidad,
             "tipo_entidad": cart_meta[clave],
             "tipoCartera": tc, "tipoCredito": tcred,
-            "facilidad": fac, "tipoCliente": tcli, "moneda": mon,
+            "moneda": mon, "region": reg_geo,
             "deuda": round(val, 2),
         })
     captacion_rows = []
@@ -354,9 +358,8 @@ def main():
         "catalogos": {
             "tipoCartera": sorted({r["tipoCartera"] for r in cartera_rows}),
             "tipoCredito": sorted({r["tipoCredito"] for r in cartera_rows}),
-            "facilidad": sorted({r["facilidad"] for r in cartera_rows}),
-            "tipoCliente": sorted({r["tipoCliente"] for r in cartera_rows}),
             "moneda": sorted({r["moneda"] for r in cartera_rows}),
+            "region": sorted({r["region"] for r in cartera_rows}),
             "instrumentoCaptacion": sorted({r["instrumentoCaptacion"]
                                             for r in captacion_rows}),
             "partidaNivel2": sorted({r["partidaNivel2"] for r in captacion_rows}),
