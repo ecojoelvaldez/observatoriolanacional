@@ -275,8 +275,12 @@ def main():
             tcred = (rn.get("tipocredito") or "N/D")
             fac = (rn.get("facilidad") or "N/D")
             tcli = (rn.get("tipocliente") or "N/D")
+            # La moneda se conserva en la clave: el front del Observatorio
+            # grafica solo moneda nacional, asi que sin esta dimension no se
+            # puede reproducir su corte (la diferencia aparece en consumo).
+            mon = (rn.get("moneda") or "N/D")
             clave = (periodo, str(entidad), str(tc), str(tcred),
-                     str(fac), str(tcli))
+                     str(fac), str(tcli), str(mon))
             cartera[clave] = cartera.get(clave, 0.0) + deuda
             if clave not in cart_meta:
                 cart_meta[clave] = tipo
@@ -317,12 +321,13 @@ def main():
                         print(f"  .. {tipo} {periodo}: sin filas (HTTP {st})")
 
     cartera_rows = []
-    for (periodo, entidad, tc, tcred, fac, tcli), val in cartera.items():
+    for clave, val in cartera.items():
+        periodo, entidad, tc, tcred, fac, tcli, mon = clave
         cartera_rows.append({
             "periodo": periodo, "entidad": entidad,
-            "tipo_entidad": cart_meta[(periodo, entidad, tc, tcred, fac, tcli)],
+            "tipo_entidad": cart_meta[clave],
             "tipoCartera": tc, "tipoCredito": tcred,
-            "facilidad": fac, "tipoCliente": tcli,
+            "facilidad": fac, "tipoCliente": tcli, "moneda": mon,
             "deuda": round(val, 2),
         })
     captacion_rows = []
@@ -351,6 +356,7 @@ def main():
             "tipoCredito": sorted({r["tipoCredito"] for r in cartera_rows}),
             "facilidad": sorted({r["facilidad"] for r in cartera_rows}),
             "tipoCliente": sorted({r["tipoCliente"] for r in cartera_rows}),
+            "moneda": sorted({r["moneda"] for r in cartera_rows}),
             "instrumentoCaptacion": sorted({r["instrumentoCaptacion"]
                                             for r in captacion_rows}),
             "partidaNivel2": sorted({r["partidaNivel2"] for r in captacion_rows}),
