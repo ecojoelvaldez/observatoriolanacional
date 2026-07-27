@@ -36,6 +36,10 @@ on:
         description: "Desglose: mes final YYYY-MM (def mes actual)"
         required: false
         default: ""
+      periodos:
+        description: "Desglose: lista de cortes YYYY-MM coma-sep (prioridad sobre el rango)"
+        required: false
+        default: ""
       tipos:
         description: "Desglose: tipos de entidad coma-sep (def AAyP)"
         required: false
@@ -78,6 +82,7 @@ jobs:
           SIB_DESGLOSE_SNAPSHOT_PATH: ${{ github.event.inputs.salida || 'data/sib_cartera_snapshot.json' }}
           SIB_PERIODO_INICIAL: ${{ github.event.inputs.periodo_inicial }}
           SIB_PERIODO_FINAL: ${{ github.event.inputs.periodo_final }}
+          SIB_PERIODOS: ${{ github.event.inputs.periodos }}
           SIB_TIPOS: ${{ github.event.inputs.tipos }}
           SIB_DESGLOSE_SOLO: ${{ github.event.inputs.solo }}
         run: |

@@ -232,11 +232,26 @@ def main():
     solo = os.environ.get("SIB_DESGLOSE_SOLO", "both").strip().lower()
 
     hoy = date.today()
-    inicio = _parse_periodo(os.environ.get("SIB_PERIODO_INICIAL"),
-                            fallback=(2021, 1))
-    fin = _parse_periodo(os.environ.get("SIB_PERIODO_FINAL"),
-                         fallback=(hoy.year, hoy.month))
-    meses = meses_rango(inicio, fin)
+    # SIB_PERIODOS: lista explicita de cortes "YYYY-MM" separados por coma.
+    # Tiene prioridad sobre el rango; permite bajar solo ciertos cortes
+    # (ej. cierres de diciembre + ultimo mes) y hace el script replicable a
+    # meses nuevos con solo editar la lista.
+    periodos_env = os.environ.get("SIB_PERIODOS", "").strip()
+    if periodos_env:
+        meses = []
+        for p in periodos_env.split(","):
+            p = p.strip()
+            if not p:
+                continue
+            y, m = _parse_periodo(p)
+            meses.append(f"{y:04d}-{m:02d}")
+        meses = sorted(set(meses))
+    else:
+        inicio = _parse_periodo(os.environ.get("SIB_PERIODO_INICIAL"),
+                                fallback=(2021, 1))
+        fin = _parse_periodo(os.environ.get("SIB_PERIODO_FINAL"),
+                             fallback=(hoy.year, hoy.month))
+        meses = meses_rango(inicio, fin)
 
     print(f">> Cartera EP: {EP_CARTERA} | Captacion EP: {EP_CAPTACION}")
     print(f">> Ventana: {meses[0]} -> {meses[-1]} ({len(meses)} meses)")
