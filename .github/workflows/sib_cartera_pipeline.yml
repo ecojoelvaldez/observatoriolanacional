@@ -55,7 +55,10 @@ permissions:
 jobs:
   sib-cartera-pipeline:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # El desglose granular (carteras/creditos) sobre varios tipos de entidad
+    # supera holgadamente los 30 min originales; con 30 el job se cancelaba a
+    # mitad de descarga.
+    timeout-minutes: 350
 
     steps:
       - name: Checkout repositorio
