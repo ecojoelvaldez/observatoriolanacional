@@ -1,0 +1,7806 @@
+{
+  "fuente": "Superintendencia de Bancos de la Republica Dominicana (SIB) - API v2",
+  "unidad": "RD$ (pesos dominicanos)",
+  "generado_en": "2026-07-28T13:56:36.358426+00:00",
+  "nota_agregado": "La entidad 'TODOS' es el agregado que publica la SIB; se excluye del ranking y del sistema.",
+  "nota_share": "share_pct = balance de la entidad / balance del sistema (suma de entidades) para el mismo producto, periodo y region.",
+  "endpoint": "estadisticas/v2/captaciones/moneda",
+  "nota_region": "El endpoint de captacion no expone la dimension regional; solo la cartera trae region.",
+  "cortes": [
+    "2021-12",
+    "2022-12",
+    "2023-12",
+    "2024-12",
+    "2025-12",
+    "2026-05"
+  ],
+  "productos": {
+    "total": "Captacion total del publico (todos los instrumentos)",
+    "ahorros": "Cuentas de ahorro, basicas de ahorro, ahorro programado y basicas de nomina",
+    "corrientes": "Cuentas corrientes remuneradas y no remuneradas",
+    "depositos": "Depositos a plazo, certificados (financieros/inversion/participacion), bonos y cedulas"
+  },
+  "n_entidades": 43,
+  "sistema": {
+    "nacional": {
+      "total": [
+        {
+          "periodo": "2021-12",
+          "valor": 2135011053647.6
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 2300884474566.9
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 2583063489487.83
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 2877961074189.63
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 3181741454571.86
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 3415196901873.1
+        }
+      ],
+      "ahorros": [
+        {
+          "periodo": "2021-12",
+          "valor": 936874106102.3
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 948250051356.63
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 977266069585.39
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 1032480499342.5
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 1151321400123.87
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 1179312279766.45
+        }
+      ],
+      "corrientes": [
+        {
+          "periodo": "2021-12",
+          "valor": 455145703828.07
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 497015414175.37
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 514562817621.42
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 527442959757.73
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 535118804805.99
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 682857549136.33
+        }
+      ],
+      "depositos": [
+        {
+          "periodo": "2021-12",
+          "valor": 742991243717.23
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 855619009034.9
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 1091234602281.02
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 1318037615089.4
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 1495301249642.0
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 1553027072970.32
+        }
+      ]
+    }
+  },
+  "ranking_total": {
+    "2021-12": [
+      {
+        "entidad": "BANRESERVAS",
+        "tipo_entidad": "BM",
+        "valor": 727751856972.92,
+        "share_pct": 34.0866,
+        "posicion": 1
+      },
+      {
+        "entidad": "POPULAR",
+        "tipo_entidad": "BM",
+        "valor": 475076865353.58,
+        "share_pct": 22.2517,
+        "posicion": 2
+      },
+      {
+        "entidad": "BHD",
+        "tipo_entidad": "BM",
+        "valor": 321149325702.58,
+        "share_pct": 15.042,
+        "posicion": 3
+      },
+      {
+        "entidad": "SCOTIABANK",
+        "tipo_entidad": "BM",
+        "valor": 117389690181.79,
+        "share_pct": 5.4983,
+        "posicion": 4
+      },
+      {
+        "entidad": "APAP",
+        "tipo_entidad": "AAyP",
+        "valor": 78333594769.92,
+        "share_pct": 3.669,
+        "posicion": 5
+      },
+      {
+        "entidad": "SANTA CRUZ",
+        "tipo_entidad": "BM",
+        "valor": 77404752087.13,
+        "share_pct": 3.6255,
+        "posicion": 6
+      },
+      {
+        "entidad": "CIBAO",
+        "tipo_entidad": "AAyP",
+        "valor": 48330393494.73,
+        "share_pct": 2.2637,
+        "posicion": 7
+      },
+      {
+        "entidad": "BANESCO",
+        "tipo_entidad": "BM",
+        "valor": 33815557185.37,
+        "share_pct": 1.5839,
+        "posicion": 8
+      },
+      {
+        "entidad": "PROMERICA",
+        "tipo_entidad": "BM",
+        "valor": 33704587228.03,
+        "share_pct": 1.5787,
+        "posicion": 9
+      },
+      {
+        "entidad": "CARIBE",
+        "tipo_entidad": "BM",
+        "valor": 29699934135.28,
+        "share_pct": 1.3911,
+        "posicion": 10
+      },
+      {
+        "entidad": "LA NACIONAL",
+        "tipo_entidad": "AAyP",
+        "valor": 28120542246.44,
+        "share_pct": 1.3171,
+        "posicion": 11
+      },
+      {
+        "entidad": "CITIBANK",
+        "tipo_entidad": "BM",
+        "valor": 19348844029.29,
+        "share_pct": 0.9063,
+        "posicion": 12
+      },
+      {
+        "entidad": "BDI",
+        "tipo_entidad": "BM",
+        "valor": 17664805378.48,
+        "share_pct": 0.8274,
+        "posicion": 13
+      },
+      {
+        "entidad": "BLH",
+        "tipo_entidad": "BM",
+        "valor": 16796386425.12,
+        "share_pct": 0.7867,
+        "posicion": 14
+      },
+      {
+        "entidad": "LAFISE",
+        "tipo_entidad": "BM",
+        "valor": 14015246771.71,
+        "share_pct": 0.6564,
+        "posicion": 15
+      },
+      {
+        "entidad": "VIMENCA",
+        "tipo_entidad": "BM",
+        "valor": 12747001816.0,
+        "share_pct": 0.597,
+        "posicion": 16
+      },
+      {
+        "entidad": "ADEMI",
+        "tipo_entidad": "BM",
+        "valor": 11810576619.08,
+        "share_pct": 0.5532,
+        "posicion": 17
+      },
+      {
+        "entidad": "ALAVER",
+        "tipo_entidad": "AAyP",
+        "valor": 9048795329.53,
+        "share_pct": 0.4238,
+        "posicion": 18
+      },
+      {
+        "entidad": "DUARTE",
+        "tipo_entidad": "AAyP",
+        "valor": 7779347064.89,
+        "share_pct": 0.3644,
+        "posicion": 19
+      },
+      {
+        "entidad": "BANFONDESA",
+        "tipo_entidad": "BAyC",
+        "valor": 6637973384.7,
+        "share_pct": 0.3109,
+        "posicion": 20
+      },
+      {
+        "entidad": "MOTOR CREDITO",
+        "tipo_entidad": "BAyC",
+        "valor": 5940245080.37,
+        "share_pct": 0.2782,
+        "posicion": 21
+      },
+      {
+        "entidad": "MOCANA",
+        "tipo_entidad": "AAyP",
+        "valor": 5065873349.15,
+        "share_pct": 0.2373,
+        "posicion": 22
+      },
+      {
+        "entidad": "ADOPEM",
+        "tipo_entidad": "BAyC",
+        "valor": 4924433552.59,
+        "share_pct": 0.2307,
+        "posicion": 23
+      },
+      {
+        "entidad": "BONAO",
+        "tipo_entidad": "AAyP",
+        "valor": 4113760429.35,
+        "share_pct": 0.1927,
+        "posicion": 24
+      },
+      {
+        "entidad": "UNION",
+        "tipo_entidad": "BAyC",
+        "valor": 3943653905.0,
+        "share_pct": 0.1847,
+        "posicion": 25
+      },
+      {
+        "entidad": "JMMB",
+        "tipo_entidad": "BM",
+        "valor": 3699332837.01,
+        "share_pct": 0.1733,
+        "posicion": 26
+      },
+      {
+        "entidad": "PERAVIA",
+        "tipo_entidad": "AAyP",
+        "valor": 3205257628.97,
+        "share_pct": 0.1501,
+        "posicion": 27
+      },
+      {
+        "entidad": "ROMANA",
+        "tipo_entidad": "AAyP",
+        "valor": 2647052727.71,
+        "share_pct": 0.124,
+        "posicion": 28
+      },
+      {
+        "entidad": "CONFISA",
+        "tipo_entidad": "BAyC",
+        "valor": 2593610402.41,
+        "share_pct": 0.1215,
+        "posicion": 29
+      },
+      {
+        "entidad": "ACTIVO",
+        "tipo_entidad": "BM",
+        "valor": 1970839964.18,
+        "share_pct": 0.0923,
+        "posicion": 30
+      },
+      {
+        "entidad": "FIHOGAR",
+        "tipo_entidad": "BAyC",
+        "valor": 1917847842.0,
+        "share_pct": 0.0898,
+        "posicion": 31
+      },
+      {
+        "entidad": "MAGUANA",
+        "tipo_entidad": "AAyP",
+        "valor": 1776270363.87,
+        "share_pct": 0.0832,
+        "posicion": 32
+      },
+      {
+        "entidad": "BANCOTUI",
+        "tipo_entidad": "BAyC",
+        "valor": 1570066263.0,
+        "share_pct": 0.0735,
+        "posicion": 33
+      },
+      {
+        "entidad": "BELLBANK",
+        "tipo_entidad": "BM",
+        "valor": 1411073169.0,
+        "share_pct": 0.0661,
+        "posicion": 34
+      },
+      {
+        "entidad": "BANCO BACC",
+        "tipo_entidad": "BAyC",
+        "valor": 1174481743.21,
+        "share_pct": 0.055,
+        "posicion": 35
+      },
+      {
+        "entidad": "ATLANTICO",
+        "tipo_entidad": "BAyC",
+        "valor": 883865270.0,
+        "share_pct": 0.0414,
+        "posicion": 36
+      },
+      {
+        "entidad": "GRUFICORP",
+        "tipo_entidad": "BAyC",
+        "valor": 875867577.7,
+        "share_pct": 0.041,
+        "posicion": 37
+      },
+      {
+        "entidad": "COFACI",
+        "tipo_entidad": "BAyC",
+        "valor": 390062728.34,
+        "share_pct": 0.0183,
+        "posicion": 38
+      },
+      {
+        "entidad": "BONANZA",
+        "tipo_entidad": "BAyC",
+        "valor": 204178322.96,
+        "share_pct": 0.0096,
+        "posicion": 39
+      },
+      {
+        "entidad": "EMPIRE",
+        "tipo_entidad": "BAyC",
+        "valor": 77204314.21,
+        "share_pct": 0.0036,
+        "posicion": 40
+      },
+      {
+        "entidad": "QIK BANCO DIGITAL",
+        "tipo_entidad": "BM",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 41
+      },
+      {
+        "entidad": "OPTIMA",
+        "tipo_entidad": "BAyC",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 42
+      },
+      {
+        "entidad": "LEASCONFISA",
+        "tipo_entidad": "BAyC",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 43
+      }
+    ],
+    "2022-12": [
+      {
+        "entidad": "BANRESERVAS",
+        "tipo_entidad": "BM",
+        "valor": 806514118721.28,
+        "share_pct": 35.0524,
+        "posicion": 1
+      },
+      {
+        "entidad": "POPULAR",
+        "tipo_entidad": "BM",
+        "valor": 487491951712.09,
+        "share_pct": 21.1872,
+        "posicion": 2
+      },
+      {
+        "entidad": "BHD",
+        "tipo_entidad": "BM",
+        "valor": 351167539460.92,
+        "share_pct": 15.2623,
+        "posicion": 3
+      },
+      {
+        "entidad": "SCOTIABANK",
+        "tipo_entidad": "BM",
+        "valor": 121577114801.04,
+        "share_pct": 5.2839,
+        "posicion": 4
+      },
+      {
+        "entidad": "SANTA CRUZ",
+        "tipo_entidad": "BM",
+        "valor": 93477908917.26,
+        "share_pct": 4.0627,
+        "posicion": 5
+      },
+      {
+        "entidad": "APAP",
+        "tipo_entidad": "AAyP",
+        "valor": 82779669306.05,
+        "share_pct": 3.5977,
+        "posicion": 6
+      },
+      {
+        "entidad": "CIBAO",
+        "tipo_entidad": "AAyP",
+        "valor": 51503788658.51,
+        "share_pct": 2.2384,
+        "posicion": 7
+      },
+      {
+        "entidad": "PROMERICA",
+        "tipo_entidad": "BM",
+        "valor": 36660486970.08,
+        "share_pct": 1.5933,
+        "posicion": 8
+      },
+      {
+        "entidad": "BANESCO",
+        "tipo_entidad": "BM",
+        "valor": 35516816394.67,
+        "share_pct": 1.5436,
+        "posicion": 9
+      },
+      {
+        "entidad": "CARIBE",
+        "tipo_entidad": "BM",
+        "valor": 34457130660.14,
+        "share_pct": 1.4976,
+        "posicion": 10
+      },
+      {
+        "entidad": "LA NACIONAL",
+        "tipo_entidad": "AAyP",
+        "valor": 27724337692.73,
+        "share_pct": 1.2049,
+        "posicion": 11
+      },
+      {
+        "entidad": "CITIBANK",
+        "tipo_entidad": "BM",
+        "valor": 19696602928.74,
+        "share_pct": 0.856,
+        "posicion": 12
+      },
+      {
+        "entidad": "BDI",
+        "tipo_entidad": "BM",
+        "valor": 17892067561.6,
+        "share_pct": 0.7776,
+        "posicion": 13
+      },
+      {
+        "entidad": "BLH",
+        "tipo_entidad": "BM",
+        "valor": 17671805190.39,
+        "share_pct": 0.768,
+        "posicion": 14
+      },
+      {
+        "entidad": "VIMENCA",
+        "tipo_entidad": "BM",
+        "valor": 14516671549.43,
+        "share_pct": 0.6309,
+        "posicion": 15
+      },
+      {
+        "entidad": "LAFISE",
+        "tipo_entidad": "BM",
+        "valor": 13659392592.08,
+        "share_pct": 0.5937,
+        "posicion": 16
+      },
+      {
+        "entidad": "ADEMI",
+        "tipo_entidad": "BM",
+        "valor": 12075280271.59,
+        "share_pct": 0.5248,
+        "posicion": 17
+      },
+      {
+        "entidad": "ALAVER",
+        "tipo_entidad": "AAyP",
+        "valor": 10154140274.16,
+        "share_pct": 0.4413,
+        "posicion": 18
+      },
+      {
+        "entidad": "DUARTE",
+        "tipo_entidad": "AAyP",
+        "valor": 7522838876.78,
+        "share_pct": 0.327,
+        "posicion": 19
+      },
+      {
+        "entidad": "MOTOR CREDITO",
+        "tipo_entidad": "BAyC",
+        "valor": 7366083344.32,
+        "share_pct": 0.3201,
+        "posicion": 20
+      },
+      {
+        "entidad": "BANFONDESA",
+        "tipo_entidad": "BAyC",
+        "valor": 7049054797.18,
+        "share_pct": 0.3064,
+        "posicion": 21
+      },
+      {
+        "entidad": "JMMB",
+        "tipo_entidad": "BM",
+        "valor": 5550190580.87,
+        "share_pct": 0.2412,
+        "posicion": 22
+      },
+      {
+        "entidad": "MOCANA",
+        "tipo_entidad": "AAyP",
+        "valor": 5073549046.15,
+        "share_pct": 0.2205,
+        "posicion": 23
+      },
+      {
+        "entidad": "ADOPEM",
+        "tipo_entidad": "BAyC",
+        "valor": 5015183827.0,
+        "share_pct": 0.218,
+        "posicion": 24
+      },
+      {
+        "entidad": "BONAO",
+        "tipo_entidad": "AAyP",
+        "valor": 5004487431.96,
+        "share_pct": 0.2175,
+        "posicion": 25
+      },
+      {
+        "entidad": "UNION",
+        "tipo_entidad": "BAyC",
+        "valor": 3842395100.0,
+        "share_pct": 0.167,
+        "posicion": 26
+      },
+      {
+        "entidad": "PERAVIA",
+        "tipo_entidad": "AAyP",
+        "valor": 3332763432.56,
+        "share_pct": 0.1448,
+        "posicion": 27
+      },
+      {
+        "entidad": "ROMANA",
+        "tipo_entidad": "AAyP",
+        "valor": 3135379235.4,
+        "share_pct": 0.1363,
+        "posicion": 28
+      },
+      {
+        "entidad": "CONFISA",
+        "tipo_entidad": "BAyC",
+        "valor": 2626553055.36,
+        "share_pct": 0.1142,
+        "posicion": 29
+      },
+      {
+        "entidad": "FIHOGAR",
+        "tipo_entidad": "BAyC",
+        "valor": 2036966407.0,
+        "share_pct": 0.0885,
+        "posicion": 30
+      },
+      {
+        "entidad": "MAGUANA",
+        "tipo_entidad": "AAyP",
+        "valor": 1898560874.32,
+        "share_pct": 0.0825,
+        "posicion": 31
+      },
+      {
+        "entidad": "ACTIVO",
+        "tipo_entidad": "BM",
+        "valor": 1730550667.31,
+        "share_pct": 0.0752,
+        "posicion": 32
+      },
+      {
+        "entidad": "BANCOTUI",
+        "tipo_entidad": "BAyC",
+        "valor": 1444350130.0,
+        "share_pct": 0.0628,
+        "posicion": 33
+      },
+      {
+        "entidad": "BANCO BACC",
+        "tipo_entidad": "BAyC",
+        "valor": 1050693404.96,
+        "share_pct": 0.0457,
+        "posicion": 34
+      },
+      {
+        "entidad": "GRUFICORP",
+        "tipo_entidad": "BAyC",
+        "valor": 1005199490.19,
+        "share_pct": 0.0437,
+        "posicion": 35
+      },
+      {
+        "entidad": "ATLANTICO",
+        "tipo_entidad": "BAyC",
+        "valor": 975634749.0,
+        "share_pct": 0.0424,
+        "posicion": 36
+      },
+      {
+        "entidad": "COFACI",
+        "tipo_entidad": "BAyC",
+        "valor": 391722508.59,
+        "share_pct": 0.017,
+        "posicion": 37
+      },
+      {
+        "entidad": "BONANZA",
+        "tipo_entidad": "BAyC",
+        "valor": 223128272.97,
+        "share_pct": 0.0097,
+        "posicion": 38
+      },
+      {
+        "entidad": "EMPIRE",
+        "tipo_entidad": "BAyC",
+        "valor": 70931996.27,
+        "share_pct": 0.0031,
+        "posicion": 39
+      },
+      {
+        "entidad": "QIK BANCO DIGITAL",
+        "tipo_entidad": "BM",
+        "valor": 1433675.95,
+        "share_pct": 0.0001,
+        "posicion": 40
+      },
+      {
+        "entidad": "BELLBANK",
+        "tipo_entidad": "BM",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 41
+      },
+      {
+        "entidad": "OPTIMA",
+        "tipo_entidad": "BAyC",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 42
+      },
+      {
+        "entidad": "LEASCONFISA",
+        "tipo_entidad": "BAyC",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 43
+      }
+    ],
+    "2023-12": [
+      {
+        "entidad": "BANRESERVAS",
+        "tipo_entidad": "BM",
+        "valor": 869578089093.33,
+        "share_pct": 33.6646,
+        "posicion": 1
+      },
+      {
+        "entidad": "POPULAR",
+        "tipo_entidad": "BM",
+        "valor": 556680772231.0,
+        "share_pct": 21.5512,
+        "posicion": 2
+      },
+      {
+        "entidad": "BHD",
+        "tipo_entidad": "BM",
+        "valor": 411488060418.0,
+        "share_pct": 15.9302,
+        "posicion": 3
+      },
+      {
+        "entidad": "SCOTIABANK",
+        "tipo_entidad": "BM",
+        "valor": 124920470864.93,
+        "share_pct": 4.8361,
+        "posicion": 4
+      },
+      {
+        "entidad": "SANTA CRUZ",
+        "tipo_entidad": "BM",
+        "valor": 110271745951.19,
+        "share_pct": 4.269,
+        "posicion": 5
+      },
+      {
+        "entidad": "APAP",
+        "tipo_entidad": "AAyP",
+        "valor": 106619398976.01,
+        "share_pct": 4.1276,
+        "posicion": 6
+      },
+      {
+        "entidad": "CIBAO",
+        "tipo_entidad": "AAyP",
+        "valor": 58484174738.0,
+        "share_pct": 2.2641,
+        "posicion": 7
+      },
+      {
+        "entidad": "PROMERICA",
+        "tipo_entidad": "BM",
+        "valor": 42269006364.45,
+        "share_pct": 1.6364,
+        "posicion": 8
+      },
+      {
+        "entidad": "BANESCO",
+        "tipo_entidad": "BM",
+        "valor": 36872524313.16,
+        "share_pct": 1.4275,
+        "posicion": 9
+      },
+      {
+        "entidad": "CARIBE",
+        "tipo_entidad": "BM",
+        "valor": 34372530425.06,
+        "share_pct": 1.3307,
+        "posicion": 10
+      },
+      {
+        "entidad": "LA NACIONAL",
+        "tipo_entidad": "AAyP",
+        "valor": 30147330668.0,
+        "share_pct": 1.1671,
+        "posicion": 11
+      },
+      {
+        "entidad": "CITIBANK",
+        "tipo_entidad": "BM",
+        "valor": 23406183270.97,
+        "share_pct": 0.9061,
+        "posicion": 12
+      },
+      {
+        "entidad": "BDI",
+        "tipo_entidad": "BM",
+        "valor": 21602717368.77,
+        "share_pct": 0.8363,
+        "posicion": 13
+      },
+      {
+        "entidad": "BLH",
+        "tipo_entidad": "BM",
+        "valor": 20178154681.45,
+        "share_pct": 0.7812,
+        "posicion": 14
+      },
+      {
+        "entidad": "VIMENCA",
+        "tipo_entidad": "BM",
+        "valor": 17589228608.94,
+        "share_pct": 0.6809,
+        "posicion": 15
+      },
+      {
+        "entidad": "LAFISE",
+        "tipo_entidad": "BM",
+        "valor": 15658530261.05,
+        "share_pct": 0.6062,
+        "posicion": 16
+      },
+      {
+        "entidad": "ADEMI",
+        "tipo_entidad": "BM",
+        "valor": 12976165768.8,
+        "share_pct": 0.5024,
+        "posicion": 17
+      },
+      {
+        "entidad": "ALAVER",
+        "tipo_entidad": "AAyP",
+        "valor": 10682845049.24,
+        "share_pct": 0.4136,
+        "posicion": 18
+      },
+      {
+        "entidad": "MOTOR CREDITO",
+        "tipo_entidad": "BAyC",
+        "valor": 9066072553.97,
+        "share_pct": 0.351,
+        "posicion": 19
+      },
+      {
+        "entidad": "BANFONDESA",
+        "tipo_entidad": "BAyC",
+        "valor": 8867101807.89,
+        "share_pct": 0.3433,
+        "posicion": 20
+      },
+      {
+        "entidad": "DUARTE",
+        "tipo_entidad": "AAyP",
+        "valor": 8798813862.0,
+        "share_pct": 0.3406,
+        "posicion": 21
+      },
+      {
+        "entidad": "JMMB",
+        "tipo_entidad": "BM",
+        "valor": 7412821818.71,
+        "share_pct": 0.287,
+        "posicion": 22
+      },
+      {
+        "entidad": "ADOPEM",
+        "tipo_entidad": "BAyC",
+        "valor": 6132915448.37,
+        "share_pct": 0.2374,
+        "posicion": 23
+      },
+      {
+        "entidad": "BONAO",
+        "tipo_entidad": "AAyP",
+        "valor": 5780166027.0,
+        "share_pct": 0.2238,
+        "posicion": 24
+      },
+      {
+        "entidad": "MOCANA",
+        "tipo_entidad": "AAyP",
+        "valor": 5568766886.63,
+        "share_pct": 0.2156,
+        "posicion": 25
+      },
+      {
+        "entidad": "UNION",
+        "tipo_entidad": "BAyC",
+        "valor": 3987290468.0,
+        "share_pct": 0.1544,
+        "posicion": 26
+      },
+      {
+        "entidad": "ROMANA",
+        "tipo_entidad": "AAyP",
+        "valor": 3734783937.53,
+        "share_pct": 0.1446,
+        "posicion": 27
+      },
+      {
+        "entidad": "PERAVIA",
+        "tipo_entidad": "AAyP",
+        "valor": 3596807433.7,
+        "share_pct": 0.1392,
+        "posicion": 28
+      },
+      {
+        "entidad": "CONFISA",
+        "tipo_entidad": "BAyC",
+        "valor": 2833010598.92,
+        "share_pct": 0.1097,
+        "posicion": 29
+      },
+      {
+        "entidad": "FIHOGAR",
+        "tipo_entidad": "BAyC",
+        "valor": 2643944922.0,
+        "share_pct": 0.1024,
+        "posicion": 30
+      },
+      {
+        "entidad": "MAGUANA",
+        "tipo_entidad": "AAyP",
+        "valor": 2174685154.0,
+        "share_pct": 0.0842,
+        "posicion": 31
+      },
+      {
+        "entidad": "ATLANTICO",
+        "tipo_entidad": "BAyC",
+        "valor": 2158304524.0,
+        "share_pct": 0.0836,
+        "posicion": 32
+      },
+      {
+        "entidad": "BANCOTUI",
+        "tipo_entidad": "BAyC",
+        "valor": 1479221412.0,
+        "share_pct": 0.0573,
+        "posicion": 33
+      },
+      {
+        "entidad": "BANCO BACC",
+        "tipo_entidad": "BAyC",
+        "valor": 1355709555.73,
+        "share_pct": 0.0525,
+        "posicion": 34
+      },
+      {
+        "entidad": "QIK BANCO DIGITAL",
+        "tipo_entidad": "BM",
+        "valor": 1267181836.39,
+        "share_pct": 0.0491,
+        "posicion": 35
+      },
+      {
+        "entidad": "GRUFICORP",
+        "tipo_entidad": "BAyC",
+        "valor": 1014068062.7,
+        "share_pct": 0.0393,
+        "posicion": 36
+      },
+      {
+        "entidad": "OPTIMA",
+        "tipo_entidad": "BAyC",
+        "valor": 688693402.36,
+        "share_pct": 0.0267,
+        "posicion": 37
+      },
+      {
+        "entidad": "COFACI",
+        "tipo_entidad": "BAyC",
+        "valor": 408468646.9,
+        "share_pct": 0.0158,
+        "posicion": 38
+      },
+      {
+        "entidad": "BONANZA",
+        "tipo_entidad": "BAyC",
+        "valor": 296732076.68,
+        "share_pct": 0.0115,
+        "posicion": 39
+      },
+      {
+        "entidad": "ACTIVO",
+        "tipo_entidad": "BM",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 40
+      },
+      {
+        "entidad": "BELLBANK",
+        "tipo_entidad": "BM",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 41
+      },
+      {
+        "entidad": "EMPIRE",
+        "tipo_entidad": "BAyC",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 42
+      },
+      {
+        "entidad": "LEASCONFISA",
+        "tipo_entidad": "BAyC",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 43
+      }
+    ],
+    "2024-12": [
+      {
+        "entidad": "BANRESERVAS",
+        "tipo_entidad": "BM",
+        "valor": 929350358684.99,
+        "share_pct": 32.292,
+        "posicion": 1
+      },
+      {
+        "entidad": "POPULAR",
+        "tipo_entidad": "BM",
+        "valor": 646276032302.0,
+        "share_pct": 22.456,
+        "posicion": 2
+      },
+      {
+        "entidad": "BHD",
+        "tipo_entidad": "BM",
+        "valor": 477660252606.0,
+        "share_pct": 16.5972,
+        "posicion": 3
+      },
+      {
+        "entidad": "SCOTIABANK",
+        "tipo_entidad": "BM",
+        "valor": 128793309457.0,
+        "share_pct": 4.4752,
+        "posicion": 4
+      },
+      {
+        "entidad": "SANTA CRUZ",
+        "tipo_entidad": "BM",
+        "valor": 124167623442.7,
+        "share_pct": 4.3144,
+        "posicion": 5
+      },
+      {
+        "entidad": "APAP",
+        "tipo_entidad": "AAyP",
+        "valor": 118709125061.77,
+        "share_pct": 4.1248,
+        "posicion": 6
+      },
+      {
+        "entidad": "CIBAO",
+        "tipo_entidad": "AAyP",
+        "valor": 68209472858.0,
+        "share_pct": 2.3701,
+        "posicion": 7
+      },
+      {
+        "entidad": "PROMERICA",
+        "tipo_entidad": "BM",
+        "valor": 49708176617.09,
+        "share_pct": 1.7272,
+        "posicion": 8
+      },
+      {
+        "entidad": "BANESCO",
+        "tipo_entidad": "BM",
+        "valor": 41026555588.83,
+        "share_pct": 1.4255,
+        "posicion": 9
+      },
+      {
+        "entidad": "CARIBE",
+        "tipo_entidad": "BM",
+        "valor": 35976839775.29,
+        "share_pct": 1.2501,
+        "posicion": 10
+      },
+      {
+        "entidad": "LA NACIONAL",
+        "tipo_entidad": "AAyP",
+        "valor": 33966169514.54,
+        "share_pct": 1.1802,
+        "posicion": 11
+      },
+      {
+        "entidad": "BDI",
+        "tipo_entidad": "BM",
+        "valor": 24417955047.88,
+        "share_pct": 0.8484,
+        "posicion": 12
+      },
+      {
+        "entidad": "BLH",
+        "tipo_entidad": "BM",
+        "valor": 23217997959.22,
+        "share_pct": 0.8068,
+        "posicion": 13
+      },
+      {
+        "entidad": "CITIBANK",
+        "tipo_entidad": "BM",
+        "valor": 21270763571.37,
+        "share_pct": 0.7391,
+        "posicion": 14
+      },
+      {
+        "entidad": "VIMENCA",
+        "tipo_entidad": "BM",
+        "valor": 19317077069.92,
+        "share_pct": 0.6712,
+        "posicion": 15
+      },
+      {
+        "entidad": "LAFISE",
+        "tipo_entidad": "BM",
+        "valor": 16179533207.15,
+        "share_pct": 0.5622,
+        "posicion": 16
+      },
+      {
+        "entidad": "ADEMI",
+        "tipo_entidad": "BM",
+        "valor": 14220377828.0,
+        "share_pct": 0.4941,
+        "posicion": 17
+      },
+      {
+        "entidad": "ALAVER",
+        "tipo_entidad": "AAyP",
+        "valor": 11921331103.03,
+        "share_pct": 0.4142,
+        "posicion": 18
+      },
+      {
+        "entidad": "MOTOR CREDITO",
+        "tipo_entidad": "BAyC",
+        "valor": 10382081620.41,
+        "share_pct": 0.3607,
+        "posicion": 19
+      },
+      {
+        "entidad": "DUARTE",
+        "tipo_entidad": "AAyP",
+        "valor": 10100482385.0,
+        "share_pct": 0.351,
+        "posicion": 20
+      },
+      {
+        "entidad": "BANFONDESA",
+        "tipo_entidad": "BAyC",
+        "valor": 9985126877.42,
+        "share_pct": 0.347,
+        "posicion": 21
+      },
+      {
+        "entidad": "ADOPEM",
+        "tipo_entidad": "BAyC",
+        "valor": 7867719243.02,
+        "share_pct": 0.2734,
+        "posicion": 22
+      },
+      {
+        "entidad": "JMMB",
+        "tipo_entidad": "BM",
+        "valor": 7346293869.68,
+        "share_pct": 0.2553,
+        "posicion": 23
+      },
+      {
+        "entidad": "BONAO",
+        "tipo_entidad": "AAyP",
+        "valor": 6165985709.0,
+        "share_pct": 0.2142,
+        "posicion": 24
+      },
+      {
+        "entidad": "MOCANA",
+        "tipo_entidad": "AAyP",
+        "valor": 6115464226.5,
+        "share_pct": 0.2125,
+        "posicion": 25
+      },
+      {
+        "entidad": "QIK BANCO DIGITAL",
+        "tipo_entidad": "BM",
+        "valor": 4957380482.99,
+        "share_pct": 0.1723,
+        "posicion": 26
+      },
+      {
+        "entidad": "UNION",
+        "tipo_entidad": "BAyC",
+        "valor": 4383827924.0,
+        "share_pct": 0.1523,
+        "posicion": 27
+      },
+      {
+        "entidad": "ROMANA",
+        "tipo_entidad": "AAyP",
+        "valor": 4221860569.1,
+        "share_pct": 0.1467,
+        "posicion": 28
+      },
+      {
+        "entidad": "PERAVIA",
+        "tipo_entidad": "AAyP",
+        "valor": 4146405186.0,
+        "share_pct": 0.1441,
+        "posicion": 29
+      },
+      {
+        "entidad": "CONFISA",
+        "tipo_entidad": "BAyC",
+        "valor": 2997346079.04,
+        "share_pct": 0.1041,
+        "posicion": 30
+      },
+      {
+        "entidad": "FIHOGAR",
+        "tipo_entidad": "BAyC",
+        "valor": 2824659788.0,
+        "share_pct": 0.0981,
+        "posicion": 31
+      },
+      {
+        "entidad": "ATLANTICO",
+        "tipo_entidad": "BAyC",
+        "valor": 2728023400.0,
+        "share_pct": 0.0948,
+        "posicion": 32
+      },
+      {
+        "entidad": "MAGUANA",
+        "tipo_entidad": "AAyP",
+        "valor": 2420460552.9,
+        "share_pct": 0.0841,
+        "posicion": 33
+      },
+      {
+        "entidad": "BANCO BACC",
+        "tipo_entidad": "BAyC",
+        "valor": 1548415173.0,
+        "share_pct": 0.0538,
+        "posicion": 34
+      },
+      {
+        "entidad": "BANCOTUI",
+        "tipo_entidad": "BAyC",
+        "valor": 1531027166.0,
+        "share_pct": 0.0532,
+        "posicion": 35
+      },
+      {
+        "entidad": "LEASCONFISA",
+        "tipo_entidad": "BAyC",
+        "valor": 1237368859.73,
+        "share_pct": 0.043,
+        "posicion": 36
+      },
+      {
+        "entidad": "GRUFICORP",
+        "tipo_entidad": "BAyC",
+        "valor": 1078658403.73,
+        "share_pct": 0.0375,
+        "posicion": 37
+      },
+      {
+        "entidad": "OPTIMA",
+        "tipo_entidad": "BAyC",
+        "valor": 748981067.64,
+        "share_pct": 0.026,
+        "posicion": 38
+      },
+      {
+        "entidad": "COFACI",
+        "tipo_entidad": "BAyC",
+        "valor": 410313973.02,
+        "share_pct": 0.0143,
+        "posicion": 39
+      },
+      {
+        "entidad": "BONANZA",
+        "tipo_entidad": "BAyC",
+        "valor": 374239938.67,
+        "share_pct": 0.013,
+        "posicion": 40
+      },
+      {
+        "entidad": "ACTIVO",
+        "tipo_entidad": "BM",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 41
+      },
+      {
+        "entidad": "BELLBANK",
+        "tipo_entidad": "BM",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 42
+      },
+      {
+        "entidad": "EMPIRE",
+        "tipo_entidad": "BAyC",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 43
+      }
+    ],
+    "2025-12": [
+      {
+        "entidad": "BANRESERVAS",
+        "tipo_entidad": "BM",
+        "valor": 1045929230482.99,
+        "share_pct": 32.8729,
+        "posicion": 1
+      },
+      {
+        "entidad": "POPULAR",
+        "tipo_entidad": "BM",
+        "valor": 703437354620.0,
+        "share_pct": 22.1086,
+        "posicion": 2
+      },
+      {
+        "entidad": "BHD",
+        "tipo_entidad": "BM",
+        "valor": 504851317597.0,
+        "share_pct": 15.8671,
+        "posicion": 3
+      },
+      {
+        "entidad": "SCOTIABANK",
+        "tipo_entidad": "BM",
+        "valor": 141112656675.0,
+        "share_pct": 4.4351,
+        "posicion": 4
+      },
+      {
+        "entidad": "SANTA CRUZ",
+        "tipo_entidad": "BM",
+        "valor": 137329629151.25,
+        "share_pct": 4.3162,
+        "posicion": 5
+      },
+      {
+        "entidad": "APAP",
+        "tipo_entidad": "AAyP",
+        "valor": 122477098237.82,
+        "share_pct": 3.8494,
+        "posicion": 6
+      },
+      {
+        "entidad": "CIBAO",
+        "tipo_entidad": "AAyP",
+        "valor": 81914396077.0,
+        "share_pct": 2.5745,
+        "posicion": 7
+      },
+      {
+        "entidad": "PROMERICA",
+        "tipo_entidad": "BM",
+        "valor": 59768938989.87,
+        "share_pct": 1.8785,
+        "posicion": 8
+      },
+      {
+        "entidad": "CARIBE",
+        "tipo_entidad": "BM",
+        "valor": 47964734099.67,
+        "share_pct": 1.5075,
+        "posicion": 9
+      },
+      {
+        "entidad": "LA NACIONAL",
+        "tipo_entidad": "AAyP",
+        "valor": 39666744338.45,
+        "share_pct": 1.2467,
+        "posicion": 10
+      },
+      {
+        "entidad": "BANESCO",
+        "tipo_entidad": "BM",
+        "valor": 34891349322.11,
+        "share_pct": 1.0966,
+        "posicion": 11
+      },
+      {
+        "entidad": "BDI",
+        "tipo_entidad": "BM",
+        "valor": 30160874447.25,
+        "share_pct": 0.9479,
+        "posicion": 12
+      },
+      {
+        "entidad": "BLH",
+        "tipo_entidad": "BM",
+        "valor": 28670893421.24,
+        "share_pct": 0.9011,
+        "posicion": 13
+      },
+      {
+        "entidad": "VIMENCA",
+        "tipo_entidad": "BM",
+        "valor": 22076090451.35,
+        "share_pct": 0.6938,
+        "posicion": 14
+      },
+      {
+        "entidad": "CITIBANK",
+        "tipo_entidad": "BM",
+        "valor": 19702951096.69,
+        "share_pct": 0.6193,
+        "posicion": 15
+      },
+      {
+        "entidad": "LAFISE",
+        "tipo_entidad": "BM",
+        "valor": 16980198234.11,
+        "share_pct": 0.5337,
+        "posicion": 16
+      },
+      {
+        "entidad": "ADEMI",
+        "tipo_entidad": "BM",
+        "valor": 15540080919.48,
+        "share_pct": 0.4884,
+        "posicion": 17
+      },
+      {
+        "entidad": "ALAVER",
+        "tipo_entidad": "AAyP",
+        "valor": 13410730652.41,
+        "share_pct": 0.4215,
+        "posicion": 18
+      },
+      {
+        "entidad": "BANFONDESA",
+        "tipo_entidad": "BAyC",
+        "valor": 12959128969.71,
+        "share_pct": 0.4073,
+        "posicion": 19
+      },
+      {
+        "entidad": "MOTOR CREDITO",
+        "tipo_entidad": "BAyC",
+        "valor": 12552069894.1,
+        "share_pct": 0.3945,
+        "posicion": 20
+      },
+      {
+        "entidad": "DUARTE",
+        "tipo_entidad": "AAyP",
+        "valor": 10749332165.0,
+        "share_pct": 0.3378,
+        "posicion": 21
+      },
+      {
+        "entidad": "JMMB",
+        "tipo_entidad": "BM",
+        "valor": 10664470478.43,
+        "share_pct": 0.3352,
+        "posicion": 22
+      },
+      {
+        "entidad": "QIK BANCO DIGITAL",
+        "tipo_entidad": "BM",
+        "valor": 9643633304.93,
+        "share_pct": 0.3031,
+        "posicion": 23
+      },
+      {
+        "entidad": "ADOPEM",
+        "tipo_entidad": "BAyC",
+        "valor": 8871407154.98,
+        "share_pct": 0.2788,
+        "posicion": 24
+      },
+      {
+        "entidad": "MOCANA",
+        "tipo_entidad": "AAyP",
+        "valor": 7169124560.07,
+        "share_pct": 0.2253,
+        "posicion": 25
+      },
+      {
+        "entidad": "BONAO",
+        "tipo_entidad": "AAyP",
+        "valor": 6520876928.0,
+        "share_pct": 0.2049,
+        "posicion": 26
+      },
+      {
+        "entidad": "ROMANA",
+        "tipo_entidad": "AAyP",
+        "valor": 5422564797.19,
+        "share_pct": 0.1704,
+        "posicion": 27
+      },
+      {
+        "entidad": "UNION",
+        "tipo_entidad": "BAyC",
+        "valor": 4994577229.0,
+        "share_pct": 0.157,
+        "posicion": 28
+      },
+      {
+        "entidad": "PERAVIA",
+        "tipo_entidad": "AAyP",
+        "valor": 4735413974.0,
+        "share_pct": 0.1488,
+        "posicion": 29
+      },
+      {
+        "entidad": "ATLANTICO",
+        "tipo_entidad": "BAyC",
+        "valor": 3565483408.0,
+        "share_pct": 0.1121,
+        "posicion": 30
+      },
+      {
+        "entidad": "CONFISA",
+        "tipo_entidad": "BAyC",
+        "valor": 3454193784.45,
+        "share_pct": 0.1086,
+        "posicion": 31
+      },
+      {
+        "entidad": "FIHOGAR",
+        "tipo_entidad": "BAyC",
+        "valor": 3190728891.0,
+        "share_pct": 0.1003,
+        "posicion": 32
+      },
+      {
+        "entidad": "MAGUANA",
+        "tipo_entidad": "AAyP",
+        "valor": 3024672978.0,
+        "share_pct": 0.0951,
+        "posicion": 33
+      },
+      {
+        "entidad": "BANCO BACC",
+        "tipo_entidad": "BAyC",
+        "valor": 1830584799.0,
+        "share_pct": 0.0575,
+        "posicion": 34
+      },
+      {
+        "entidad": "BANCOTUI",
+        "tipo_entidad": "BAyC",
+        "valor": 1798131325.0,
+        "share_pct": 0.0565,
+        "posicion": 35
+      },
+      {
+        "entidad": "LEASCONFISA",
+        "tipo_entidad": "BAyC",
+        "valor": 1420108024.11,
+        "share_pct": 0.0446,
+        "posicion": 36
+      },
+      {
+        "entidad": "GRUFICORP",
+        "tipo_entidad": "BAyC",
+        "valor": 1221746097.26,
+        "share_pct": 0.0384,
+        "posicion": 37
+      },
+      {
+        "entidad": "OPTIMA",
+        "tipo_entidad": "BAyC",
+        "valor": 859155555.89,
+        "share_pct": 0.027,
+        "posicion": 38
+      },
+      {
+        "entidad": "BONANZA",
+        "tipo_entidad": "BAyC",
+        "valor": 613183876.98,
+        "share_pct": 0.0193,
+        "posicion": 39
+      },
+      {
+        "entidad": "COFACI",
+        "tipo_entidad": "BAyC",
+        "valor": 595597563.07,
+        "share_pct": 0.0187,
+        "posicion": 40
+      },
+      {
+        "entidad": "ACTIVO",
+        "tipo_entidad": "BM",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 41
+      },
+      {
+        "entidad": "BELLBANK",
+        "tipo_entidad": "BM",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 42
+      },
+      {
+        "entidad": "EMPIRE",
+        "tipo_entidad": "BAyC",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 43
+      }
+    ],
+    "2026-05": [
+      {
+        "entidad": "BANRESERVAS",
+        "tipo_entidad": "BM",
+        "valor": 1237374430074.94,
+        "share_pct": 36.2314,
+        "posicion": 1
+      },
+      {
+        "entidad": "POPULAR",
+        "tipo_entidad": "BM",
+        "valor": 734028286487.0,
+        "share_pct": 21.493,
+        "posicion": 2
+      },
+      {
+        "entidad": "BHD",
+        "tipo_entidad": "BM",
+        "valor": 504591604167.0,
+        "share_pct": 14.7749,
+        "posicion": 3
+      },
+      {
+        "entidad": "SANTA CRUZ",
+        "tipo_entidad": "BM",
+        "valor": 140182309354.02,
+        "share_pct": 4.1047,
+        "posicion": 4
+      },
+      {
+        "entidad": "SCOTIABANK",
+        "tipo_entidad": "BM",
+        "valor": 135315307562.0,
+        "share_pct": 3.9622,
+        "posicion": 5
+      },
+      {
+        "entidad": "APAP",
+        "tipo_entidad": "AAyP",
+        "valor": 128700676300.03,
+        "share_pct": 3.7685,
+        "posicion": 6
+      },
+      {
+        "entidad": "CIBAO",
+        "tipo_entidad": "AAyP",
+        "valor": 88795739543.0,
+        "share_pct": 2.6,
+        "posicion": 7
+      },
+      {
+        "entidad": "PROMERICA",
+        "tipo_entidad": "BM",
+        "valor": 59638573610.24,
+        "share_pct": 1.7463,
+        "posicion": 8
+      },
+      {
+        "entidad": "CARIBE",
+        "tipo_entidad": "BM",
+        "valor": 47543189117.15,
+        "share_pct": 1.3921,
+        "posicion": 9
+      },
+      {
+        "entidad": "LA NACIONAL",
+        "tipo_entidad": "AAyP",
+        "valor": 40212417392.0,
+        "share_pct": 1.1775,
+        "posicion": 10
+      },
+      {
+        "entidad": "BANESCO",
+        "tipo_entidad": "BM",
+        "valor": 38409888375.99,
+        "share_pct": 1.1247,
+        "posicion": 11
+      },
+      {
+        "entidad": "BLH",
+        "tipo_entidad": "BM",
+        "valor": 27581684988.04,
+        "share_pct": 0.8076,
+        "posicion": 12
+      },
+      {
+        "entidad": "BDI",
+        "tipo_entidad": "BM",
+        "valor": 27246712617.13,
+        "share_pct": 0.7978,
+        "posicion": 13
+      },
+      {
+        "entidad": "VIMENCA",
+        "tipo_entidad": "BM",
+        "valor": 23005774494.37,
+        "share_pct": 0.6736,
+        "posicion": 14
+      },
+      {
+        "entidad": "CITIBANK",
+        "tipo_entidad": "BM",
+        "valor": 17273769200.96,
+        "share_pct": 0.5058,
+        "posicion": 15
+      },
+      {
+        "entidad": "LAFISE",
+        "tipo_entidad": "BM",
+        "valor": 17013470048.6,
+        "share_pct": 0.4982,
+        "posicion": 16
+      },
+      {
+        "entidad": "ADEMI",
+        "tipo_entidad": "BM",
+        "valor": 16496478202.02,
+        "share_pct": 0.483,
+        "posicion": 17
+      },
+      {
+        "entidad": "BANFONDESA",
+        "tipo_entidad": "BAyC",
+        "valor": 14595517579.6,
+        "share_pct": 0.4274,
+        "posicion": 18
+      },
+      {
+        "entidad": "ALAVER",
+        "tipo_entidad": "AAyP",
+        "valor": 13256221192.2,
+        "share_pct": 0.3882,
+        "posicion": 19
+      },
+      {
+        "entidad": "MOTOR CREDITO",
+        "tipo_entidad": "BAyC",
+        "valor": 12832103840.37,
+        "share_pct": 0.3757,
+        "posicion": 20
+      },
+      {
+        "entidad": "QIK BANCO DIGITAL",
+        "tipo_entidad": "BM",
+        "valor": 11487320406.0,
+        "share_pct": 0.3364,
+        "posicion": 21
+      },
+      {
+        "entidad": "DUARTE",
+        "tipo_entidad": "AAyP",
+        "valor": 10824600864.0,
+        "share_pct": 0.317,
+        "posicion": 22
+      },
+      {
+        "entidad": "JMMB",
+        "tipo_entidad": "BM",
+        "valor": 10652091189.15,
+        "share_pct": 0.3119,
+        "posicion": 23
+      },
+      {
+        "entidad": "ADOPEM",
+        "tipo_entidad": "BAyC",
+        "valor": 9301766743.38,
+        "share_pct": 0.2724,
+        "posicion": 24
+      },
+      {
+        "entidad": "MOCANA",
+        "tipo_entidad": "AAyP",
+        "valor": 7475356423.0,
+        "share_pct": 0.2189,
+        "posicion": 25
+      },
+      {
+        "entidad": "BONAO",
+        "tipo_entidad": "AAyP",
+        "valor": 6396507672.0,
+        "share_pct": 0.1873,
+        "posicion": 26
+      },
+      {
+        "entidad": "UNION",
+        "tipo_entidad": "BAyC",
+        "valor": 5906868320.0,
+        "share_pct": 0.173,
+        "posicion": 27
+      },
+      {
+        "entidad": "ROMANA",
+        "tipo_entidad": "AAyP",
+        "valor": 5326144690.84,
+        "share_pct": 0.156,
+        "posicion": 28
+      },
+      {
+        "entidad": "PERAVIA",
+        "tipo_entidad": "AAyP",
+        "valor": 4827167934.0,
+        "share_pct": 0.1413,
+        "posicion": 29
+      },
+      {
+        "entidad": "ATLANTICO",
+        "tipo_entidad": "BAyC",
+        "valor": 3560674278.0,
+        "share_pct": 0.1043,
+        "posicion": 30
+      },
+      {
+        "entidad": "MAGUANA",
+        "tipo_entidad": "AAyP",
+        "valor": 3428416293.07,
+        "share_pct": 0.1004,
+        "posicion": 31
+      },
+      {
+        "entidad": "FIHOGAR",
+        "tipo_entidad": "BAyC",
+        "valor": 3137944354.0,
+        "share_pct": 0.0919,
+        "posicion": 32
+      },
+      {
+        "entidad": "BANCOTUI",
+        "tipo_entidad": "BAyC",
+        "valor": 2056966123.0,
+        "share_pct": 0.0602,
+        "posicion": 33
+      },
+      {
+        "entidad": "BANCO BACC",
+        "tipo_entidad": "BAyC",
+        "valor": 1730066687.0,
+        "share_pct": 0.0507,
+        "posicion": 34
+      },
+      {
+        "entidad": "LEASCONFISA",
+        "tipo_entidad": "BAyC",
+        "valor": 1614496677.61,
+        "share_pct": 0.0473,
+        "posicion": 35
+      },
+      {
+        "entidad": "GRUFICORP",
+        "tipo_entidad": "BAyC",
+        "valor": 1269775668.51,
+        "share_pct": 0.0372,
+        "posicion": 36
+      },
+      {
+        "entidad": "OPTIMA",
+        "tipo_entidad": "BAyC",
+        "valor": 822170389.49,
+        "share_pct": 0.0241,
+        "posicion": 37
+      },
+      {
+        "entidad": "BONANZA",
+        "tipo_entidad": "BAyC",
+        "valor": 682300457.52,
+        "share_pct": 0.02,
+        "posicion": 38
+      },
+      {
+        "entidad": "COFACI",
+        "tipo_entidad": "BAyC",
+        "valor": 602112555.87,
+        "share_pct": 0.0176,
+        "posicion": 39
+      },
+      {
+        "entidad": "ACTIVO",
+        "tipo_entidad": "BM",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 40
+      },
+      {
+        "entidad": "BELLBANK",
+        "tipo_entidad": "BM",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 41
+      },
+      {
+        "entidad": "CONFISA",
+        "tipo_entidad": "BAyC",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 42
+      },
+      {
+        "entidad": "EMPIRE",
+        "tipo_entidad": "BAyC",
+        "valor": 0.0,
+        "share_pct": 0.0,
+        "posicion": 43
+      }
+    ]
+  },
+  "entidades": {
+    "ACTIVO": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 1970839964.18,
+            "share_pct": 0.0923
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1730550667.31,
+            "share_pct": 0.0752
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 220167042.15,
+            "share_pct": 0.0235
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 221785436.35,
+            "share_pct": 0.0234
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 121150234.42,
+            "share_pct": 0.0266
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 81612387.52,
+            "share_pct": 0.0164
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 1629522687.61,
+            "share_pct": 0.2193
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1427152843.44,
+            "share_pct": 0.1668
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ]
+      }
+    },
+    "ADEMI": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 11810576619.08,
+            "share_pct": 0.5532
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 12075280271.59,
+            "share_pct": 0.5248
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 12976165768.8,
+            "share_pct": 0.5024
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 14220377828.0,
+            "share_pct": 0.4941
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 15540080919.48,
+            "share_pct": 0.4884
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 16496478202.02,
+            "share_pct": 0.483
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 3023524577.27,
+            "share_pct": 0.3227
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 2940678775.25,
+            "share_pct": 0.3101
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 3177343820.13,
+            "share_pct": 0.3251
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 3575766097.04,
+            "share_pct": 0.3463
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 4452643799.61,
+            "share_pct": 0.3867
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 4823853882.58,
+            "share_pct": 0.409
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 508146130.67,
+            "share_pct": 0.1116
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1035451070.51,
+            "share_pct": 0.2083
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 992772428.23,
+            "share_pct": 0.1929
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 693791706.69,
+            "share_pct": 0.1315
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 563526285.88,
+            "share_pct": 0.1053
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 501818680.5,
+            "share_pct": 0.0735
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 8278905911.14,
+            "share_pct": 1.1143
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 8099150425.83,
+            "share_pct": 0.9466
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 8806049520.44,
+            "share_pct": 0.807
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 9950820024.27,
+            "share_pct": 0.755
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 10523910833.99,
+            "share_pct": 0.7038
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 11170805638.94,
+            "share_pct": 0.7193
+          }
+        ]
+      }
+    },
+    "BANESCO": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 33815557185.37,
+            "share_pct": 1.5839
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 35516816394.67,
+            "share_pct": 1.5436
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 36872524313.16,
+            "share_pct": 1.4275
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 41026555588.83,
+            "share_pct": 1.4255
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 34891349322.11,
+            "share_pct": 1.0966
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 38409888375.99,
+            "share_pct": 1.1247
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 7938273935.47,
+            "share_pct": 0.8473
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 8928917263.05,
+            "share_pct": 0.9416
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 6881906698.36,
+            "share_pct": 0.7042
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 8960521253.01,
+            "share_pct": 0.8679
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 11934012892.4,
+            "share_pct": 1.0365
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 16533856063.81,
+            "share_pct": 1.402
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 3542522996.08,
+            "share_pct": 0.7783
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 3522219938.73,
+            "share_pct": 0.7087
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 4647444899.36,
+            "share_pct": 0.9032
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 3739366845.85,
+            "share_pct": 0.709
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 3198441821.42,
+            "share_pct": 0.5977
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 2559345354.06,
+            "share_pct": 0.3748
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 22334760253.82,
+            "share_pct": 3.0061
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 23065679192.89,
+            "share_pct": 2.6958
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 25343172715.44,
+            "share_pct": 2.3224
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 28326667489.97,
+            "share_pct": 2.1492
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 19758894608.29,
+            "share_pct": 1.3214
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 19316686958.12,
+            "share_pct": 1.2438
+          }
+        ]
+      }
+    },
+    "BANRESERVAS": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 727751856972.92,
+            "share_pct": 34.0866
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 806514118721.28,
+            "share_pct": 35.0524
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 869578089093.33,
+            "share_pct": 33.6646
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 929350358684.99,
+            "share_pct": 32.292
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 1045929230482.99,
+            "share_pct": 32.8729
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 1237374430074.94,
+            "share_pct": 36.2314
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 297587209065.81,
+            "share_pct": 31.7638
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 312467172846.28,
+            "share_pct": 32.952
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 338046838054.1,
+            "share_pct": 34.5911
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 353301726032.37,
+            "share_pct": 34.2187
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 379533988104.72,
+            "share_pct": 32.9651
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 377660404109.53,
+            "share_pct": 32.0238
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 197751264326.74,
+            "share_pct": 43.4479
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 241185007204.36,
+            "share_pct": 48.5267
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 211624561043.09,
+            "share_pct": 41.1271
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 215376695729.08,
+            "share_pct": 40.8341
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 195121638868.65,
+            "share_pct": 36.4632
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 357747499321.72,
+            "share_pct": 52.3898
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 232413383580.37,
+            "share_pct": 31.2808
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 252861938670.64,
+            "share_pct": 29.5531
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 319906689996.14,
+            "share_pct": 29.316
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 360671936923.54,
+            "share_pct": 27.3643
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 471273603509.62,
+            "share_pct": 31.517
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 501966526643.69,
+            "share_pct": 32.3218
+          }
+        ]
+      }
+    },
+    "BDI": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 17664805378.48,
+            "share_pct": 0.8274
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 17892067561.6,
+            "share_pct": 0.7776
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 21602717368.77,
+            "share_pct": 0.8363
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 24417955047.88,
+            "share_pct": 0.8484
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 30160874447.25,
+            "share_pct": 0.9479
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 27246712617.13,
+            "share_pct": 0.7978
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 5176284126.19,
+            "share_pct": 0.5525
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 5176270296.49,
+            "share_pct": 0.5459
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 6020643058.06,
+            "share_pct": 0.6161
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 6406015449.63,
+            "share_pct": 0.6204
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 8889058326.23,
+            "share_pct": 0.7721
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 8591864266.79,
+            "share_pct": 0.7285
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 1268903028.2,
+            "share_pct": 0.2788
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1130198066.29,
+            "share_pct": 0.2274
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 1319051548.91,
+            "share_pct": 0.2563
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1613480807.97,
+            "share_pct": 0.3059
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 1712762161.83,
+            "share_pct": 0.3201
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 1564240328.49,
+            "share_pct": 0.2291
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 11219618224.09,
+            "share_pct": 1.5101
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 11585599198.82,
+            "share_pct": 1.3541
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 14263022761.8,
+            "share_pct": 1.3071
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 16398458790.28,
+            "share_pct": 1.2442
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 19559053959.19,
+            "share_pct": 1.308
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 17090608021.85,
+            "share_pct": 1.1005
+          }
+        ]
+      }
+    },
+    "BELLBANK": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 1411073169.0,
+            "share_pct": 0.0661
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 746611947.0,
+            "share_pct": 0.0797
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 664461222.0,
+            "share_pct": 0.0894
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ]
+      }
+    },
+    "BHD": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 321149325702.58,
+            "share_pct": 15.042
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 351167539460.92,
+            "share_pct": 15.2623
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 411488060418.0,
+            "share_pct": 15.9302
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 477660252606.0,
+            "share_pct": 16.5972
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 504851317597.0,
+            "share_pct": 15.8671
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 504591604167.0,
+            "share_pct": 14.7749
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 147863982433.96,
+            "share_pct": 15.7827
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 147947185859.91,
+            "share_pct": 15.6021
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 152023000504.27,
+            "share_pct": 15.5559
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 160735001908.47,
+            "share_pct": 15.5678
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 187930936643.91,
+            "share_pct": 16.3231
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 192852190923.51,
+            "share_pct": 16.3529
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 70098565940.08,
+            "share_pct": 15.4013
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 65990171597.92,
+            "share_pct": 13.2773
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 77628903347.98,
+            "share_pct": 15.0864
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 83099121385.01,
+            "share_pct": 15.7551
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 90271800932.13,
+            "share_pct": 16.8695
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 75552814967.02,
+            "share_pct": 11.0642
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 103186777328.54,
+            "share_pct": 13.888
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 137230182003.09,
+            "share_pct": 16.0387
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 181836156565.75,
+            "share_pct": 16.6633
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 233826129312.52,
+            "share_pct": 17.7405
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 226648580020.96,
+            "share_pct": 15.1574
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 236186598276.47,
+            "share_pct": 15.2081
+          }
+        ]
+      }
+    },
+    "BLH": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 16796386425.12,
+            "share_pct": 0.7867
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 17671805190.39,
+            "share_pct": 0.768
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 20178154681.45,
+            "share_pct": 0.7812
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 23217997959.22,
+            "share_pct": 0.8068
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 28670893421.24,
+            "share_pct": 0.9011
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 27581684988.04,
+            "share_pct": 0.8076
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 6976922148.19,
+            "share_pct": 0.7447
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 8642230191.18,
+            "share_pct": 0.9114
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 8273671852.62,
+            "share_pct": 0.8466
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 8696017695.09,
+            "share_pct": 0.8422
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 10262210468.67,
+            "share_pct": 0.8913
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 10925498611.97,
+            "share_pct": 0.9264
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 1281466921.98,
+            "share_pct": 0.2816
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1462030931.32,
+            "share_pct": 0.2942
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 1576402787.54,
+            "share_pct": 0.3064
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1660121451.68,
+            "share_pct": 0.3147
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 2136186519.6,
+            "share_pct": 0.3992
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 1604291026.26,
+            "share_pct": 0.2349
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 8537997354.95,
+            "share_pct": 1.1491
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 7567544067.89,
+            "share_pct": 0.8845
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 10328080041.29,
+            "share_pct": 0.9465
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 12861858812.45,
+            "share_pct": 0.9758
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 16272496432.97,
+            "share_pct": 1.0882
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 15051895349.81,
+            "share_pct": 0.9692
+          }
+        ]
+      }
+    },
+    "CARIBE": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 29699934135.28,
+            "share_pct": 1.3911
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 34457130660.14,
+            "share_pct": 1.4976
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 34372530425.06,
+            "share_pct": 1.3307
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 35976839775.29,
+            "share_pct": 1.2501
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 47964734099.67,
+            "share_pct": 1.5075
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 47543189117.15,
+            "share_pct": 1.3921
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 7117909814.55,
+            "share_pct": 0.7598
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 10942469458.42,
+            "share_pct": 1.154
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 7240855802.32,
+            "share_pct": 0.7409
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 5411922449.91,
+            "share_pct": 0.5242
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 10965531572.06,
+            "share_pct": 0.9524
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 22911594638.38,
+            "share_pct": 1.9428
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 1886881439.09,
+            "share_pct": 0.4146
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1674551044.15,
+            "share_pct": 0.3369
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 2154549632.91,
+            "share_pct": 0.4187
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1626319969.77,
+            "share_pct": 0.3083
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 2997494348.08,
+            "share_pct": 0.5602
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 15178516156.04,
+            "share_pct": 2.2228
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 20695142881.64,
+            "share_pct": 2.7854
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 21840110157.57,
+            "share_pct": 2.5526
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 24977124989.83,
+            "share_pct": 2.2889
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 28938597355.61,
+            "share_pct": 2.1956
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 34001708179.53,
+            "share_pct": 2.2739
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 9453078322.73,
+            "share_pct": 0.6087
+          }
+        ]
+      }
+    },
+    "CITIBANK": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 19348844029.29,
+            "share_pct": 0.9063
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 19696602928.74,
+            "share_pct": 0.856
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 23406183270.97,
+            "share_pct": 0.9061
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 21270763571.37,
+            "share_pct": 0.7391
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 19702951096.69,
+            "share_pct": 0.6193
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 17273769200.96,
+            "share_pct": 0.5058
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 4722409163.5,
+            "share_pct": 0.5041
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 74725468.72,
+            "share_pct": 0.0079
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 172645031.24,
+            "share_pct": 0.0177
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 121871154.64,
+            "share_pct": 0.0118
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 690496249.79,
+            "share_pct": 0.06
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 713201528.98,
+            "share_pct": 0.0605
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 8152755379.26,
+            "share_pct": 1.7912
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 13222063100.03,
+            "share_pct": 2.6603
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 22951970748.19,
+            "share_pct": 4.4605
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 21148892416.73,
+            "share_pct": 4.0097
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 19012138733.02,
+            "share_pct": 3.5529
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 16560276948.54,
+            "share_pct": 2.4251
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 6473679486.53,
+            "share_pct": 0.8713
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 6399814359.99,
+            "share_pct": 0.748
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 281567491.54,
+            "share_pct": 0.0258
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 316113.88,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 290723.44,
+            "share_pct": 0.0
+          }
+        ]
+      }
+    },
+    "LAFISE": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 14015246771.71,
+            "share_pct": 0.6564
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 13659392592.08,
+            "share_pct": 0.5937
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 15658530261.05,
+            "share_pct": 0.6062
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 16179533207.15,
+            "share_pct": 0.5622
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 16980198234.11,
+            "share_pct": 0.5337
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 17013470048.6,
+            "share_pct": 0.4982
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 3645263632.29,
+            "share_pct": 0.3891
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 3946664405.04,
+            "share_pct": 0.4162
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 5205466685.68,
+            "share_pct": 0.5327
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 5975866264.37,
+            "share_pct": 0.5788
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 5216614142.18,
+            "share_pct": 0.4531
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 4720752164.96,
+            "share_pct": 0.4003
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 2010110162.11,
+            "share_pct": 0.4416
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1899692700.95,
+            "share_pct": 0.3822
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 3949042237.25,
+            "share_pct": 0.7675
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 3428541265.37,
+            "share_pct": 0.65
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 2573860069.0,
+            "share_pct": 0.481
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 2657168113.85,
+            "share_pct": 0.3891
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 8359872977.31,
+            "share_pct": 1.1252
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 7813035486.09,
+            "share_pct": 0.9131
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 6504021338.12,
+            "share_pct": 0.596
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 6775125677.41,
+            "share_pct": 0.514
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 9189724022.93,
+            "share_pct": 0.6146
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 9635549769.79,
+            "share_pct": 0.6204
+          }
+        ]
+      }
+    },
+    "POPULAR": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 475076865353.58,
+            "share_pct": 22.2517
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 487491951712.09,
+            "share_pct": 21.1872
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 556680772231.0,
+            "share_pct": 21.5512
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 646276032302.0,
+            "share_pct": 22.456
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 703437354620.0,
+            "share_pct": 22.1086
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 734028286487.0,
+            "share_pct": 21.493
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 266643171863.12,
+            "share_pct": 28.4609
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 256258903148.54,
+            "share_pct": 27.0244
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 258297312827.0,
+            "share_pct": 26.4306
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 272915341285.0,
+            "share_pct": 26.433
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 292225464954.0,
+            "share_pct": 25.3817
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 296547472012.0,
+            "share_pct": 25.1458
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 130870269554.68,
+            "share_pct": 28.7535
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 128552123979.8,
+            "share_pct": 25.8648
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 147398588828.0,
+            "share_pct": 28.6454
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 154665955630.0,
+            "share_pct": 29.3237
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 167341389534.0,
+            "share_pct": 31.2718
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 165271667369.0,
+            "share_pct": 24.2029
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 77563423935.78,
+            "share_pct": 10.4393
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 102680924583.75,
+            "share_pct": 12.0008
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 150984870576.0,
+            "share_pct": 13.8362
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 218694735387.0,
+            "share_pct": 16.5925
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 243870500132.0,
+            "share_pct": 16.3091
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 272209147106.0,
+            "share_pct": 17.5276
+          }
+        ]
+      }
+    },
+    "PROMERICA": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 33704587228.03,
+            "share_pct": 1.5787
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 36660486970.08,
+            "share_pct": 1.5933
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 42269006364.45,
+            "share_pct": 1.6364
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 49708176617.09,
+            "share_pct": 1.7272
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 59768938989.87,
+            "share_pct": 1.8785
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 59638573610.24,
+            "share_pct": 1.7463
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 4970872306.84,
+            "share_pct": 0.5306
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 7559765345.76,
+            "share_pct": 0.7972
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 7230911490.53,
+            "share_pct": 0.7399
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 11047849990.97,
+            "share_pct": 1.07
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 14450323417.44,
+            "share_pct": 1.2551
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 13125640239.82,
+            "share_pct": 1.113
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 6648200222.66,
+            "share_pct": 1.4607
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 6868254082.61,
+            "share_pct": 1.3819
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 6837690807.04,
+            "share_pct": 1.3288
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 8089816079.54,
+            "share_pct": 1.5338
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 7971760072.82,
+            "share_pct": 1.4897
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 7608893935.92,
+            "share_pct": 1.1143
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 22085514698.53,
+            "share_pct": 2.9725
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 22232467541.71,
+            "share_pct": 2.5984
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 28200404066.88,
+            "share_pct": 2.5843
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 30570510546.58,
+            "share_pct": 2.3194
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 37346855499.61,
+            "share_pct": 2.4976
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 38904039434.5,
+            "share_pct": 2.505
+          }
+        ]
+      }
+    },
+    "SANTA CRUZ": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 77404752087.13,
+            "share_pct": 3.6255
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 93477908917.26,
+            "share_pct": 4.0627
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 110271745951.19,
+            "share_pct": 4.269
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 124167623442.7,
+            "share_pct": 4.3144
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 137329629151.25,
+            "share_pct": 4.3162
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 140182309354.02,
+            "share_pct": 4.1047
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 31875274095.6,
+            "share_pct": 3.4023
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 34978029214.2,
+            "share_pct": 3.6887
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 34334009159.56,
+            "share_pct": 3.5133
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 37498302145.5,
+            "share_pct": 3.6319
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 45695969745.04,
+            "share_pct": 3.969
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 50121562257.49,
+            "share_pct": 4.2501
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 10723536958.47,
+            "share_pct": 2.3561
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 9701610216.77,
+            "share_pct": 1.952
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 10707254912.58,
+            "share_pct": 2.0808
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 10243307143.31,
+            "share_pct": 1.9421
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 13995143516.78,
+            "share_pct": 2.6153
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 12167405473.24,
+            "share_pct": 1.7818
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 34805941033.06,
+            "share_pct": 4.6846
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 48798269486.29,
+            "share_pct": 5.7033
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 65230481879.05,
+            "share_pct": 5.9777
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 76426014153.89,
+            "share_pct": 5.7985
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 77638515889.43,
+            "share_pct": 5.1922
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 77893341623.29,
+            "share_pct": 5.0156
+          }
+        ]
+      }
+    },
+    "SCOTIABANK": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 117389690181.79,
+            "share_pct": 5.4983
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 121577114801.04,
+            "share_pct": 5.2839
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 124920470864.93,
+            "share_pct": 4.8361
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 128793309457.0,
+            "share_pct": 4.4752
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 141112656675.0,
+            "share_pct": 4.4351
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 135315307562.0,
+            "share_pct": 3.9622
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 59603821274.35,
+            "share_pct": 6.362
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 56346143281.26,
+            "share_pct": 5.9421
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 52875867106.48,
+            "share_pct": 5.4106
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 53311968860.69,
+            "share_pct": 5.1635
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 55724407774.11,
+            "share_pct": 4.84
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 54998220897.76,
+            "share_pct": 4.6636
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 19050178144.63,
+            "share_pct": 4.1855
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 19706089609.77,
+            "share_pct": 3.9649
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 20342564546.23,
+            "share_pct": 3.9534
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 19964142667.11,
+            "share_pct": 3.7851
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 24945629084.58,
+            "share_pct": 4.6617
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 21164795536.75,
+            "share_pct": 3.0994
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 38735690762.81,
+            "share_pct": 5.2135
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 45524881910.01,
+            "share_pct": 5.3207
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 51702039212.22,
+            "share_pct": 4.7379
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 55517197929.2,
+            "share_pct": 4.2121
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 60442619816.31,
+            "share_pct": 4.0422
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 59152291127.49,
+            "share_pct": 3.8088
+          }
+        ]
+      }
+    },
+    "TODOS": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 2135011053647.6,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 2300884474566.9,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 2583063489487.83,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 2877961074189.63,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 3181741454571.86,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 3415196901873.1,
+            "share_pct": 100.0
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 936874106102.3,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 948250051356.63,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 977266069585.39,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1032480499342.5,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 1151321400123.87,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 1179312279766.45,
+            "share_pct": 100.0
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 455145703828.07,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 497015414175.37,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 514562817621.42,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 527442959757.73,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 535118804805.99,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 682857549136.33,
+            "share_pct": 100.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 742991243717.23,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 855619009034.9,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 1091234602281.02,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1318037615089.4,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 1495301249642.0,
+            "share_pct": 100.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 1553027072970.32,
+            "share_pct": 100.0
+          }
+        ]
+      }
+    },
+    "VIMENCA": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 12747001816.0,
+            "share_pct": 0.597
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 14516671549.43,
+            "share_pct": 0.6309
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 17589228608.94,
+            "share_pct": 0.6809
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 19317077069.92,
+            "share_pct": 0.6712
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 22076090451.35,
+            "share_pct": 0.6938
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 23005774494.37,
+            "share_pct": 0.6736
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 1826817683.0,
+            "share_pct": 0.195
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1974921418.22,
+            "share_pct": 0.2083
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 1826186831.05,
+            "share_pct": 0.1869
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 2310849251.28,
+            "share_pct": 0.2238
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 2507444237.49,
+            "share_pct": 0.2178
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 2233154513.43,
+            "share_pct": 0.1894
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 1231752389.0,
+            "share_pct": 0.2706
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 777635412.21,
+            "share_pct": 0.1565
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 2184914256.75,
+            "share_pct": 0.4246
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1937185497.26,
+            "share_pct": 0.3673
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 2665782895.54,
+            "share_pct": 0.4982
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 2362557517.15,
+            "share_pct": 0.346
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 9688431744.0,
+            "share_pct": 1.304
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 11764114719.0,
+            "share_pct": 1.3749
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 13578127521.14,
+            "share_pct": 1.2443
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 15069042321.38,
+            "share_pct": 1.1433
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 16902863318.32,
+            "share_pct": 1.1304
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 18410062463.79,
+            "share_pct": 1.1854
+          }
+        ]
+      }
+    },
+    "JMMB": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 3699332837.01,
+            "share_pct": 0.1733
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 5550190580.87,
+            "share_pct": 0.2412
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 7412821818.71,
+            "share_pct": 0.287
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 7346293869.68,
+            "share_pct": 0.2553
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 10664470478.43,
+            "share_pct": 0.3352
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 10652091189.15,
+            "share_pct": 0.3119
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 175726550.51,
+            "share_pct": 0.0188
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 333554250.64,
+            "share_pct": 0.0352
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 455244640.72,
+            "share_pct": 0.0466
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 629186581.76,
+            "share_pct": 0.0609
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 1928129931.1,
+            "share_pct": 0.1675
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 2080924428.79,
+            "share_pct": 0.1765
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 206702832.43,
+            "share_pct": 0.0416
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 247105597.36,
+            "share_pct": 0.048
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 156221162.36,
+            "share_pct": 0.0296
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 611249962.66,
+            "share_pct": 0.1142
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 356258407.79,
+            "share_pct": 0.0522
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 3523606286.5,
+            "share_pct": 0.4742
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 5009933497.8,
+            "share_pct": 0.5855
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 6710471580.63,
+            "share_pct": 0.6149
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 6560886125.56,
+            "share_pct": 0.4978
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 8125090584.67,
+            "share_pct": 0.5434
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 8214908352.57,
+            "share_pct": 0.529
+          }
+        ]
+      }
+    },
+    "QIK BANCO DIGITAL": {
+      "tipo_entidad": "BM",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1433675.95,
+            "share_pct": 0.0001
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 1267181836.39,
+            "share_pct": 0.0491
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 4957380482.99,
+            "share_pct": 0.1723
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 9643633304.93,
+            "share_pct": 0.3031
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 11487320406.0,
+            "share_pct": 0.3364
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1433675.95,
+            "share_pct": 0.0002
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 1267181836.39,
+            "share_pct": 0.1297
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 3705450734.69,
+            "share_pct": 0.3589
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 6345009311.89,
+            "share_pct": 0.5511
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 6656739448.54,
+            "share_pct": 0.5645
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1251929748.3,
+            "share_pct": 0.095
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 3298623993.04,
+            "share_pct": 0.2206
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 4830580957.46,
+            "share_pct": 0.311
+          }
+        ]
+      }
+    },
+    "ALAVER": {
+      "tipo_entidad": "AAyP",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 9048795329.53,
+            "share_pct": 0.4238
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 10154140274.16,
+            "share_pct": 0.4413
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 10682845049.24,
+            "share_pct": 0.4136
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 11921331103.03,
+            "share_pct": 0.4142
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 13410730652.41,
+            "share_pct": 0.4215
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 13256221192.2,
+            "share_pct": 0.3882
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 4686398184.96,
+            "share_pct": 0.5002
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 4926860863.93,
+            "share_pct": 0.5196
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 4848214913.05,
+            "share_pct": 0.4961
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 4990134357.0,
+            "share_pct": 0.4833
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 5275144359.51,
+            "share_pct": 0.4582
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 5157340532.36,
+            "share_pct": 0.4373
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 4362397144.57,
+            "share_pct": 0.5871
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 5227279410.23,
+            "share_pct": 0.6109
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 5834630136.19,
+            "share_pct": 0.5347
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 6931196746.03,
+            "share_pct": 0.5259
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 8135586292.9,
+            "share_pct": 0.5441
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 8098880659.84,
+            "share_pct": 0.5215
+          }
+        ]
+      }
+    },
+    "APAP": {
+      "tipo_entidad": "AAyP",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 78333594769.92,
+            "share_pct": 3.669
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 82779669306.05,
+            "share_pct": 3.5977
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 106619398976.01,
+            "share_pct": 4.1276
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 118709125061.77,
+            "share_pct": 4.1248
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 122477098237.82,
+            "share_pct": 3.8494
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 128700676300.03,
+            "share_pct": 3.7685
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 26958470290.4,
+            "share_pct": 2.8775
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 28028685943.09,
+            "share_pct": 2.9558
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 29363556219.96,
+            "share_pct": 3.0047
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 30304901955.51,
+            "share_pct": 2.9352
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 35647968044.0,
+            "share_pct": 3.0963
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 35913792190.17,
+            "share_pct": 3.0453
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 51375124479.52,
+            "share_pct": 6.9146
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 54750983362.96,
+            "share_pct": 6.399
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 77255842756.05,
+            "share_pct": 7.0797
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 88404223106.26,
+            "share_pct": 6.7073
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 86829130193.82,
+            "share_pct": 5.8068
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 92786884109.86,
+            "share_pct": 5.9746
+          }
+        ]
+      }
+    },
+    "BONAO": {
+      "tipo_entidad": "AAyP",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 4113760429.35,
+            "share_pct": 0.1927
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 5004487431.96,
+            "share_pct": 0.2175
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 5780166027.0,
+            "share_pct": 0.2238
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 6165985709.0,
+            "share_pct": 0.2142
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 6520876928.0,
+            "share_pct": 0.2049
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 6396507672.0,
+            "share_pct": 0.1873
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 2475026591.2,
+            "share_pct": 0.2642
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 2657053028.0,
+            "share_pct": 0.2802
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 2998751592.0,
+            "share_pct": 0.3069
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 3119411718.0,
+            "share_pct": 0.3021
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 3380658283.0,
+            "share_pct": 0.2936
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 3226576111.0,
+            "share_pct": 0.2736
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 1638733838.15,
+            "share_pct": 0.2206
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 2347434403.96,
+            "share_pct": 0.2744
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 2781414435.0,
+            "share_pct": 0.2549
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 3046573991.0,
+            "share_pct": 0.2311
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 3140218645.0,
+            "share_pct": 0.21
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 3169931561.0,
+            "share_pct": 0.2041
+          }
+        ]
+      }
+    },
+    "CIBAO": {
+      "tipo_entidad": "AAyP",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 48330393494.73,
+            "share_pct": 2.2637
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 51503788658.51,
+            "share_pct": 2.2384
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 58484174738.0,
+            "share_pct": 2.2641
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 68209472858.0,
+            "share_pct": 2.3701
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 81914396077.0,
+            "share_pct": 2.5745
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 88795739543.0,
+            "share_pct": 2.6
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 23989894896.47,
+            "share_pct": 2.5606
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 24505325676.8,
+            "share_pct": 2.5843
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 25019639633.02,
+            "share_pct": 2.5602
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 26797042778.69,
+            "share_pct": 2.5954
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 31294852820.86,
+            "share_pct": 2.7182
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 31793214093.35,
+            "share_pct": 2.6959
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 24340498598.26,
+            "share_pct": 3.276
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 26998462981.71,
+            "share_pct": 3.1554
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 33464535104.98,
+            "share_pct": 3.0667
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 41412430079.31,
+            "share_pct": 3.142
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 50619543256.14,
+            "share_pct": 3.3852
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 57002525449.65,
+            "share_pct": 3.6704
+          }
+        ]
+      }
+    },
+    "DUARTE": {
+      "tipo_entidad": "AAyP",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 7779347064.89,
+            "share_pct": 0.3644
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 7522838876.78,
+            "share_pct": 0.327
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 8798813862.0,
+            "share_pct": 0.3406
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 10100482385.0,
+            "share_pct": 0.351
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 10749332165.0,
+            "share_pct": 0.3378
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 10824600864.0,
+            "share_pct": 0.317
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 3772287504.38,
+            "share_pct": 0.4026
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 3522437831.85,
+            "share_pct": 0.3715
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 3641432854.0,
+            "share_pct": 0.3726
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 3973144724.0,
+            "share_pct": 0.3848
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 4591406013.0,
+            "share_pct": 0.3988
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 4744794512.0,
+            "share_pct": 0.4023
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 4007059560.51,
+            "share_pct": 0.5393
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 4000401044.93,
+            "share_pct": 0.4675
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 5157381008.0,
+            "share_pct": 0.4726
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 6127337661.0,
+            "share_pct": 0.4649
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 6157926152.0,
+            "share_pct": 0.4118
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 6079806352.0,
+            "share_pct": 0.3915
+          }
+        ]
+      }
+    },
+    "LA NACIONAL": {
+      "tipo_entidad": "AAyP",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 28120542246.44,
+            "share_pct": 1.3171
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 27724337692.73,
+            "share_pct": 1.2049
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 30147330668.0,
+            "share_pct": 1.1671
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 33966169514.54,
+            "share_pct": 1.1802
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 39666744338.45,
+            "share_pct": 1.2467
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 40212417392.0,
+            "share_pct": 1.1775
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 12039326480.63,
+            "share_pct": 1.2851
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 12173264099.0,
+            "share_pct": 1.2838
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 12365340040.0,
+            "share_pct": 1.2653
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 12133033153.38,
+            "share_pct": 1.1751
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 13432315800.52,
+            "share_pct": 1.1667
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 13651408398.57,
+            "share_pct": 1.1576
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 16081215765.81,
+            "share_pct": 2.1644
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 15551073593.73,
+            "share_pct": 1.8175
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 17781990628.0,
+            "share_pct": 1.6295
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 21833136361.16,
+            "share_pct": 1.6565
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 26234428537.93,
+            "share_pct": 1.7545
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 26561008993.43,
+            "share_pct": 1.7103
+          }
+        ]
+      }
+    },
+    "MAGUANA": {
+      "tipo_entidad": "AAyP",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 1776270363.87,
+            "share_pct": 0.0832
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1898560874.32,
+            "share_pct": 0.0825
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 2174685154.0,
+            "share_pct": 0.0842
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 2420460552.9,
+            "share_pct": 0.0841
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 3024672978.0,
+            "share_pct": 0.0951
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 3428416293.07,
+            "share_pct": 0.1004
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 635164367.83,
+            "share_pct": 0.0678
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 624586944.24,
+            "share_pct": 0.0659
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 710394963.0,
+            "share_pct": 0.0727
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 740079298.06,
+            "share_pct": 0.0717
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 901736247.02,
+            "share_pct": 0.0783
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 923125612.71,
+            "share_pct": 0.0783
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 1141105996.04,
+            "share_pct": 0.1536
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1273973930.08,
+            "share_pct": 0.1489
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 1464290191.0,
+            "share_pct": 0.1342
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1680381254.84,
+            "share_pct": 0.1275
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 2122936730.98,
+            "share_pct": 0.142
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 2505290680.36,
+            "share_pct": 0.1613
+          }
+        ]
+      }
+    },
+    "MOCANA": {
+      "tipo_entidad": "AAyP",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 5065873349.15,
+            "share_pct": 0.2373
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 5073549046.15,
+            "share_pct": 0.2205
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 5568766886.63,
+            "share_pct": 0.2156
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 6115464226.5,
+            "share_pct": 0.2125
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 7169124560.07,
+            "share_pct": 0.2253
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 7475356423.0,
+            "share_pct": 0.2189
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 2954553532.6,
+            "share_pct": 0.3154
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 2939228045.15,
+            "share_pct": 0.31
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 3147102397.64,
+            "share_pct": 0.322
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 3308831515.43,
+            "share_pct": 0.3205
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 3666592836.75,
+            "share_pct": 0.3185
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 3656276279.0,
+            "share_pct": 0.31
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 2111319816.55,
+            "share_pct": 0.2842
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 2134321001.0,
+            "share_pct": 0.2494
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 2421664488.99,
+            "share_pct": 0.2219
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 2806632711.07,
+            "share_pct": 0.2129
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 3502531723.32,
+            "share_pct": 0.2342
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 3819080144.0,
+            "share_pct": 0.2459
+          }
+        ]
+      }
+    },
+    "PERAVIA": {
+      "tipo_entidad": "AAyP",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 3205257628.97,
+            "share_pct": 0.1501
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 3332763432.56,
+            "share_pct": 0.1448
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 3596807433.7,
+            "share_pct": 0.1392
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 4146405186.0,
+            "share_pct": 0.1441
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 4735413974.0,
+            "share_pct": 0.1488
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 4827167934.0,
+            "share_pct": 0.1413
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 1940797514.97,
+            "share_pct": 0.2072
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1927734250.45,
+            "share_pct": 0.2033
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 1991439972.58,
+            "share_pct": 0.2038
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 2147442746.0,
+            "share_pct": 0.208
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 2433387221.6,
+            "share_pct": 0.2114
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 2412161405.99,
+            "share_pct": 0.2045
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 1264460114.0,
+            "share_pct": 0.1702
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1405029182.11,
+            "share_pct": 0.1642
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 1605367461.12,
+            "share_pct": 0.1471
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1998962440.0,
+            "share_pct": 0.1517
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 2302026752.4,
+            "share_pct": 0.154
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 2415006528.01,
+            "share_pct": 0.1555
+          }
+        ]
+      }
+    },
+    "ROMANA": {
+      "tipo_entidad": "AAyP",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 2647052727.71,
+            "share_pct": 0.124
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 3135379235.4,
+            "share_pct": 0.1363
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 3734783937.53,
+            "share_pct": 0.1446
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 4221860569.1,
+            "share_pct": 0.1467
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 5422564797.19,
+            "share_pct": 0.1704
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 5326144690.84,
+            "share_pct": 0.156
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 1002696556.76,
+            "share_pct": 0.107
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1117864270.84,
+            "share_pct": 0.1179
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 1172711658.93,
+            "share_pct": 0.12
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1258357262.93,
+            "share_pct": 0.1219
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 1627951533.69,
+            "share_pct": 0.1414
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 1629554985.12,
+            "share_pct": 0.1382
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 1644356170.95,
+            "share_pct": 0.2213
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 2017514964.56,
+            "share_pct": 0.2358
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 2562072278.6,
+            "share_pct": 0.2348
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 2963503306.17,
+            "share_pct": 0.2248
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 3794613263.5,
+            "share_pct": 0.2538
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 3696589705.72,
+            "share_pct": 0.238
+          }
+        ]
+      }
+    },
+    "ADOPEM": {
+      "tipo_entidad": "BAyC",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 4924433552.59,
+            "share_pct": 0.2307
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 5015183827.0,
+            "share_pct": 0.218
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 6132915448.37,
+            "share_pct": 0.2374
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 7867719243.02,
+            "share_pct": 0.2734
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 8871407154.98,
+            "share_pct": 0.2788
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 9301766743.38,
+            "share_pct": 0.2724
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 2443174039.0,
+            "share_pct": 0.2608
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 2541078145.64,
+            "share_pct": 0.268
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 2742220114.19,
+            "share_pct": 0.2806
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 3003159497.0,
+            "share_pct": 0.2909
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 3506123770.32,
+            "share_pct": 0.3045
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 3624379415.84,
+            "share_pct": 0.3073
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 2481259513.59,
+            "share_pct": 0.334
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 2474105681.36,
+            "share_pct": 0.2892
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 3390695334.18,
+            "share_pct": 0.3107
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 4864559746.02,
+            "share_pct": 0.3691
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 5365283384.66,
+            "share_pct": 0.3588
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 5677387327.54,
+            "share_pct": 0.3656
+          }
+        ]
+      }
+    },
+    "ATLANTICO": {
+      "tipo_entidad": "BAyC",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 883865270.0,
+            "share_pct": 0.0414
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 975634749.0,
+            "share_pct": 0.0424
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 2158304524.0,
+            "share_pct": 0.0836
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 2728023400.0,
+            "share_pct": 0.0948
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 3565483408.0,
+            "share_pct": 0.1121
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 3560674278.0,
+            "share_pct": 0.1043
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 219348093.0,
+            "share_pct": 0.0234
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 331684289.0,
+            "share_pct": 0.035
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 441225589.0,
+            "share_pct": 0.0451
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 672935792.0,
+            "share_pct": 0.0652
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 900971220.0,
+            "share_pct": 0.0783
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 939559991.0,
+            "share_pct": 0.0797
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 664517177.0,
+            "share_pct": 0.0894
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 643950460.0,
+            "share_pct": 0.0753
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 1717078935.0,
+            "share_pct": 0.1574
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 2055087608.0,
+            "share_pct": 0.1559
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 2664512188.0,
+            "share_pct": 0.1782
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 2621114287.0,
+            "share_pct": 0.1688
+          }
+        ]
+      }
+    },
+    "BANCO BACC": {
+      "tipo_entidad": "BAyC",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 1174481743.21,
+            "share_pct": 0.055
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1050693404.96,
+            "share_pct": 0.0457
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 1355709555.73,
+            "share_pct": 0.0525
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1548415173.0,
+            "share_pct": 0.0538
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 1830584799.0,
+            "share_pct": 0.0575
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 1730066687.0,
+            "share_pct": 0.0507
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 1174481743.21,
+            "share_pct": 0.1581
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1050693404.96,
+            "share_pct": 0.1228
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 1355709555.73,
+            "share_pct": 0.1242
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1548415173.0,
+            "share_pct": 0.1175
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 1830584799.0,
+            "share_pct": 0.1224
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 1730066687.0,
+            "share_pct": 0.1114
+          }
+        ]
+      }
+    },
+    "BANCOTUI": {
+      "tipo_entidad": "BAyC",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 1570066263.0,
+            "share_pct": 0.0735
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1444350130.0,
+            "share_pct": 0.0628
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 1479221412.0,
+            "share_pct": 0.0573
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1531027166.0,
+            "share_pct": 0.0532
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 1798131325.0,
+            "share_pct": 0.0565
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 2056966123.0,
+            "share_pct": 0.0602
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 399848269.0,
+            "share_pct": 0.0422
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 381075621.0,
+            "share_pct": 0.039
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 400273765.0,
+            "share_pct": 0.0388
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 495111759.0,
+            "share_pct": 0.043
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 518240461.0,
+            "share_pct": 0.0439
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 1570066263.0,
+            "share_pct": 0.2113
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1044501861.0,
+            "share_pct": 0.1221
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 1098145791.0,
+            "share_pct": 0.1006
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1130753401.0,
+            "share_pct": 0.0858
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 1303019566.0,
+            "share_pct": 0.0871
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 1538725662.0,
+            "share_pct": 0.0991
+          }
+        ]
+      }
+    },
+    "BANFONDESA": {
+      "tipo_entidad": "BAyC",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 6637973384.7,
+            "share_pct": 0.3109
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 7049054797.18,
+            "share_pct": 0.3064
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 8867101807.89,
+            "share_pct": 0.3433
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 9985126877.42,
+            "share_pct": 0.347
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 12959128969.71,
+            "share_pct": 0.4073
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 14595517579.6,
+            "share_pct": 0.4274
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 1613971821.97,
+            "share_pct": 0.1723
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1824458685.15,
+            "share_pct": 0.1924
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 2274569599.63,
+            "share_pct": 0.2327
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 2721883181.11,
+            "share_pct": 0.2636
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 3404830420.58,
+            "share_pct": 0.2957
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 3821982050.08,
+            "share_pct": 0.3241
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 5024001562.73,
+            "share_pct": 0.6762
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 5224596112.03,
+            "share_pct": 0.6106
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 6592532208.26,
+            "share_pct": 0.6041
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 7263243696.31,
+            "share_pct": 0.5511
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 9554298549.13,
+            "share_pct": 0.639
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 10773535529.52,
+            "share_pct": 0.6937
+          }
+        ]
+      }
+    },
+    "BONANZA": {
+      "tipo_entidad": "BAyC",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 204178322.96,
+            "share_pct": 0.0096
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 223128272.97,
+            "share_pct": 0.0097
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 296732076.68,
+            "share_pct": 0.0115
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 374239938.67,
+            "share_pct": 0.013
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 613183876.98,
+            "share_pct": 0.0193
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 682300457.52,
+            "share_pct": 0.02
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 14388410.49,
+            "share_pct": 0.0015
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 13735316.7,
+            "share_pct": 0.0014
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 17079617.47,
+            "share_pct": 0.0017
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 20437710.79,
+            "share_pct": 0.002
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 49808970.3,
+            "share_pct": 0.0043
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 49482776.79,
+            "share_pct": 0.0042
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 189789912.47,
+            "share_pct": 0.0255
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 209392956.27,
+            "share_pct": 0.0245
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 279652459.21,
+            "share_pct": 0.0256
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 353802227.88,
+            "share_pct": 0.0268
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 563374906.68,
+            "share_pct": 0.0377
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 632817680.73,
+            "share_pct": 0.0407
+          }
+        ]
+      }
+    },
+    "COFACI": {
+      "tipo_entidad": "BAyC",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 390062728.34,
+            "share_pct": 0.0183
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 391722508.59,
+            "share_pct": 0.017
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 408468646.9,
+            "share_pct": 0.0158
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 410313973.02,
+            "share_pct": 0.0143
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 595597563.07,
+            "share_pct": 0.0187
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 602112555.87,
+            "share_pct": 0.0176
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 1486391.9,
+            "share_pct": 0.0002
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1842260.54,
+            "share_pct": 0.0002
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 897267.56,
+            "share_pct": 0.0001
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1742409.45,
+            "share_pct": 0.0002
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 6439121.15,
+            "share_pct": 0.0006
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 5124593.39,
+            "share_pct": 0.0004
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 388576336.44,
+            "share_pct": 0.0523
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 389880248.05,
+            "share_pct": 0.0456
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 407571379.34,
+            "share_pct": 0.0373
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 408571563.57,
+            "share_pct": 0.031
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 589158441.92,
+            "share_pct": 0.0394
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 596987962.48,
+            "share_pct": 0.0384
+          }
+        ]
+      }
+    },
+    "CONFISA": {
+      "tipo_entidad": "BAyC",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 2593610402.41,
+            "share_pct": 0.1215
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 2626553055.36,
+            "share_pct": 0.1142
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 2833010598.92,
+            "share_pct": 0.1097
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 2997346079.04,
+            "share_pct": 0.1041
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 3454193784.45,
+            "share_pct": 0.1086
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 2593610402.41,
+            "share_pct": 0.3491
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 2626553055.36,
+            "share_pct": 0.307
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 2833010598.92,
+            "share_pct": 0.2596
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 2997346079.04,
+            "share_pct": 0.2274
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 3454193784.45,
+            "share_pct": 0.231
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ]
+      }
+    },
+    "EMPIRE": {
+      "tipo_entidad": "BAyC",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 77204314.21,
+            "share_pct": 0.0036
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 70931996.27,
+            "share_pct": 0.0031
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 31401314.54,
+            "share_pct": 0.0034
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 34539915.84,
+            "share_pct": 0.0036
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 45802999.67,
+            "share_pct": 0.0062
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 36392080.43,
+            "share_pct": 0.0043
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ]
+      }
+    },
+    "FIHOGAR": {
+      "tipo_entidad": "BAyC",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 1917847842.0,
+            "share_pct": 0.0898
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 2036966407.0,
+            "share_pct": 0.0885
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 2643944922.0,
+            "share_pct": 0.1024
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 2824659788.0,
+            "share_pct": 0.0981
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 3190728891.0,
+            "share_pct": 0.1003
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 3137944354.0,
+            "share_pct": 0.0919
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 262729668.0,
+            "share_pct": 0.028
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 180313408.0,
+            "share_pct": 0.019
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 586844989.0,
+            "share_pct": 0.06
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 493142743.0,
+            "share_pct": 0.0478
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 511339003.0,
+            "share_pct": 0.0444
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 558074263.0,
+            "share_pct": 0.0473
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 1655118174.0,
+            "share_pct": 0.2228
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1856652999.0,
+            "share_pct": 0.217
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 2057099933.0,
+            "share_pct": 0.1885
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 2331517045.0,
+            "share_pct": 0.1769
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 2679389888.0,
+            "share_pct": 0.1792
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 2579870091.0,
+            "share_pct": 0.1661
+          }
+        ]
+      }
+    },
+    "GRUFICORP": {
+      "tipo_entidad": "BAyC",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 875867577.7,
+            "share_pct": 0.041
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1005199490.19,
+            "share_pct": 0.0437
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 1014068062.7,
+            "share_pct": 0.0393
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1078658403.73,
+            "share_pct": 0.0375
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 1221746097.26,
+            "share_pct": 0.0384
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 1269775668.51,
+            "share_pct": 0.0372
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 875867577.7,
+            "share_pct": 0.1179
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1005199490.19,
+            "share_pct": 0.1175
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 1014068062.7,
+            "share_pct": 0.0929
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1078658403.73,
+            "share_pct": 0.0818
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 1221746097.26,
+            "share_pct": 0.0817
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 1269775668.51,
+            "share_pct": 0.0818
+          }
+        ]
+      }
+    },
+    "MOTOR CREDITO": {
+      "tipo_entidad": "BAyC",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 5940245080.37,
+            "share_pct": 0.2782
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 7366083344.32,
+            "share_pct": 0.3201
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 9066072553.97,
+            "share_pct": 0.351
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 10382081620.41,
+            "share_pct": 0.3607
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 12552069894.1,
+            "share_pct": 0.3945
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 12832103840.37,
+            "share_pct": 0.3757
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 831854222.37,
+            "share_pct": 0.0888
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 1058341295.82,
+            "share_pct": 0.1116
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 1479366863.49,
+            "share_pct": 0.1514
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1165827553.3,
+            "share_pct": 0.1129
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 689280814.28,
+            "share_pct": 0.0599
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 501436041.83,
+            "share_pct": 0.0425
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 5108390858.0,
+            "share_pct": 0.6875
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 6307742048.5,
+            "share_pct": 0.7372
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 7586705690.48,
+            "share_pct": 0.6952
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 9216254067.11,
+            "share_pct": 0.6992
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 11862789079.82,
+            "share_pct": 0.7933
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 12330667798.54,
+            "share_pct": 0.794
+          }
+        ]
+      }
+    },
+    "UNION": {
+      "tipo_entidad": "BAyC",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 3943653905.0,
+            "share_pct": 0.1847
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 3842395100.0,
+            "share_pct": 0.167
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 3987290468.0,
+            "share_pct": 0.1544
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 4383827924.0,
+            "share_pct": 0.1523
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 4994577229.0,
+            "share_pct": 0.157
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 5906868320.0,
+            "share_pct": 0.173
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 886894561.03,
+            "share_pct": 0.0947
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 700318482.33,
+            "share_pct": 0.0739
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 748732826.87,
+            "share_pct": 0.0766
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 619267043.28,
+            "share_pct": 0.06
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 742228128.3,
+            "share_pct": 0.0645
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 660482521.21,
+            "share_pct": 0.056
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 3056759343.97,
+            "share_pct": 0.4114
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 3142076617.67,
+            "share_pct": 0.3672
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 3238557641.13,
+            "share_pct": 0.2968
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 3764560880.72,
+            "share_pct": 0.2856
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 4252349100.7,
+            "share_pct": 0.2844
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 5246385798.79,
+            "share_pct": 0.3378
+          }
+        ]
+      }
+    },
+    "OPTIMA": {
+      "tipo_entidad": "BAyC",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 688693402.36,
+            "share_pct": 0.0267
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 748981067.64,
+            "share_pct": 0.026
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 859155555.89,
+            "share_pct": 0.027
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 822170389.49,
+            "share_pct": 0.0241
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 6387454.49,
+            "share_pct": 0.0007
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 5792984.15,
+            "share_pct": 0.0006
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 11012186.35,
+            "share_pct": 0.001
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 28343543.7,
+            "share_pct": 0.0024
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 682305947.87,
+            "share_pct": 0.0625
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 743188083.49,
+            "share_pct": 0.0564
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 848143369.54,
+            "share_pct": 0.0567
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 793826845.79,
+            "share_pct": 0.0511
+          }
+        ]
+      }
+    },
+    "LEASCONFISA": {
+      "tipo_entidad": "BAyC",
+      "series": {
+        "total": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1237368859.73,
+            "share_pct": 0.043
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 1420108024.11,
+            "share_pct": 0.0446
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 1614496677.61,
+            "share_pct": 0.0473
+          }
+        ],
+        "ahorros": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "corrientes": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 0.0,
+            "share_pct": 0.0
+          }
+        ],
+        "depositos": [
+          {
+            "periodo": "2021-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2022-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2023-12",
+            "valor": 0.0,
+            "share_pct": 0.0
+          },
+          {
+            "periodo": "2024-12",
+            "valor": 1237368859.73,
+            "share_pct": 0.0939
+          },
+          {
+            "periodo": "2025-12",
+            "valor": 1420108024.11,
+            "share_pct": 0.095
+          },
+          {
+            "periodo": "2026-05",
+            "valor": 1614496677.61,
+            "share_pct": 0.104
+          }
+        ]
+      }
+    }
+  }
+}

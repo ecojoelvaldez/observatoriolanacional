@@ -237,7 +237,23 @@ def main():
     # (ej. cierres de diciembre + ultimo mes) y hace el script replicable a
     # meses nuevos con solo editar la lista.
     periodos_env = os.environ.get("SIB_PERIODOS", "").strip()
-    if periodos_env:
+    if periodos_env.lower() == "auto":
+        # Modo estandar del Observatorio: cierres de diciembre de cada anio
+        # desde SIB_ANIO_INICIAL, mas los ultimos meses para capturar el corte
+        # mas reciente que la SIB haya publicado (los meses aun sin publicar
+        # devuelven 0 filas y se descartan solos). Asi la corrida programada
+        # se mantiene al dia sin editar la lista cada mes.
+        anio_ini = int(os.environ.get("SIB_ANIO_INICIAL", "2021"))
+        recientes = int(os.environ.get("SIB_MESES_RECIENTES", "4"))
+        meses = [f"{y:04d}-12" for y in range(anio_ini, hoy.year)]
+        y, m = hoy.year, hoy.month
+        for _ in range(recientes):
+            meses.append(f"{y:04d}-{m:02d}")
+            m -= 1
+            if m == 0:
+                m, y = 12, y - 1
+        meses = sorted(set(meses))
+    elif periodos_env:
         meses = []
         for p in periodos_env.split(","):
             p = p.strip()
