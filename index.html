@@ -11032,13 +11032,18 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     };
   }
   function buildProducts(rows) {
+    // El feed del API trae 'consumo' (incluye tarjetas) ademas de
+    // 'consumo_general' (las excluye); los CSV del analista solo traen
+    // 'consumo_general', asi que se usa como respaldo.
+    const consumoSeg = rows.some(r => r.segment === 'consumo') ? 'consumo' : 'consumo_general';
     const products = {
       total: makeProductFromRows(rows, 'total', 'Total cartera'),
       hipotecario: makeProductFromRows(rows, 'hipotecario', 'Créditos hipotecarios'),
-      consumo: makeProductFromRows(rows, 'consumo_general', 'Créditos de consumo'),
+      consumo: makeProductFromRows(rows, consumoSeg, 'Créditos de consumo'),
       consumo_general: makeProductFromRows(rows, 'consumo_general', 'Consumo en general'),
       tarjetas_credito: makeProductFromRows(rows, 'tarjetas_credito', 'Tarjetas de crédito'),
       pymes: makeProductFromRows(rows, 'pymes', 'Pymes / Mipymes'),
+      mayores_deudores: makeProductFromRows(rows, 'mayores_deudores', 'Mayores deudores (Interinos)'),
       comercial: makeProductFromRows(rows, 'comercial', 'Créditos comerciales')
     };
     const mixSource = ['comercial', 'consumo_general', 'hipotecario'];
@@ -11393,13 +11398,101 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
+  // ---------------------------------------------------------------------
+  // Feed del pipeline SIB (data/cartera_sistema_mn.json).
+  //
+  // Lo genera el workflow sib_cartera_pipeline.yml desde el endpoint granular
+  // de la SIB, en moneda nacional (el corte que grafica este dashboard), con
+  // todas las entidades y regiones. Se convierte al mismo formato de filas
+  // que ya consume el cubo, de modo que los graficos no cambian: solo pasan a
+  // tener datos para todos los visitantes (antes dependian de que el analista
+  // subiera el CSV en su navegador) y se llenan las rebanadas de tarjetas,
+  // pymes y mayores deudores, que estaban vacias.
+  // ---------------------------------------------------------------------
+  const SIB_API_CUBE_URL = 'data/cartera_sistema_mn.json';
+  const SIB_API_SEGMENTOS = {
+    total: 'total',
+    hipotecario: 'hipotecario',
+    consumo_total: 'consumo',
+    consumo_sin_tarjeta: 'consumo_general',
+    tarjetas_credito: 'tarjetas_credito',
+    comercial_total: 'comercial',
+    pymes: 'pymes',
+    mayores_deudores_interinos: 'mayores_deudores'
+  };
+
+  function cubeRowsFromEntregable(payload) {
+    const rows = [];
+    const regiones = Array.isArray(payload && payload.regiones) ? payload.regiones : [];
+    const entidades = (payload && payload.entidades) || {};
+    Object.keys(entidades).forEach(entidad => {
+      // 'TODOS' es el agregado que publica la SIB; incluirlo duplicaria el
+      // sistema y contaminaria el ranking.
+      if (entityKey(entidad) === 'TODOS') return;
+      const info = entidades[entidad] || {};
+      const porRegion = info.regiones || {};
+      // Las entidades se identifican con entityKey (MAYUSCULAS, como
+      // LN_ENTITY); las regiones con normKey. Mezclarlas deja la serie de La
+      // Nacional vacia.
+      const entity_key = entityKey(entidad);
+      regiones.forEach(region => {
+        const bloque = porRegion[region];
+        if (!bloque) return;
+        const etiqueta = (region === 'N/D') ? 'Sin región' : region;
+        const region_key = normKey(etiqueta);
+        Object.keys(SIB_API_SEGMENTOS).forEach(producto => {
+          const serie = bloque[producto];
+          if (!Array.isArray(serie)) return;
+          const segment = SIB_API_SEGMENTOS[producto];
+          serie.forEach(punto => {
+            const valor = Number(punto && punto.valor) || 0;
+            if (!valor) return;
+            rows.push({
+              period: punto.periodo,
+              entidad,
+              entity_key,
+              deuda: valor,
+              segment,
+              region: etiqueta,
+              region_key,
+              tipo_entidad: info.tipo_entidad || null
+            });
+          });
+        });
+      });
+    });
+    return rows;
+  }
+
+  async function loadSibApiCube() {
+    try {
+      const res = await fetch(SIB_API_CUBE_URL, { cache: 'no-cache' });
+      if (!res.ok) return [];
+      const payload = await res.json();
+      const rows = cubeRowsFromEntregable(payload);
+      if (!rows.length) return [];
+      const corte = Array.isArray(payload.cortes) ? payload.cortes[payload.cortes.length - 1] : null;
+      applyCubeToDashboard(rows, corte ? `SIB API · ${monthLabel(corte)}` : 'SIB API');
+      return rows;
+    } catch (err) {
+      console.warn('[LN-SIB] No se pudo cargar el feed del pipeline SIB:', err);
+      return [];
+    }
+  }
+  window.LN_SIB_API_RELOAD = loadSibApiCube;
+
   function init() {
     installDrawOverride();
     wireUi();
-    window.LN_SIB_CUBE_RELOAD().then(() => {
-      populateEntitySelects();
-      try { if (document.querySelector('[data-cartera-panel-view="tipo"].active')) drawCarteraRobusta(carteraTipoActiveProduct || 'total'); } catch {}
-    });
+    // Primero el feed del pipeline (base para todos los visitantes); despues
+    // el cubo local, para que un CSV cargado a mano por el analista siga
+    // teniendo la ultima palabra.
+    loadSibApiCube()
+      .then(() => window.LN_SIB_CUBE_RELOAD())
+      .then(() => {
+        populateEntitySelects();
+        try { if (document.querySelector('[data-cartera-panel-view="tipo"].active')) drawCarteraRobusta(carteraTipoActiveProduct || 'total'); } catch {}
+      });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
