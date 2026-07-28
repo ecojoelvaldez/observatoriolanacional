@@ -1,25 +1,67 @@
 name: Pipeline SIB Cartera de Creditos
 
+# Flujo estandar del Observatorio.
+#
+# En cada corrida:
+#   1. Descarga el DESGLOSE GRANULAR de la SIB (endpoint carteras/creditos con
+#      region + moneda, y captaciones/moneda) para todos los tipos de entidad.
+#   2. Construye los JSON que consume el sitio: cartera y captacion por
+#      producto, por region, con balance y market share, para TODAS las
+#      entidades (top-10 y filtrado).
+#   3. Commitea el snapshot crudo y los entregables.
+#
+# Los cortes se calculan solos (SIB_PERIODOS=auto): cierres de diciembre de
+# cada anio desde 2021 mas los ultimos meses, de modo que cada corrida recoge
+# el corte mas reciente que la SIB haya publicado sin tocar el workflow.
+
 on:
   schedule:
     # Dia 5 y 20 de cada mes, 7:30 AM Santo Domingo (11:30 UTC).
     # 30 min despues del pipeline de indicadores para no competir por el
-    # push a main (ambos commitean snapshots al mismo branch).
+    # push a la rama (ambos commitean snapshots).
     - cron: "30 11 5,20 * *"
   workflow_dispatch:
     inputs:
+      periodos:
+        description: "Cortes YYYY-MM coma-sep, o 'auto' (def auto)"
+        required: false
+        default: "auto"
+      tipos:
+        description: "Tipos de entidad coma-sep (def BM,AAyP,BAyC)"
+        required: false
+        default: "BM,AAyP,BAyC"
+      solo:
+        description: "cartera | captacion | both"
+        required: false
+        default: "both"
+      salida:
+        description: "Ruta del snapshot crudo"
+        required: false
+        default: "data/sib_desglose_snapshot.json"
       diagnostico:
-        description: "Sondear endpoints carteras/* con la key real (true/false)"
+        description: "Solo sondear endpoints de la SIB (true/false)"
         required: false
         default: "false"
+      probe_endpoints:
+        description: "Endpoints extra a sondear en diagnostico (coma-sep)"
+        required: false
+        default: ""
 
 permissions:
   contents: write
 
+env:
+  SNAPSHOT: ${{ github.event.inputs.salida || 'data/sib_desglose_snapshot.json' }}
+  OUT_CARTERA: data/cartera_sistema.json
+  OUT_CARTERA_MN: data/cartera_sistema_mn.json
+  OUT_CAPTACION: data/captacion_sistema.json
+
 jobs:
   sib-cartera-pipeline:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # El desglose granular de bancos multiples toma ~2h; con el timeout de 30
+    # min original el job se cancelaba a mitad de descarga.
+    timeout-minutes: 350
 
     steps:
       - name: Checkout repositorio
@@ -37,26 +79,51 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Descargar cartera de creditos y generar snapshot
+      - name: Sondear endpoints (solo diagnostico)
+        if: ${{ github.event.inputs.diagnostico == 'true' }}
         env:
           SIB_SUBSCRIPTION_KEY: ${{ secrets.SIB_SUBSCRIPTION_KEY }}
-          SIB_CARTERA_SNAPSHOT_PATH: data/sib_cartera_snapshot.json
-        run: |
-          if [ "${{ github.event.inputs.diagnostico }}" = "true" ]; then
-            python scripts/fetch_sib_cartera.py --diagnostico
-          else
-            python scripts/fetch_sib_cartera.py
-          fi
+          SIB_PROBE_ENDPOINTS: ${{ github.event.inputs.probe_endpoints }}
+          SIB_CARTERA_MESES: "4"
+          SIB_CARTERA_SNAPSHOT_PATH: data/_probe_tmp.json
+        run: python scripts/fetch_sib_cartera.py --diagnostico
 
-      - name: Commit del snapshot si cambio
+      - name: Descargar desglose granular (cartera + captacion)
+        if: ${{ github.event.inputs.diagnostico != 'true' }}
+        env:
+          SIB_SUBSCRIPTION_KEY: ${{ secrets.SIB_SUBSCRIPTION_KEY }}
+          SIB_DESGLOSE_SNAPSHOT_PATH: ${{ env.SNAPSHOT }}
+          SIB_PERIODOS: ${{ github.event.inputs.periodos || 'auto' }}
+          SIB_TIPOS: ${{ github.event.inputs.tipos || 'BM,AAyP,BAyC' }}
+          SIB_DESGLOSE_SOLO: ${{ github.event.inputs.solo || 'both' }}
+        run: python scripts/fetch_sib_cartera_desglose.py
+
+      - name: Construir entregables del sitio
+        if: ${{ github.event.inputs.diagnostico != 'true' }}
         run: |
-          if [ -n "$(git status --porcelain data/sib_cartera_snapshot.json)" ]; then
+          # Todas las monedas: cifra completa para reporteria.
+          python scripts/build_sib_entregables.py \
+            --cartera "$SNAPSHOT" \
+            --captacion "$SNAPSHOT" \
+            --out-cartera "$OUT_CARTERA" \
+            --out-captacion "$OUT_CAPTACION"
+          # Solo moneda nacional: es el corte que grafica el front.
+          python scripts/build_sib_entregables.py \
+            --cartera "$SNAPSHOT" \
+            --moneda nacional \
+            --out-cartera "$OUT_CARTERA_MN"
+
+      - name: Commit de snapshot y entregables si cambiaron
+        if: ${{ github.event.inputs.diagnostico != 'true' }}
+        run: |
+          ARCHIVOS="$SNAPSHOT $OUT_CARTERA $OUT_CARTERA_MN $OUT_CAPTACION"
+          if [ -n "$(git status --porcelain $ARCHIVOS)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/sib_cartera_snapshot.json
-            git commit -m "Actualizar snapshot SIB cartera de creditos [skip ci]"
+            git add $ARCHIVOS
+            git commit -m "Actualizar datos SIB de cartera y captacion [skip ci]"
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
           else
-            echo "Sin cambios en el snapshot de cartera SIB."
+            echo "Sin cambios en los datos SIB."
           fi

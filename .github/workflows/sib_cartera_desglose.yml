@@ -1,40 +1,36 @@
-name: Pipeline SIB Indicadores
+name: Pipeline SIB Cartera Desglose
 
 on:
-  schedule:
-    # Dia 5 y 20 de cada mes, 7:00 AM Santo Domingo (11:00 UTC).
-    # La SIB publica con rezago; estas fechas capturan el dato nuevo.
-    - cron: "0 11 5,20 * *"
   workflow_dispatch:
     inputs:
-      diagnostico:
-        description: "Imprimir campos crudos del API (true/false)"
-        required: false
-        default: "false"
       periodo_inicial:
-        description: "Mes inicial YYYY-MM para historia completa (vacio = ventana movil)"
+        description: "Mes inicial YYYY-MM (def 2021-01)"
         required: false
         default: ""
       periodo_final:
-        description: "Mes final YYYY-MM (vacio = mes actual). Solo aplica con periodo_inicial"
+        description: "Mes final YYYY-MM (def mes actual)"
         required: false
         default: ""
+      tipos:
+        description: "Tipos de entidad coma-sep (def AAyP)"
+        required: false
+        default: "AAyP"
+      solo:
+        description: "cartera | captacion | both"
+        required: false
+        default: "both"
       salida:
         description: "Ruta del snapshot de salida"
         required: false
-        default: "data/sib_snapshot.json"
-      tipos:
-        description: "Tipos de entidad separados por coma (vacio = BM,AAyP,BAyC)"
-        required: false
-        default: ""
+        default: "data/sib_cartera_desglose_snapshot.json"
 
 permissions:
   contents: write
 
 jobs:
-  sib-pipeline:
+  sib-cartera-desglose:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 120
 
     steps:
       - name: Checkout repositorio
@@ -52,32 +48,27 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Descargar indicadores y generar snapshot
+      - name: Descargar desglose de cartera y captacion
         env:
           SIB_SUBSCRIPTION_KEY: ${{ secrets.SIB_SUBSCRIPTION_KEY }}
-          SIB_SNAPSHOT_PATH: ${{ github.event.inputs.salida || 'data/sib_snapshot.json' }}
+          SIB_DESGLOSE_SNAPSHOT_PATH: ${{ github.event.inputs.salida || 'data/sib_cartera_desglose_snapshot.json' }}
           SIB_PERIODO_INICIAL: ${{ github.event.inputs.periodo_inicial }}
           SIB_PERIODO_FINAL: ${{ github.event.inputs.periodo_final }}
           SIB_TIPOS: ${{ github.event.inputs.tipos }}
-        run: |
-          if [ "${{ github.event.inputs.diagnostico }}" = "true" ]; then
-            python scripts/fetch_sib_indicadores.py --diagnostico
-          else
-            python scripts/fetch_sib_indicadores.py
-          fi
+          SIB_DESGLOSE_SOLO: ${{ github.event.inputs.solo }}
+        run: python scripts/fetch_sib_cartera_desglose.py
 
       - name: Commit del snapshot si cambio
         env:
-          SALIDA: ${{ github.event.inputs.salida || 'data/sib_snapshot.json' }}
+          SALIDA: ${{ github.event.inputs.salida || 'data/sib_cartera_desglose_snapshot.json' }}
         run: |
           if [ -n "$(git status --porcelain "$SALIDA")" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add "$SALIDA"
-            git commit -m "Actualizar snapshot SIB indicadores [skip ci]"
+            git commit -m "Actualizar snapshot SIB cartera desglose [skip ci]"
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
-            echo "snapshot_actualizado=true" >> "$GITHUB_OUTPUT"
           else
-            echo "Sin cambios en el snapshot SIB."
+            echo "Sin cambios en el snapshot de desglose."
           fi

@@ -49,7 +49,7 @@ RETRYABLE = {429, 500, 502, 503, 504}
 
 # Ventana movil de descarga; alineada con fetch_sib_indicadores.py para que
 # el front pueda cruzar cartera contra morosidad/roe/roa en el mismo rango.
-MESES_VENTANA = int(os.environ.get("SIB_CARTERA_MESES", "26"))
+MESES_VENTANA = int(os.environ.get("SIB_CARTERA_MESES", "").strip() or "26")
 
 OUTPUT_PATH = os.environ.get("SIB_CARTERA_SNAPSHOT_PATH",
                              "data/sib_cartera_snapshot.json")
@@ -343,6 +343,10 @@ def diagnostico_endpoints(client):
             resumen.append((ep, status, len(regs), campos))
             print(f"  [OK ] {ep} -> HTTP {status} | {len(regs)} registro(s)")
             print(f"        campos: {', '.join(campos)}")
+            # Muestra registros crudos para ver las etiquetas de categoria
+            # (tipo de cartera, facilidad, etc.), no solo los nombres de campo.
+            for i, r in enumerate(regs[:5]):
+                print(f"        muestra[{i}]: {json.dumps(r, ensure_ascii=False)}")
         else:
             resumen.append((ep, status, 0, []))
             print(f"  [ -- ] {ep} -> HTTP {status} | sin registros")

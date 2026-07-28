@@ -27,8 +27,14 @@ import httpx
 SIB_BASE_URL = "https://apis.sb.gob.do/estadisticas/v2/"
 ENDPOINT = "indicadores/financieros"
 
-# Tipos de entidad (espejo del pipeline R)
+# Tipos de entidad (espejo del pipeline R).
+# Se puede acotar con la variable de entorno SIB_TIPOS (lista separada por
+# comas, ej. "AAyP" para descargar solo asociaciones de ahorros y prestamos:
+# APAP, La Nacional, Cibao, etc.). Reduce el tiempo de descarga.
 TIPOS_ENTIDAD = ["BM", "AAyP", "BAyC"]
+_tipos_env = os.environ.get("SIB_TIPOS", "").strip()
+if _tipos_env:
+    TIPOS_ENTIDAD = [t.strip() for t in _tipos_env.split(",") if t.strip()]
 
 SIB_REGISTROS = 300
 TIMEOUT_SEC = 90
@@ -65,6 +71,11 @@ CAMPO_A_INDICADOR = {
     "roa_rentabilidad_de_los_activos": "roa",
     "indicador_de_eficiencia": "cti",
     "activos_netos_totales": "activos",
+    "cobertura_de_cartera_de_credito_vencida_mayor_a_90_dias": "cobertura_vencida_90d",
+    "margen_de_intermediacion_neto": "margen_intermediacion_neto",
+    "roa_utilidades_antes_de_impuestos_sobre_activos": "roa_antes_impuestos",
+    "roe_utilidades_antes_de_impuestos_sobre_patrimonio": "roe_antes_impuestos",
+    "indice_de_morosidad_capital": "morosidad_capital",
 }
 
 
@@ -328,11 +339,53 @@ def meses_recientes(n):
     return list(reversed(out))
 
 
+def _parse_periodo(txt, fallback=None):
+    """Convierte 'YYYY-MM' o 'YYYYMM' a (anio, mes). Devuelve fallback si vacio."""
+    if not txt:
+        return fallback
+    s = str(txt).strip()
+    if len(s) == 6 and s.isdigit():
+        s = f"{s[:4]}-{s[4:6]}"
+    try:
+        y, m = s.split("-")[:2]
+        return int(y), int(m)
+    except (ValueError, IndexError):
+        sys.exit(f"ERROR: periodo invalido '{txt}' (usa YYYY-MM).")
+
+
+def meses_rango(inicio, fin):
+    """Lista de meses 'YYYY-MM' desde inicio (anio, mes) hasta fin (anio, mes), inclusive."""
+    (yi, mi), (yf, mf) = inicio, fin
+    out = []
+    y, m = yi, mi
+    while (y, m) <= (yf, mf):
+        out.append(f"{y:04d}-{m:02d}")
+        m += 1
+        if m == 13:
+            m = 1
+            y += 1
+    return out
+
+
 def main():
     diagnostico = "--diagnostico" in sys.argv
     verbose = "--quiet" not in sys.argv
 
-    meses = meses_recientes(MESES_VENTANA)
+    # Rango de periodos:
+    #   - Por defecto: ventana movil de MESES_VENTANA meses (comportamiento
+    #     original del pipeline programado).
+    #   - Si se define SIB_PERIODO_INICIAL (YYYY-MM), se descarga el rango
+    #     completo desde ese mes hasta SIB_PERIODO_FINAL (o el mes actual).
+    #     Sirve para reconstruir la historia (ej. 2021-01 -> hoy).
+    periodo_inicial = os.environ.get("SIB_PERIODO_INICIAL", "").strip()
+    if periodo_inicial:
+        hoy = date.today()
+        inicio = _parse_periodo(periodo_inicial)
+        fin = _parse_periodo(os.environ.get("SIB_PERIODO_FINAL"),
+                             fallback=(hoy.year, hoy.month))
+        meses = meses_rango(inicio, fin)
+    else:
+        meses = meses_recientes(MESES_VENTANA)
     print(f">> Ventana: {meses[0]} -> {meses[-1]} ({len(meses)} meses)")
     print(f">> Tipos: {', '.join(TIPOS_ENTIDAD)}")
 

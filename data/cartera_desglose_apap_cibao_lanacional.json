@@ -1,0 +1,657 @@
+{
+  "fuente": "Superintendencia de Bancos de la Republica Dominicana (SIB) - API v2",
+  "endpoint": "estadisticas/v2/carteras/creditos (granular, agregado por tipoCredito)",
+  "tipo_entidad": "AAyP (Asociaciones de Ahorros y Prestamos)",
+  "unidad": "RD$ (pesos dominicanos)",
+  "generado_en": "2026-07-27T13:08:08.971199+00:00",
+  "cortes": [
+    "2021-12",
+    "2022-12",
+    "2023-12",
+    "2024-12",
+    "2025-12",
+    "2026-05"
+  ],
+  "definiciones": {
+    "total": "Toda la cartera de creditos (suma de todos los tipos)",
+    "hipotecario": "Creditos Hipotecarios",
+    "consumo_total": "tipoCartera = Creditos de consumo (incluye tarjetas personales)",
+    "consumo_sin_tarjeta": "tipoCredito = Creditos de Consumo (excluye tarjetas)",
+    "tarjetas_credito": "tipoCredito = Tarjetas de Creditos Personales + Comerciales",
+    "comercial_total": "tipoCartera = Creditos comerciales",
+    "pymes": "tipoCredito = Comerciales a Medianos + Menores Deudores + Microcredito",
+    "mayores_deudores_interinos": "tipoCredito = Creditos Comerciales a Mayores Deudores"
+  },
+  "entidades": {
+    "APAP": {
+      "total": [
+        {
+          "periodo": "2021-12",
+          "valor": 61862411224.05
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 76559541502.12
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 93073849176.16
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 105251152384.79
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 120289499134.29
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 124731212117.5
+        }
+      ],
+      "hipotecario": [
+        {
+          "periodo": "2021-12",
+          "valor": 34557931918.75
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 42485881931.83
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 49084570405.74
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 55050701601.99
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 61282625384.77
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 63520897451.23
+        }
+      ],
+      "consumo_total": [
+        {
+          "periodo": "2021-12",
+          "valor": 17186236362.43
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 24018028044.58
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 28483906436.57
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 31592286892.59
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 37023867072.78
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 37102316882.66
+        }
+      ],
+      "consumo_sin_tarjeta": [
+        {
+          "periodo": "2021-12",
+          "valor": 13977573158.99
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 19292590904.98
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 22626348416.53
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 23476175247.01
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 27603222503.59
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 27731849042.99
+        }
+      ],
+      "tarjetas_credito": [
+        {
+          "periodo": "2021-12",
+          "valor": 3208663203.44
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 4725437139.6
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 5857558020.04
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 8180559028.0
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 9502681402.45
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 9445879169.33
+        }
+      ],
+      "comercial_total": [
+        {
+          "periodo": "2021-12",
+          "valor": 10118242942.87
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 10055631525.71
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 15505372333.85
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 18608163890.21
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 21983006676.74
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 24107997783.61
+        }
+      ],
+      "pymes": [
+        {
+          "periodo": "2021-12",
+          "valor": 1835966701.59
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 2078851573.7
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 3308928502.99
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 4771676263.8
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 4740838895.77
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 4474494912.72
+        }
+      ],
+      "mayores_deudores_interinos": [
+        {
+          "periodo": "2021-12",
+          "valor": 8282276241.28
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 7976779952.01
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 12196443830.86
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 13772040243.99
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 17160130947.71
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 19558091541.23
+        }
+      ]
+    },
+    "CIBAO": {
+      "total": [
+        {
+          "periodo": "2021-12",
+          "valor": 38234362570.48
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 47007195842.89
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 52006124167.85
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 59429585193.81
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 67992221550.67
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 71668700542.71
+        }
+      ],
+      "hipotecario": [
+        {
+          "periodo": "2021-12",
+          "valor": 26137409512.93
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 31449033575.79
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 33696713896.9
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 37528427373.61
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 41932723969.58
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 44991263594.3
+        }
+      ],
+      "consumo_total": [
+        {
+          "periodo": "2021-12",
+          "valor": 5360034843.4
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 6998750822.11
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 8536307354.53
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 11368878244.87
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 12844968934.8
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 13212688049.21
+        }
+      ],
+      "consumo_sin_tarjeta": [
+        {
+          "periodo": "2021-12",
+          "valor": 4598197158.14
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 5967935299.56
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 7162799655.1
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 9563945644.58
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 10558535382.96
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 10767957013.49
+        }
+      ],
+      "tarjetas_credito": [
+        {
+          "periodo": "2021-12",
+          "valor": 761837685.26
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 1030815522.55
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 1373507699.43
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 1842669778.68
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 2326584483.32
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 2495547024.49
+        }
+      ],
+      "comercial_total": [
+        {
+          "periodo": "2021-12",
+          "valor": 6736918214.15
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 8559411444.99
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 9773102916.42
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 10532279575.33
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 13214528646.29
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 13464748899.2
+        }
+      ],
+      "pymes": [
+        {
+          "periodo": "2021-12",
+          "valor": 3097046958.75
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 3758652946.03
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 4197713032.51
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 5162454998.21
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 5879645449.48
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 5860805749.01
+        }
+      ],
+      "mayores_deudores_interinos": [
+        {
+          "periodo": "2021-12",
+          "valor": 3639871255.4
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 4800758498.96
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 5575389883.91
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 5332087398.73
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 7294732265.33
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 7553127161.42
+        }
+      ]
+    },
+    "LA NACIONAL": {
+      "total": [
+        {
+          "periodo": "2021-12",
+          "valor": 25606037637.67
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 27544943880.73
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 30798589773.92
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 34475285554.46
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 38315497457.44
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 39305159357.01
+        }
+      ],
+      "hipotecario": [
+        {
+          "periodo": "2021-12",
+          "valor": 15686810351.48
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 17980087835.36
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 20323540671.11
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 22528055712.86
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 23349754605.04
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 23889920174.1
+        }
+      ],
+      "consumo_total": [
+        {
+          "periodo": "2021-12",
+          "valor": 4386345623.67
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 4803289742.93
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 4980594540.74
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 4657407203.04
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 5075466707.79
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 5091370892.41
+        }
+      ],
+      "consumo_sin_tarjeta": [
+        {
+          "periodo": "2021-12",
+          "valor": 4021463159.54
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 4371929043.63
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 4473890330.42
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 4151401216.34
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 4527121355.22
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 4564267375.36
+        }
+      ],
+      "tarjetas_credito": [
+        {
+          "periodo": "2021-12",
+          "valor": 364882464.13
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 431360699.3
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 506704210.32
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 509992802.91
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 552184160.17
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 531384734.84
+        }
+      ],
+      "comercial_total": [
+        {
+          "periodo": "2021-12",
+          "valor": 5532881662.52
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 4761566302.44
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 5494454562.07
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 7289822638.56
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 9890276144.61
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 10323868290.5
+        }
+      ],
+      "pymes": [
+        {
+          "periodo": "2021-12",
+          "valor": 3788171824.31
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 3507829641.86
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 3778132553.95
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 4058783981.44
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 4325476056.34
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 4110591481.5
+        }
+      ],
+      "mayores_deudores_interinos": [
+        {
+          "periodo": "2021-12",
+          "valor": 1744709838.21
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 1253736660.58
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 1716322008.12
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 3227051840.91
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 5560961280.67
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 6208995591.21
+        }
+      ]
+    }
+  }
+}

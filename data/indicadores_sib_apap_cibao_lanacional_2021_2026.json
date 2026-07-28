@@ -1,0 +1,4015 @@
+{
+  "fuente": "Superintendencia de Bancos de la Republica Dominicana (SIB) - API v2",
+  "endpoint": "estadisticas/v2/indicadores/financieros",
+  "tipo_entidad": "AAyP (Asociaciones de Ahorros y Prestamos)",
+  "generado_en": "2026-07-16T19:15:01.226560+00:00",
+  "periodo_inicial": "2021-01",
+  "periodo_final": "2026-06",
+  "n_periodos": 66,
+  "indicadores": {
+    "activos": "Activos netos totales (RD$)",
+    "morosidad": "Indice de morosidad (%)",
+    "roe": "ROE - Rentabilidad del patrimonio (%)",
+    "roa": "ROA - Rentabilidad de los activos (%)",
+    "cti": "Indicador de eficiencia / costo-ingreso (%)"
+  },
+  "nota_activos": "activos en RD$; el resto de indicadores en porcentaje.",
+  "entidades": {
+    "APAP": {
+      "activos": [
+        {
+          "periodo": "2021-01",
+          "valor": 98937015313.0
+        },
+        {
+          "periodo": "2021-02",
+          "valor": 100039865367.0
+        },
+        {
+          "periodo": "2021-03",
+          "valor": 100942510570.0
+        },
+        {
+          "periodo": "2021-04",
+          "valor": 104035537107.0
+        },
+        {
+          "periodo": "2021-05",
+          "valor": 106593023301.0
+        },
+        {
+          "periodo": "2021-06",
+          "valor": 108188663269.0
+        },
+        {
+          "periodo": "2021-07",
+          "valor": 105881253586.0
+        },
+        {
+          "periodo": "2021-08",
+          "valor": 108565202569.0
+        },
+        {
+          "periodo": "2021-09",
+          "valor": 111959686967.0
+        },
+        {
+          "periodo": "2021-10",
+          "valor": 113492392417.0
+        },
+        {
+          "periodo": "2021-11",
+          "valor": 114758056900.0
+        },
+        {
+          "periodo": "2021-12",
+          "valor": 118914528788.0
+        },
+        {
+          "periodo": "2022-01",
+          "valor": 119600104952.0
+        },
+        {
+          "periodo": "2022-02",
+          "valor": 116853519295.0
+        },
+        {
+          "periodo": "2022-03",
+          "valor": 117090472758.0
+        },
+        {
+          "periodo": "2022-04",
+          "valor": 116254389989.0
+        },
+        {
+          "periodo": "2022-05",
+          "valor": 116522347391.0
+        },
+        {
+          "periodo": "2022-06",
+          "valor": 119871826101.0
+        },
+        {
+          "periodo": "2022-07",
+          "valor": 118987822476.0
+        },
+        {
+          "periodo": "2022-08",
+          "valor": 119280069219.0
+        },
+        {
+          "periodo": "2022-09",
+          "valor": 121163905073.0
+        },
+        {
+          "periodo": "2022-10",
+          "valor": 121169953682.0
+        },
+        {
+          "periodo": "2022-11",
+          "valor": 121563910472.0
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 127199268824.0
+        },
+        {
+          "periodo": "2023-01",
+          "valor": 126848445227.0
+        },
+        {
+          "periodo": "2023-02",
+          "valor": 128604209437.0
+        },
+        {
+          "periodo": "2023-03",
+          "valor": 129143577233.0
+        },
+        {
+          "periodo": "2023-04",
+          "valor": 130880760432.0
+        },
+        {
+          "periodo": "2023-05",
+          "valor": 131003994322.0
+        },
+        {
+          "periodo": "2023-06",
+          "valor": 138369633820.0
+        },
+        {
+          "periodo": "2023-07",
+          "valor": 141147877648.0
+        },
+        {
+          "periodo": "2023-08",
+          "valor": 144067996246.0
+        },
+        {
+          "periodo": "2023-09",
+          "valor": 143216093915.0
+        },
+        {
+          "periodo": "2023-10",
+          "valor": 144254213814.0
+        },
+        {
+          "periodo": "2023-11",
+          "valor": 145974582582.0
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 162341062395.0
+        },
+        {
+          "periodo": "2024-01",
+          "valor": 153621937705.0
+        },
+        {
+          "periodo": "2024-02",
+          "valor": 154991595989.0
+        },
+        {
+          "periodo": "2024-03",
+          "valor": 157983808469.0
+        },
+        {
+          "periodo": "2024-04",
+          "valor": 157042318460.0
+        },
+        {
+          "periodo": "2024-05",
+          "valor": 156822542273.0
+        },
+        {
+          "periodo": "2024-06",
+          "valor": 158361438000.0
+        },
+        {
+          "periodo": "2024-07",
+          "valor": 161564621901.0
+        },
+        {
+          "periodo": "2024-08",
+          "valor": 164688996457.0
+        },
+        {
+          "periodo": "2024-09",
+          "valor": 165004176637.0
+        },
+        {
+          "periodo": "2024-10",
+          "valor": 169694345968.0
+        },
+        {
+          "periodo": "2024-11",
+          "valor": 170168706894.0
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 176683753240.0
+        },
+        {
+          "periodo": "2025-01",
+          "valor": 173636738403.0
+        },
+        {
+          "periodo": "2025-02",
+          "valor": 177885078092.0
+        },
+        {
+          "periodo": "2025-03",
+          "valor": 177130166242.0
+        },
+        {
+          "periodo": "2025-04",
+          "valor": 173408224663.0
+        },
+        {
+          "periodo": "2025-05",
+          "valor": 175114953708.0
+        },
+        {
+          "periodo": "2025-06",
+          "valor": 179547517011.0
+        },
+        {
+          "periodo": "2025-07",
+          "valor": 182282660793.0
+        },
+        {
+          "periodo": "2025-08",
+          "valor": 181170176117.0
+        },
+        {
+          "periodo": "2025-09",
+          "valor": 180876687436.0
+        },
+        {
+          "periodo": "2025-10",
+          "valor": 181420153393.0
+        },
+        {
+          "periodo": "2025-11",
+          "valor": 181307620235.0
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 179995212377.0
+        },
+        {
+          "periodo": "2026-01",
+          "valor": 180913340600.0
+        },
+        {
+          "periodo": "2026-02",
+          "valor": 186811135858.0
+        },
+        {
+          "periodo": "2026-03",
+          "valor": 183465413935.0
+        },
+        {
+          "periodo": "2026-04",
+          "valor": 185061850897.0
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 188266090862.0
+        },
+        {
+          "periodo": "2026-06",
+          "valor": 198934063904.0
+        }
+      ],
+      "morosidad": [
+        {
+          "periodo": "2021-01",
+          "valor": 2.15
+        },
+        {
+          "periodo": "2021-02",
+          "valor": 2.24
+        },
+        {
+          "periodo": "2021-03",
+          "valor": 1.9
+        },
+        {
+          "periodo": "2021-04",
+          "valor": 1.75
+        },
+        {
+          "periodo": "2021-05",
+          "valor": 1.72
+        },
+        {
+          "periodo": "2021-06",
+          "valor": 1.82
+        },
+        {
+          "periodo": "2021-07",
+          "valor": 1.79
+        },
+        {
+          "periodo": "2021-08",
+          "valor": 1.73
+        },
+        {
+          "periodo": "2021-09",
+          "valor": 1.69
+        },
+        {
+          "periodo": "2021-10",
+          "valor": 1.7
+        },
+        {
+          "periodo": "2021-11",
+          "valor": 1.65
+        },
+        {
+          "periodo": "2021-12",
+          "valor": 1.61
+        },
+        {
+          "periodo": "2022-01",
+          "valor": 1.53
+        },
+        {
+          "periodo": "2022-02",
+          "valor": 1.5
+        },
+        {
+          "periodo": "2022-03",
+          "valor": 1.27
+        },
+        {
+          "periodo": "2022-04",
+          "valor": 1.24
+        },
+        {
+          "periodo": "2022-05",
+          "valor": 1.23
+        },
+        {
+          "periodo": "2022-06",
+          "valor": 1.24
+        },
+        {
+          "periodo": "2022-07",
+          "valor": 1.26
+        },
+        {
+          "periodo": "2022-08",
+          "valor": 1.27
+        },
+        {
+          "periodo": "2022-09",
+          "valor": 1.29
+        },
+        {
+          "periodo": "2022-10",
+          "valor": 1.34
+        },
+        {
+          "periodo": "2022-11",
+          "valor": 1.4
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 1.42
+        },
+        {
+          "periodo": "2023-01",
+          "valor": 1.55
+        },
+        {
+          "periodo": "2023-02",
+          "valor": 1.56
+        },
+        {
+          "periodo": "2023-03",
+          "valor": 1.58
+        },
+        {
+          "periodo": "2023-04",
+          "valor": 1.59
+        },
+        {
+          "periodo": "2023-05",
+          "valor": 1.76
+        },
+        {
+          "periodo": "2023-06",
+          "valor": 1.71
+        },
+        {
+          "periodo": "2023-07",
+          "valor": 1.78
+        },
+        {
+          "periodo": "2023-08",
+          "valor": 1.88
+        },
+        {
+          "periodo": "2023-09",
+          "valor": 1.96
+        },
+        {
+          "periodo": "2023-10",
+          "valor": 2.05
+        },
+        {
+          "periodo": "2023-11",
+          "valor": 2.06
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 1.42
+        },
+        {
+          "periodo": "2024-01",
+          "valor": 1.59
+        },
+        {
+          "periodo": "2024-02",
+          "valor": 1.72
+        },
+        {
+          "periodo": "2024-03",
+          "valor": 1.77
+        },
+        {
+          "periodo": "2024-04",
+          "valor": 1.92
+        },
+        {
+          "periodo": "2024-05",
+          "valor": 2.09
+        },
+        {
+          "periodo": "2024-06",
+          "valor": 2.04
+        },
+        {
+          "periodo": "2024-07",
+          "valor": 2.01
+        },
+        {
+          "periodo": "2024-08",
+          "valor": 1.99
+        },
+        {
+          "periodo": "2024-09",
+          "valor": 2.07
+        },
+        {
+          "periodo": "2024-10",
+          "valor": 2.07
+        },
+        {
+          "periodo": "2024-11",
+          "valor": 1.49
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 1.42
+        },
+        {
+          "periodo": "2025-01",
+          "valor": 1.84
+        },
+        {
+          "periodo": "2025-02",
+          "valor": 1.95
+        },
+        {
+          "periodo": "2025-03",
+          "valor": 2.04
+        },
+        {
+          "periodo": "2025-04",
+          "valor": 2.12
+        },
+        {
+          "periodo": "2025-05",
+          "valor": 2.13
+        },
+        {
+          "periodo": "2025-06",
+          "valor": 2.09
+        },
+        {
+          "periodo": "2025-07",
+          "valor": 2.05
+        },
+        {
+          "periodo": "2025-08",
+          "valor": 2.22
+        },
+        {
+          "periodo": "2025-09",
+          "valor": 2.32
+        },
+        {
+          "periodo": "2025-10",
+          "valor": 2.23
+        },
+        {
+          "periodo": "2025-11",
+          "valor": 2.09
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 1.78
+        },
+        {
+          "periodo": "2026-01",
+          "valor": 1.99
+        },
+        {
+          "periodo": "2026-02",
+          "valor": 2.0
+        },
+        {
+          "periodo": "2026-03",
+          "valor": 1.98
+        },
+        {
+          "periodo": "2026-04",
+          "valor": 1.91
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 2.13
+        },
+        {
+          "periodo": "2026-06",
+          "valor": 2.09
+        }
+      ],
+      "roe": [
+        {
+          "periodo": "2021-01",
+          "valor": 10.26
+        },
+        {
+          "periodo": "2021-02",
+          "valor": 10.98
+        },
+        {
+          "periodo": "2021-03",
+          "valor": 11.25
+        },
+        {
+          "periodo": "2021-04",
+          "valor": 11.92
+        },
+        {
+          "periodo": "2021-05",
+          "valor": 12.08
+        },
+        {
+          "periodo": "2021-06",
+          "valor": 12.89
+        },
+        {
+          "periodo": "2021-07",
+          "valor": 12.87
+        },
+        {
+          "periodo": "2021-08",
+          "valor": 12.46
+        },
+        {
+          "periodo": "2021-09",
+          "valor": 12.69
+        },
+        {
+          "periodo": "2021-10",
+          "valor": 13.33
+        },
+        {
+          "periodo": "2021-11",
+          "valor": 13.52
+        },
+        {
+          "periodo": "2021-12",
+          "valor": 13.53
+        },
+        {
+          "periodo": "2022-01",
+          "valor": 9.87
+        },
+        {
+          "periodo": "2022-02",
+          "valor": 9.3
+        },
+        {
+          "periodo": "2022-03",
+          "valor": 10.3
+        },
+        {
+          "periodo": "2022-04",
+          "valor": 10.36
+        },
+        {
+          "periodo": "2022-05",
+          "valor": 10.44
+        },
+        {
+          "periodo": "2022-06",
+          "valor": 11.25
+        },
+        {
+          "periodo": "2022-07",
+          "valor": 11.59
+        },
+        {
+          "periodo": "2022-08",
+          "valor": 11.69
+        },
+        {
+          "periodo": "2022-09",
+          "valor": 11.53
+        },
+        {
+          "periodo": "2022-10",
+          "valor": 11.67
+        },
+        {
+          "periodo": "2022-11",
+          "valor": 11.61
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 11.69
+        },
+        {
+          "periodo": "2023-01",
+          "valor": 17.23
+        },
+        {
+          "periodo": "2023-02",
+          "valor": 13.44
+        },
+        {
+          "periodo": "2023-03",
+          "valor": 12.16
+        },
+        {
+          "periodo": "2023-04",
+          "valor": 10.71
+        },
+        {
+          "periodo": "2023-05",
+          "valor": 9.72
+        },
+        {
+          "periodo": "2023-06",
+          "valor": 9.24
+        },
+        {
+          "periodo": "2023-07",
+          "valor": 9.16
+        },
+        {
+          "periodo": "2023-08",
+          "valor": 9.58
+        },
+        {
+          "periodo": "2023-09",
+          "valor": 10.04
+        },
+        {
+          "periodo": "2023-10",
+          "valor": 10.31
+        },
+        {
+          "periodo": "2023-11",
+          "valor": 10.46
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 11.48
+        },
+        {
+          "periodo": "2024-01",
+          "valor": 4.97
+        },
+        {
+          "periodo": "2024-02",
+          "valor": 5.29
+        },
+        {
+          "periodo": "2024-03",
+          "valor": 6.34
+        },
+        {
+          "periodo": "2024-04",
+          "valor": 6.11
+        },
+        {
+          "periodo": "2024-05",
+          "valor": 5.82
+        },
+        {
+          "periodo": "2024-06",
+          "valor": 6.91
+        },
+        {
+          "periodo": "2024-07",
+          "valor": 7.05
+        },
+        {
+          "periodo": "2024-08",
+          "valor": 7.11
+        },
+        {
+          "periodo": "2024-09",
+          "valor": 7.09
+        },
+        {
+          "periodo": "2024-10",
+          "valor": 7.03
+        },
+        {
+          "periodo": "2024-11",
+          "valor": 7.35
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 7.33
+        },
+        {
+          "periodo": "2025-01",
+          "valor": 5.69
+        },
+        {
+          "periodo": "2025-02",
+          "valor": 6.22
+        },
+        {
+          "periodo": "2025-03",
+          "valor": 7.21
+        },
+        {
+          "periodo": "2025-04",
+          "valor": 6.83
+        },
+        {
+          "periodo": "2025-05",
+          "valor": 6.83
+        },
+        {
+          "periodo": "2025-06",
+          "valor": 6.7
+        },
+        {
+          "periodo": "2025-07",
+          "valor": 7.04
+        },
+        {
+          "periodo": "2025-08",
+          "valor": 7.24
+        },
+        {
+          "periodo": "2025-09",
+          "valor": 7.76
+        },
+        {
+          "periodo": "2025-10",
+          "valor": 8.24
+        },
+        {
+          "periodo": "2025-11",
+          "valor": 7.85
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 9.35
+        },
+        {
+          "periodo": "2026-01",
+          "valor": 7.41
+        },
+        {
+          "periodo": "2026-02",
+          "valor": 6.6
+        },
+        {
+          "periodo": "2026-03",
+          "valor": 7.79
+        },
+        {
+          "periodo": "2026-04",
+          "valor": 8.27
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 8.63
+        },
+        {
+          "periodo": "2026-06",
+          "valor": 9.2
+        }
+      ],
+      "roa": [
+        {
+          "periodo": "2021-01",
+          "valor": 2.11
+        },
+        {
+          "periodo": "2021-02",
+          "valor": 2.26
+        },
+        {
+          "periodo": "2021-03",
+          "valor": 2.31
+        },
+        {
+          "periodo": "2021-04",
+          "valor": 2.44
+        },
+        {
+          "periodo": "2021-05",
+          "valor": 2.46
+        },
+        {
+          "periodo": "2021-06",
+          "valor": 2.61
+        },
+        {
+          "periodo": "2021-07",
+          "valor": 2.61
+        },
+        {
+          "periodo": "2021-08",
+          "valor": 2.53
+        },
+        {
+          "periodo": "2021-09",
+          "valor": 2.57
+        },
+        {
+          "periodo": "2021-10",
+          "valor": 2.69
+        },
+        {
+          "periodo": "2021-11",
+          "valor": 2.72
+        },
+        {
+          "periodo": "2021-12",
+          "valor": 2.72
+        },
+        {
+          "periodo": "2022-01",
+          "valor": 2.06
+        },
+        {
+          "periodo": "2022-02",
+          "valor": 1.94
+        },
+        {
+          "periodo": "2022-03",
+          "valor": 2.16
+        },
+        {
+          "periodo": "2022-04",
+          "valor": 2.19
+        },
+        {
+          "periodo": "2022-05",
+          "valor": 2.21
+        },
+        {
+          "periodo": "2022-06",
+          "valor": 2.37
+        },
+        {
+          "periodo": "2022-07",
+          "valor": 2.44
+        },
+        {
+          "periodo": "2022-08",
+          "valor": 2.46
+        },
+        {
+          "periodo": "2022-09",
+          "valor": 2.42
+        },
+        {
+          "periodo": "2022-10",
+          "valor": 2.45
+        },
+        {
+          "periodo": "2022-11",
+          "valor": 2.44
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 2.45
+        },
+        {
+          "periodo": "2023-01",
+          "valor": 3.58
+        },
+        {
+          "periodo": "2023-02",
+          "valor": 2.79
+        },
+        {
+          "periodo": "2023-03",
+          "valor": 2.52
+        },
+        {
+          "periodo": "2023-04",
+          "valor": 2.22
+        },
+        {
+          "periodo": "2023-05",
+          "valor": 2.01
+        },
+        {
+          "periodo": "2023-06",
+          "valor": 1.9
+        },
+        {
+          "periodo": "2023-07",
+          "valor": 1.86
+        },
+        {
+          "periodo": "2023-08",
+          "valor": 1.94
+        },
+        {
+          "periodo": "2023-09",
+          "valor": 2.02
+        },
+        {
+          "periodo": "2023-10",
+          "valor": 2.07
+        },
+        {
+          "periodo": "2023-11",
+          "valor": 2.09
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 2.28
+        },
+        {
+          "periodo": "2024-01",
+          "valor": 0.94
+        },
+        {
+          "periodo": "2024-02",
+          "valor": 1.0
+        },
+        {
+          "periodo": "2024-03",
+          "valor": 1.19
+        },
+        {
+          "periodo": "2024-04",
+          "valor": 1.15
+        },
+        {
+          "periodo": "2024-05",
+          "valor": 1.1
+        },
+        {
+          "periodo": "2024-06",
+          "valor": 1.3
+        },
+        {
+          "periodo": "2024-07",
+          "valor": 1.33
+        },
+        {
+          "periodo": "2024-08",
+          "valor": 1.34
+        },
+        {
+          "periodo": "2024-09",
+          "valor": 1.33
+        },
+        {
+          "periodo": "2024-10",
+          "valor": 1.31
+        },
+        {
+          "periodo": "2024-11",
+          "valor": 1.37
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 1.36
+        },
+        {
+          "periodo": "2025-01",
+          "valor": 1.03
+        },
+        {
+          "periodo": "2025-02",
+          "valor": 1.11
+        },
+        {
+          "periodo": "2025-03",
+          "valor": 1.29
+        },
+        {
+          "periodo": "2025-04",
+          "valor": 1.23
+        },
+        {
+          "periodo": "2025-05",
+          "valor": 1.23
+        },
+        {
+          "periodo": "2025-06",
+          "valor": 1.21
+        },
+        {
+          "periodo": "2025-07",
+          "valor": 1.27
+        },
+        {
+          "periodo": "2025-08",
+          "valor": 1.3
+        },
+        {
+          "periodo": "2025-09",
+          "valor": 1.4
+        },
+        {
+          "periodo": "2025-10",
+          "valor": 1.49
+        },
+        {
+          "periodo": "2025-11",
+          "valor": 1.42
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 1.7
+        },
+        {
+          "periodo": "2026-01",
+          "valor": 1.42
+        },
+        {
+          "periodo": "2026-02",
+          "valor": 1.25
+        },
+        {
+          "periodo": "2026-03",
+          "valor": 1.48
+        },
+        {
+          "periodo": "2026-04",
+          "valor": 1.57
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 1.64
+        },
+        {
+          "periodo": "2026-06",
+          "valor": 1.73
+        }
+      ],
+      "cti": [
+        {
+          "periodo": "2021-01",
+          "valor": 49.8
+        },
+        {
+          "periodo": "2021-02",
+          "valor": 51.9
+        },
+        {
+          "periodo": "2021-03",
+          "valor": 52.4
+        },
+        {
+          "periodo": "2021-04",
+          "valor": 52.9
+        },
+        {
+          "periodo": "2021-05",
+          "valor": 53.2
+        },
+        {
+          "periodo": "2021-06",
+          "valor": 52.7
+        },
+        {
+          "periodo": "2021-07",
+          "valor": 52.5
+        },
+        {
+          "periodo": "2021-08",
+          "valor": 52.9
+        },
+        {
+          "periodo": "2021-09",
+          "valor": 54.7
+        },
+        {
+          "periodo": "2021-10",
+          "valor": 55.4
+        },
+        {
+          "periodo": "2021-11",
+          "valor": 55.9
+        },
+        {
+          "periodo": "2021-12",
+          "valor": 56.7
+        },
+        {
+          "periodo": "2022-01",
+          "valor": 59.5
+        },
+        {
+          "periodo": "2022-02",
+          "valor": 61.9
+        },
+        {
+          "periodo": "2022-03",
+          "valor": 63.0
+        },
+        {
+          "periodo": "2022-04",
+          "valor": 63.5
+        },
+        {
+          "periodo": "2022-05",
+          "valor": 64.0
+        },
+        {
+          "periodo": "2022-06",
+          "valor": 62.7
+        },
+        {
+          "periodo": "2022-07",
+          "valor": 62.0
+        },
+        {
+          "periodo": "2022-08",
+          "valor": 61.3
+        },
+        {
+          "periodo": "2022-09",
+          "valor": 60.8
+        },
+        {
+          "periodo": "2022-10",
+          "valor": 60.7
+        },
+        {
+          "periodo": "2022-11",
+          "valor": 60.1
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 60.6
+        },
+        {
+          "periodo": "2023-01",
+          "valor": 51.5
+        },
+        {
+          "periodo": "2023-02",
+          "valor": 55.0
+        },
+        {
+          "periodo": "2023-03",
+          "valor": 57.1
+        },
+        {
+          "periodo": "2023-04",
+          "valor": 58.8
+        },
+        {
+          "periodo": "2023-05",
+          "valor": 60.0
+        },
+        {
+          "periodo": "2023-06",
+          "valor": 60.5
+        },
+        {
+          "periodo": "2023-07",
+          "valor": 60.5
+        },
+        {
+          "periodo": "2023-08",
+          "valor": 60.4
+        },
+        {
+          "periodo": "2023-09",
+          "valor": 61.2
+        },
+        {
+          "periodo": "2023-10",
+          "valor": 60.9
+        },
+        {
+          "periodo": "2023-11",
+          "valor": 61.3
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 60.1
+        },
+        {
+          "periodo": "2024-01",
+          "valor": 65.5
+        },
+        {
+          "periodo": "2024-02",
+          "valor": 65.7
+        },
+        {
+          "periodo": "2024-03",
+          "valor": 64.3
+        },
+        {
+          "periodo": "2024-04",
+          "valor": 64.7
+        },
+        {
+          "periodo": "2024-05",
+          "valor": 65.4
+        },
+        {
+          "periodo": "2024-06",
+          "valor": 63.3
+        },
+        {
+          "periodo": "2024-07",
+          "valor": 63.7
+        },
+        {
+          "periodo": "2024-08",
+          "valor": 63.9
+        },
+        {
+          "periodo": "2024-09",
+          "valor": 64.0
+        },
+        {
+          "periodo": "2024-10",
+          "valor": 64.0
+        },
+        {
+          "periodo": "2024-11",
+          "valor": 64.7
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 64.9
+        },
+        {
+          "periodo": "2025-01",
+          "valor": 60.7
+        },
+        {
+          "periodo": "2025-02",
+          "valor": 61.0
+        },
+        {
+          "periodo": "2025-03",
+          "valor": 59.4
+        },
+        {
+          "periodo": "2025-04",
+          "valor": 60.0
+        },
+        {
+          "periodo": "2025-05",
+          "valor": 60.1
+        },
+        {
+          "periodo": "2025-06",
+          "valor": 60.1
+        },
+        {
+          "periodo": "2025-07",
+          "valor": 59.8
+        },
+        {
+          "periodo": "2025-08",
+          "valor": 58.9
+        },
+        {
+          "periodo": "2025-09",
+          "valor": 58.4
+        },
+        {
+          "periodo": "2025-10",
+          "valor": 58.0
+        },
+        {
+          "periodo": "2025-11",
+          "valor": 57.9
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 57.7
+        },
+        {
+          "periodo": "2026-01",
+          "valor": 55.8
+        },
+        {
+          "periodo": "2026-02",
+          "valor": 59.0
+        },
+        {
+          "periodo": "2026-03",
+          "valor": 57.0
+        },
+        {
+          "periodo": "2026-04",
+          "valor": 56.6
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 56.5
+        },
+        {
+          "periodo": "2026-06",
+          "valor": 56.2
+        }
+      ]
+    },
+    "CIBAO": {
+      "activos": [
+        {
+          "periodo": "2021-01",
+          "valor": 62527955899.0
+        },
+        {
+          "periodo": "2021-02",
+          "valor": 63018457428.0
+        },
+        {
+          "periodo": "2021-03",
+          "valor": 63987495827.0
+        },
+        {
+          "periodo": "2021-04",
+          "valor": 65201845884.0
+        },
+        {
+          "periodo": "2021-05",
+          "valor": 65241027545.0
+        },
+        {
+          "periodo": "2021-06",
+          "valor": 66081576079.0
+        },
+        {
+          "periodo": "2021-07",
+          "valor": 66549394882.0
+        },
+        {
+          "periodo": "2021-08",
+          "valor": 67320280540.0
+        },
+        {
+          "periodo": "2021-09",
+          "valor": 67467481993.0
+        },
+        {
+          "periodo": "2021-10",
+          "valor": 68017168973.0
+        },
+        {
+          "periodo": "2021-11",
+          "valor": 68130338366.0
+        },
+        {
+          "periodo": "2021-12",
+          "valor": 69641963507.0
+        },
+        {
+          "periodo": "2022-01",
+          "valor": 71119947102.0
+        },
+        {
+          "periodo": "2022-02",
+          "valor": 70892890598.0
+        },
+        {
+          "periodo": "2022-03",
+          "valor": 71400669793.0
+        },
+        {
+          "periodo": "2022-04",
+          "valor": 71918366163.0
+        },
+        {
+          "periodo": "2022-05",
+          "valor": 72014079972.0
+        },
+        {
+          "periodo": "2022-06",
+          "valor": 72062138318.0
+        },
+        {
+          "periodo": "2022-07",
+          "valor": 72232635706.0
+        },
+        {
+          "periodo": "2022-08",
+          "valor": 71473808110.0
+        },
+        {
+          "periodo": "2022-09",
+          "valor": 72166774679.0
+        },
+        {
+          "periodo": "2022-10",
+          "valor": 73546944828.0
+        },
+        {
+          "periodo": "2022-11",
+          "valor": 73399674779.0
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 73456328329.0
+        },
+        {
+          "periodo": "2023-01",
+          "valor": 74717613368.0
+        },
+        {
+          "periodo": "2023-02",
+          "valor": 74877131665.0
+        },
+        {
+          "periodo": "2023-03",
+          "valor": 73922293931.0
+        },
+        {
+          "periodo": "2023-04",
+          "valor": 74995323939.0
+        },
+        {
+          "periodo": "2023-05",
+          "valor": 75145209702.0
+        },
+        {
+          "periodo": "2023-06",
+          "valor": 78301121638.0
+        },
+        {
+          "periodo": "2023-07",
+          "valor": 79217353861.0
+        },
+        {
+          "periodo": "2023-08",
+          "valor": 78913929554.0
+        },
+        {
+          "periodo": "2023-09",
+          "valor": 79708818220.0
+        },
+        {
+          "periodo": "2023-10",
+          "valor": 82236320146.0
+        },
+        {
+          "periodo": "2023-11",
+          "valor": 83438917203.0
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 85313503592.0
+        },
+        {
+          "periodo": "2024-01",
+          "valor": 86646117398.0
+        },
+        {
+          "periodo": "2024-02",
+          "valor": 87482021172.0
+        },
+        {
+          "periodo": "2024-03",
+          "valor": 88656580138.0
+        },
+        {
+          "periodo": "2024-04",
+          "valor": 88724275970.0
+        },
+        {
+          "periodo": "2024-05",
+          "valor": 89964666631.0
+        },
+        {
+          "periodo": "2024-06",
+          "valor": 90616824976.0
+        },
+        {
+          "periodo": "2024-07",
+          "valor": 92643815375.0
+        },
+        {
+          "periodo": "2024-08",
+          "valor": 93156177571.0
+        },
+        {
+          "periodo": "2024-09",
+          "valor": 93563505726.0
+        },
+        {
+          "periodo": "2024-10",
+          "valor": 94128691749.0
+        },
+        {
+          "periodo": "2024-11",
+          "valor": 93836959619.0
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 96514165734.0
+        },
+        {
+          "periodo": "2025-01",
+          "valor": 98504950539.0
+        },
+        {
+          "periodo": "2025-02",
+          "valor": 99215480321.0
+        },
+        {
+          "periodo": "2025-03",
+          "valor": 100056600728.0
+        },
+        {
+          "periodo": "2025-04",
+          "valor": 100023000730.0
+        },
+        {
+          "periodo": "2025-05",
+          "valor": 101196422303.0
+        },
+        {
+          "periodo": "2025-06",
+          "valor": 102630797094.0
+        },
+        {
+          "periodo": "2025-07",
+          "valor": 103476532415.0
+        },
+        {
+          "periodo": "2025-08",
+          "valor": 104606151870.0
+        },
+        {
+          "periodo": "2025-09",
+          "valor": 105159029327.0
+        },
+        {
+          "periodo": "2025-10",
+          "valor": 107038641910.0
+        },
+        {
+          "periodo": "2025-11",
+          "valor": 109263008891.0
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 111145189523.0
+        },
+        {
+          "periodo": "2026-01",
+          "valor": 114333840902.0
+        },
+        {
+          "periodo": "2026-02",
+          "valor": 114111589266.0
+        },
+        {
+          "periodo": "2026-03",
+          "valor": 114181058900.0
+        },
+        {
+          "periodo": "2026-04",
+          "valor": 115645087548.0
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 115517363713.0
+        },
+        {
+          "periodo": "2026-06",
+          "valor": 116613581000.0
+        }
+      ],
+      "morosidad": [
+        {
+          "periodo": "2021-01",
+          "valor": 2.42
+        },
+        {
+          "periodo": "2021-02",
+          "valor": 2.31
+        },
+        {
+          "periodo": "2021-03",
+          "valor": 2.14
+        },
+        {
+          "periodo": "2021-04",
+          "valor": 2.05
+        },
+        {
+          "periodo": "2021-05",
+          "valor": 1.96
+        },
+        {
+          "periodo": "2021-06",
+          "valor": 1.91
+        },
+        {
+          "periodo": "2021-07",
+          "valor": 1.88
+        },
+        {
+          "periodo": "2021-08",
+          "valor": 1.99
+        },
+        {
+          "periodo": "2021-09",
+          "valor": 1.94
+        },
+        {
+          "periodo": "2021-10",
+          "valor": 1.81
+        },
+        {
+          "periodo": "2021-11",
+          "valor": 1.81
+        },
+        {
+          "periodo": "2021-12",
+          "valor": 1.76
+        },
+        {
+          "periodo": "2022-01",
+          "valor": 1.79
+        },
+        {
+          "periodo": "2022-02",
+          "valor": 1.7
+        },
+        {
+          "periodo": "2022-03",
+          "valor": 1.62
+        },
+        {
+          "periodo": "2022-04",
+          "valor": 1.52
+        },
+        {
+          "periodo": "2022-05",
+          "valor": 1.51
+        },
+        {
+          "periodo": "2022-06",
+          "valor": 1.51
+        },
+        {
+          "periodo": "2022-07",
+          "valor": 1.5
+        },
+        {
+          "periodo": "2022-08",
+          "valor": 1.52
+        },
+        {
+          "periodo": "2022-09",
+          "valor": 1.46
+        },
+        {
+          "periodo": "2022-10",
+          "valor": 1.41
+        },
+        {
+          "periodo": "2022-11",
+          "valor": 1.46
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 1.56
+        },
+        {
+          "periodo": "2023-01",
+          "valor": 1.55
+        },
+        {
+          "periodo": "2023-02",
+          "valor": 1.64
+        },
+        {
+          "periodo": "2023-03",
+          "valor": 1.59
+        },
+        {
+          "periodo": "2023-04",
+          "valor": 1.58
+        },
+        {
+          "periodo": "2023-05",
+          "valor": 1.69
+        },
+        {
+          "periodo": "2023-06",
+          "valor": 1.7
+        },
+        {
+          "periodo": "2023-07",
+          "valor": 1.73
+        },
+        {
+          "periodo": "2023-08",
+          "valor": 1.88
+        },
+        {
+          "periodo": "2023-09",
+          "valor": 1.64
+        },
+        {
+          "periodo": "2023-10",
+          "valor": 1.66
+        },
+        {
+          "periodo": "2023-11",
+          "valor": 1.73
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 1.69
+        },
+        {
+          "periodo": "2024-01",
+          "valor": 1.75
+        },
+        {
+          "periodo": "2024-02",
+          "valor": 1.88
+        },
+        {
+          "periodo": "2024-03",
+          "valor": 1.77
+        },
+        {
+          "periodo": "2024-04",
+          "valor": 1.6
+        },
+        {
+          "periodo": "2024-05",
+          "valor": 1.61
+        },
+        {
+          "periodo": "2024-06",
+          "valor": 1.5
+        },
+        {
+          "periodo": "2024-07",
+          "valor": 1.46
+        },
+        {
+          "periodo": "2024-08",
+          "valor": 1.61
+        },
+        {
+          "periodo": "2024-09",
+          "valor": 1.64
+        },
+        {
+          "periodo": "2024-10",
+          "valor": 1.66
+        },
+        {
+          "periodo": "2024-11",
+          "valor": 1.68
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 1.89
+        },
+        {
+          "periodo": "2025-01",
+          "valor": 1.85
+        },
+        {
+          "periodo": "2025-02",
+          "valor": 1.9
+        },
+        {
+          "periodo": "2025-03",
+          "valor": 1.77
+        },
+        {
+          "periodo": "2025-04",
+          "valor": 1.64
+        },
+        {
+          "periodo": "2025-05",
+          "valor": 1.75
+        },
+        {
+          "periodo": "2025-06",
+          "valor": 1.84
+        },
+        {
+          "periodo": "2025-07",
+          "valor": 1.84
+        },
+        {
+          "periodo": "2025-08",
+          "valor": 1.89
+        },
+        {
+          "periodo": "2025-09",
+          "valor": 1.81
+        },
+        {
+          "periodo": "2025-10",
+          "valor": 1.73
+        },
+        {
+          "periodo": "2025-11",
+          "valor": 1.8
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 1.66
+        },
+        {
+          "periodo": "2026-01",
+          "valor": 1.75
+        },
+        {
+          "periodo": "2026-02",
+          "valor": 2.37
+        },
+        {
+          "periodo": "2026-03",
+          "valor": 2.51
+        },
+        {
+          "periodo": "2026-04",
+          "valor": 2.46
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 1.75
+        },
+        {
+          "periodo": "2026-06",
+          "valor": 1.54
+        }
+      ],
+      "roe": [
+        {
+          "periodo": "2021-01",
+          "valor": 11.97
+        },
+        {
+          "periodo": "2021-02",
+          "valor": 11.79
+        },
+        {
+          "periodo": "2021-03",
+          "valor": 11.67
+        },
+        {
+          "periodo": "2021-04",
+          "valor": 11.34
+        },
+        {
+          "periodo": "2021-05",
+          "valor": 11.29
+        },
+        {
+          "periodo": "2021-06",
+          "valor": 11.24
+        },
+        {
+          "periodo": "2021-07",
+          "valor": 11.25
+        },
+        {
+          "periodo": "2021-08",
+          "valor": 11.25
+        },
+        {
+          "periodo": "2021-09",
+          "valor": 11.27
+        },
+        {
+          "periodo": "2021-10",
+          "valor": 11.02
+        },
+        {
+          "periodo": "2021-11",
+          "valor": 10.16
+        },
+        {
+          "periodo": "2021-12",
+          "valor": 9.51
+        },
+        {
+          "periodo": "2022-01",
+          "valor": 10.21
+        },
+        {
+          "periodo": "2022-02",
+          "valor": 9.91
+        },
+        {
+          "periodo": "2022-03",
+          "valor": 10.2
+        },
+        {
+          "periodo": "2022-04",
+          "valor": 10.03
+        },
+        {
+          "periodo": "2022-05",
+          "valor": 9.57
+        },
+        {
+          "periodo": "2022-06",
+          "valor": 9.08
+        },
+        {
+          "periodo": "2022-07",
+          "valor": 8.91
+        },
+        {
+          "periodo": "2022-08",
+          "valor": 8.55
+        },
+        {
+          "periodo": "2022-09",
+          "valor": 8.45
+        },
+        {
+          "periodo": "2022-10",
+          "valor": 8.43
+        },
+        {
+          "periodo": "2022-11",
+          "valor": 8.23
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 7.67
+        },
+        {
+          "periodo": "2023-01",
+          "valor": 9.7
+        },
+        {
+          "periodo": "2023-02",
+          "valor": 8.4
+        },
+        {
+          "periodo": "2023-03",
+          "valor": 10.12
+        },
+        {
+          "periodo": "2023-04",
+          "valor": 10.41
+        },
+        {
+          "periodo": "2023-05",
+          "valor": 10.37
+        },
+        {
+          "periodo": "2023-06",
+          "valor": 10.37
+        },
+        {
+          "periodo": "2023-07",
+          "valor": 10.39
+        },
+        {
+          "periodo": "2023-08",
+          "valor": 10.11
+        },
+        {
+          "periodo": "2023-09",
+          "valor": 9.84
+        },
+        {
+          "periodo": "2023-10",
+          "valor": 9.91
+        },
+        {
+          "periodo": "2023-11",
+          "valor": 9.99
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 9.15
+        },
+        {
+          "periodo": "2024-01",
+          "valor": 9.54
+        },
+        {
+          "periodo": "2024-02",
+          "valor": 9.25
+        },
+        {
+          "periodo": "2024-03",
+          "valor": 10.29
+        },
+        {
+          "periodo": "2024-04",
+          "valor": 9.94
+        },
+        {
+          "periodo": "2024-05",
+          "valor": 10.48
+        },
+        {
+          "periodo": "2024-06",
+          "valor": 10.19
+        },
+        {
+          "periodo": "2024-07",
+          "valor": 10.13
+        },
+        {
+          "periodo": "2024-08",
+          "valor": 10.0
+        },
+        {
+          "periodo": "2024-09",
+          "valor": 9.92
+        },
+        {
+          "periodo": "2024-10",
+          "valor": 9.89
+        },
+        {
+          "periodo": "2024-11",
+          "valor": 9.54
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 9.08
+        },
+        {
+          "periodo": "2025-01",
+          "valor": 9.83
+        },
+        {
+          "periodo": "2025-02",
+          "valor": 7.58
+        },
+        {
+          "periodo": "2025-03",
+          "valor": 9.43
+        },
+        {
+          "periodo": "2025-04",
+          "valor": 8.58
+        },
+        {
+          "periodo": "2025-05",
+          "valor": 9.53
+        },
+        {
+          "periodo": "2025-06",
+          "valor": 9.34
+        },
+        {
+          "periodo": "2025-07",
+          "valor": 8.56
+        },
+        {
+          "periodo": "2025-08",
+          "valor": 8.45
+        },
+        {
+          "periodo": "2025-09",
+          "valor": 7.97
+        },
+        {
+          "periodo": "2025-10",
+          "valor": 7.61
+        },
+        {
+          "periodo": "2025-11",
+          "valor": 7.22
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 6.69
+        },
+        {
+          "periodo": "2026-01",
+          "valor": 11.12
+        },
+        {
+          "periodo": "2026-02",
+          "valor": 7.62
+        },
+        {
+          "periodo": "2026-03",
+          "valor": 9.49
+        },
+        {
+          "periodo": "2026-04",
+          "valor": 8.53
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 8.59
+        },
+        {
+          "periodo": "2026-06",
+          "valor": 8.82
+        }
+      ],
+      "roa": [
+        {
+          "periodo": "2021-01",
+          "valor": 2.48
+        },
+        {
+          "periodo": "2021-02",
+          "valor": 2.45
+        },
+        {
+          "periodo": "2021-03",
+          "valor": 2.43
+        },
+        {
+          "periodo": "2021-04",
+          "valor": 2.35
+        },
+        {
+          "periodo": "2021-05",
+          "valor": 2.34
+        },
+        {
+          "periodo": "2021-06",
+          "valor": 2.33
+        },
+        {
+          "periodo": "2021-07",
+          "valor": 2.33
+        },
+        {
+          "periodo": "2021-08",
+          "valor": 2.33
+        },
+        {
+          "periodo": "2021-09",
+          "valor": 2.34
+        },
+        {
+          "periodo": "2021-10",
+          "valor": 2.28
+        },
+        {
+          "periodo": "2021-11",
+          "valor": 2.11
+        },
+        {
+          "periodo": "2021-12",
+          "valor": 1.97
+        },
+        {
+          "periodo": "2022-01",
+          "valor": 2.26
+        },
+        {
+          "periodo": "2022-02",
+          "valor": 2.15
+        },
+        {
+          "periodo": "2022-03",
+          "valor": 2.22
+        },
+        {
+          "periodo": "2022-04",
+          "valor": 2.18
+        },
+        {
+          "periodo": "2022-05",
+          "valor": 2.07
+        },
+        {
+          "periodo": "2022-06",
+          "valor": 1.95
+        },
+        {
+          "periodo": "2022-07",
+          "valor": 1.91
+        },
+        {
+          "periodo": "2022-08",
+          "valor": 1.83
+        },
+        {
+          "periodo": "2022-09",
+          "valor": 1.8
+        },
+        {
+          "periodo": "2022-10",
+          "valor": 1.8
+        },
+        {
+          "periodo": "2022-11",
+          "valor": 1.75
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 1.63
+        },
+        {
+          "periodo": "2023-01",
+          "valor": 2.02
+        },
+        {
+          "periodo": "2023-02",
+          "valor": 1.76
+        },
+        {
+          "periodo": "2023-03",
+          "valor": 2.13
+        },
+        {
+          "periodo": "2023-04",
+          "valor": 2.2
+        },
+        {
+          "periodo": "2023-05",
+          "valor": 2.2
+        },
+        {
+          "periodo": "2023-06",
+          "valor": 2.19
+        },
+        {
+          "periodo": "2023-07",
+          "valor": 2.19
+        },
+        {
+          "periodo": "2023-08",
+          "valor": 2.13
+        },
+        {
+          "periodo": "2023-09",
+          "valor": 2.07
+        },
+        {
+          "periodo": "2023-10",
+          "valor": 2.08
+        },
+        {
+          "periodo": "2023-11",
+          "valor": 2.09
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 1.91
+        },
+        {
+          "periodo": "2024-01",
+          "valor": 1.88
+        },
+        {
+          "periodo": "2024-02",
+          "valor": 1.82
+        },
+        {
+          "periodo": "2024-03",
+          "valor": 2.02
+        },
+        {
+          "periodo": "2024-04",
+          "valor": 1.96
+        },
+        {
+          "periodo": "2024-05",
+          "valor": 2.06
+        },
+        {
+          "periodo": "2024-06",
+          "valor": 2.0
+        },
+        {
+          "periodo": "2024-07",
+          "valor": 1.99
+        },
+        {
+          "periodo": "2024-08",
+          "valor": 1.96
+        },
+        {
+          "periodo": "2024-09",
+          "valor": 1.94
+        },
+        {
+          "periodo": "2024-10",
+          "valor": 1.94
+        },
+        {
+          "periodo": "2024-11",
+          "valor": 1.87
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 1.78
+        },
+        {
+          "periodo": "2025-01",
+          "valor": 1.86
+        },
+        {
+          "periodo": "2025-02",
+          "valor": 1.43
+        },
+        {
+          "periodo": "2025-03",
+          "valor": 1.79
+        },
+        {
+          "periodo": "2025-04",
+          "valor": 1.63
+        },
+        {
+          "periodo": "2025-05",
+          "valor": 1.81
+        },
+        {
+          "periodo": "2025-06",
+          "valor": 1.77
+        },
+        {
+          "periodo": "2025-07",
+          "valor": 1.62
+        },
+        {
+          "periodo": "2025-08",
+          "valor": 1.6
+        },
+        {
+          "periodo": "2025-09",
+          "valor": 1.51
+        },
+        {
+          "periodo": "2025-10",
+          "valor": 1.43
+        },
+        {
+          "periodo": "2025-11",
+          "valor": 1.36
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 1.25
+        },
+        {
+          "periodo": "2026-01",
+          "valor": 1.98
+        },
+        {
+          "periodo": "2026-02",
+          "valor": 1.35
+        },
+        {
+          "periodo": "2026-03",
+          "valor": 1.69
+        },
+        {
+          "periodo": "2026-04",
+          "valor": 1.52
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 1.53
+        },
+        {
+          "periodo": "2026-06",
+          "valor": 1.57
+        }
+      ],
+      "cti": [
+        {
+          "periodo": "2021-01",
+          "valor": 56.3
+        },
+        {
+          "periodo": "2021-02",
+          "valor": 55.1
+        },
+        {
+          "periodo": "2021-03",
+          "valor": 55.8
+        },
+        {
+          "periodo": "2021-04",
+          "valor": 58.0
+        },
+        {
+          "periodo": "2021-05",
+          "valor": 58.8
+        },
+        {
+          "periodo": "2021-06",
+          "valor": 59.1
+        },
+        {
+          "periodo": "2021-07",
+          "valor": 59.3
+        },
+        {
+          "periodo": "2021-08",
+          "valor": 59.5
+        },
+        {
+          "periodo": "2021-09",
+          "valor": 59.3
+        },
+        {
+          "periodo": "2021-10",
+          "valor": 60.1
+        },
+        {
+          "periodo": "2021-11",
+          "valor": 62.0
+        },
+        {
+          "periodo": "2021-12",
+          "valor": 63.6
+        },
+        {
+          "periodo": "2022-01",
+          "valor": 60.4
+        },
+        {
+          "periodo": "2022-02",
+          "valor": 64.3
+        },
+        {
+          "periodo": "2022-03",
+          "valor": 64.2
+        },
+        {
+          "periodo": "2022-04",
+          "valor": 64.2
+        },
+        {
+          "periodo": "2022-05",
+          "valor": 64.5
+        },
+        {
+          "periodo": "2022-06",
+          "valor": 66.1
+        },
+        {
+          "periodo": "2022-07",
+          "valor": 67.1
+        },
+        {
+          "periodo": "2022-08",
+          "valor": 68.3
+        },
+        {
+          "periodo": "2022-09",
+          "valor": 68.5
+        },
+        {
+          "periodo": "2022-10",
+          "valor": 68.2
+        },
+        {
+          "periodo": "2022-11",
+          "valor": 68.6
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 69.6
+        },
+        {
+          "periodo": "2023-01",
+          "valor": 61.1
+        },
+        {
+          "periodo": "2023-02",
+          "valor": 62.1
+        },
+        {
+          "periodo": "2023-03",
+          "valor": 60.4
+        },
+        {
+          "periodo": "2023-04",
+          "valor": 59.9
+        },
+        {
+          "periodo": "2023-05",
+          "valor": 59.1
+        },
+        {
+          "periodo": "2023-06",
+          "valor": 60.0
+        },
+        {
+          "periodo": "2023-07",
+          "valor": 60.6
+        },
+        {
+          "periodo": "2023-08",
+          "valor": 61.3
+        },
+        {
+          "periodo": "2023-09",
+          "valor": 62.4
+        },
+        {
+          "periodo": "2023-10",
+          "valor": 62.5
+        },
+        {
+          "periodo": "2023-11",
+          "valor": 62.9
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 64.4
+        },
+        {
+          "periodo": "2024-01",
+          "valor": 66.4
+        },
+        {
+          "periodo": "2024-02",
+          "valor": 65.7
+        },
+        {
+          "periodo": "2024-03",
+          "valor": 63.2
+        },
+        {
+          "periodo": "2024-04",
+          "valor": 64.5
+        },
+        {
+          "periodo": "2024-05",
+          "valor": 64.1
+        },
+        {
+          "periodo": "2024-06",
+          "valor": 64.9
+        },
+        {
+          "periodo": "2024-07",
+          "valor": 65.6
+        },
+        {
+          "periodo": "2024-08",
+          "valor": 66.2
+        },
+        {
+          "periodo": "2024-09",
+          "valor": 66.5
+        },
+        {
+          "periodo": "2024-10",
+          "valor": 66.6
+        },
+        {
+          "periodo": "2024-11",
+          "valor": 67.3
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 67.4
+        },
+        {
+          "periodo": "2025-01",
+          "valor": 66.9
+        },
+        {
+          "periodo": "2025-02",
+          "valor": 69.7
+        },
+        {
+          "periodo": "2025-03",
+          "valor": 67.1
+        },
+        {
+          "periodo": "2025-04",
+          "valor": 69.2
+        },
+        {
+          "periodo": "2025-05",
+          "valor": 66.6
+        },
+        {
+          "periodo": "2025-06",
+          "valor": 66.9
+        },
+        {
+          "periodo": "2025-07",
+          "valor": 68.7
+        },
+        {
+          "periodo": "2025-08",
+          "valor": 68.6
+        },
+        {
+          "periodo": "2025-09",
+          "valor": 69.7
+        },
+        {
+          "periodo": "2025-10",
+          "valor": 70.5
+        },
+        {
+          "periodo": "2025-11",
+          "valor": 71.1
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 73.4
+        },
+        {
+          "periodo": "2026-01",
+          "valor": 64.8
+        },
+        {
+          "periodo": "2026-02",
+          "valor": 71.3
+        },
+        {
+          "periodo": "2026-03",
+          "valor": 67.3
+        },
+        {
+          "periodo": "2026-04",
+          "valor": 68.8
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 68.8
+        },
+        {
+          "periodo": "2026-06",
+          "valor": 68.9
+        }
+      ]
+    },
+    "LA NACIONAL": {
+      "activos": [
+        {
+          "periodo": "2021-01",
+          "valor": 35167268804.0
+        },
+        {
+          "periodo": "2021-02",
+          "valor": 35261708310.0
+        },
+        {
+          "periodo": "2021-03",
+          "valor": 35469799750.0
+        },
+        {
+          "periodo": "2021-04",
+          "valor": 35859969026.0
+        },
+        {
+          "periodo": "2021-05",
+          "valor": 35457767559.0
+        },
+        {
+          "periodo": "2021-06",
+          "valor": 36006454691.0
+        },
+        {
+          "periodo": "2021-07",
+          "valor": 35632494145.0
+        },
+        {
+          "periodo": "2021-08",
+          "valor": 36216089309.0
+        },
+        {
+          "periodo": "2021-09",
+          "valor": 35885473957.0
+        },
+        {
+          "periodo": "2021-10",
+          "valor": 36071689374.0
+        },
+        {
+          "periodo": "2021-11",
+          "valor": 36146364619.0
+        },
+        {
+          "periodo": "2021-12",
+          "valor": 36633008520.0
+        },
+        {
+          "periodo": "2022-01",
+          "valor": 37119644845.0
+        },
+        {
+          "periodo": "2022-02",
+          "valor": 36547148814.0
+        },
+        {
+          "periodo": "2022-03",
+          "valor": 36905547124.0
+        },
+        {
+          "periodo": "2022-04",
+          "valor": 36714807052.0
+        },
+        {
+          "periodo": "2022-05",
+          "valor": 36903280299.0
+        },
+        {
+          "periodo": "2022-06",
+          "valor": 36787480812.0
+        },
+        {
+          "periodo": "2022-07",
+          "valor": 36788879173.0
+        },
+        {
+          "periodo": "2022-08",
+          "valor": 36810510739.0
+        },
+        {
+          "periodo": "2022-09",
+          "valor": 36469863262.0
+        },
+        {
+          "periodo": "2022-10",
+          "valor": 36596745857.0
+        },
+        {
+          "periodo": "2022-11",
+          "valor": 36734870894.0
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 36809609403.0
+        },
+        {
+          "periodo": "2023-01",
+          "valor": 37115905972.0
+        },
+        {
+          "periodo": "2023-02",
+          "valor": 36993567325.0
+        },
+        {
+          "periodo": "2023-03",
+          "valor": 36450984257.0
+        },
+        {
+          "periodo": "2023-04",
+          "valor": 36851225965.0
+        },
+        {
+          "periodo": "2023-05",
+          "valor": 36781534172.0
+        },
+        {
+          "periodo": "2023-06",
+          "valor": 36964111428.0
+        },
+        {
+          "periodo": "2023-07",
+          "valor": 38072480228.0
+        },
+        {
+          "periodo": "2023-08",
+          "valor": 38553057295.0
+        },
+        {
+          "periodo": "2023-09",
+          "valor": 38859771206.0
+        },
+        {
+          "periodo": "2023-10",
+          "valor": 39300786462.0
+        },
+        {
+          "periodo": "2023-11",
+          "valor": 40142737090.0
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 40877067085.0
+        },
+        {
+          "periodo": "2024-01",
+          "valor": 41795025409.0
+        },
+        {
+          "periodo": "2024-02",
+          "valor": 42037950686.0
+        },
+        {
+          "periodo": "2024-03",
+          "valor": 41969952521.0
+        },
+        {
+          "periodo": "2024-04",
+          "valor": 42052164348.0
+        },
+        {
+          "periodo": "2024-05",
+          "valor": 42218394706.0
+        },
+        {
+          "periodo": "2024-06",
+          "valor": 42713683971.0
+        },
+        {
+          "periodo": "2024-07",
+          "valor": 42695663953.0
+        },
+        {
+          "periodo": "2024-08",
+          "valor": 43889082654.0
+        },
+        {
+          "periodo": "2024-09",
+          "valor": 42721545763.0
+        },
+        {
+          "periodo": "2024-10",
+          "valor": 43785865407.0
+        },
+        {
+          "periodo": "2024-11",
+          "valor": 44090713368.0
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 44643038439.0
+        },
+        {
+          "periodo": "2025-01",
+          "valor": 44992073591.0
+        },
+        {
+          "periodo": "2025-02",
+          "valor": 45794944697.0
+        },
+        {
+          "periodo": "2025-03",
+          "valor": 45449061677.0
+        },
+        {
+          "periodo": "2025-04",
+          "valor": 45888493251.0
+        },
+        {
+          "periodo": "2025-05",
+          "valor": 46840474160.0
+        },
+        {
+          "periodo": "2025-06",
+          "valor": 47616379987.0
+        },
+        {
+          "periodo": "2025-07",
+          "valor": 48014462093.0
+        },
+        {
+          "periodo": "2025-08",
+          "valor": 48930640848.0
+        },
+        {
+          "periodo": "2025-09",
+          "valor": 49338883082.0
+        },
+        {
+          "periodo": "2025-10",
+          "valor": 50104325951.0
+        },
+        {
+          "periodo": "2025-11",
+          "valor": 50625992627.0
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 51288155314.0
+        },
+        {
+          "periodo": "2026-01",
+          "valor": 51958258100.0
+        },
+        {
+          "periodo": "2026-02",
+          "valor": 51790413499.0
+        },
+        {
+          "periodo": "2026-03",
+          "valor": 51541355955.0
+        },
+        {
+          "periodo": "2026-04",
+          "valor": 51875729688.0
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 52415851976.0
+        },
+        {
+          "periodo": "2026-06",
+          "valor": 52382757111.0
+        }
+      ],
+      "morosidad": [
+        {
+          "periodo": "2021-01",
+          "valor": 2.53
+        },
+        {
+          "periodo": "2021-02",
+          "valor": 2.68
+        },
+        {
+          "periodo": "2021-03",
+          "valor": 2.66
+        },
+        {
+          "periodo": "2021-04",
+          "valor": 2.88
+        },
+        {
+          "periodo": "2021-05",
+          "valor": 2.99
+        },
+        {
+          "periodo": "2021-06",
+          "valor": 2.69
+        },
+        {
+          "periodo": "2021-07",
+          "valor": 2.55
+        },
+        {
+          "periodo": "2021-08",
+          "valor": 2.38
+        },
+        {
+          "periodo": "2021-09",
+          "valor": 2.18
+        },
+        {
+          "periodo": "2021-10",
+          "valor": 2.07
+        },
+        {
+          "periodo": "2021-11",
+          "valor": 2.14
+        },
+        {
+          "periodo": "2021-12",
+          "valor": 1.72
+        },
+        {
+          "periodo": "2022-01",
+          "valor": 1.78
+        },
+        {
+          "periodo": "2022-02",
+          "valor": 1.68
+        },
+        {
+          "periodo": "2022-03",
+          "valor": 1.61
+        },
+        {
+          "periodo": "2022-04",
+          "valor": 1.59
+        },
+        {
+          "periodo": "2022-05",
+          "valor": 1.61
+        },
+        {
+          "periodo": "2022-06",
+          "valor": 1.63
+        },
+        {
+          "periodo": "2022-07",
+          "valor": 1.56
+        },
+        {
+          "periodo": "2022-08",
+          "valor": 1.84
+        },
+        {
+          "periodo": "2022-09",
+          "valor": 1.92
+        },
+        {
+          "periodo": "2022-10",
+          "valor": 2.03
+        },
+        {
+          "periodo": "2022-11",
+          "valor": 2.16
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 1.94
+        },
+        {
+          "periodo": "2023-01",
+          "valor": 2.04
+        },
+        {
+          "periodo": "2023-02",
+          "valor": 2.02
+        },
+        {
+          "periodo": "2023-03",
+          "valor": 1.97
+        },
+        {
+          "periodo": "2023-04",
+          "valor": 2.04
+        },
+        {
+          "periodo": "2023-05",
+          "valor": 2.12
+        },
+        {
+          "periodo": "2023-06",
+          "valor": 2.09
+        },
+        {
+          "periodo": "2023-07",
+          "valor": 2.04
+        },
+        {
+          "periodo": "2023-08",
+          "valor": 2.22
+        },
+        {
+          "periodo": "2023-09",
+          "valor": 2.21
+        },
+        {
+          "periodo": "2023-10",
+          "valor": 2.17
+        },
+        {
+          "periodo": "2023-11",
+          "valor": 2.05
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 1.97
+        },
+        {
+          "periodo": "2024-01",
+          "valor": 1.83
+        },
+        {
+          "periodo": "2024-02",
+          "valor": 1.83
+        },
+        {
+          "periodo": "2024-03",
+          "valor": 1.88
+        },
+        {
+          "periodo": "2024-04",
+          "valor": 1.78
+        },
+        {
+          "periodo": "2024-05",
+          "valor": 1.84
+        },
+        {
+          "periodo": "2024-06",
+          "valor": 1.81
+        },
+        {
+          "periodo": "2024-07",
+          "valor": 1.71
+        },
+        {
+          "periodo": "2024-08",
+          "valor": 1.9
+        },
+        {
+          "periodo": "2024-09",
+          "valor": 2.0
+        },
+        {
+          "periodo": "2024-10",
+          "valor": 2.04
+        },
+        {
+          "periodo": "2024-11",
+          "valor": 1.79
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 1.65
+        },
+        {
+          "periodo": "2025-01",
+          "valor": 1.76
+        },
+        {
+          "periodo": "2025-02",
+          "valor": 1.9
+        },
+        {
+          "periodo": "2025-03",
+          "valor": 1.9
+        },
+        {
+          "periodo": "2025-04",
+          "valor": 1.79
+        },
+        {
+          "periodo": "2025-05",
+          "valor": 1.87
+        },
+        {
+          "periodo": "2025-06",
+          "valor": 2.05
+        },
+        {
+          "periodo": "2025-07",
+          "valor": 2.0
+        },
+        {
+          "periodo": "2025-08",
+          "valor": 2.11
+        },
+        {
+          "periodo": "2025-09",
+          "valor": 2.08
+        },
+        {
+          "periodo": "2025-10",
+          "valor": 2.15
+        },
+        {
+          "periodo": "2025-11",
+          "valor": 2.03
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 2.27
+        },
+        {
+          "periodo": "2026-01",
+          "valor": 2.43
+        },
+        {
+          "periodo": "2026-02",
+          "valor": 2.12
+        },
+        {
+          "periodo": "2026-03",
+          "valor": 1.95
+        },
+        {
+          "periodo": "2026-04",
+          "valor": 2.0
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 2.11
+        },
+        {
+          "periodo": "2026-06",
+          "valor": 2.12
+        }
+      ],
+      "roe": [
+        {
+          "periodo": "2021-01",
+          "valor": 8.84
+        },
+        {
+          "periodo": "2021-02",
+          "valor": 7.21
+        },
+        {
+          "periodo": "2021-03",
+          "valor": 6.92
+        },
+        {
+          "periodo": "2021-04",
+          "valor": 7.6
+        },
+        {
+          "periodo": "2021-05",
+          "valor": 7.62
+        },
+        {
+          "periodo": "2021-06",
+          "valor": 9.12
+        },
+        {
+          "periodo": "2021-07",
+          "valor": 9.56
+        },
+        {
+          "periodo": "2021-08",
+          "valor": 9.8
+        },
+        {
+          "periodo": "2021-09",
+          "valor": 10.18
+        },
+        {
+          "periodo": "2021-10",
+          "valor": 10.71
+        },
+        {
+          "periodo": "2021-11",
+          "valor": 10.58
+        },
+        {
+          "periodo": "2021-12",
+          "valor": 11.32
+        },
+        {
+          "periodo": "2022-01",
+          "valor": 10.22
+        },
+        {
+          "periodo": "2022-02",
+          "valor": 10.19
+        },
+        {
+          "periodo": "2022-03",
+          "valor": 11.57
+        },
+        {
+          "periodo": "2022-04",
+          "valor": 11.79
+        },
+        {
+          "periodo": "2022-05",
+          "valor": 11.7
+        },
+        {
+          "periodo": "2022-06",
+          "valor": 11.45
+        },
+        {
+          "periodo": "2022-07",
+          "valor": 10.95
+        },
+        {
+          "periodo": "2022-08",
+          "valor": 10.98
+        },
+        {
+          "periodo": "2022-09",
+          "valor": 11.33
+        },
+        {
+          "periodo": "2022-10",
+          "valor": 10.85
+        },
+        {
+          "periodo": "2022-11",
+          "valor": 10.13
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 10.12
+        },
+        {
+          "periodo": "2023-01",
+          "valor": 6.52
+        },
+        {
+          "periodo": "2023-02",
+          "valor": 7.84
+        },
+        {
+          "periodo": "2023-03",
+          "valor": 8.56
+        },
+        {
+          "periodo": "2023-04",
+          "valor": 8.54
+        },
+        {
+          "periodo": "2023-05",
+          "valor": 8.48
+        },
+        {
+          "periodo": "2023-06",
+          "valor": 8.49
+        },
+        {
+          "periodo": "2023-07",
+          "valor": 8.41
+        },
+        {
+          "periodo": "2023-08",
+          "valor": 8.59
+        },
+        {
+          "periodo": "2023-09",
+          "valor": 8.35
+        },
+        {
+          "periodo": "2023-10",
+          "valor": 8.28
+        },
+        {
+          "periodo": "2023-11",
+          "valor": 7.7
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 8.07
+        },
+        {
+          "periodo": "2024-01",
+          "valor": 4.08
+        },
+        {
+          "periodo": "2024-02",
+          "valor": 2.33
+        },
+        {
+          "periodo": "2024-03",
+          "valor": 6.64
+        },
+        {
+          "periodo": "2024-04",
+          "valor": 6.05
+        },
+        {
+          "periodo": "2024-05",
+          "valor": 5.91
+        },
+        {
+          "periodo": "2024-06",
+          "valor": 5.56
+        },
+        {
+          "periodo": "2024-07",
+          "valor": 5.62
+        },
+        {
+          "periodo": "2024-08",
+          "valor": 5.49
+        },
+        {
+          "periodo": "2024-09",
+          "valor": 5.43
+        },
+        {
+          "periodo": "2024-10",
+          "valor": 6.28
+        },
+        {
+          "periodo": "2024-11",
+          "valor": 6.55
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 7.38
+        },
+        {
+          "periodo": "2025-01",
+          "valor": 5.9
+        },
+        {
+          "periodo": "2025-02",
+          "valor": 6.75
+        },
+        {
+          "periodo": "2025-03",
+          "valor": 6.23
+        },
+        {
+          "periodo": "2025-04",
+          "valor": 5.17
+        },
+        {
+          "periodo": "2025-05",
+          "valor": 4.98
+        },
+        {
+          "periodo": "2025-06",
+          "valor": 4.73
+        },
+        {
+          "periodo": "2025-07",
+          "valor": 5.36
+        },
+        {
+          "periodo": "2025-08",
+          "valor": 5.71
+        },
+        {
+          "periodo": "2025-09",
+          "valor": 5.72
+        },
+        {
+          "periodo": "2025-10",
+          "valor": 5.63
+        },
+        {
+          "periodo": "2025-11",
+          "valor": 5.7
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 7.28
+        },
+        {
+          "periodo": "2026-01",
+          "valor": 6.11
+        },
+        {
+          "periodo": "2026-02",
+          "valor": 6.42
+        },
+        {
+          "periodo": "2026-03",
+          "valor": 7.08
+        },
+        {
+          "periodo": "2026-04",
+          "valor": 7.25
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 8.52
+        },
+        {
+          "periodo": "2026-06",
+          "valor": 8.59
+        }
+      ],
+      "roa": [
+        {
+          "periodo": "2021-01",
+          "valor": 1.23
+        },
+        {
+          "periodo": "2021-02",
+          "valor": 1.0
+        },
+        {
+          "periodo": "2021-03",
+          "valor": 0.96
+        },
+        {
+          "periodo": "2021-04",
+          "valor": 1.06
+        },
+        {
+          "periodo": "2021-05",
+          "valor": 1.06
+        },
+        {
+          "periodo": "2021-06",
+          "valor": 1.28
+        },
+        {
+          "periodo": "2021-07",
+          "valor": 1.34
+        },
+        {
+          "periodo": "2021-08",
+          "valor": 1.38
+        },
+        {
+          "periodo": "2021-09",
+          "valor": 1.44
+        },
+        {
+          "periodo": "2021-10",
+          "valor": 1.52
+        },
+        {
+          "periodo": "2021-11",
+          "valor": 1.51
+        },
+        {
+          "periodo": "2021-12",
+          "valor": 1.62
+        },
+        {
+          "periodo": "2022-01",
+          "valor": 1.56
+        },
+        {
+          "periodo": "2022-02",
+          "valor": 1.56
+        },
+        {
+          "periodo": "2022-03",
+          "valor": 1.77
+        },
+        {
+          "periodo": "2022-04",
+          "valor": 1.81
+        },
+        {
+          "periodo": "2022-05",
+          "valor": 1.8
+        },
+        {
+          "periodo": "2022-06",
+          "valor": 1.77
+        },
+        {
+          "periodo": "2022-07",
+          "valor": 1.7
+        },
+        {
+          "periodo": "2022-08",
+          "valor": 1.71
+        },
+        {
+          "periodo": "2022-09",
+          "valor": 1.78
+        },
+        {
+          "periodo": "2022-10",
+          "valor": 1.71
+        },
+        {
+          "periodo": "2022-11",
+          "valor": 1.6
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 1.6
+        },
+        {
+          "periodo": "2023-01",
+          "valor": 1.07
+        },
+        {
+          "periodo": "2023-02",
+          "valor": 1.29
+        },
+        {
+          "periodo": "2023-03",
+          "valor": 1.42
+        },
+        {
+          "periodo": "2023-04",
+          "valor": 1.43
+        },
+        {
+          "periodo": "2023-05",
+          "valor": 1.42
+        },
+        {
+          "periodo": "2023-06",
+          "valor": 1.43
+        },
+        {
+          "periodo": "2023-07",
+          "valor": 1.43
+        },
+        {
+          "periodo": "2023-08",
+          "valor": 1.47
+        },
+        {
+          "periodo": "2023-09",
+          "valor": 1.43
+        },
+        {
+          "periodo": "2023-10",
+          "valor": 1.43
+        },
+        {
+          "periodo": "2023-11",
+          "valor": 1.33
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 1.39
+        },
+        {
+          "periodo": "2024-01",
+          "valor": 0.69
+        },
+        {
+          "periodo": "2024-02",
+          "valor": 0.39
+        },
+        {
+          "periodo": "2024-03",
+          "valor": 1.12
+        },
+        {
+          "periodo": "2024-04",
+          "valor": 1.02
+        },
+        {
+          "periodo": "2024-05",
+          "valor": 0.99
+        },
+        {
+          "periodo": "2024-06",
+          "valor": 0.93
+        },
+        {
+          "periodo": "2024-07",
+          "valor": 0.94
+        },
+        {
+          "periodo": "2024-08",
+          "valor": 0.92
+        },
+        {
+          "periodo": "2024-09",
+          "valor": 0.91
+        },
+        {
+          "periodo": "2024-10",
+          "valor": 1.05
+        },
+        {
+          "periodo": "2024-11",
+          "valor": 1.1
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 1.23
+        },
+        {
+          "periodo": "2025-01",
+          "valor": 0.98
+        },
+        {
+          "periodo": "2025-02",
+          "valor": 1.11
+        },
+        {
+          "periodo": "2025-03",
+          "valor": 1.03
+        },
+        {
+          "periodo": "2025-04",
+          "valor": 0.85
+        },
+        {
+          "periodo": "2025-05",
+          "valor": 0.82
+        },
+        {
+          "periodo": "2025-06",
+          "valor": 0.77
+        },
+        {
+          "periodo": "2025-07",
+          "valor": 0.87
+        },
+        {
+          "periodo": "2025-08",
+          "valor": 0.93
+        },
+        {
+          "periodo": "2025-09",
+          "valor": 0.92
+        },
+        {
+          "periodo": "2025-10",
+          "valor": 0.91
+        },
+        {
+          "periodo": "2025-11",
+          "valor": 0.91
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 1.16
+        },
+        {
+          "periodo": "2026-01",
+          "valor": 0.95
+        },
+        {
+          "periodo": "2026-02",
+          "valor": 1.0
+        },
+        {
+          "periodo": "2026-03",
+          "valor": 1.11
+        },
+        {
+          "periodo": "2026-04",
+          "valor": 1.14
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 1.35
+        },
+        {
+          "periodo": "2026-06",
+          "valor": 1.36
+        }
+      ],
+      "cti": [
+        {
+          "periodo": "2021-01",
+          "valor": 72.4
+        },
+        {
+          "periodo": "2021-02",
+          "valor": 72.2
+        },
+        {
+          "periodo": "2021-03",
+          "valor": 74.3
+        },
+        {
+          "periodo": "2021-04",
+          "valor": 73.6
+        },
+        {
+          "periodo": "2021-05",
+          "valor": 73.2
+        },
+        {
+          "periodo": "2021-06",
+          "valor": 71.7
+        },
+        {
+          "periodo": "2021-07",
+          "valor": 71.4
+        },
+        {
+          "periodo": "2021-08",
+          "valor": 70.7
+        },
+        {
+          "periodo": "2021-09",
+          "valor": 70.1
+        },
+        {
+          "periodo": "2021-10",
+          "valor": 70.4
+        },
+        {
+          "periodo": "2021-11",
+          "valor": 71.1
+        },
+        {
+          "periodo": "2021-12",
+          "valor": 74.4
+        },
+        {
+          "periodo": "2022-01",
+          "valor": 71.5
+        },
+        {
+          "periodo": "2022-02",
+          "valor": 74.2
+        },
+        {
+          "periodo": "2022-03",
+          "valor": 74.9
+        },
+        {
+          "periodo": "2022-04",
+          "valor": 73.4
+        },
+        {
+          "periodo": "2022-05",
+          "valor": 74.4
+        },
+        {
+          "periodo": "2022-06",
+          "valor": 74.8
+        },
+        {
+          "periodo": "2022-07",
+          "valor": 75.5
+        },
+        {
+          "periodo": "2022-08",
+          "valor": 75.1
+        },
+        {
+          "periodo": "2022-09",
+          "valor": 74.9
+        },
+        {
+          "periodo": "2022-10",
+          "valor": 75.7
+        },
+        {
+          "periodo": "2022-11",
+          "valor": 77.1
+        },
+        {
+          "periodo": "2022-12",
+          "valor": 77.5
+        },
+        {
+          "periodo": "2023-01",
+          "valor": 82.9
+        },
+        {
+          "periodo": "2023-02",
+          "valor": 82.4
+        },
+        {
+          "periodo": "2023-03",
+          "valor": 81.5
+        },
+        {
+          "periodo": "2023-04",
+          "valor": 83.1
+        },
+        {
+          "periodo": "2023-05",
+          "valor": 82.3
+        },
+        {
+          "periodo": "2023-06",
+          "valor": 82.1
+        },
+        {
+          "periodo": "2023-07",
+          "valor": 82.2
+        },
+        {
+          "periodo": "2023-08",
+          "valor": 81.3
+        },
+        {
+          "periodo": "2023-09",
+          "valor": 81.1
+        },
+        {
+          "periodo": "2023-10",
+          "valor": 81.3
+        },
+        {
+          "periodo": "2023-11",
+          "valor": 82.5
+        },
+        {
+          "periodo": "2023-12",
+          "valor": 81.3
+        },
+        {
+          "periodo": "2024-01",
+          "valor": 90.0
+        },
+        {
+          "periodo": "2024-02",
+          "valor": 93.2
+        },
+        {
+          "periodo": "2024-03",
+          "valor": 91.9
+        },
+        {
+          "periodo": "2024-04",
+          "valor": 90.9
+        },
+        {
+          "periodo": "2024-05",
+          "valor": 89.5
+        },
+        {
+          "periodo": "2024-06",
+          "valor": 89.6
+        },
+        {
+          "periodo": "2024-07",
+          "valor": 89.5
+        },
+        {
+          "periodo": "2024-08",
+          "valor": 88.7
+        },
+        {
+          "periodo": "2024-09",
+          "valor": 88.2
+        },
+        {
+          "periodo": "2024-10",
+          "valor": 87.7
+        },
+        {
+          "periodo": "2024-11",
+          "valor": 86.7
+        },
+        {
+          "periodo": "2024-12",
+          "valor": 85.7
+        },
+        {
+          "periodo": "2025-01",
+          "valor": 85.2
+        },
+        {
+          "periodo": "2025-02",
+          "valor": 84.6
+        },
+        {
+          "periodo": "2025-03",
+          "valor": 85.1
+        },
+        {
+          "periodo": "2025-04",
+          "valor": 87.8
+        },
+        {
+          "periodo": "2025-05",
+          "valor": 86.8
+        },
+        {
+          "periodo": "2025-06",
+          "valor": 86.9
+        },
+        {
+          "periodo": "2025-07",
+          "valor": 86.2
+        },
+        {
+          "periodo": "2025-08",
+          "valor": 85.4
+        },
+        {
+          "periodo": "2025-09",
+          "valor": 85.1
+        },
+        {
+          "periodo": "2025-10",
+          "valor": 84.6
+        },
+        {
+          "periodo": "2025-11",
+          "valor": 84.2
+        },
+        {
+          "periodo": "2025-12",
+          "valor": 81.7
+        },
+        {
+          "periodo": "2026-01",
+          "valor": 72.2
+        },
+        {
+          "periodo": "2026-02",
+          "valor": 74.8
+        },
+        {
+          "periodo": "2026-03",
+          "valor": 75.0
+        },
+        {
+          "periodo": "2026-04",
+          "valor": 75.5
+        },
+        {
+          "periodo": "2026-05",
+          "valor": 75.5
+        },
+        {
+          "periodo": "2026-06",
+          "valor": 75.5
+        }
+      ]
+    }
+  }
+}
