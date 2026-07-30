@@ -239,9 +239,15 @@ Client Secret y la URL del tenant:
 https://login.microsoftonline.com/<TENANT_ID>/v2.0
 ```
 
-Los valores viven en los secrets del repo (`AZURE_CLIENT_ID`, `AZURE_TENANT_ID`,
-`AZURE_CLIENT_SECRET`) — **no se escriben en este archivo ni en ningún archivo
-versionado**.
+**Estas credenciales van en un solo lugar: la configuración del provider Azure
+del proyecto destino.** No van como secrets de GitHub — los pipelines de Actions
+no hacen SSO y nunca tocan Entra, así que ahí solo serían una copia de más de un
+secreto. El Tenant ID se repite en Vercel como `LN_ALLOWED_TENANT_ID` (no es
+secreto: es el filtro de quién puede entrar).
+
+**Este repositorio es público.** Ni el client secret ni ninguna otra credencial
+pueden escribirse en un archivo versionado, ni siquiera como valor por defecto.
+Ver `docs/ACCESO_ENTRA_ID.md` para el detalle de la configuración.
 
 > **Rotar el client secret antes del handoff definitivo.** El secret actual se
 > compartió por chat durante la preparación de esta migración, así que hay que
