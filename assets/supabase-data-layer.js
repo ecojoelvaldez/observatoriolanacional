@@ -4,14 +4,27 @@
    Usage in HTML:
    <script type="module" src="./assets/supabase-data-layer.js"></script>
 
-   Replace SUPABASE_URL and SUPABASE_ANON_KEY with your project values,
-   or inject them during build if you later move to Vite/Next.
+   El project ref y la anon key salen de los <meta> del <head>:
+     <meta name="supabase-url" content="https://<ref>.supabase.co">
+     <meta name="supabase-anon-key" content="...">
+   o de window.__OBSERVATORIO_SUPABASE__ = { url, anonKey } si hay que
+   apuntar a otro proyecto sin editar el HTML.
 */
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const SUPABASE_URL = 'https://albtuqzdcltcokfagdvy.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsYnR1cXpkY2x0Y29rZmFnZHZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4NzQ3ODQsImV4cCI6MjA5NjQ1MDc4NH0.kPojvu2YRO-jTB9jNvc05gSkoRHBNq5qTrtlmM1RKYU';
+function readSupabaseConfig() {
+  const meta = name => document.querySelector(`meta[name="${name}"]`)?.content?.trim() || '';
+  const override = window.__OBSERVATORIO_SUPABASE__ || {};
+  const url = (override.url || meta('supabase-url')).replace(/\/+$/, '');
+  const anonKey = override.anonKey || meta('supabase-anon-key');
+  if (!url || !anonKey) {
+    throw new Error('Falta la configuración de Supabase (meta supabase-url / supabase-anon-key).');
+  }
+  return { url, anonKey };
+}
+
+const { url: SUPABASE_URL, anonKey: SUPABASE_ANON_KEY } = readSupabaseConfig();
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
