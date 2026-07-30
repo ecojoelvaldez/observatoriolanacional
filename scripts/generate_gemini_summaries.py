@@ -24,8 +24,8 @@
 #   GEMINI_SUMMARY_PATH     (default: data/gemini_summaries.json)
 #   SIB_SNAPSHOT_PATH       (default: data/sib_snapshot.json)
 #   NEWS_CANDIDATES_PATH    (default: news_candidates.json)
-#   SUPABASE_URL            (default: proyecto público del Observatorio)
-#   SUPABASE_KEY            (default: anon key pública; acepta service key)
+#   SUPABASE_URL            (requerida — sin default, ver MIGRACION_SUPABASE.md)
+#   SUPABASE_KEY            (requerida; acepta anon o service key)
 #
 # Uso:
 #   python scripts/generate_gemini_summaries.py            # corrida normal
@@ -52,17 +52,22 @@ OUTPUT_PATH = os.environ.get("GEMINI_SUMMARY_PATH", "data/gemini_summaries.json"
 SIB_SNAPSHOT_PATH = os.environ.get("SIB_SNAPSHOT_PATH", "data/sib_snapshot.json")
 NEWS_CANDIDATES_PATH = os.environ.get("NEWS_CANDIDATES_PATH", "news_candidates.json")
 
-# Proyecto Supabase del Observatorio. La anon key ya es pública (vive en
-# assets/supabase-data-layer.js), así que usarla aquí no expone nada nuevo.
-SUPABASE_URL = (
-    os.environ.get("SUPABASE_URL") or "https://albtuqzdcltcokfagdvy.supabase.co"
-).rstrip("/")
+# Proyecto Supabase del Observatorio. Sin default a propósito: durante la
+# migración al proyecto departamental, un fallback silencioso haría que el
+# pipeline siguiera escribiendo en el proyecto viejo sin que nadie lo note.
+SUPABASE_URL = (os.environ.get("SUPABASE_URL") or "").strip().rstrip("/")
 SUPABASE_KEY = (
     os.environ.get("SUPABASE_KEY")
     or os.environ.get("SUPABASE_SERVICE_KEY")
     or os.environ.get("SUPABASE_ANON_KEY")
-    or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsYnR1cXpkY2x0Y29rZmFnZHZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4NzQ3ODQsImV4cCI6MjA5NjQ1MDc4NH0.kPojvu2YRO-jTB9jNvc05gSkoRHBNq5qTrtlmM1RKYU"
-)
+    or ""
+).strip()
+
+if not SUPABASE_URL or not SUPABASE_KEY:
+    sys.exit(
+        "Faltan SUPABASE_URL y/o SUPABASE_KEY. Defínelas apuntando al proyecto "
+        "correcto (ver docs/MIGRACION_SUPABASE.md)."
+    )
 
 # Meses de historia que se resumen en el contexto de cada serie.
 MESES_CONTEXTO = 13

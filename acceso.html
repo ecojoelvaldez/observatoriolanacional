@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Acceso · Observatorio Estratégico La Nacional</title>
+<meta name="robots" content="noindex, nofollow">
+
+<!-- Misma convención que index.html: único punto a cambiar en el cutover. -->
+<meta name="supabase-url" content="https://albtuqzdcltcokfagdvy.supabase.co">
+<meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsYnR1cXpkY2x0Y29rZmFnZHZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4NzQ3ODQsImV4cCI6MjA5NjQ1MDc4NH0.kPojvu2YRO-jTB9jNvc05gSkoRHBNq5qTrtlmM1RKYU">
+
+<style>
+  :root {
+    --cyan-deep: #0b5c6b;
+    --cyan-soft: #e6f3f5;
+    --ink: #1b2733;
+    --ink-mute: #6b7a88;
+    --line-soft: #dde5ea;
+    --danger: #a93226;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(160deg, #f7fafb 0%, var(--cyan-soft) 100%);
+    color: var(--ink);
+  }
+  .card {
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+    padding: 44px 38px 34px;
+    text-align: center;
+    box-shadow: 0 18px 48px rgba(11, 92, 107, 0.10);
+  }
+  .mark { width: 88px; height: auto; margin: 0 auto 26px; display: block; }
+  h1 {
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin: 0 0 6px;
+    color: var(--cyan-deep);
+  }
+  .sub {
+    font-size: 10.5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    font-weight: 600;
+    margin: 0 0 30px;
+  }
+  .btn {
+    width: 100%;
+    padding: 13px 18px;
+    font: inherit;
+    font-weight: 600;
+    font-size: 14.5px;
+    color: #fff;
+    background: var(--cyan-deep);
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background .15s ease;
+  }
+  .btn:hover { background: #094a56; }
+  .btn:disabled { opacity: .55; cursor: default; }
+  .btn svg { flex: none; }
+  .status {
+    margin-top: 20px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-mute);
+    min-height: 20px;
+  }
+  .status[data-tone="error"] { color: var(--danger); }
+  .hint {
+    margin-top: 26px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line-soft);
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: var(--ink-mute);
+  }
+  .spinner {
+    width: 15px; height: 15px;
+    border: 2px solid rgba(255,255,255,.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+</style>
+</head>
+<body>
+
+<main class="card">
+  <img class="mark" src="/assets/mark-observatorio.png" alt="" onerror="this.style.display='none'">
+  <h1>Observatorio Estratégico</h1>
+  <p class="sub">La Nacional</p>
+
+  <button class="btn" id="login" type="button">
+    <svg width="16" height="16" viewBox="0 0 23 23" aria-hidden="true">
+      <path fill="#f25022" d="M1 1h10v10H1z"/><path fill="#7fba00" d="M12 1h10v10H12z"/>
+      <path fill="#00a4ef" d="M1 12h10v10H1z"/><path fill="#ffb900" d="M12 12h10v10H12z"/>
+    </svg>
+    <span id="login-label">Entrar con Microsoft</span>
+  </button>
+
+  <p class="status" id="status" role="status" aria-live="polite"></p>
+
+  <p class="hint">
+    El acceso está restringido al personal de La Nacional. Inicia sesión con
+    tu cuenta institucional, la misma de SharePoint y el correo.
+  </p>
+</main>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+const meta = name => document.querySelector(`meta[name="${name}"]`)?.content?.trim() || '';
+const SUPABASE_URL = meta('supabase-url').replace(/\/+$/, '');
+const SUPABASE_ANON_KEY = meta('supabase-anon-key');
+
+const button = document.getElementById('login');
+const label = document.getElementById('login-label');
+const status = document.getElementById('status');
+
+function say(text, tone = 'info') {
+  status.textContent = text;
+  status.dataset.tone = tone;
+}
+
+function busy(text) {
+  button.disabled = true;
+  label.textContent = text;
+  if (!button.querySelector('.spinner')) {
+    const spinner = document.createElement('span');
+    spinner.className = 'spinner';
+    button.appendChild(spinner);
+  }
+}
+
+function idle(text = 'Entrar con Microsoft') {
+  button.disabled = false;
+  label.textContent = text;
+  button.querySelector('.spinner')?.remove();
+}
+
+/* A dónde iba el usuario antes de toparse con la puerta. Se valida que sea
+   una ruta interna: un `next` con host ajeno sería un open redirect. */
+function safeNext() {
+  const raw = new URLSearchParams(location.search).get('next') || '/';
+  return raw.startsWith('/') && !raw.startsWith('//') ? raw : '/';
+}
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
+});
+
+/* Cambia la sesión de Supabase por la cookie del gate, que es lo que el
+   middleware sabe leer. */
+async function openGate(session) {
+  busy('Verificando acceso…');
+  const response = await fetch('/api/session', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ access_token: session.access_token }),
+  });
+
+  const payload = await response.json().catch(() => ({}));
+
+  if (response.ok && payload.ok) {
+    say('Acceso autorizado. Entrando…');
+    location.replace(safeNext());
+    return;
+  }
+
+  // Cuenta válida en Microsoft pero fuera de La Nacional: se cierra la
+  // sesión para no dejarla dando vueltas y se explica por qué.
+  await supabase.auth.signOut();
+  sessionStorage.removeItem(REDIRECT_FLAG);
+  idle('Entrar con otra cuenta');
+  say(payload.error || 'No se pudo autorizar el acceso.', 'error');
+}
+
+async function signIn() {
+  busy('Redirigiendo a Microsoft…');
+  const redirectTo = new URL('/acceso', location.origin);
+  const next = safeNext();
+  if (next !== '/') redirectTo.searchParams.set('next', next);
+
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'azure',
+    options: { scopes: 'openid profile email', redirectTo: redirectTo.toString() },
+  });
+
+  if (error) {
+    idle();
+    say(`No se pudo iniciar el login con Microsoft: ${error.message}`, 'error');
+  }
+}
+
+button.addEventListener('click', signIn);
+
+/* Guardia anti-bucle: si Microsoft devuelve al usuario sin sesión utilizable,
+   no se le manda de vuelta en un ciclo infinito — se le muestra el botón. */
+const REDIRECT_FLAG = 'ln_gate_redirect_attempted';
+
+(async function start() {
+  const params = new URLSearchParams(location.hash.slice(1) || location.search);
+  if (params.get('error') || params.get('error_description')) {
+    sessionStorage.removeItem(REDIRECT_FLAG);
+    idle();
+    say(params.get('error_description') || 'Microsoft rechazó el inicio de sesión.', 'error');
+    return;
+  }
+
+  busy('Comprobando sesión…');
+  const { data } = await supabase.auth.getSession();
+
+  if (data?.session) {
+    sessionStorage.removeItem(REDIRECT_FLAG);
+    await openGate(data.session);
+    return;
+  }
+
+  // Sin sesión: se manda directo a Microsoft, como SharePoint. Solo una vez.
+  if (!sessionStorage.getItem(REDIRECT_FLAG)) {
+    sessionStorage.setItem(REDIRECT_FLAG, '1');
+    await signIn();
+    return;
+  }
+
+  sessionStorage.removeItem(REDIRECT_FLAG);
+  idle();
+  say('Inicia sesión con tu cuenta de La Nacional para continuar.');
+})();
+</script>
+
+</body>
+</html>
