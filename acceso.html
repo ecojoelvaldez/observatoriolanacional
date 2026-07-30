@@ -6,9 +6,10 @@
 <title>Acceso · Observatorio Estratégico La Nacional</title>
 <meta name="robots" content="noindex, nofollow">
 
-<!-- Misma convención que index.html: único punto a cambiar en el cutover. -->
-<meta name="supabase-url" content="https://albtuqzdcltcokfagdvy.supabase.co">
-<meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsYnR1cXpkY2x0Y29rZmFnZHZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4NzQ3ODQsImV4cCI6MjA5NjQ1MDc4NH0.kPojvu2YRO-jTB9jNvc05gSkoRHBNq5qTrtlmM1RKYU">
+<!-- Esta página NO trae el proyecto de Supabase escrito: se lo pregunta a
+     /api/session, que lo lee de las variables de entorno de Vercel. Así el
+     proyecto contra el que se autentica y el proyecto contra el que se valida
+     el token son siempre el mismo, sin editar HTML. -->
 
 <style>
   :root {
@@ -129,10 +130,6 @@
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const meta = name => document.querySelector(`meta[name="${name}"]`)?.content?.trim() || '';
-const SUPABASE_URL = meta('supabase-url').replace(/\/+$/, '');
-const SUPABASE_ANON_KEY = meta('supabase-anon-key');
-
 const button = document.getElementById('login');
 const label = document.getElementById('login-label');
 const status = document.getElementById('status');
@@ -165,9 +162,23 @@ function safeNext() {
   return raw.startsWith('/') && !raw.startsWith('//') ? raw : '/';
 }
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
-});
+/* El proyecto sale de las variables de entorno de Vercel, vía /api/session. */
+async function makeClient() {
+  const response = await fetch('/api/session');
+  const config = await response.json().catch(() => ({}));
+
+  if (!response.ok || !config.supabaseUrl || !config.supabaseAnonKey) {
+    throw new Error(
+      config.error || 'La puerta de acceso no está configurada en este entorno.',
+    );
+  }
+
+  return createClient(config.supabaseUrl.replace(/\/+$/, ''), config.supabaseAnonKey, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
+  });
+}
+
+let supabase = null;
 
 /* Cambia la sesión de Supabase por la cookie del gate, que es lo que el
    middleware sabe leer. */
@@ -228,6 +239,15 @@ const REDIRECT_FLAG = 'ln_gate_redirect_attempted';
   }
 
   busy('Comprobando sesión…');
+
+  try {
+    supabase = await makeClient();
+  } catch (error) {
+    idle();
+    say(error.message, 'error');
+    return;
+  }
+
   const { data } = await supabase.auth.getSession();
 
   if (data?.session) {

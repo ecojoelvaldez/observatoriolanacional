@@ -117,8 +117,42 @@ Falla cerrado a propósito: es preferible un sitio caído a un sitio abierto.
 
 ### 4. Frontend
 
-`acceso.html` lee el project ref y la anon key de los mismos `<meta>` que
-`index.html`. En el cutover se cambian en los dos archivos.
+`acceso.html` **no** trae el proyecto escrito: se lo pregunta a
+`GET /api/session`, que lo lee de `SUPABASE_URL` y `SUPABASE_ANON_KEY`. Así el
+proyecto contra el que se autentica y el proyecto contra el que se valida el
+token no pueden quedar desincronizados. No hay nada que editar en el HTML de la
+puerta: se cambian las variables de Vercel y ya.
+
+(`index.html` sí tiene sus `<meta>` propios, porque eso apunta a de dónde salen
+los *datos* del dashboard, que es una decisión distinta y se cambia en el
+cutover de datos.)
+
+---
+
+## Qué es `LN_GATE_SECRET`
+
+No te lo da Microsoft ni Supabase. **Lo inventas tú**, una sola vez.
+
+Piénsalo como la pulsera de un evento. En la puerta, el de seguridad
+(Microsoft) te revisa la cédula una vez. No te la va a revisar otra vez cada
+vez que caminas de un salón a otro — te ponen una pulsera. La pulsera lleva un
+estampado que solo el organizador sabe imprimir: tú puedes mirarla, pero no
+puedes fabricarte una en tu casa.
+
+`LN_GATE_SECRET` es el molde de ese estampado.
+
+Sin él, cualquiera podría fabricarse una cookie que diga "yo soy de La
+Nacional" y entrar sin pasar por Microsoft. Con él, el servidor firma la cookie
+al emitirla y verifica la firma en cada visita. La firma se puede leer, pero no
+se puede falsificar sin conocer el secreto.
+
+Por eso:
+
+- Se genera **al azar**, una sola vez: `openssl rand -base64 48`
+- Se guarda **solo** en las variables de entorno de Vercel. En ningún archivo.
+- Si lo cambias, todo el mundo tiene que volver a entrar por Microsoft. Es
+  inofensivo — de hecho es la forma de echar a todos si hiciera falta.
+- Si falta, el sitio responde 503 y no entra nadie. Falla cerrado a propósito.
 
 ## Quién puede entrar
 

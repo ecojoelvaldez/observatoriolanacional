@@ -127,13 +127,26 @@ module.exports = async function handler(req, res) {
     });
   }
 
+  // La página /acceso pregunta aquí contra qué proyecto debe autenticar, en vez
+  // de traerlo en un <meta>. Así el proyecto se configura en UN solo lugar (las
+  // variables de Vercel) y no puede quedar desincronizado con la validación de
+  // más abajo. Ambos valores son públicos por diseño: la anon key viaja al
+  // navegador en cualquier app de Supabase, y RLS es lo que protege los datos.
+  if (req.method === 'GET') {
+    return res.status(200).json({
+      ok: true,
+      supabaseUrl,
+      supabaseAnonKey: anonKey,
+    });
+  }
+
   if (req.method === 'DELETE') {
     res.setHeader('Set-Cookie', expiredCookie());
     return res.status(200).json({ ok: true, authenticated: false });
   }
 
   if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST, DELETE');
+    res.setHeader('Allow', 'GET, POST, DELETE');
     return res.status(405).json({ ok: false, error: 'Método no permitido.' });
   }
 
