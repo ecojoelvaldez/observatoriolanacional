@@ -168,6 +168,21 @@ def _gemini_throttle() -> None:
         _gemini_last_call = time.monotonic()
 
 
+def _gemini_quota_detail(response) -> str:
+    """Qué cuota dice Google que se excedió (por minuto vs. diaria)."""
+    try:
+        error = response.json().get("error", {})
+        partes = [str(error.get("message", "")).strip()]
+        for detail in error.get("details", []):
+            for violation in detail.get("violations", []):
+                cuota = violation.get("quotaId") or violation.get("quotaMetric")
+                if cuota:
+                    partes.append(str(cuota))
+    except Exception:
+        return ""
+    return " | ".join(p for p in partes if p)[:300]
+
+
 def _gemini_retry_delay(response, attempt: int) -> float:
     """Espera sugerida por Google (RetryInfo) o backoff exponencial."""
     try:
@@ -197,6 +212,10 @@ def gemini_json(prompt: str, max_tokens: int = 1500, retries: int = 4) -> dict |
             r = httpx.post(GEMINI_ENDPOINT, params={"key": GEMINI_API_KEY}, json=payload, timeout=GEMINI_TIMEOUT)
             if r.status_code in (429, 503):
                 delay = _gemini_retry_delay(r, attempt)
+                if attempt == 1:
+                    detalle = _gemini_quota_detail(r)
+                    if detalle:
+                        log.warning("Gemini %s · cuota: %s", r.status_code, detalle)
                 log.warning("Gemini %s, reintento %d/%d (espera %.0fs)", r.status_code, attempt, retries, delay)
                 time.sleep(delay)
                 continue

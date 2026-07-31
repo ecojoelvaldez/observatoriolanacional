@@ -312,15 +312,41 @@ LA NACIONAL frente a sus pares. En "vigilar" indica señales concretas de los pr
 CONTEXTO:
 """
 
-_last_call = 0.0
+_last_call_end = 0.0
 
 
 def _throttle():
-    global _last_call
-    wait = _last_call + GEMINI_MIN_INTERVAL - time.monotonic()
+    """Espacia las llamadas midiendo desde que TERMINÓ la anterior.
+
+    Medir desde el inicio no espaciaba nada: la llamada de macro tarda ~6 s,
+    o sea lo mismo que el intervalo, así que la de SIB salía 130 ms después de
+    que la primera respondiera y se comía un 429 (visto el 2026-07-21).
+    """
+    wait = _last_call_end + GEMINI_MIN_INTERVAL - time.monotonic()
     if wait > 0:
         time.sleep(wait)
-    _last_call = time.monotonic()
+
+
+def _mark_call_done():
+    global _last_call_end
+    _last_call_end = time.monotonic()
+
+
+def _quota_detail(response):
+    """Qué cuota dice Google que se excedió: sirve para distinguir el límite
+    por minuto (se resuelve esperando) del límite diario (no se resuelve hoy).
+    """
+    try:
+        error = response.json().get("error", {})
+        partes = [str(error.get("message", "")).strip()]
+        for detail in error.get("details", []):
+            for violation in detail.get("violations", []):
+                cuota = violation.get("quotaId") or violation.get("quotaMetric")
+                if cuota:
+                    partes.append(str(cuota))
+    except Exception:
+        return ""
+    return " | ".join(p for p in partes if p)[:300]
 
 
 def _retry_delay(response, attempt):
@@ -328,13 +354,13 @@ def _retry_delay(response, attempt):
         for detail in response.json().get("error", {}).get("details", []):
             delay = str(detail.get("retryDelay", ""))
             if delay.endswith("s"):
-                return min(90.0, float(delay[:-1]) + 1)
+                return min(120.0, float(delay[:-1]) + 1)
     except Exception:
         pass
-    return min(90.0, 15.0 * attempt)
+    return min(120.0, 20.0 * attempt)
 
 
-def gemini_json(prompt, api_key, max_tokens=1200, retries=4):
+def gemini_json(prompt, api_key, max_tokens=1200, retries=6):
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {
@@ -346,14 +372,23 @@ def gemini_json(prompt, api_key, max_tokens=1200, retries=4):
     for attempt in range(1, retries + 1):
         try:
             _throttle()
-            r = httpx.post(
-                GEMINI_ENDPOINT,
-                params={"key": api_key},
-                json=payload,
-                timeout=GEMINI_TIMEOUT,
-            )
+            try:
+                r = httpx.post(
+                    GEMINI_ENDPOINT,
+                    params={"key": api_key},
+                    json=payload,
+                    timeout=GEMINI_TIMEOUT,
+                )
+            finally:
+                _mark_call_done()
             if r.status_code in (429, 503):
                 delay = _retry_delay(r, attempt)
+                # El cuerpo del 429 dice qué cuota se pasó. Sin esto, un límite
+                # por minuto y uno diario se ven exactamente igual en el log.
+                if attempt == 1:
+                    detalle = _quota_detail(r)
+                    if detalle:
+                        log(f"  Gemini {r.status_code} · cuota: {detalle}")
                 log(f"  Gemini {r.status_code}, reintento {attempt}/{retries} (espera {delay:.0f}s)")
                 time.sleep(delay)
                 continue
