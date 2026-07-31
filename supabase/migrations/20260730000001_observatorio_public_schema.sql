@@ -141,7 +141,9 @@ create table if not exists public.news_sources (
 create table if not exists public.news_items (
   id           uuid        primary key default gen_random_uuid(),
   title        text        not null,
-  source       text        not null,
+  -- 'source' queda nullable a propósito: el panel publica 'source_name'.
+  -- Ver 20260731000001_news_publish_fix_and_archive.sql.
+  source       text,
   source_key   text        references public.news_sources(source_key) on delete set null,
   url          text        not null,
   category     text        default 'Economía',
@@ -161,8 +163,10 @@ create table if not exists public.news_items (
   sort_order   integer     default 1,
   is_featured  boolean     default false,
   constraint uq_news_items_url unique (url),
+  -- 'published' es el estado que exigen las políticas RLS de más abajo
+  -- (news_items_anon_insert_published) y el que envía el front al publicar.
   constraint news_items_status_check check (
-    status = any (array['pending','approved','rejected'])
+    status = any (array['pending','approved','rejected','published'])
   )
 );
 
