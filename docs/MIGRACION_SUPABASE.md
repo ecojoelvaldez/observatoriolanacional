@@ -19,6 +19,32 @@ una transferencia de organización — el proyecto destino ya tiene trabajo de A
 
 ---
 
+## 0. Estado del corte (actualizado 2026-07-31)
+
+| Paso | Estado |
+|---|---|
+| 3.1 Schema en el destino | **Hecho.** Corridas las tres migraciones, incluida la corrección de `news_items` (ver abajo). |
+| 3.4 Front apuntado al destino | **Hecho** en esta rama: los `<meta>` de `index.html` y `acceso.html` ya llevan el ref y la anon key del destino. |
+| 3.2 Copia de datos | **Pendiente.** El destino está vacío: sin las 17 filas de `news_sources`, el pipeline de noticias no tiene qué leer. |
+| 3.3 Secrets de GitHub Actions | **Pendiente.** Mientras no cambien, los workflows siguen escribiendo en el origen. |
+| §5 Provider Azure en el destino | **Verificar** antes de desplegar: si no está cargado, nadie entra por `acceso.html`. |
+
+El corte del front se adelantó a los pasos 2-3 del plan de §4 por decisión
+explícita del dueño del proyecto: la operación se mueve entera al proyecto
+institucional. El riesgo asumido es acotado — `news_items` siempre estuvo en
+cero (ver §1, hallazgo 5) y el origen queda intacto como rollback.
+
+**Corrección aplicada sobre el hallazgo 5 de §1.** Las tres políticas de
+`news_items` que filtran por `status = 'published'` no eran código muerto: eran
+la causa de que publicar el resumen nunca funcionara del lado servidor. La
+política exigía un estado que el CHECK de la tabla prohibía, así que cada
+publicación fallaba y el resumen solo vivía en el `localStorage` del navegador
+que publicaba. Se corrigió en
+`supabase/migrations/20260731000001_news_publish_fix_and_archive.sql` y en el
+schema base, de modo que el destino ya nació sin el bug.
+
+---
+
 ## 1. Qué hay realmente en el origen
 
 Inventario levantado el 2026-07-30 contra `albtuqzdcltcokfagdvy`:
