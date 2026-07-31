@@ -13896,5 +13896,222 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
 })();
 </script>
 
+<style id="ln-news-discards-css">
+/* ===== Descartadas por el filtro: visibles y recuperables ===== */
+.news-discards { margin: 18px 0 26px; border: 1px solid var(--line); border-radius: 8px; background: var(--white); overflow: hidden; }
+.news-discards-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 15px 20px; cursor: pointer; user-select: none; background: var(--off-white);
+  border-bottom: 1px solid transparent; transition: background .2s var(--ease-out);
+}
+.news-discards.open .news-discards-head { border-bottom-color: var(--line); }
+.news-discards-head:hover { background: var(--cream); }
+.news-discards-head .t { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.news-discards-head .n {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+  background: var(--yellow-soft); border: 1px solid var(--yellow-line); color: #8a6d00;
+  border-radius: 20px; padding: 3px 10px;
+}
+.news-discards-head .chev { margin-left: auto; color: var(--ink-mute); font-size: 12px; transition: transform .24s var(--ease-out); }
+.news-discards.open .news-discards-head .chev { transform: rotate(180deg); }
+.news-discards-body { display: none; padding: 6px 20px 18px; }
+.news-discards.open .news-discards-body { display: block; animation: fadeUp .24s var(--ease-out) both; }
+.news-discards-note { font-size: 11.5px; color: var(--ink-mute); line-height: 1.6; padding: 12px 0 14px; border-bottom: 1px solid var(--line-soft); }
+.discard-row { display: flex; gap: 14px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid var(--line-soft); }
+.discard-row:last-child { border-bottom: none; }
+.discard-main { flex: 1; min-width: 0; }
+.discard-why {
+  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 3px; margin-bottom: 6px;
+  background: var(--cyan-soft); border: 1px solid var(--cyan-line); color: var(--cyan-deep);
+}
+.discard-why[data-motivo="relevancia_baja"], .discard-why[data-motivo="modelo_irrelevante"] { background: var(--yellow-soft); border-color: var(--yellow-line); color: #8a6d00; }
+.discard-why[data-motivo="sin_cuerpo"], .discard-why[data-motivo="sin_detalle"] { background: #FDECEA; border-color: #F5C6C0; color: var(--red); }
+.discard-row h5 { font-size: 13.5px; font-weight: 600; line-height: 1.45; margin-bottom: 4px; }
+.discard-meta { font-size: 11px; color: var(--ink-mute); }
+.discard-meta a { color: var(--cyan-deep); text-decoration: none; }
+.discard-meta a:hover { text-decoration: underline; }
+.discard-signals { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--cyan-deep); }
+.discard-recover {
+  flex: 0 0 auto; font-family: inherit; font-size: 11px; font-weight: 600; cursor: pointer;
+  background: var(--white); border: 1px solid var(--line); border-radius: 4px; padding: 8px 14px;
+  color: var(--ink-soft); transition: all .2s var(--ease-out); white-space: nowrap;
+}
+.discard-recover:hover { border-color: var(--cyan-deep); color: var(--cyan-deep); }
+</style>
+
+<script id="ln-news-discards-js">
+/* ========================================================================
+   La Nacional · Descartadas por el filtro
+   El pipeline anota en news_candidates.json todo lo que tiro y por que
+   (data.discarded). Aqui se pinta debajo de la cola editorial, con el motivo
+   y el puntaje, y un boton para devolver cualquiera al flujo normal.
+   Motivo: lo que el filtro descarta no se veia en ningun lado, asi que un
+   falso negativo solo se detectaba buscando la noticia a mano.
+   ======================================================================== */
+(function(){
+  'use strict';
+
+  const CANDIDATES_URL = '/news_candidates.json';
+  const RECOVERED_KEY = 'ln-news-recovered-v1';
+  let descartadas = [];
+
+  function txt(v){ return String(v ?? ''); }
+  function esc(v){
+    if (typeof window.escapeHtml === 'function') return window.escapeHtml(txt(v));
+    return txt(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function ensureHttp(value){
+    const s = txt(value).trim();
+    if (!s) return '#';
+    return /^https?:\/\//i.test(s) ? s : 'https://' + s;
+  }
+  function readJson(key, fallback){
+    try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+    catch { return fallback; }
+  }
+  function writeJson(key, value){ try { localStorage.setItem(key, JSON.stringify(value)); } catch {} }
+  function toastSafe(msg, kind){ try { window.toast?.(msg, kind || 'success'); } catch { console.log('[LN-NEWS]', msg); } }
+  function host(url){ try { return new URL(ensureHttp(url)).hostname.replace(/^www\./,''); } catch { return ''; } }
+
+  function ensureShell(){
+    let box = document.getElementById('news-discards');
+    if (box) return box;
+    // Va justo despues de la cola de propuestas del panel.
+    const anchor = document.getElementById('proposals-list');
+    if (!anchor) return null;
+    box = document.createElement('section');
+    box.className = 'news-discards';
+    box.id = 'news-discards';
+    box.hidden = true;
+    box.innerHTML = `
+      <div class="news-discards-head" id="news-discards-toggle" role="button" tabindex="0" aria-expanded="false">
+        <span class="t">Descartadas por el filtro</span>
+        <span class="n" id="news-discards-count">0</span>
+        <span class="chev">▾</span>
+      </div>
+      <div class="news-discards-body">
+        <div class="news-discards-note">
+          El filtro automático apartó estas notas. Revísalas: si alguna debía entrar,
+          <strong>Recuperar</strong> la devuelve a la cola como propuesta pendiente.
+        </div>
+        <div id="news-discards-list"></div>
+      </div>`;
+    anchor.parentNode.insertBefore(box, anchor.nextSibling);
+    const toggle = box.querySelector('#news-discards-toggle');
+    const flip = () => {
+      const abierto = box.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(abierto));
+    };
+    toggle.addEventListener('click', flip);
+    toggle.addEventListener('keydown', ev => {
+      if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); flip(); }
+    });
+    return box;
+  }
+
+  function render(){
+    const box = ensureShell();
+    if (!box) return;
+    const recuperadas = new Set(readJson(RECOVERED_KEY, []));
+    const lista = descartadas.filter(d => !recuperadas.has(txt(d.id)));
+    box.hidden = !lista.length;
+    if (!lista.length) return;
+
+    const count = document.getElementById('news-discards-count');
+    if (count) count.textContent = String(lista.length);
+
+    const cont = document.getElementById('news-discards-list');
+    cont.innerHTML = lista.map(d => {
+      const señales = Array.isArray(d['señales']) ? d['señales'] : (d.senales || []);
+      const rel = (d.relevance === null || d.relevance === undefined) ? '—' : d.relevance;
+      return `
+        <div class="discard-row">
+          <div class="discard-main">
+            <span class="discard-why" data-motivo="${esc(d.motivo)}">${esc(d.motivo_texto || d.motivo)}</span>
+            <h5>${esc(d.title) || '<em>sin título</em>'}</h5>
+            <div class="discard-meta">
+              ${esc(d.source_name || host(d.url))} · relevancia ${esc(rel)}/10
+              ${señales.length ? ` · <span class="discard-signals">${esc(señales.join(' + '))}</span>` : ''}
+              ${d.detalle ? ` · ${esc(d.detalle)}` : ''}
+              ${d.url ? ` · <a href="${esc(ensureHttp(d.url))}" target="_blank" rel="noopener">ver original</a>` : ''}
+            </div>
+          </div>
+          <button type="button" class="discard-recover" data-recover="${esc(d.id)}">Recuperar</button>
+        </div>`;
+    }).join('');
+  }
+
+  function recuperar(id){
+    const item = descartadas.find(d => txt(d.id) === txt(id));
+    if (!item) return;
+    if (!item.url) return toastSafe('Esa nota no tiene enlace; no se puede recuperar', 'warn');
+
+    const propuesta = {
+      id: item.id,
+      url: item.url,
+      title: item.title || '',
+      summary: '',
+      dek: '',
+      body: '',
+      source: item.source_name || host(item.url),
+      source_name: item.source_name || '',
+      category: 'Economía',
+      cat: 'dom',
+      tag: 'Economía',
+      status: 'pending',
+      recuperada: true,
+      published_at: '',
+      fetched_at: item.fetched_at || new Date().toISOString()
+    };
+
+    const actuales = Array.isArray(window.proposals) ? window.proposals : [];
+    if (!actuales.some(p => txt(p.id) === txt(item.id) || txt(p.url) === txt(item.url))) {
+      window.proposals = [propuesta, ...actuales];
+      try { writeJson('ln-news-proposals', window.proposals); } catch {}
+    }
+    const recuperadas = readJson(RECOVERED_KEY, []);
+    recuperadas.push(txt(item.id));
+    writeJson(RECOVERED_KEY, recuperadas);
+
+    try { window.renderProposals?.(); } catch {}
+    try { window.updateCounts?.(); } catch {}
+    render();
+    toastSafe('Nota recuperada · queda pendiente en la cola. Edítala para completar el resumen.', 'success');
+  }
+
+  document.addEventListener('click', ev => {
+    const btn = ev.target?.closest?.('[data-recover]');
+    if (!btn) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    recuperar(btn.dataset.recover);
+  }, true);
+
+  async function cargar(){
+    try {
+      const res = await fetch(CANDIDATES_URL + '?t=' + Date.now(), { cache: 'no-store' });
+      if (!res.ok) return;
+      const data = await res.json();
+      descartadas = Array.isArray(data.discarded) ? data.discarded : [];
+      if (descartadas.length) console.info(`[LN-NEWS] ${descartadas.length} notas descartadas por el filtro.`);
+      render();
+    } catch (err) {
+      console.info('[LN-NEWS] No se pudieron leer las descartadas:', err.message);
+    }
+  }
+  window.loadDiscardedNews = cargar;
+
+  function boot(){
+    cargar();
+    // El panel se puebla al iniciar sesión; reintentar deja la sección
+    // colocada aunque #proposals-list todavía no existiera al cargar.
+    [800, 2000, 4000].forEach(t => setTimeout(() => { if (descartadas.length) render(); }, t));
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
+  else boot();
+})();
+</script>
+
 </body>
 </html>
