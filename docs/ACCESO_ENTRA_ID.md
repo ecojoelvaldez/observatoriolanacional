@@ -90,7 +90,12 @@ puerta deja de abrir para todo el mundo.
 |---|---|
 | Client ID | el del App Registration |
 | Secret | el client secret |
-| Azure Tenant URL | `https://login.microsoftonline.com/<TENANT_ID>/v2.0` |
+| Azure Tenant URL | `https://login.microsoftonline.com/<TENANT_ID>` |
+
+> **Sin `/v2.0` al final.** Supabase le agrega `/oauth2/v2.0/authorize` por su
+> cuenta. Si lo pones, la URL queda con `v2.0` duplicado
+> (`.../v2.0/oauth2/v2.0/authorize`) y Microsoft responde **404 page can't be
+> found** justo después de redirigir. Verificado en la puesta en marcha.
 
 **Authentication → URL Configuration → Redirect URLs:** aquí sí van las URLs
 del Observatorio, una por línea:

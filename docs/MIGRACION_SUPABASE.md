@@ -236,8 +236,11 @@ En el **destino**, Authentication → Providers → Azure hay que cargar Client 
 Client Secret y la URL del tenant:
 
 ```
-https://login.microsoftonline.com/<TENANT_ID>/v2.0
+https://login.microsoftonline.com/<TENANT_ID>
 ```
+
+Sin `/v2.0` al final: Supabase agrega esa parte sola, y si se pone queda
+duplicada y Microsoft responde 404. Ver `docs/ACCESO_ENTRA_ID.md`.
 
 **Estas credenciales van en un solo lugar: la configuración del provider Azure
 del proyecto destino.** No van como secrets de GitHub — los pipelines de Actions
