@@ -6,9 +6,29 @@ Flujo:
   2. Lee cada página índice con Jina Reader.
   3. Gemini extrae URLs reales de artículos candidatos.
   4. Para cada artículo, lee la URL individual con Jina (en paralelo, 3 hilos).
+     Si esa URL no abre, se busca el mismo titular en la web y se lee la
+     cobertura de otro medio.
   5. Gemini genera resumen ejecutivo + lead + relevancia financiera (0-10).
-  6. Solo se aceptan candidatos con relevancia >= NEWS_MIN_RELEVANCE.
-  7. Escribe un archivo estático news_candidates.json en la raíz del repo.
+  6. Se aceptan candidatos con relevancia >= NEWS_MIN_RELEVANCE, con un PISO
+     institucional que el modelo no puede bajar (ver SEÑALES_RELEVANCIA).
+  7. Barrido propio en la web sobre los temas que importan, además de las
+     fuentes fijas, con el cupo que sobre.
+  8. Se colapsan las notas que cuentan la misma noticia desde distintos medios.
+  9. Escribe un archivo estático news_candidates.json en la raíz del repo, con
+     los candidatos Y todo lo descartado junto con su motivo, para que el panel
+     lo muestre y el analista pueda recuperarlo.
+
+Redes de seguridad, todas por la misma razón: que ninguna noticia importante
+obligue a buscarla a mano.
+  * Piso de relevancia por señal institucional — el juicio del modelo no es el
+    único filtro. Reguladores, política monetaria y bancos dominicanos entran
+    aunque el modelo los haya puntuado bajo o marcado como no noticiosos.
+  * Registro de descartes — nada desaparece en silencio.
+  * Rescate por titular — que un medio bloquee al lector no borra la noticia.
+  * Búsqueda general — no depender de que la nota salga en un índice concreto.
+  * Deduplicación por tema — la misma noticia desde dos medios es una sola.
+  * Filtro de páginas inválidas — errores 404 y muros de pago no son noticia.
+  * Corta-circuito de cuota — si Gemini se agota, terminar limpio y rápido.
 
 El analista carga ese JSON desde el panel, lo guarda en localStorage y aprueba/rechaza localmente.
 Solo las noticias publicadas se guardan en Supabase (news_items).
@@ -24,6 +44,10 @@ Variables opcionales:
   MAX_TOTAL_PROPOSALS=30
   NEWS_MIN_RELEVANCE=6        # umbral 0-10 de relevancia financiera
   ARTICLE_WORKERS=3           # hilos por fuente para leer articulos
+  NEWS_SEARCH_ENABLED=true    # barrido propio en la web ademas de las fuentes
+  NEWS_SEARCH_QUERIES=...     # consultas separadas por "|" (ver DEFAULT_SEARCH_QUERIES)
+  NEWS_SEARCH_MAX_PER_QUERY=4
+  NEWS_RESCUE_ENABLED=true    # buscar el titular en otro medio si la URL no abre
 """
 
 from __future__ import annotations
@@ -33,8 +57,10 @@ import re
 import json
 import time
 import hashlib
+import html
 import logging
 import threading
+import unicodedata
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -79,6 +105,91 @@ GEMINI_MIN_INTERVAL = float(os.getenv("GEMINI_MIN_INTERVAL", "6"))
 CATEGORY_ALLOWED = {"Monetario", "Financiero", "Regulatorio", "Economia", "Global"}
 TRACKING_PARAMS = {"utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "fbclid", "gclid", "mc_cid", "mc_eid"}
 
+# --- Busqueda general en la web (s.jina.ai) --------------------------------
+# Barrido propio ademas de las fuentes fijas, para no depender de que la nota
+# aparezca en un indice concreto. Usa el mismo servicio que ya lee articulos,
+# asi que no agrega credenciales ni consume cuota de Gemini para buscar.
+JINA_SEARCH_BASE = "https://s.jina.ai/"
+NEWS_SEARCH_ENABLED = os.getenv("NEWS_SEARCH_ENABLED", "true").strip().lower() not in ("0", "false", "no")
+NEWS_SEARCH_MAX_PER_QUERY = int(os.getenv("NEWS_SEARCH_MAX_PER_QUERY", "4"))
+DEFAULT_SEARCH_QUERIES = [
+    "Superintendencia de Bancos República Dominicana noticias",
+    "Banco Central República Dominicana tasa de política monetaria",
+    "banca dominicana créditos depósitos noticias",
+    "asociaciones de ahorros y préstamos República Dominicana",
+    "economía dominicana inflación remesas tipo de cambio",
+]
+NEWS_SEARCH_QUERIES = [
+    q.strip() for q in os.getenv("NEWS_SEARCH_QUERIES", "|".join(DEFAULT_SEARCH_QUERIES)).split("|") if q.strip()
+]
+# Recuperar por titular cuando no se puede leer el cuerpo en la fuente original.
+NEWS_RESCUE_ENABLED = os.getenv("NEWS_RESCUE_ENABLED", "true").strip().lower() not in ("0", "false", "no")
+
+# --- Piso de relevancia por señal institucional ----------------------------
+# El modelo venia descartando noticias que para una entidad financiera son
+# obvias (la renuncia del Superintendente de Bancos, una reunion entre
+# Banreservas y Popular sobre el sistema financiero). El juicio del modelo no
+# puede ser el unico filtro: estas reglas fijan un piso de relevancia que el
+# modelo no puede bajar. Si el texto toca una de estas señales, la nota entra.
+SEÑALES_RELEVANCIA = [
+    # (relevancia minima, etiqueta, terminos)
+    (9, "regulador", [
+        "superintendencia de bancos", "superintendente de bancos", "superintendente",
+        "banco central", "gobernador del banco central", "junta monetaria",
+        "superintendencia de valores", "superintendencia de seguros", "superintendencia de pensiones",
+        "sib", "bcrd", "ministerio de hacienda", "dgii", "conep",
+    ]),
+    (9, "politica_monetaria", [
+        "tasa de politica monetaria", "politica monetaria", "encaje legal",
+        "tasa de interes", "tasas de interes", "inflacion", "indice de precios",
+        "tipo de cambio", "devaluacion", "liquidez",
+    ]),
+    (8, "banca", [
+        "banreservas", "banco popular", "banco bhd", "scotiabank", "banesco",
+        "banco santa cruz", "banco caribe", "banco promerica", "asociacion popular",
+        "apap", "asociacion cibao", "asociacion la nacional", "la nacional",
+        "asociaciones de ahorros y prestamos", "banca multiple", "sistema financiero",
+        "morosidad", "cartera de credito", "captaciones", "hipotecas", "prestamos",
+        "solvencia", "provisiones", "intermediacion financiera",
+    ]),
+    (8, "macro", [
+        "producto interno bruto", "pib", "imae", "remesas", "deuda publica",
+        "inversion extranjera", "calificacion crediticia", "riesgo pais",
+        "presupuesto complementario", "reservas internacionales",
+    ]),
+]
+# Verbos que convierten una mencion institucional en un hecho noticioso fuerte.
+VERBOS_HECHO = [
+    "renuncia", "renuncio", "dimite", "dimitio", "designa", "designo", "designado",
+    "nombra", "nombro", "nombrado", "juramenta", "destituye", "sustituye", "releva",
+    "anuncia", "anuncio", "aprueba", "aprobo", "resolucion", "circular", "reglamento",
+    "sanciona", "multa", "interviene", "fusion", "adquisicion", "acuerdo", "reunion",
+    "se reunio", "reunieron", "reunen", "reune", "firma", "firmaron", "lanza", "presenta",
+    "advierte", "alerta", "eleva", "reduce", "recorta", "sube", "baja",
+]
+
+# Paginas que no son noticia aunque el lector devuelva texto: errores, muros de
+# pago y avisos de cookies. Sin este filtro se colaban al panel — en el JSON del
+# 2026-07-30 entro "Error 404 | Hoy Digital" con relevancia 7, y el propio
+# resumen del modelo decia que la pagina no existia.
+PATRONES_PAGINA_INVALIDA = [
+    "error 404", "404 not found", "pagina no encontrada", "page not found",
+    "no se encontro la pagina", "contenido no disponible", "acceso denegado",
+    "access denied", "403 forbidden", "suscribete para continuar",
+    "solo para suscriptores", "inicia sesion para continuar",
+    "habilita javascript", "enable javascript", "verificando que eres humano",
+    "are you a robot", "attention required", "service unavailable",
+]
+
+# Palabras vacias para comparar titulares (deteccion de duplicados).
+STOPWORDS = {
+    "a", "al", "ante", "con", "como", "de", "del", "desde", "el", "en", "entre", "es",
+    "esta", "este", "hacia", "hasta", "la", "las", "lo", "los", "mas", "no", "para",
+    "per", "por", "que", "se", "segun", "ser", "si", "sin", "sobre", "son", "su", "sus",
+    "un", "una", "uno", "unos", "unas", "y", "e", "o", "u", "tras", "the", "of", "and",
+    "hoy", "ayer", "nueva", "nuevo", "tambien",
+}
+
 SUPABASE_HEADERS = {
     "apikey": SUPABASE_SERVICE_KEY,
     "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}",
@@ -92,6 +203,77 @@ def now_iso() -> str:
 
 def stable_id(url: str) -> str:
     return "n_" + hashlib.sha1((url or "").encode("utf-8")).hexdigest()[:16]
+
+
+# ---------------------------------------------------------------------------
+# Normalizacion de texto: comparar titulares y buscar señales sin que acentos
+# ni mayusculas cambien el resultado.
+# ---------------------------------------------------------------------------
+def norm_texto(valor: str) -> str:
+    txt = unicodedata.normalize("NFD", str(valor or "").lower())
+    txt = "".join(c for c in txt if unicodedata.category(c) != "Mn")
+    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9ñ ]+", " ", txt)).strip()
+
+
+def limpiar_texto(valor: str) -> str:
+    """Texto listo para mostrar: sin entidades HTML ni espacios de sobra.
+
+    Los titulares llegaban con entidades crudas del CMS y se publicaban asi
+    ("sector el&eacute;ctrico" en el JSON del 2026-07-30).
+    """
+    txt = html.unescape(str(valor or ""))
+    return re.sub(r"\s+", " ", txt).strip()
+
+
+def es_pagina_invalida(*textos: str) -> bool:
+    """True si el texto es una pagina de error, un muro de pago o un captcha."""
+    blob = norm_texto(" ".join(t for t in textos if t)[:1200])
+    return any(p in blob for p in PATRONES_PAGINA_INVALIDA)
+
+
+def tokens_titular(titulo: str) -> set[str]:
+    """Tokens significativos de un titular, sin palabras vacias ni ruido corto."""
+    return {t for t in norm_texto(titulo).split() if len(t) > 2 and t not in STOPWORDS}
+
+
+def señales_detectadas(*textos: str) -> tuple[int, list[str]]:
+    """Piso de relevancia y etiquetas segun las señales institucionales.
+
+    Devuelve (piso, etiquetas). piso = 0 si el texto no toca ninguna señal.
+    """
+    blob = norm_texto(" ".join(t for t in textos if t))
+    if not blob:
+        return 0, []
+    piso, etiquetas = 0, []
+    for minimo, etiqueta, terminos in SEÑALES_RELEVANCIA:
+        if any(term in blob for term in terminos):
+            etiquetas.append(etiqueta)
+            piso = max(piso, minimo)
+    if piso and any(v in blob for v in VERBOS_HECHO):
+        # Mencion institucional + hecho concreto: es justo el caso que se estaba
+        # perdiendo (renuncia del superintendente, reunion entre bancos).
+        etiquetas.append("hecho")
+        piso = max(piso, 9)
+    return piso, etiquetas
+
+
+def mismo_tema(titulo_a: str, titulo_b: str) -> bool:
+    """True si dos titulares cuentan la misma noticia.
+
+    Usa contencion ademas de Jaccard: un medio publica el titular corto
+    ("Qik Banco Digital, reconocido por Global Finance") y otro el mismo con
+    cola ("...por el uso de la IA para transformar la experiencia de sus
+    clientes"). Jaccard los separa; la contencion los reconoce.
+    """
+    a, b = tokens_titular(titulo_a), tokens_titular(titulo_b)
+    if not a or not b:
+        return False
+    comunes = len(a & b)
+    if comunes < 3:
+        return False
+    contencion = comunes / min(len(a), len(b))
+    jaccard = comunes / len(a | b)
+    return contencion >= 0.7 or jaccard >= 0.55
 
 
 def sb_get(path: str, params: dict | None = None) -> list[dict]:
@@ -117,6 +299,110 @@ def load_sources() -> list[dict]:
     rows = sb_get("news_sources", params={"enabled": "eq.true", "select": "source_key,name,url,enabled"})
     log.info("Fuentes activas: %d", len(rows))
     return rows
+
+
+# ---------------------------------------------------------------------------
+# Registro de descartes: todo lo que el pipeline tira queda anotado con su
+# motivo, para que el analista lo vea en el panel y pueda rescatarlo. Antes
+# desaparecia en el log del workflow y no habia forma de recuperarlo.
+# ---------------------------------------------------------------------------
+_descartes: list[dict] = []
+_descartes_lock = threading.Lock()
+
+MOTIVO_TEXTO = {
+    "relevancia_baja": "El modelo le puso poca relevancia financiera",
+    "modelo_irrelevante": "El modelo la marco como no noticiosa",
+    "sin_cuerpo": "No se pudo leer el cuerpo del articulo",
+    "sin_detalle": "El articulo no devolvio datos utiles",
+    "vieja": "Publicada fuera de la ventana de frescura",
+    "duplicada": "Ya cubierta por otra nota del mismo tema",
+}
+
+
+def registrar_descarte(motivo: str, titulo: str, url: str, fuente: str = "",
+                       relevancia=None, señales=None, detalle: str = "") -> None:
+    if not (titulo or url):
+        return
+    with _descartes_lock:
+        if any(d.get("url") == url for d in _descartes):
+            return
+        _descartes.append({
+            "id": stable_id(url or titulo),
+            "motivo": motivo,
+            "motivo_texto": MOTIVO_TEXTO.get(motivo, motivo),
+            "title": (titulo or "").strip(),
+            "url": url or "",
+            "source_name": fuente or "",
+            "relevance": relevancia,
+            "señales": señales or [],
+            "detalle": detalle,
+            "fetched_at": now_iso(),
+        })
+
+
+# ---------------------------------------------------------------------------
+# Busqueda en la web (s.jina.ai)
+# ---------------------------------------------------------------------------
+def buscar_en_web(consulta: str, max_resultados: int) -> list[dict]:
+    """Devuelve [{title, url}] para una consulta. Lista vacia si algo falla."""
+    try:
+        r = httpx.get(
+            JINA_SEARCH_BASE + consulta,
+            headers={"Accept": "text/markdown", "X-Return-Format": "markdown"},
+            timeout=FETCH_TIMEOUT,
+            follow_redirects=True,
+        )
+        if r.status_code != 200:
+            log.warning("Jina search HTTP %s para '%s'", r.status_code, consulta[:60])
+            return []
+        texto = r.text
+    except Exception as exc:
+        log.warning("Jina search error (%s) para '%s'", type(exc).__name__, consulta[:60])
+        return []
+
+    # El buscador devuelve markdown; se extraen los pares [titulo](url) y, como
+    # respaldo, las lineas "URL Source: ...".
+    resultados: list[dict] = []
+    vistos: set[str] = set()
+    for titulo, url in re.findall(r"\[([^\]]{12,200})\]\((https?://[^\s)]+)\)", texto):
+        limpio = canonicalize_url(url)
+        if not limpio or limpio in vistos:
+            continue
+        if "jina.ai" in limpio or "google." in limpio:
+            continue
+        vistos.add(limpio)
+        resultados.append({"title": titulo.strip(), "link": limpio})
+        if len(resultados) >= max_resultados:
+            break
+    return resultados
+
+
+def recuperar_por_titular(titulo: str, url_original: str) -> str | None:
+    """Cuando no se puede leer el cuerpo en la fuente original, busca el mismo
+    titular en la web y lee la primera cobertura alternativa que si abra.
+
+    Es el caso de los medios que bloquean al lector: la noticia existe, solo
+    que no en esa URL.
+    """
+    if not NEWS_RESCUE_ENABLED or not titulo:
+        return None
+    dominio_original = urlparse(ensure_scheme(url_original)).netloc.lower()
+    for resultado in buscar_en_web(titulo, 4):
+        alterno = resultado.get("link") or ""
+        if not alterno or urlparse(alterno).netloc.lower() == dominio_original:
+            continue
+        if not mismo_tema(titulo, resultado.get("title") or ""):
+            continue
+        markdown = fetch_with_jina(alterno, MAX_ARTICLE_MARKDOWN_CHARS)
+        if markdown:
+            log.info("  ↻ cuerpo recuperado desde otra fuente: %s", alterno[:90])
+            return markdown
+    return None
+
+
+def ensure_scheme(url: str) -> str:
+    u = (url or "").strip()
+    return u if u.startswith("http") else "https://" + u
 
 
 def fetch_with_jina(url: str, max_chars: int) -> str | None:
@@ -301,10 +587,26 @@ Devuelve SOLO JSON valido con esta estructura exacta:
 Reglas:
 - category debe ser exactamente una de: Monetario, Financiero, Regulatorio, Economia, Global.
 - relevance es un entero 0-10 que mide el impacto para el SECTOR FINANCIERO dominicano:
-  * 9-10: decision de politica monetaria/regulatoria, datos de banca o credito, tasas, tipo de cambio
-  * 7-8: macro RD relevante (PIB, inflacion, deuda, IED, remesas) o global con canal directo a RD
+  * 9-10: decision de politica monetaria/regulatoria, datos de banca o credito, tasas, tipo de cambio,
+          Y TAMBIEN cualquier cambio en la conduccion de los organismos que regulan al sector
+          (Superintendencia de Bancos, Banco Central, Junta Monetaria, Hacienda): renuncias,
+          designaciones, destituciones, juramentaciones, comparecencias, rendicion de cuentas
+  * 7-8: macro RD relevante (PIB, inflacion, deuda, IED, remesas) o global con canal directo a RD;
+          movimientos, acuerdos, alianzas, reuniones o declaraciones de bancos y asociaciones
+          dominicanas sobre el sistema financiero, aunque no traigan cifras
   * 5-6: economia general RD con impacto indirecto (sectores, comercio, energia)
   * 0-4: sin impacto financiero claro (seguridad, politica, social, curiosidades)
+
+IMPORTANTE — errores a no repetir. Estas SI son relevantes y se estaban descartando:
+  * "El Superintendente de Bancos renuncia a su cargo" -> quien dirige al regulador es informacion
+    de primer orden para una entidad supervisada, aunque la nota no traiga ni un numero.
+  * "Banreservas y Popular se reunen para discutir el sistema financiero" -> lo que hablan los bancos
+    mas grandes del pais define el entorno competitivo.
+  * Nombramientos y salidas de ejecutivos de bancos, reguladores o gremios financieros.
+  * Declaraciones de autoridades monetarias sobre el rumbo de la economia.
+Ante la duda entre descartar y proponer una nota que menciona un regulador, un banco dominicano o
+la politica monetaria: PROPONLA. El analista filtra despues; lo que no se propone no se ve.
+
 - Si el articulo no tiene contenido noticioso util, devuelve {"relevant": false}.
 - Si no encuentras fecha, usa null; no inventes fechas.
 - El body debe ser un parrafo informativo, no una lista ni el titular.
@@ -321,18 +623,59 @@ def extract_headlines(index_markdown: str) -> list[dict]:
     return headlines[:MAX_HEADLINES_PER_SOURCE] if isinstance(headlines, list) else []
 
 
-def extract_article_details(article_markdown: str) -> dict | None:
-    parsed = gemini_json(ARTICLE_PROMPT + article_markdown, max_tokens=1800)
-    if not parsed or not parsed.get("relevant", True):
+def extract_article_details(article_markdown: str, titular_previo: str = "",
+                            url: str = "", fuente: str = "") -> dict | None:
+    # Antes de gastar una llamada: si el lector devolvio una pagina de error o
+    # un muro de pago, no hay noticia que resumir.
+    if es_pagina_invalida(article_markdown[:800]):
+        log.info("  -> pagina de error/muro de pago, no es noticia: %s", (titular_previo or url)[:70])
+        registrar_descarte("sin_cuerpo", titular_previo, url, fuente,
+                           detalle="La pagina es un error o exige suscripcion")
         return None
+
+    parsed = gemini_json(ARTICLE_PROMPT + article_markdown, max_tokens=1800)
+    if not parsed:
+        registrar_descarte("sin_detalle", titular_previo, url, fuente)
+        return None
+
+    titulo = limpiar_texto(parsed.get("title") or titular_previo)
+    parsed["title"] = titulo
+    parsed["summary"] = limpiar_texto(parsed.get("summary"))
+    parsed["body"] = limpiar_texto(parsed.get("body"))
+
+    # Segunda red: a veces el lector trae algo de texto y el modelo igual
+    # describe la pagina de error. Paso el 2026-07-30 con "Error 404 | Hoy
+    # Digital", propuesto con relevancia 7.
+    if es_pagina_invalida(titulo, parsed.get("summary")):
+        log.info("  -> el resumen describe una pagina de error: %s", titulo[:70])
+        registrar_descarte("sin_cuerpo", titulo, url, fuente,
+                           detalle="El modelo resumio una pagina de error")
+        return None
+    piso, etiquetas = señales_detectadas(titulo, parsed.get("summary"), parsed.get("body"))
+
     try:
         relevance = int(parsed.get("relevance", 7))
     except (TypeError, ValueError):
         relevance = 7
-    parsed["relevance"] = max(0, min(10, relevance))
-    if parsed["relevance"] < NEWS_MIN_RELEVANCE:
-        log.info("  -> relevancia %d < %d, descartado: %s",
-                 parsed["relevance"], NEWS_MIN_RELEVANCE, (parsed.get("title") or "")[:70])
+    relevance = max(0, min(10, relevance))
+
+    # El piso institucional manda sobre el juicio del modelo, incluso sobre un
+    # relevant=false: la nota puede no traer cifras y aun asi ser de primer
+    # orden para una entidad supervisada.
+    if piso > relevance:
+        log.info("  ↑ relevancia %d -> %d por señal %s: %s",
+                 relevance, piso, "+".join(etiquetas), titulo[:70])
+        relevance = piso
+    parsed["relevance"] = relevance
+    parsed["señales"] = etiquetas
+    parsed["rescatado_por_regla"] = bool(piso) and piso >= NEWS_MIN_RELEVANCE and not parsed.get("relevant", True)
+
+    if not parsed.get("relevant", True) and piso < NEWS_MIN_RELEVANCE:
+        registrar_descarte("modelo_irrelevante", titulo, url, fuente, relevance, etiquetas)
+        return None
+    if relevance < NEWS_MIN_RELEVANCE:
+        log.info("  -> relevancia %d < %d, descartado: %s", relevance, NEWS_MIN_RELEVANCE, titulo[:70])
+        registrar_descarte("relevancia_baja", titulo, url, fuente, relevance, etiquetas)
         return None
     return parsed
 
@@ -406,17 +749,27 @@ def load_existing_urls() -> set[str]:
 
 
 def build_candidate(source: dict, headline: dict, base_url: str) -> dict | None:
-    headline_title = (headline.get("title") or "").strip()
+    headline_title = limpiar_texto(headline.get("title"))
     link = canonicalize_url(headline.get("link") or "", base_url)
     if not headline_title or not link:
         return None
 
+    fuente_nombre = source.get("name", source.get("source_key", "desconocida"))
+
     article_markdown = fetch_with_jina(link, MAX_ARTICLE_MARKDOWN_CHARS)
+    recuperado = False
     if not article_markdown:
-        log.info("  -> no pude leer articulo individual: %s", link)
+        # No poder abrir la URL no significa que la noticia no exista. Se busca
+        # el mismo titular en la web y se lee la cobertura de otro medio.
+        log.info("  -> no pude leer articulo individual, busco el titular: %s", headline_title[:70])
+        article_markdown = recuperar_por_titular(headline_title, link)
+        recuperado = bool(article_markdown)
+    if not article_markdown:
+        registrar_descarte("sin_cuerpo", headline_title, link, fuente_nombre,
+                           detalle="Ni la URL original ni una cobertura alterna se pudieron leer")
         return None
 
-    details = extract_article_details(article_markdown)
+    details = extract_article_details(article_markdown, headline_title, link, fuente_nombre)
     if not details:
         log.info("  -> articulo sin detalle util: %s", headline_title[:70])
         return None
@@ -424,19 +777,25 @@ def build_candidate(source: dict, headline: dict, base_url: str) -> dict | None:
     published_at = details.get("published_at")
     if is_stale(published_at):
         log.info("  -> articulo viejo, se omite: %s", headline_title[:70])
+        registrar_descarte("vieja", details.get("title") or headline_title, link, fuente_nombre,
+                           details.get("relevance"), details.get("señales"),
+                           detalle=f"published_at={published_at}")
         return None
 
-    title = (details.get("title") or headline_title).strip()
+    title = limpiar_texto(details.get("title") or headline_title)
     return {
         "id": stable_id(link),
         "source_key": source.get("source_key", ""),
-        "source_name": source.get("name", source.get("source_key", "desconocida")),
+        "source_name": fuente_nombre,
         "url": link,
         "title": title,
-        "summary": (details.get("summary") or "").strip(),
-        "body": (details.get("body") or "").strip(),
+        "summary": limpiar_texto(details.get("summary")),
+        "body": limpiar_texto(details.get("body")),
         "category": normalize_category(details.get("category") or headline.get("category")),
         "relevance": details.get("relevance", NEWS_MIN_RELEVANCE),
+        "señales": details.get("señales") or [],
+        "rescatado_por_regla": bool(details.get("rescatado_por_regla")),
+        "cuerpo_recuperado": recuperado,
         "published_at": published_at,
         "fetched_at": now_iso(),
         "status": "pending",
@@ -497,6 +856,86 @@ def process_source(source: dict, existing_urls: set[str]) -> list[dict]:
     return candidates
 
 
+def dedupe_por_tema(candidatos: list[dict]) -> list[dict]:
+    """Colapsa las notas que cuentan la misma noticia desde distintos medios.
+
+    La deduplicacion por URL no alcanza: la misma nota (el reconocimiento a Qik,
+    la tasa del dolar del dia) llega redactada distinto desde dos medios y se
+    proponia dos veces. Se conserva la version con mas relevancia — a igualdad,
+    la que tenga cuerpo mas completo — y las otras quedan anotadas como
+    cobertura adicional y registradas como descarte por duplicado.
+    """
+    ordenados = sorted(
+        candidatos,
+        key=lambda c: (c.get("relevance") or 0, len(c.get("body") or "")),
+        reverse=True,
+    )
+    elegidos: list[dict] = []
+    for cand in ordenados:
+        gemelo = next((e for e in elegidos if mismo_tema(e.get("title", ""), cand.get("title", ""))), None)
+        if gemelo is None:
+            elegidos.append(cand)
+            continue
+        cobertura = gemelo.setdefault("tambien_en", [])
+        cobertura.append({
+            "source_name": cand.get("source_name", ""),
+            "url": cand.get("url", ""),
+            "title": cand.get("title", ""),
+        })
+        log.info("  ⇉ duplicada de '%s': %s (%s)",
+                 gemelo.get("title", "")[:50], cand.get("title", "")[:50], cand.get("source_name", ""))
+        registrar_descarte("duplicada", cand.get("title", ""), cand.get("url", ""),
+                           cand.get("source_name", ""), cand.get("relevance"), cand.get("señales"),
+                           detalle=f"Misma noticia que: {gemelo.get('title','')[:120]}")
+    # Se devuelve en el orden original de llegada para no alterar el criterio
+    # de recencia que aplica write_candidates.
+    ids = {id(c) for c in elegidos}
+    return [c for c in candidatos if id(c) in ids]
+
+
+def procesar_busqueda_general(existing_urls: set[str], cupo: int) -> list[dict]:
+    """Barrido propio de la web, ademas de las fuentes configuradas.
+
+    Las fuentes fijas fallan de dos maneras: el indice no lista la nota, o el
+    medio no la publica. Este paso pregunta directo por los temas que importan,
+    asi una noticia relevante no depende de aparecer en un indice concreto.
+    """
+    if not NEWS_SEARCH_ENABLED or cupo <= 0 or _quota_agotada.is_set():
+        return []
+
+    fuente_busqueda = {"source_key": "busqueda_web", "name": "Búsqueda web"}
+    encontrados: list[dict] = []
+    for consulta in NEWS_SEARCH_QUERIES:
+        if len(encontrados) >= cupo or _quota_agotada.is_set():
+            break
+        log.info("Búsqueda general: %s", consulta)
+        resultados = buscar_en_web(consulta, NEWS_SEARCH_MAX_PER_QUERY)
+        if not resultados:
+            log.info("  -> el buscador no devolvio resultados utiles")
+            continue
+        for resultado in resultados:
+            if len(encontrados) >= cupo:
+                break
+            link = resultado.get("link")
+            titulo = resultado.get("title") or ""
+            if not link or link in existing_urls:
+                continue
+            # No re-procesar lo que ya entro por una fuente fija.
+            if any(mismo_tema(titulo, c.get("title", "")) for c in encontrados):
+                continue
+            existing_urls.add(link)
+            try:
+                cand = build_candidate(fuente_busqueda, {"title": titulo, "link": link}, link)
+            except Exception as exc:
+                log.warning("  -> error procesando resultado de busqueda: %s", exc)
+                continue
+            if cand:
+                encontrados.append(cand)
+                log.info("  ✓ candidato de búsqueda (rel %s): %s", cand.get("relevance"), cand["title"][:80])
+    log.info("Búsqueda general: %d candidatos nuevos", len(encontrados))
+    return encontrados
+
+
 def load_previous_candidates() -> list[dict]:
     try:
         if not NEWS_CANDIDATES_PATH.exists():
@@ -533,7 +972,14 @@ def write_candidates(candidates: list[dict], errors: int, sources_count: int, el
         merged.append(item)
         seen.add(url)
 
+    # La deduplicacion por tema va sobre el conjunto ya fusionado (nuevos +
+    # previos): si la misma noticia entro ayer por un medio y hoy por otro,
+    # tambien se colapsa.
+    merged = dedupe_por_tema(merged)
+
     merged = sorted(merged, key=lambda x: x.get("fetched_at") or "", reverse=True)[:MAX_TOTAL_PROPOSALS]
+    with _descartes_lock:
+        descartes = sorted(_descartes, key=lambda d: (d.get("relevance") or 0), reverse=True)[:40]
     payload = {
         "generated_at": now_iso(),
         "gemini_model": GEMINI_MODEL,
@@ -543,6 +989,8 @@ def write_candidates(candidates: list[dict], errors: int, sources_count: int, el
         "sources": sources_count,
         "elapsed_s": elapsed,
         "candidates": merged,
+        "discarded_count": len(descartes),
+        "discarded": descartes,
     }
     NEWS_CANDIDATES_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     log.info("JSON escrito: %s (%d candidatos)", NEWS_CANDIDATES_PATH, len(merged))
@@ -576,6 +1024,16 @@ def run() -> None:
         if i < len(sources) - 1:
             time.sleep(DELAY_BETWEEN_SOURCES)
 
+    # Barrido propio despues de las fuentes: complementa, no reemplaza, y solo
+    # con el cupo que sobre.
+    try:
+        all_candidates.extend(
+            procesar_busqueda_general(existing, MAX_TOTAL_PROPOSALS - len(all_candidates))
+        )
+    except Exception as exc:
+        log.error("Error en la busqueda general: %s", exc)
+        errors += 1
+
     elapsed = round(time.time() - start, 1)
     write_candidates(all_candidates, errors, len(sources), elapsed)
 
@@ -584,7 +1042,8 @@ def run() -> None:
         "section": "Pipeline candidatos",
         "status": "success" if errors == 0 else "warning",
         "rows_processed": len(all_candidates),
-        "message": f"Pipeline JSON: {len(all_candidates)} candidatos nuevos, {errors} errores, {elapsed}s",
+        "message": (f"Pipeline JSON: {len(all_candidates)} candidatos nuevos, "
+                    f"{len(_descartes)} descartados, {errors} errores, {elapsed}s"),
         "metadata": {"mode": "static_json", "path": str(NEWS_CANDIDATES_PATH), "gemini_model": GEMINI_MODEL},
         "updated_at": now_iso(),
     })
