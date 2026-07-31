@@ -195,7 +195,17 @@ def _gemini_retry_delay(response, attempt: int) -> float:
     return min(90.0, 15.0 * attempt)
 
 
+_quota_agotada = threading.Event()
+
+
 def gemini_json(prompt: str, max_tokens: int = 1500, retries: int = 4) -> dict | None:
+    # Corta-circuito de cuota: cuando una llamada agota sus reintentos contra un
+    # 429, la cuota no se recupera dentro de la corrida (visto el 2026-07-31:
+    # 4 min de espera y seguia en 429). Sin esto, cada articulo que falta gasta
+    # otros 4 reintentos de ~60 s cada uno: el job se va en esperas y machaca
+    # una cuota que ya esta cerrada. Mejor terminar con lo que ya se consiguio.
+    if _quota_agotada.is_set():
+        return None
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
         # responseMimeType fuerza JSON valido: elimina los fallos de parseo
@@ -206,11 +216,15 @@ def gemini_json(prompt: str, max_tokens: int = 1500, retries: int = 4) -> dict |
             "responseMimeType": "application/json",
         },
     }
+    ultimo_429 = False
     for attempt in range(1, retries + 1):
+        if _quota_agotada.is_set():
+            return None
         try:
             _gemini_throttle()
             r = httpx.post(GEMINI_ENDPOINT, params={"key": GEMINI_API_KEY}, json=payload, timeout=GEMINI_TIMEOUT)
             if r.status_code in (429, 503):
+                ultimo_429 = r.status_code == 429
                 delay = _gemini_retry_delay(r, attempt)
                 if attempt == 1:
                     detalle = _gemini_quota_detail(r)
@@ -219,6 +233,7 @@ def gemini_json(prompt: str, max_tokens: int = 1500, retries: int = 4) -> dict |
                 log.warning("Gemini %s, reintento %d/%d (espera %.0fs)", r.status_code, attempt, retries, delay)
                 time.sleep(delay)
                 continue
+            ultimo_429 = False
             if r.status_code != 200:
                 log.warning("Gemini HTTP %s: %s", r.status_code, r.text[:300])
                 return None
@@ -231,6 +246,13 @@ def gemini_json(prompt: str, max_tokens: int = 1500, retries: int = 4) -> dict |
         except Exception as exc:
             log.warning("Gemini error (%s): %s", type(exc).__name__, exc)
             time.sleep(3 * attempt)
+    if ultimo_429 and not _quota_agotada.is_set():
+        _quota_agotada.set()
+        log.warning(
+            "Cuota de Gemini agotada tras %d reintentos: se dejan de pedir "
+            "llamadas y la corrida termina con los candidatos ya obtenidos.",
+            retries,
+        )
     return None
 
 
@@ -541,6 +563,9 @@ def run() -> None:
     errors = 0
     for i, source in enumerate(sources):
         if len(all_candidates) >= MAX_TOTAL_PROPOSALS:
+            break
+        if _quota_agotada.is_set():
+            log.warning("Sin cuota de Gemini: se omiten las %d fuentes restantes.", len(sources) - i)
             break
         try:
             remaining = MAX_TOTAL_PROPOSALS - len(all_candidates)
