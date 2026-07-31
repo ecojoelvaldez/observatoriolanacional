@@ -3170,7 +3170,7 @@ footer .mark{
       <div class="eyebrow">Cobertura editorial</div>
       <h2>Resumen de noticias</h2>
     </div>
-    <div class="meta" id="news-front-meta">Curado por Planeación Estratégica · 5 notas seleccionadas</div>
+    <div class="meta" id="news-front-meta">Validado por Planeación Estratégica · 5 notas seleccionadas</div>
   </div>
 
   <div class="news-layout">
@@ -3209,6 +3209,20 @@ footer .mark{
       </div>
     </aside>
   </div>
+
+  <!-- ===== Resúmenes pasados: archivo diario del resumen de noticias =====
+       Vive FUERA de .news-layout a propósito: applyNewsSummaryToFront()
+       reescribe el innerHTML de .news-layout en cada publicación. -->
+  <section class="news-archive" id="news-archive">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Archivo editorial</div>
+        <h2>Resúmenes pasados</h2>
+      </div>
+      <div class="meta" id="news-archive-meta">Consulta cómo quedó el resumen de noticias en una fecha anterior</div>
+    </div>
+    <button type="button" class="news-archive-cta" id="news-archive-open">Ver resúmenes pasados</button>
+  </section>
 
   </div>
 </section>
@@ -5050,7 +5064,7 @@ function renderNewsComposerPreview() {
       <div class="preview-page">
         <div class="eyebrow">Cobertura editorial</div>
         <h2 class="serif" style="font-size:34px;margin:6px 0 6px">Resumen de noticias</h2>
-        <div class="preview-meta">Curado por Planeación Estratégica · ${newsComposerDraft.length} notas seleccionadas</div>
+        <div class="preview-meta">Validado por Planeación Estratégica · ${newsComposerDraft.length} notas seleccionadas</div>
         <div class="preview-hero-grid">
           ${featured.map(item => `
             <article class="preview-feature">
@@ -5104,7 +5118,7 @@ function applyNewsSummaryToFront(items) {
       `).join('')}
     </aside>`;
   const meta = document.getElementById('news-front-meta');
-  if (meta) meta.textContent = `Curado por Planeación Estratégica · ${items.length} notas seleccionadas`;
+  if (meta) meta.textContent = `Validado por Planeación Estratégica · ${items.length} notas seleccionadas`;
 }
 function finalPublishSummary() {
   if (!newsComposerDraft.length) { toast('No hay resumen para publicar', 'warn'); return; }
@@ -5788,9 +5802,42 @@ function sibGet(row, names) {
   }
   return null;
 }
+/* Sustitución de indicadores SIB (Planeación Estratégica, jul-2026).
+   Morosidad, ROE y ROA se alimentan del OTRO indicador que publica el API de
+   la Superintendencia, no del ratio "clásico":
+     morosidad ← I.026  Índice de Morosidad Capital
+     ROE       ← I.078  ROE (utilidades antes de impuestos sobre patrimonio)
+     ROA       ← I.077  ROA (utilidades antes de impuestos sobre activos)
+   Solo cambia la FUENTE del número: etiquetas, escalas, colores y layout de la
+   vista "Estadísticas SIB" quedan exactamente iguales.
+   El id del front sigue llamándose morosidad/roe/roa; aquí se remapea el
+   indicador crudo del snapshot (fetch_sib_indicadores.py) a ese id. */
+const SIB_PREFERRED_RAW = {
+  morosidad: 'morosidad_capital',
+  roe: 'roe_antes_impuestos',
+  roa: 'roa_antes_impuestos'
+};
+const SIB_RAW_TO_METRIC = {
+  morosidad_capital: 'morosidad',
+  indice_de_morosidad_capital: 'morosidad',
+  roe_antes_impuestos: 'roe',
+  roe_utilidades_antes_de_impuestos_sobre_patrimonio: 'roe',
+  roa_antes_impuestos: 'roa',
+  roa_utilidades_antes_de_impuestos_sobre_activos: 'roa'
+};
+/* Prioridad de la fuente para una métrica: 0 = indicador solicitado (I.026 /
+   I.077 / I.078), 1 = ratio clásico. El clásico solo se usa como respaldo
+   mientras el snapshot del pipeline todavía no traiga el nuevo indicador para
+   ese período/entidad; así la vista nunca queda en blanco. */
+function sibSourcePriority(metric, rawKey) {
+  const preferred = SIB_PREFERRED_RAW[metric];
+  if (!preferred) return 0;
+  return SIB_RAW_TO_METRIC[rawKey] === metric ? 0 : 1;
+}
 function sibMetricId(value) {
   const k = sibKey(value);
   if (!k || k.includes('solv')) return null;
+  if (SIB_RAW_TO_METRIC[k]) return SIB_RAW_TO_METRIC[k];
   if (k === 'activos' || k.includes('total_activos') || k.includes('activo_neto')) return 'activos';
   if (k === 'cartera' || k.includes('cartera')) return 'cartera';
   if (k.includes('moros')) return 'morosidad';
@@ -5929,14 +5976,26 @@ function recomputeSibAggregates(rows) {
 }
 function buildSibDataFromLong(rows) {
   const filtered = [];
+  // Para morosidad/roe/roa el snapshot puede traer el indicador solicitado
+  // (I.026/I.077/I.078) y el clásico en la misma celda; nos quedamos con el de
+  // mayor prioridad. Ver SIB_PREFERRED_RAW.
+  const bestSource = new Map();
   rows.forEach(row => {
     const period = sibPeriod(row);
-    const metric = sibMetricId(sibGet(row, ['metric_id','indicador','metric_label','source_col']));
+    const rawKey = sibKey(sibGet(row, ['metric_id','indicador','metric_label','source_col']));
+    const metric = sibMetricId(rawKey);
     const series = sibSeriesId(row);
     const value = sibNumber(sibGet(row, ['value','valor','raw_value']));
     if (!period || !SIB_METRICS.includes(metric) || !SIB_SERIES.includes(series) || value === null) return;
     // Para aayp/bmult, omitimos activos/cartera de la fila TODOS: los reconstruimos por suma.
     if ((series === 'aayp' || series === 'bmult') && SIB_RESUMABLE_METRICS.includes(metric)) return;
+    if (SIB_PREFERRED_RAW[metric]) {
+      const cell = `${metric}|${series}|${period}`;
+      const priority = sibSourcePriority(metric, rawKey);
+      const previous = bestSource.get(cell);
+      if (previous !== undefined && previous <= priority) return;
+      bestSource.set(cell, priority);
+    }
     filtered.push({ period, metric, series, value });
   });
   // Inyectar los agregados de activos/cartera recalculados por suma de individuales.
@@ -6368,6 +6427,7 @@ function buildSibPeerRows(rows) {
   }, null);
   if (!latest) return [];
   const byEntity = new Map();
+  const peerSourcePriority = new Map();
   rows.forEach(row => {
     const periodo = sibPeriod(row);
     if (periodo !== latest) return;
@@ -6375,6 +6435,7 @@ function buildSibPeerRows(rows) {
     const tipo = sibGet(row, ['tipo_entidad', 'tipoEntidad', 'tipo_entidad_nombre']);
     const clase = sibGet(row, ['entidad_clase', 'clase']);
     if (!entidad || sibKey(entidad) === 'todos' || sibKey(clase).includes('total')) return;
+    const rawKey = sibKey(sibGet(row, ['indicador_slug', 'metric_id', 'indicador', 'metric_label', 'source_col']));
     const metric = peerMetricFromRow(row);
     if (!metric || !PEER_METRICS[metric]) return;
     const key = `${sibKey(tipo)}::${sibKey(entidad)}`;
@@ -6385,7 +6446,14 @@ function buildSibPeerRows(rows) {
       latest
     });
     const val = sibNumber(sibGet(row, ['valor', 'value', 'raw_value']));
-    if (val !== null) byEntity.get(key)[metric] = val;
+    if (val === null) return;
+    // Misma sustitución que en las series: I.026/I.077/I.078 mandan sobre el
+    // ratio clásico cuando ambos vienen en el snapshot.
+    const priority = sibSourcePriority(metric, rawKey);
+    const seen = peerSourcePriority.get(`${key}::${metric}`);
+    if (seen !== undefined && seen <= priority) return;
+    peerSourcePriority.set(`${key}::${metric}`, priority);
+    byEntity.get(key)[metric] = val;
   });
   return Array.from(byEntity.values()).filter(row => Object.keys(PEER_METRICS).some(metric => Number.isFinite(Number(row[metric]))));
 }
@@ -9190,6 +9258,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
       proposal_id: null,
       source_key: item.source_key || null,
       source_name: item.source || item.source_name || null,
+      source: item.source || item.source_name || null,
       url: ensureUrl(item.url || ''),
       title: item.title || '',
       summary: item.dek || item.summary || '',
@@ -10112,7 +10181,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
         <div class="preview-page">
           <div class="eyebrow">Cobertura editorial</div>
           <h2 class="serif" style="font-size:34px;margin:6px 0 6px">Resumen de noticias</h2>
-          <div class="preview-meta">Curado por Planeación Estratégica · ${d.length} notas seleccionadas</div>
+          <div class="preview-meta">Validado por Planeación Estratégica · ${d.length} notas seleccionadas</div>
           <div class="preview-hero-grid">
             ${featured.map(item => `
               <article class="preview-feature">
@@ -10168,7 +10237,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
         `).join('')}
       </aside>`;
     const meta = document.getElementById('news-front-meta');
-    if (meta) meta.textContent = `Curado por Planeación Estratégica · ${items.length} notas seleccionadas`;
+    if (meta) meta.textContent = `Validado por Planeación Estratégica · ${items.length} notas seleccionadas`;
   };
   try { applyNewsSummaryToFront = window.applyNewsSummaryToFront; } catch {}
 
@@ -10176,6 +10245,9 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   function toRow(item, index, mode){
     const base = {
       source_name: item.source || null,
+      // news_items.source existe desde el esquema original; se envía junto a
+      // source_name para no depender de que la columna sea nullable.
+      source: item.source || item.source_name || null,
       url: ensureHttp(item.url || ''),
       title: item.title || '',
       summary: item.dek || item.summary || '',
@@ -10183,7 +10255,9 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
       published_at: item.publishedAt || item.published_at || null,
       status: 'published'
     };
-    if (mode === 'minimal') return { url: base.url, title: base.title, summary: base.summary };
+    // 'status' viaja incluso en el modo mínimo: las políticas RLS de news_items
+    // solo permiten escribir filas con status = 'published'.
+    if (mode === 'minimal') return { url: base.url, title: base.title, summary: base.summary, source: base.source, status: base.status };
     if (mode === 'basic') return base;
     return {
       ...base,
@@ -13318,6 +13392,507 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   setInterval(ensureWrap, 800);
 
   window.LN_CAPTA_MULTIENTITY = { redraw: redraw, get selection() { return selected.slice(); } };
+})();
+</script>
+
+<style id="ln-news-archive-css">
+/* ===== Resúmenes pasados · archivo diario del resumen de noticias ===== */
+.news-archive { margin-top: 46px; padding-top: 34px; border-top: 1px solid var(--line); }
+.news-archive .section-head { margin-bottom: 18px; }
+.news-archive-cta {
+  font-family: inherit; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  background: var(--white); color: var(--ink); border: 1px solid var(--line); border-radius: 4px;
+  padding: 13px 26px; cursor: pointer; transition: all .22s var(--ease-out);
+}
+.news-archive-cta:hover { border-color: var(--cyan-deep); color: var(--cyan-deep); transform: translateY(-1px); }
+.news-archive-cta:focus-visible { outline: 2px solid var(--cyan-deep); outline-offset: 3px; }
+
+.archive-backdrop {
+  position: fixed; inset: 0; z-index: 9998; background: rgba(7, 27, 39, .54); backdrop-filter: blur(10px);
+  opacity: 0; pointer-events: none; transition: opacity .28s var(--ease-out);
+}
+.archive-backdrop.open { opacity: 1; pointer-events: auto; }
+.archive-modal {
+  position: fixed; inset: 28px; z-index: 9999; display: none; background: var(--white); color: var(--ink);
+  border-radius: 18px; box-shadow: 0 30px 90px rgba(0,0,0,.28); overflow: hidden;
+  transform: translateY(18px) scale(.985); opacity: 0;
+}
+.archive-modal.open { display: flex; flex-direction: column; animation: composerIn .34s var(--ease-out) forwards; }
+.archive-top {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; padding: 24px 28px;
+  background: linear-gradient(135deg, #082E40, #0B5268 58%, #0A7791); color: #fff; flex: 0 0 auto;
+}
+.archive-top .eyebrow { color: rgba(255,255,255,.66); }
+.archive-top h2 { font-family: 'Fraunces', Georgia, serif; font-size: 32px; font-weight: 500; margin: 4px 0 6px; letter-spacing: -.02em; }
+.archive-top p { color: rgba(255,255,255,.74); font-size: 13px; max-width: 720px; line-height: 1.55; }
+.archive-close {
+  font-family: inherit; font-size: 12px; font-weight: 600; letter-spacing: .05em; cursor: pointer;
+  background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.34);
+  border-radius: 4px; padding: 10px 18px; transition: background .2s var(--ease-out);
+}
+.archive-close:hover { background: rgba(255,255,255,.24); }
+.archive-body { display: grid; grid-template-columns: 320px 1fr; gap: 0; flex: 1 1 auto; min-height: 0; }
+.archive-cal { border-right: 1px solid var(--line); padding: 22px 24px; overflow-y: auto; background: var(--off-white); }
+.archive-cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.archive-cal-head strong { font-size: 14px; font-weight: 600; }
+.archive-cal-head button {
+  font-family: inherit; font-size: 15px; line-height: 1; width: 30px; height: 30px; cursor: pointer;
+  background: var(--white); border: 1px solid var(--line); border-radius: 4px; color: var(--ink-soft);
+  transition: all .2s var(--ease-out);
+}
+.archive-cal-head button:hover:not(:disabled) { border-color: var(--cyan-deep); color: var(--cyan-deep); }
+.archive-cal-head button:disabled { opacity: .35; cursor: not-allowed; }
+.archive-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.archive-dow { font-size: 10px; font-weight: 600; letter-spacing: .06em; color: var(--ink-mute); text-align: center; padding-bottom: 6px; text-transform: uppercase; }
+.archive-day {
+  font-family: inherit; font-size: 12px; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center;
+  border: 1px solid transparent; border-radius: 5px; background: transparent; color: var(--ink-mute); cursor: default;
+}
+.archive-day.empty { visibility: hidden; }
+.archive-day.has-data {
+  cursor: pointer; color: var(--ink); font-weight: 600; background: var(--white);
+  border-color: var(--cyan-line); box-shadow: inset 0 -2px 0 var(--cyan-deep);
+  transition: all .18s var(--ease-out);
+}
+.archive-day.has-data:hover { border-color: var(--cyan-deep); transform: translateY(-1px); }
+.archive-day.selected { background: var(--cyan-deep); border-color: var(--cyan-deep); color: #fff; box-shadow: none; }
+.archive-legend { margin-top: 16px; font-size: 11px; color: var(--ink-mute); line-height: 1.6; }
+.archive-legend .dot { display: inline-block; width: 9px; height: 9px; border-radius: 2px; background: var(--cyan-deep); margin-right: 6px; vertical-align: -1px; }
+.archive-panel { padding: 26px 30px 34px; overflow-y: auto; }
+.archive-panel-head { border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 22px; }
+.archive-panel-head h3 { font-family: 'Fraunces', Georgia, serif; font-size: 26px; font-weight: 500; letter-spacing: -.02em; }
+.archive-panel-head .meta { font-size: 11px; color: var(--ink-mute); letter-spacing: .04em; margin-top: 6px; }
+.archive-empty { padding: 40px 0; color: var(--ink-mute); font-size: 13px; line-height: 1.7; max-width: 460px; }
+.archive-empty strong { display: block; color: var(--ink); font-size: 15px; margin-bottom: 8px; }
+@media (max-width: 900px) {
+  .archive-modal { inset: 12px; }
+  .archive-body { grid-template-columns: 1fr; }
+  .archive-cal { border-right: none; border-bottom: 1px solid var(--line); }
+}
+</style>
+
+<script id="ln-news-archive-js">
+/* ========================================================================
+   La Nacional · Resúmenes pasados (archivo del resumen de noticias)
+   - Guarda un snapshot diario cada vez que se publica el resumen.
+   - Persistencia: Supabase (news_summary_snapshots) + localStorage de respaldo.
+   - Si la tabla todavía no existe, reconstruye el archivo agrupando
+     news_items publicados por día, para que el calendario no salga vacío.
+   - Muestra SOLO el resumen de noticias del día elegido: sin estadísticas.
+   Debe cargarse DESPUÉS de los parches de noticias (v5/v6/v7).
+   ======================================================================== */
+(function(){
+  'use strict';
+
+  const ARCHIVE_KEY   = 'ln-news-archive-v1';
+  const PUBLISHED_KEY = 'ln-published-news-summary';
+  const TABLE         = 'news_summary_snapshots';
+  const MAX_FEATURED  = 2;
+  const MAX_SIDE      = 3;
+  const DOW           = ['Do','Lu','Ma','Mi','Ju','Vi','Sá'];
+
+  let archive = {};          // { 'YYYY-MM-DD': { published_at, items:[] } }
+  let remoteLoaded = false;  // ya se intentó leer el archivo remoto
+  let viewYear = 0, viewMonth = 0, selectedDate = '';
+
+  function sb(){ return window.lnSupabase || window.supabase || null; }
+  function txt(v){ return String(v ?? ''); }
+  function esc(v){
+    if (typeof window.escapeHtml === 'function') return window.escapeHtml(txt(v));
+    return txt(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function ensureHttp(value){
+    const s = txt(value).trim();
+    if (!s) return '#';
+    return /^https?:\/\//i.test(s) ? s : 'https://' + s;
+  }
+  function readJson(key, fallback){
+    try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+    catch { return fallback; }
+  }
+  function writeJson(key, value){ try { localStorage.setItem(key, JSON.stringify(value)); } catch {} }
+  function dateKey(value){
+    const d = value ? new Date(value) : new Date();
+    if (Number.isNaN(d.getTime())) return '';
+    const pad = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  }
+  // es-DO devuelve los meses/días en minúscula; solo se capitaliza la inicial
+  // (no cada palabra, para no escribir "Jueves 30 De Julio").
+  function upperFirst(value){ const s = txt(value); return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+  function longDate(key){
+    const [y, m, d] = txt(key).split('-').map(Number);
+    if (!y || !m || !d) return key;
+    try {
+      return upperFirst(new Intl.DateTimeFormat('es-DO', { weekday:'long', day:'numeric', month:'long', year:'numeric' })
+        .format(new Date(y, m - 1, d)));
+    } catch { return key; }
+  }
+  function monthLabel(year, month){
+    try { return upperFirst(new Intl.DateTimeFormat('es-DO', { month:'long', year:'numeric' }).format(new Date(year, month, 1))); }
+    catch { return `${month + 1}/${year}`; }
+  }
+  function catClass(cat){
+    const k = txt(cat).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+    if (k.includes('glo')) return 'cat-glo';
+    if (k.includes('mac') || k.includes('mon')) return 'cat-mac';
+    if (k.includes('fin')) return 'cat-fin';
+    return 'cat-dom';
+  }
+
+  /* ---------- normalización de un ítem del resumen ---------- */
+  function normalizeItem(item, index){
+    return {
+      id: txt(item.id || item.url || index),
+      title: txt(item.title),
+      dek: txt(item.dek || item.summary),
+      tag: txt(item.tag || item.category || 'Economía'),
+      cat: txt(item.cat || catClass(item.tag || item.category)),
+      source: txt(item.source || item.source_name),
+      url: txt(item.url),
+      time: txt(item.time || item.display_date),
+      feature: !!(item.feature ?? item.is_featured),
+      order: Number(item.order || item.sort_order || index + 1)
+    };
+  }
+
+  /* ---------- lectura / escritura del archivo ---------- */
+  function localArchive(){ const a = readJson(ARCHIVE_KEY, {}); return (a && typeof a === 'object') ? a : {}; }
+
+  function mergeSnapshot(key, snapshot){
+    if (!key || !snapshot || !Array.isArray(snapshot.items) || !snapshot.items.length) return;
+    const previous = archive[key];
+    // Gana el snapshot publicado más tarde ese mismo día.
+    if (previous && Date.parse(previous.published_at || 0) >= Date.parse(snapshot.published_at || 0)) return;
+    archive[key] = snapshot;
+  }
+
+  function saveLocal(key, snapshot){
+    const local = localArchive();
+    local[key] = snapshot;
+    // El archivo local se mantiene acotado a los últimos 120 días publicados.
+    const keys = Object.keys(local).sort().slice(-120);
+    const trimmed = {};
+    keys.forEach(k => { trimmed[k] = local[k]; });
+    writeJson(ARCHIVE_KEY, trimmed);
+  }
+
+  async function saveRemote(key, snapshot){
+    const client = sb();
+    if (!client) return false;
+    try {
+      const { error } = await client.from(TABLE).upsert({
+        snapshot_date: key,
+        published_at: snapshot.published_at,
+        item_count: snapshot.items.length,
+        items: snapshot.items,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'snapshot_date' });
+      if (error) throw error;
+      return true;
+    } catch (err) {
+      console.info('[LN-ARCHIVE] Snapshot no guardado en Supabase (queda local):', err.message || err);
+      return false;
+    }
+  }
+
+  async function loadRemote(){
+    const client = sb();
+    if (!client) return;
+    try {
+      const { data, error } = await client
+        .from(TABLE)
+        .select('snapshot_date, published_at, items')
+        .order('snapshot_date', { ascending: false })
+        .limit(180);
+      if (error) throw error;
+      (data || []).forEach(row => mergeSnapshot(row.snapshot_date, {
+        published_at: row.published_at,
+        items: (Array.isArray(row.items) ? row.items : []).map(normalizeItem)
+      }));
+    } catch (err) {
+      console.info('[LN-ARCHIVE] Tabla de snapshots no disponible; se reconstruye desde news_items:', err.message || err);
+      await rebuildFromNewsItems();
+    }
+  }
+
+  /* Respaldo: agrupa las noticias publicadas por el día en que se publicaron.
+     Da un archivo utilizable aunque nunca se haya escrito un snapshot. */
+  async function rebuildFromNewsItems(){
+    const client = sb();
+    if (!client) return;
+    try {
+      const { data, error } = await client
+        .from('news_items')
+        .select('source_name,url,title,summary,category,display_date,sort_order,is_featured,updated_at')
+        .eq('status', 'published')
+        .order('updated_at', { ascending: false })
+        .limit(200);
+      if (error) throw error;
+      const byDay = {};
+      (data || []).forEach(row => {
+        const key = dateKey(row.updated_at);
+        if (!key) return;
+        (byDay[key] = byDay[key] || []).push(row);
+      });
+      Object.keys(byDay).forEach(key => {
+        const rows = byDay[key].sort((a, b) => (a.sort_order || 99) - (b.sort_order || 99));
+        mergeSnapshot(key, {
+          published_at: rows[0].updated_at,
+          items: rows.map((row, i) => normalizeItem({
+            id: row.url,
+            title: row.title,
+            dek: row.summary,
+            tag: row.category,
+            source: row.source_name,
+            url: row.url,
+            time: row.display_date,
+            feature: !!row.is_featured,
+            order: row.sort_order || i + 1
+          }, i))
+        });
+      });
+    } catch (err) {
+      console.info('[LN-ARCHIVE] No se pudo reconstruir el archivo desde news_items:', err.message || err);
+    }
+  }
+
+  async function ensureArchive(force){
+    archive = {};
+    const local = localArchive();
+    Object.keys(local).forEach(key => mergeSnapshot(key, {
+      published_at: local[key].published_at,
+      items: (Array.isArray(local[key].items) ? local[key].items : []).map(normalizeItem)
+    }));
+    if (!remoteLoaded || force) {
+      remoteLoaded = true;
+      await loadRemote();
+    }
+    return archive;
+  }
+
+  /* ---------- guardar el snapshot del día al publicar ---------- */
+  async function archiveToday(items){
+    const list = (Array.isArray(items) ? items : []).map(normalizeItem);
+    if (!list.length) return;
+    const key = dateKey();
+    const snapshot = { published_at: new Date().toISOString(), items: list };
+    archive[key] = snapshot;
+    saveLocal(key, snapshot);
+    await saveRemote(key, snapshot);
+  }
+  window.archiveNewsSummary = archiveToday;
+
+  // Envuelve la publicación final para dejar constancia del resumen del día.
+  function wrapPublish(){
+    const current = window.finalPublishSummary;
+    if (typeof current !== 'function' || current.__lnArchiveWrap) return;
+    const wrapped = async function(){
+      const result = await current.apply(this, arguments);
+      try { await archiveToday(readJson(PUBLISHED_KEY, [])); }
+      catch (err) { console.warn('[LN-ARCHIVE] No se pudo archivar el resumen:', err); }
+      return result;
+    };
+    wrapped.__lnArchiveWrap = true;
+    window.finalPublishSummary = wrapped;
+    try { finalPublishSummary = wrapped; } catch {}
+  }
+
+  /* ---------- UI ---------- */
+  function ensureShell(){
+    let backdrop = document.getElementById('archive-backdrop');
+    let modal = document.getElementById('archive-modal');
+    if (!backdrop) {
+      backdrop = document.createElement('div');
+      backdrop.id = 'archive-backdrop';
+      backdrop.className = 'archive-backdrop';
+      backdrop.addEventListener('click', closeArchive);
+      document.body.appendChild(backdrop);
+    }
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'archive-modal';
+      modal.className = 'archive-modal';
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      modal.setAttribute('aria-label', 'Resúmenes pasados');
+      modal.innerHTML = `
+        <div class="archive-top">
+          <div>
+            <div class="eyebrow">Archivo editorial</div>
+            <h2>Resúmenes pasados</h2>
+            <p>Elige una fecha marcada en el calendario para ver el resumen de noticias tal como se publicó ese día.</p>
+          </div>
+          <button type="button" class="archive-close" id="archive-close">Cerrar</button>
+        </div>
+        <div class="archive-body">
+          <div class="archive-cal">
+            <div class="archive-cal-head">
+              <button type="button" id="archive-prev" title="Mes anterior" aria-label="Mes anterior">‹</button>
+              <strong id="archive-month"></strong>
+              <button type="button" id="archive-next" title="Mes siguiente" aria-label="Mes siguiente">›</button>
+            </div>
+            <div class="archive-grid" id="archive-grid"></div>
+            <div class="archive-legend"><span class="dot"></span>Días con resumen publicado</div>
+          </div>
+          <div class="archive-panel" id="archive-panel"></div>
+        </div>`;
+      document.body.appendChild(modal);
+      modal.querySelector('#archive-close').addEventListener('click', closeArchive);
+      modal.querySelector('#archive-prev').addEventListener('click', () => shiftMonth(-1));
+      modal.querySelector('#archive-next').addEventListener('click', () => shiftMonth(1));
+      modal.querySelector('#archive-grid').addEventListener('click', ev => {
+        const cell = ev.target.closest?.('.archive-day.has-data');
+        if (cell) selectDate(cell.dataset.date);
+      });
+    }
+    return modal;
+  }
+
+  function shiftMonth(delta){
+    const d = new Date(viewYear, viewMonth + delta, 1);
+    viewYear = d.getFullYear();
+    viewMonth = d.getMonth();
+    renderCalendar();
+  }
+
+  function renderCalendar(){
+    const label = document.getElementById('archive-month');
+    const grid = document.getElementById('archive-grid');
+    if (!label || !grid) return;
+    label.textContent = monthLabel(viewYear, viewMonth);
+
+    const first = new Date(viewYear, viewMonth, 1).getDay();
+    const days = new Date(viewYear, viewMonth + 1, 0).getDate();
+    const pad = n => String(n).padStart(2, '0');
+    const cells = DOW.map(d => `<div class="archive-dow">${d}</div>`);
+    for (let i = 0; i < first; i++) cells.push('<div class="archive-day empty"></div>');
+    for (let day = 1; day <= days; day++) {
+      const key = `${viewYear}-${pad(viewMonth + 1)}-${pad(day)}`;
+      const has = !!archive[key];
+      const classes = ['archive-day'];
+      if (has) classes.push('has-data');
+      if (key === selectedDate) classes.push('selected');
+      cells.push(
+        `<div class="${classes.join(' ')}" data-date="${key}"` +
+        (has ? ` role="button" tabindex="0" title="Ver el resumen del ${esc(longDate(key))}"` : '') +
+        `>${day}</div>`
+      );
+    }
+    grid.innerHTML = cells.join('');
+
+    const keys = Object.keys(archive).sort();
+    const prev = document.getElementById('archive-prev');
+    const next = document.getElementById('archive-next');
+    if (prev && keys.length) prev.disabled = `${viewYear}-${pad(viewMonth + 1)}` <= keys[0].slice(0, 7);
+    if (next) next.disabled = new Date(viewYear, viewMonth, 1) >= new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+  }
+
+  function renderSnapshot(key){
+    const panel = document.getElementById('archive-panel');
+    if (!panel) return;
+    const snapshot = archive[key];
+    if (!snapshot) {
+      const total = Object.keys(archive).length;
+      panel.innerHTML = `
+        <div class="archive-empty">
+          <strong>${total ? 'Elige una fecha marcada en el calendario.' : 'Todavía no hay resúmenes archivados.'}</strong>
+          ${total
+            ? `Hay ${total} ${total === 1 ? 'resumen guardado' : 'resúmenes guardados'} en el archivo. Los días con publicación aparecen resaltados.`
+            : 'Cada vez que Planeación Estratégica publique el resumen de noticias, quedará guardado aquí con su fecha.'}
+        </div>`;
+      return;
+    }
+    const items = snapshot.items.slice().sort((a, b) => a.order - b.order);
+    const featured = items.filter(x => x.feature).slice(0, MAX_FEATURED);
+    const rest = items.filter(x => !featured.some(f => f.id === x.id)).slice(0, MAX_SIDE);
+    let stamp = '';
+    try {
+      stamp = new Intl.DateTimeFormat('es-DO', { hour:'2-digit', minute:'2-digit' }).format(new Date(snapshot.published_at));
+    } catch {}
+    panel.innerHTML = `
+      <div class="archive-panel-head">
+        <h3>${esc(longDate(key))}</h3>
+        <div class="meta">Validado por Planeación Estratégica · ${items.length} ${items.length === 1 ? 'nota' : 'notas'}${stamp ? ' · publicado ' + esc(stamp) : ''}</div>
+      </div>
+      ${featured.length ? `<div class="news-feature-grid">
+        ${featured.map(item => `
+          <article class="news-feature">
+            <span class="cat-tag">${esc(item.tag)}</span>
+            <h3>${esc(item.title)}</h3>
+            <p class="dek">${esc(item.dek)}</p>
+            <div class="meta">
+              <span><a class="src-link" href="${esc(ensureHttp(item.url))}" target="_blank" rel="noopener">${esc(item.source)}</a></span>
+              <span>${esc(item.time)}</span>
+            </div>
+          </article>`).join('')}
+      </div>` : ''}
+      ${rest.length ? `<aside class="news-side compact">
+        <div class="news-side-head">Otras Noticias</div>
+        ${rest.map(item => `
+          <div class="news-item">
+            <div class="cat ${esc(item.cat.startsWith('cat-') ? item.cat : catClass(item.tag))}">${esc(item.tag)}</div>
+            <h4><a href="${esc(ensureHttp(item.url))}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">${esc(item.title)}</a></h4>
+            <div class="meta">${esc(item.source)}${item.time ? ' · ' + esc(item.time) : ''}</div>
+          </div>`).join('')}
+      </aside>` : ''}`;
+  }
+
+  function selectDate(key){
+    selectedDate = key;
+    renderCalendar();
+    renderSnapshot(key);
+  }
+
+  async function openArchive(){
+    ensureShell();
+    document.getElementById('archive-backdrop')?.classList.add('open');
+    document.getElementById('archive-modal')?.classList.add('open');
+    document.getElementById('archive-panel').innerHTML = '<div class="archive-empty">Cargando archivo…</div>';
+    await ensureArchive(false);
+    const keys = Object.keys(archive).sort();
+    const last = keys[keys.length - 1] || dateKey();
+    const [y, m] = last.split('-').map(Number);
+    viewYear = y; viewMonth = m - 1;
+    selectedDate = keys.length ? last : '';
+    renderCalendar();
+    renderSnapshot(selectedDate);
+    updateArchiveMeta();
+  }
+  function closeArchive(){
+    document.getElementById('archive-backdrop')?.classList.remove('open');
+    document.getElementById('archive-modal')?.classList.remove('open');
+  }
+  window.openNewsArchive = openArchive;
+  window.closeNewsArchive = closeArchive;
+
+  function updateArchiveMeta(){
+    const meta = document.getElementById('news-archive-meta');
+    if (!meta) return;
+    const total = Object.keys(archive).length;
+    meta.textContent = total
+      ? `${total} ${total === 1 ? 'resumen guardado' : 'resúmenes guardados'} · elige una fecha para ver cómo quedó ese día`
+      : 'Consulta cómo quedó el resumen de noticias en una fecha anterior';
+  }
+
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') closeArchive();
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key !== 'Enter' && ev.key !== ' ') return;
+    const cell = document.activeElement?.closest?.('.archive-day.has-data');
+    if (cell) { ev.preventDefault(); selectDate(cell.dataset.date); }
+  });
+
+  function boot(){
+    document.getElementById('news-archive-open')?.addEventListener('click', openArchive);
+    wrapPublish();
+    // Los parches de noticias se aplican en cascada; reintentar asegura que el
+    // wrapper quede sobre la versión final de finalPublishSummary.
+    [400, 1200, 2500].forEach(t => setTimeout(wrapPublish, t));
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
+  else boot();
 })();
 </script>
 
