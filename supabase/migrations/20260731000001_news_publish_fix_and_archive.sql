@@ -23,7 +23,32 @@
 --    que alimenta el acápite "Resúmenes pasados" de la portada.
 -- =====================================================================
 
+-- DÓNDE CORRERLA
+--   Sobre el proyecto que sirve al front hoy, es decir el que aparece en el
+--   <meta name="supabase-url"> de index.html: albtuqzdcltcokfagdvy (ORIGEN,
+--   "la nacional"). En el proyecto departamental de destino
+--   (btccnnreeansagcduutt) hay que correr ANTES el schema base
+--   20260730000001_observatorio_public_schema.sql — ver docs/MIGRACION_SUPABASE.md.
+--
+--   Si sale "relation public.news_items does not exist", el SQL Editor está
+--   apuntando a un proyecto sin el schema del Observatorio. El guard de abajo
+--   lo dice explícitamente en vez de fallar con el 42P01 pelado.
+
 begin;
+
+-- ---------------------------------------------------------------------
+-- 1.0 Guard: esta migración modifica tablas que ya deben existir.
+-- ---------------------------------------------------------------------
+do $$
+begin
+  if to_regclass('public.news_items') is null then
+    raise exception using
+      message = 'Este proyecto no tiene public.news_items.',
+      hint    = 'Estás en el proyecto equivocado, o falta correr primero '
+                'supabase/migrations/20260730000001_observatorio_public_schema.sql. '
+                'El proyecto que sirve al front es el del <meta name="supabase-url"> de index.html.';
+  end if;
+end $$;
 
 -- ---------------------------------------------------------------------
 -- 1.1 Permitir el estado 'published' (el que usan front y políticas RLS)
