@@ -13605,31 +13605,54 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   const MAX_SIDE      = 5;
   const DOW           = ['Do','Lu','Ma','Mi','Ju','Vi','Sá'];
 
-  /* ---------- Resúmenes en PDF (los días anteriores al sitio) ----------
+  /* ---------- Resúmenes en documento (los días anteriores al sitio) ----------
      Los resúmenes de julio 2026 y anteriores no se hicieron con esta
-     herramienta, así que viven como PDF. El manifiesto declara qué días
-     tienen PDF y dónde está cada archivo:
+     herramienta: viven como archivos sueltos, en PDF o en Word.
 
-       data/resumenes_pdf.json
+     El nombre acordado es "Resumen de Noticias. AAAA-MM-DD.pdf" (o .docx),
+     pero no se depende de que sea exacto: para cada día se prueba una lista de
+     variantes razonables del nombre (con o sin punto, con guion, en minúscula,
+     acentuado o no) y se toma la primera que el servidor responda. En cuanto
+     una resuelve, su forma se recuerda y se prueba primero en los demás días,
+     así el caso normal cuesta una sola petición por fecha.
+
+     data/resumenes_pdf.json permite fijar rutas cuando haga falta:
        {
-         "base": "docs/resumenes/",           // o la URL pública de Supabase Storage
-         "files": { "2026-07-01": "resumen-2026-07-01.pdf", ... }
+         "base": "docs/resumenes/",       // o la URL pública de Supabase Storage
+         "files": { "2026-07-01": "Resumen de Noticias. 2026-07-01.pdf", ... }
        }
+     Un valor puede ser un nombre de archivo (se le antepone "base"), una lista
+     de nombres alternativos, o una URL completa. Lo declarado se prueba
+     primero; si falla, se sigue con las variantes automáticas.
 
-     Un valor puede ser un nombre de archivo (se le antepone "base") o una URL
-     completa (http/https), por si el PDF vive en Supabase Storage o GitHub.
-     Antes de pintar el calendario se comprueba con una petición HEAD que el
-     archivo exista: los días cuyo PDF todavía no se haya subido no se marcan,
-     así la interfaz siempre refleja lo que realmente está cargado. */
-  const PDF_MANIFEST_URL = 'data/resumenes_pdf.json';
-  const PDF_DEFAULT_BASE = 'docs/resumenes/';
-  const PDF_NAME_PATTERN = 'resumen-{date}.pdf';
-  // Meses previos al sitio que se publicaron en PDF (respaldo si falta el manifiesto).
-  const PDF_FALLBACK_MONTHS = ['2026-07'];
+     Un día solo se marca en el calendario si su archivo existe de verdad, así
+     la interfaz siempre refleja lo que está subido. */
+  const DOC_MANIFEST_URL = 'data/resumenes_pdf.json';
+  const DOC_DEFAULT_BASE = 'docs/resumenes/';
+  const DOC_CACHE_KEY    = 'ln-archive-docs-v1';
+  const DOC_CACHE_TTL_MS = 15 * 60 * 1000;
+  const DOC_PROBE_POOL   = 6;      // peticiones simultáneas al resolver nombres
+  // Extensiones admitidas, en orden de preferencia (en minúscula).
+  const DOC_EXTENSIONS   = ['.pdf', '.docx'];
+  // Variantes del nombre; {date} se sustituye por AAAA-MM-DD. La lista se
+  // mantiene corta a propósito: cada variante extra multiplica las peticiones
+  // que cuesta descartar un día sin resumen.
+  const DOC_NAME_VARIANTS = [
+    'Resumen de Noticias. {date}',
+    'Resumen de Noticias {date}',
+    'Resumen de Noticias.{date}',
+    'Resumen de Noticias - {date}',
+    'Resumen de Noticias_{date}',
+    'Resumen de noticias. {date}',
+    'resumen-{date}'
+  ];
+  // Meses previos al sitio que se publicaron como documento.
+  const DOC_FALLBACK_MONTHS = ['2026-07'];
 
   let archive = {};          // { 'YYYY-MM-DD': { published_at, items:[] } }
-  let pdfArchive = {};       // { 'YYYY-MM-DD': url del PDF }
-  let pdfLoaded = false;
+  let docArchive = {};       // { 'YYYY-MM-DD': { url, ext, name } }
+  let docLoaded = false;
+  let docPattern = null;     // { variant, ext } que ya funcionó, se prueba primero
   let remoteLoaded = false;  // ya se intentó leer el archivo remoto
   let viewYear = 0, viewMonth = 0, selectedDate = '';
 
@@ -13809,77 +13832,158 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     return archive;
   }
 
-  /* ---------- archivo en PDF de los resúmenes anteriores ---------- */
-  function pdfUrl(base, value){
+  /* ---------- archivo en documento (PDF / Word) de los resúmenes anteriores ---------- */
+  function docExt(value){
+    const m = /\.([a-z0-9]+)(?:[?#].*)?$/i.exec(txt(value));
+    return m ? m[1].toLowerCase() : '';
+  }
+  function isWord(value){ return docExt(value) === 'docx' || docExt(value) === 'doc'; }
+  function docLabel(value){ return isWord(value) ? 'Word' : 'PDF'; }
+
+  // Une base + nombre. Los nombres llevan espacios y puntos, así que se
+  // codifican; una URL completa o absoluta se respeta tal cual.
+  function docUrl(base, value){
     const v = txt(value).trim();
     if (!v) return '';
     if (/^(https?:)?\/\//i.test(v) || v.startsWith('/')) return v;
-    return txt(base || PDF_DEFAULT_BASE).replace(/\/?$/, '/') + v;
+    const root = txt(base || DOC_DEFAULT_BASE).replace(/\/?$/, '/');
+    const name = v.includes('%') ? v : v.split('/').map(encodeURIComponent).join('/');
+    return root + name;
   }
 
-  // Respaldo: días hábiles de los meses declarados en PDF_FALLBACK_MONTHS.
-  function fallbackPdfCandidates(){
-    const out = {};
-    PDF_FALLBACK_MONTHS.forEach(month => {
+  // Todas las formas del nombre que se prueban para una fecha, en orden.
+  // Si ya se descubrió cómo se llaman los archivos, esa forma va primero.
+  function docCandidates(key){
+    const names = [];
+    const push = (variant, ext) => {
+      const name = variant.replace('{date}', key) + ext;
+      if (!names.includes(name)) names.push(name);
+    };
+    if (docPattern) {
+      push(docPattern.variant, docPattern.ext);
+      // Un mismo mes mezcla PDF y Word, así que la otra extensión va enseguida.
+      DOC_EXTENSIONS.forEach(ext => push(docPattern.variant, ext));
+    }
+    DOC_NAME_VARIANTS.forEach(variant => DOC_EXTENSIONS.forEach(ext => push(variant, ext)));
+    return names;
+  }
+
+  // Días hábiles de los meses declarados: son los que se intentan resolver.
+  function fallbackDocDates(){
+    const out = [];
+    DOC_FALLBACK_MONTHS.forEach(month => {
       const [y, m] = txt(month).split('-').map(Number);
       if (!y || !m) return;
       const days = new Date(y, m, 0).getDate();
+      const pad = n => String(n).padStart(2, '0');
       for (let day = 1; day <= days; day++) {
         const dow = new Date(y, m - 1, day).getDay();
         if (dow === 0 || dow === 6) continue;   // el resumen es de lunes a viernes
-        const pad = n => String(n).padStart(2, '0');
-        const key = `${y}-${pad(m)}-${pad(day)}`;
-        out[key] = pdfUrl(PDF_DEFAULT_BASE, PDF_NAME_PATTERN.replace('{date}', key));
+        out.push(`${y}-${pad(m)}-${pad(day)}`);
       }
     });
     return out;
   }
 
-  async function readPdfManifest(){
+  async function readDocManifest(){
+    const fallback = { base: DOC_DEFAULT_BASE, files: {}, dates: fallbackDocDates() };
     try {
-      const res = await fetch(PDF_MANIFEST_URL, { cache: 'no-cache' });
+      const res = await fetch(DOC_MANIFEST_URL, { cache: 'no-cache' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const json = await res.json();
-      const base = txt(json.base || PDF_DEFAULT_BASE);
       const files = json.files || json.items || {};
-      const map = {};
-      Object.keys(files).forEach(key => {
-        const url = pdfUrl(base, files[key]);
-        if (url) map[key] = url;
-      });
-      return Object.keys(map).length ? map : fallbackPdfCandidates();
+      const dates = Array.from(new Set([...(json.dates || []), ...Object.keys(files), ...fallback.dates])).sort();
+      return { base: txt(json.base || DOC_DEFAULT_BASE), files, dates };
     } catch (err) {
-      console.info('[LN-ARCHIVE] Sin manifiesto de PDF; se usan los días por convención:', err.message || err);
-      return fallbackPdfCandidates();
+      console.info('[LN-ARCHIVE] Sin manifiesto de resúmenes; se resuelven los nombres por convención:', err.message || err);
+      return fallback;
     }
   }
 
-  /* Solo se marcan los días cuyo PDF responde. Si la petición falla por CORS o
-     por red (no por un 404/403), se conserva el día: no hay forma de saberlo y
-     es preferible mostrar el enlace a esconder un resumen que sí existe. */
-  async function verifyPdf(url){
+  /* Solo se marca un día si su archivo responde. Si la petición falla por CORS
+     o por red (no con un 404/403), se devuelve 'unknown': no hay forma de
+     saberlo y es preferible mostrar el enlace a esconder un resumen real. */
+  async function probe(url){
     try {
       const res = await fetch(url, { method: 'HEAD', cache: 'no-cache' });
-      if (res.status === 404 || res.status === 403 || res.status === 410) return false;
-      return true;
-    } catch { return true; }
+      if (res.status === 404 || res.status === 403 || res.status === 410) return 'no';
+      if (res.ok) return 'yes';
+      return 'no';
+    } catch { return 'unknown'; }
   }
 
-  async function loadPdfArchive(force){
-    if (pdfLoaded && !force) return pdfArchive;
-    pdfLoaded = true;
-    const candidates = await readPdfManifest();
-    const keys = Object.keys(candidates).sort();
-    const checks = await Promise.all(keys.map(key => verifyPdf(candidates[key])));
+  // Resuelve el archivo de un día probando las variantes hasta dar con una.
+  async function resolveDoc(key, base, declared){
+    const explicit = []
+      .concat(declared == null ? [] : declared)
+      .map(v => txt(v).trim())
+      .filter(Boolean);
+    const names = [...explicit, ...docCandidates(key)];
+    for (const name of names) {
+      const url = docUrl(base, name);
+      if (!url) continue;
+      const status = await probe(url);
+      if (status === 'no') continue;
+      if (status === 'yes' && !explicit.includes(name)) {
+        // Se recuerda la forma que funcionó para probarla primero en los demás días.
+        const ext = name.slice(name.lastIndexOf('.'));
+        const variant = name.slice(0, name.lastIndexOf('.')).replace(key, '{date}');
+        if (variant.includes('{date}')) docPattern = { variant, ext };
+      }
+      return { url, name, ext: docExt(name) };
+    }
+    return null;
+  }
+
+  // Cola con concurrencia acotada: resolver ~23 días no debe disparar cientos
+  // de peticiones a la vez.
+  async function runPool(items, size, worker){
+    const out = new Array(items.length);
+    let cursor = 0;
+    const runners = Array.from({ length: Math.min(size, items.length) }, async () => {
+      while (cursor < items.length) {
+        const i = cursor++;
+        out[i] = await worker(items[i], i);
+      }
+    });
+    await Promise.all(runners);
+    return out;
+  }
+
+  function readDocCache(){
+    try {
+      const raw = JSON.parse(sessionStorage.getItem(DOC_CACHE_KEY) || 'null');
+      if (raw && raw.at && Date.now() - raw.at < DOC_CACHE_TTL_MS && raw.map) return raw;
+    } catch {}
+    return null;
+  }
+
+  async function loadDocArchive(force){
+    if (docLoaded && !force) return docArchive;
+    if (!force) {
+      const cached = readDocCache();
+      if (cached) { docArchive = cached.map; docPattern = cached.pattern || null; docLoaded = true; return docArchive; }
+    }
+    docLoaded = true;
+    const manifest = await readDocManifest();
+    // El primer día se resuelve solo, para aprender el patrón antes del resto.
+    const dates = manifest.dates.slice();
     const map = {};
-    keys.forEach((key, i) => { if (checks[i]) map[key] = candidates[key]; });
-    pdfArchive = map;
-    return pdfArchive;
+    const take = (key, found) => { if (found) map[key] = found; };
+    if (dates.length) {
+      const first = dates.shift();
+      take(first, await resolveDoc(first, manifest.base, manifest.files[first]));
+    }
+    const rest = await runPool(dates, DOC_PROBE_POOL, key => resolveDoc(key, manifest.base, manifest.files[key]));
+    dates.forEach((key, i) => take(key, rest[i]));
+    docArchive = map;
+    try { sessionStorage.setItem(DOC_CACHE_KEY, JSON.stringify({ at: Date.now(), map, pattern: docPattern })); } catch {}
+    return docArchive;
   }
 
-  function hasEntry(key){ return !!archive[key] || !!pdfArchive[key]; }
+  function hasEntry(key){ return !!archive[key] || !!docArchive[key]; }
   function allKeys(){
-    return Array.from(new Set([...Object.keys(archive), ...Object.keys(pdfArchive)])).sort();
+    return Array.from(new Set([...Object.keys(archive), ...Object.keys(docArchive)])).sort();
   }
 
   /* ---------- guardar el snapshot del día al publicar ---------- */
@@ -13932,7 +14036,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
           <div>
             <div class="eyebrow">Archivo editorial</div>
             <h2>Resúmenes pasados</h2>
-            <p>Elige una fecha marcada en el calendario para ver el resumen de noticias tal como se publicó ese día. Los resúmenes anteriores al observatorio (julio y antes) se abren como PDF.</p>
+            <p>Elige una fecha marcada en el calendario para ver el resumen de noticias tal como se publicó ese día. Los resúmenes anteriores al observatorio (julio y antes) se abren como documento, en PDF o en Word.</p>
           </div>
           <button type="button" class="archive-close" id="archive-close">Cerrar</button>
         </div>
@@ -13946,7 +14050,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
             <div class="archive-grid" id="archive-grid"></div>
             <div class="archive-legend">
               <span class="dot"></span>Días con resumen publicado<br>
-              <span class="dot pdf"></span>Días con resumen en PDF (anteriores al sitio)
+              <span class="dot pdf"></span>Días con resumen en PDF o Word (anteriores al sitio)
             </div>
           </div>
           <div class="archive-panel" id="archive-panel"></div>
@@ -13983,14 +14087,14 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     for (let i = 0; i < first; i++) cells.push('<div class="archive-day empty"></div>');
     for (let day = 1; day <= days; day++) {
       const key = `${viewYear}-${pad(viewMonth + 1)}-${pad(day)}`;
-      const isPdf = !!pdfArchive[key];
-      const has = !!archive[key] || isPdf;
+      const doc = !archive[key] ? docArchive[key] : null;
+      const has = !!archive[key] || !!doc;
       const classes = ['archive-day'];
       if (has) classes.push('has-data');
-      if (isPdf && !archive[key]) classes.push('is-pdf');
+      if (doc) classes.push('is-pdf');
       if (key === selectedDate) classes.push('selected');
-      const title = isPdf && !archive[key]
-        ? `Abrir el resumen en PDF del ${esc(longDate(key))}`
+      const title = doc
+        ? `Abrir el resumen del ${esc(longDate(key))} (${docLabel(doc.url)})`
         : `Ver el resumen del ${esc(longDate(key))}`;
       cells.push(
         `<div class="${classes.join(' ')}" data-date="${key}"` +
@@ -14012,7 +14116,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     if (!panel) return;
     const snapshot = archive[key];
     // Los días previos al sitio solo existen como PDF: se muestra el visor.
-    if (!snapshot && pdfArchive[key]) { renderPdfSnapshot(key); return; }
+    if (!snapshot && docArchive[key]) { renderDocSnapshot(key); return; }
     if (!snapshot) {
       const total = allKeys().length;
       panel.innerHTML = `
@@ -14059,34 +14163,40 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
       </aside>` : ''}`;
   }
 
-  function renderPdfSnapshot(key){
+  function renderDocSnapshot(key){
     const panel = document.getElementById('archive-panel');
     if (!panel) return;
-    const url = pdfArchive[key];
-    const safe = esc(url);
+    const doc = docArchive[key];
+    if (!doc) return;
+    const safe = esc(doc.url);
+    const word = isWord(doc.url);
+    const label = docLabel(doc.url);
     panel.innerHTML = `
       <div class="archive-panel-head">
         <h3>${esc(longDate(key))}</h3>
-        <div class="meta">Resumen publicado antes del observatorio · documento PDF</div>
+        <div class="meta">Resumen publicado antes del observatorio · documento ${esc(label)}${doc.name ? ' · ' + esc(doc.name) : ''}</div>
       </div>
       <div class="archive-pdf">
         <div class="archive-pdf-actions">
-          <a class="archive-pdf-btn primary" href="${safe}" target="_blank" rel="noopener">Abrir el PDF en una pestaña nueva</a>
-          <a class="archive-pdf-btn" href="${safe}" download>Descargar</a>
+          <a class="archive-pdf-btn primary" href="${safe}" ${word ? 'download' : 'target="_blank" rel="noopener"'}>${word ? 'Descargar el documento de Word' : 'Abrir el PDF en una pestaña nueva'}</a>
+          <a class="archive-pdf-btn" href="${safe}" ${word ? 'target="_blank" rel="noopener"' : 'download'}>${word ? 'Abrir en una pestaña nueva' : 'Descargar'}</a>
         </div>
-        <object class="archive-pdf-frame" data="${safe}" type="application/pdf">
-          <iframe class="archive-pdf-frame" src="${safe}" title="Resumen del ${esc(longDate(key))}" loading="lazy"></iframe>
-        </object>
-        <p class="archive-pdf-note">Si el visor no carga en tu navegador, usa “Abrir el PDF en una pestaña nueva”.</p>
+        ${word
+          ? `<p class="archive-pdf-note">Este resumen se guardó en Word (.docx), así que no puede previsualizarse dentro del sitio: descárgalo para abrirlo en Word.</p>`
+          : `<object class="archive-pdf-frame" data="${safe}" type="application/pdf">
+               <iframe class="archive-pdf-frame" src="${safe}" title="Resumen del ${esc(longDate(key))}" loading="lazy"></iframe>
+             </object>
+             <p class="archive-pdf-note">Si el visor no carga en tu navegador, usa “Abrir el PDF en una pestaña nueva”.</p>`}
       </div>`;
   }
 
   function selectDate(key){
     selectedDate = key;
     renderCalendar();
-    // Un día que solo existe en PDF abre el documento directamente, además de
-    // dejarlo visible en el panel.
-    if (!archive[key] && pdfArchive[key]) window.open(pdfArchive[key], '_blank', 'noopener');
+    // Un día que solo existe como documento se abre directamente, además de
+    // quedar visible en el panel. Word se deja al botón de descarga.
+    const doc = !archive[key] ? docArchive[key] : null;
+    if (doc && !isWord(doc.url)) window.open(doc.url, '_blank', 'noopener');
     renderSnapshot(key);
   }
 
@@ -14095,7 +14205,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     document.getElementById('archive-backdrop')?.classList.add('open');
     document.getElementById('archive-modal')?.classList.add('open');
     document.getElementById('archive-panel').innerHTML = '<div class="archive-empty">Cargando archivo…</div>';
-    await Promise.all([ensureArchive(false), loadPdfArchive(false)]);
+    await Promise.all([ensureArchive(false), loadDocArchive(false)]);
     const keys = allKeys();
     const last = keys[keys.length - 1] || dateKey();
     const [y, m] = last.split('-').map(Number);
