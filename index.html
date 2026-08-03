@@ -2945,6 +2945,47 @@ footer .mark{
   #view-hoy .news-side-head{ margin-bottom:2px !important; }
   #view-hoy .news-side .news-item{ min-height:0 !important; }
 }
+
+/* ---------------------------------------------------------------------------
+   Portada: 4 noticias en grande (2x2) + hasta 5 en "Otras Noticias".
+   Las rejillas leen data-count (lo escribe applyNewsSummaryToFront) para
+   ajustarse al número de notas que realmente se publicaron ese día.
+   --------------------------------------------------------------------------- */
+#view-hoy .news-feature-grid{
+  display:grid !important;
+  grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+  gap:20px !important;
+  align-items:stretch !important;
+}
+#view-hoy .news-feature-grid > .news-feature{ min-width:0 !important; height:100% !important; }
+/* 1 nota: ancho completo. 3 notas: 2 arriba y la tercera cruzando abajo. */
+#view-hoy .news-feature-grid[data-count="1"]{ grid-template-columns:1fr !important; }
+#view-hoy .news-feature-grid[data-count="3"] > .news-feature:nth-child(3){ grid-column:1 / -1 !important; }
+#view-hoy .news-feature-grid[data-count="0"]{ display:none !important; }
+
+/* "Otras Noticias": auto-fit colapsa las columnas sobrantes, así 3, 4 o 5
+   notas ocupan siempre el ancho completo sin huecos. */
+#view-hoy .news-side,
+#view-hoy .news-side.compact{
+  grid-template-columns:repeat(auto-fit, minmax(215px, 1fr)) !important;
+  gap:18px 14px !important;
+}
+#view-hoy .news-side[data-count="0"]{ display:none !important; }
+@media (max-width:980px){
+  #view-hoy .news-feature-grid{ grid-template-columns:1fr !important; }
+  #view-hoy .news-feature-grid[data-count="3"] > .news-feature:nth-child(3){ grid-column:auto !important; }
+}
+@media (max-width:760px){
+  #view-hoy .news-side,
+  #view-hoy .news-side.compact{ grid-template-columns:1fr !important; }
+}
+
+/* Vista previa del editor: mismo comportamiento adaptativo. */
+@media (min-width:981px){
+  .preview-hero-grid[data-count="1"]{ grid-template-columns:1fr; }
+  .preview-hero-grid[data-count="3"] > .preview-feature:nth-child(3){ grid-column:1 / -1; }
+  .preview-small-grid{ grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); }
+}
 </style>
 
 
@@ -3170,42 +3211,82 @@ footer .mark{
       <div class="eyebrow">Cobertura editorial</div>
       <h2>Resumen de noticias</h2>
     </div>
-    <div class="meta" id="news-front-meta">Validado por Planeación Estratégica · 5 notas seleccionadas</div>
+    <div class="meta" id="news-front-meta">Validado por Planeación Estratégica · 9 notas seleccionadas</div>
   </div>
 
+  <!-- Maqueta base: 4 noticias en grande (rejilla 2x2) + 5 en "Otras Noticias".
+       applyNewsSummaryToFront() la reemplaza al publicar y escribe data-count
+       con el número real de notas para que la rejilla se ajuste sola. -->
   <div class="news-layout">
-    <article class="news-feature">
-      <span class="cat-tag">Dominicano · Política monetaria</span>
-      <h3>BCRD mantiene la TPM en 5.75% pese a presiones inflacionarias del IPC de abril</h3>
-      <p class="dek">La Junta Monetaria decidió por unanimidad sostener la tasa de política monetaria en 5.75%, citando expectativas inflacionarias ancladas y la necesidad de mantener el diferencial con la FED. El mercado descontaba un recorte de 25 pb.</p>
-      <div class="meta">
-        <span><a class="src-link" href="#">elDinero.com.do</a></span>
-        <span>20 may · 06:42 AM</span>
-        <span>Análisis · 4 min</span>
-      </div>
-    </article>
+    <div class="news-feature-grid" data-count="4">
+      <article class="news-feature">
+        <span class="cat-tag">Dominicano · Política monetaria</span>
+        <h3>BCRD mantiene la TPM en 5.75% pese a presiones inflacionarias del IPC de abril</h3>
+        <p class="dek">La Junta Monetaria decidió por unanimidad sostener la tasa de política monetaria en 5.75%, citando expectativas inflacionarias ancladas y la necesidad de mantener el diferencial con la FED. El mercado descontaba un recorte de 25 pb.</p>
+        <div class="meta">
+          <span><a class="src-link" href="#">elDinero.com.do</a></span>
+          <span>20 may · 06:42 AM</span>
+          <span>Análisis · 4 min</span>
+        </div>
+      </article>
+      <article class="news-feature">
+        <span class="cat-tag">Sistema financiero RD</span>
+        <h3>Banca múltiple cierra abril con morosidad de 1.84%, ligero repunte desde 1.76%</h3>
+        <p class="dek">El indicador sigue por debajo del promedio regional, pero la cartera de consumo explica dos tercios del deterioro trimestral. La cobertura de provisiones se mantiene holgada frente al vencido a 90 días.</p>
+        <div class="meta">
+          <span><a class="src-link" href="#">Listín Diario</a></span>
+          <span>20 may · 07:01 AM</span>
+          <span>Análisis · 4 min</span>
+        </div>
+      </article>
+      <article class="news-feature">
+        <span class="cat-tag">Global · Reserva Federal</span>
+        <h3>Powell señala paciencia ante datos de empleo mixtos</h3>
+        <p class="dek">La Fed insiste en que necesita más evidencia de desinflación antes de mover tasas. El mercado de futuros recortó a menos de la mitad la probabilidad de un ajuste en la próxima reunión.</p>
+        <div class="meta">
+          <span><a class="src-link" href="#">Reuters</a></span>
+          <span>20 may · 05:18 AM</span>
+          <span>Análisis · 4 min</span>
+        </div>
+      </article>
+      <article class="news-feature">
+        <span class="cat-tag">Macro</span>
+        <h3>Remesas crecen 5.2% interanual en abril, acumulado supera USD 4,200 MM</h3>
+        <p class="dek">El flujo desde Estados Unidos aporta cerca del 83% del total y sostiene el consumo de los hogares. El desempeño refuerza la posición de reservas internacionales del país.</p>
+        <div class="meta">
+          <span><a class="src-link" href="#">BCRD comunicado</a></span>
+          <span>20 may · 08:15 AM</span>
+          <span>Análisis · 4 min</span>
+        </div>
+      </article>
+    </div>
 
-    <aside class="news-side">
+    <aside class="news-side compact" data-count="5">
       <div class="news-side-head">Otras Noticias</div>
-      <div class="news-item">
-        <div class="cat cat-glo">Global · Reserva Federal</div>
-        <h4>Powell señala paciencia ante datos de empleo mixtos</h4>
-        <div class="meta">Reuters · 05:18 AM</div>
-      </div>
-      <div class="news-item">
-        <div class="cat cat-dom">Sistema financiero RD</div>
-        <h4>Banca múltiple cierra abril con morosidad de 1.84%, ligero repunte desde 1.76%</h4>
-        <div class="meta">Listín Diario · 07:01 AM</div>
-      </div>
-      <div class="news-item">
-        <div class="cat cat-mac">Macro</div>
-        <h4>Remesas crecen 5.2% interanual en abril, acumulado supera USD 4,200 MM</h4>
-        <div class="meta">BCRD comunicado · 08:15 AM</div>
-      </div>
       <div class="news-item">
         <div class="cat cat-glo">Commodities</div>
         <h4>OPEP+ extiende recortes voluntarios hasta cierre del Q3</h4>
         <div class="meta">Bloomberg · 04:30 AM</div>
+      </div>
+      <div class="news-item">
+        <div class="cat cat-mac">Macro</div>
+        <h4>Inflación interanual cierra abril dentro del rango meta del Banco Central</h4>
+        <div class="meta">Banco Central · 09:10 AM</div>
+      </div>
+      <div class="news-item">
+        <div class="cat cat-dom">Dominicano</div>
+        <h4>Turismo suma un nuevo récord de llegadas en el cuatrimestre</h4>
+        <div class="meta">Diario Libre · 06:55 AM</div>
+      </div>
+      <div class="news-item">
+        <div class="cat cat-fin">Sector financiero</div>
+        <h4>Asociaciones de ahorro y préstamo elevan su captación a doble dígito</h4>
+        <div class="meta">elDinero.com.do · 07:40 AM</div>
+      </div>
+      <div class="news-item">
+        <div class="cat cat-glo">Global</div>
+        <h4>Dólar cede frente a las principales divisas tras datos de actividad en Europa</h4>
+        <div class="meta">Bloomberg Línea · 05:47 AM</div>
       </div>
     </aside>
   </div>
@@ -4265,8 +4346,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 let newsLog = JSON.parse(localStorage.getItem('ln-news-log') || '[]');
 let newsComposerDraft = [];
-const NEWS_TARGET_COUNT = 5;
-const NEWS_FEATURE_LIMIT = 2;
+// Portada: 4 noticias en grande (rejilla 2x2) + hasta 5 notas en "Otras Noticias".
+// Si se publican menos, la rejilla se ajusta sola al número real (ver data-count en CSS).
+const NEWS_FEATURE_LIMIT = 4;
+const NEWS_SIDE_LIMIT = 5;
+const NEWS_TARGET_COUNT = NEWS_FEATURE_LIMIT + NEWS_SIDE_LIMIT;
 const NEWS_MAX_AGE_DAYS = 2;
 const NEWS_MAX_AGE_MS = NEWS_MAX_AGE_DAYS * 24 * 60 * 60 * 1000;
 
@@ -4932,7 +5016,7 @@ function ensureNewsComposerShell() {
       <div>
         <div class="eyebrow">Mesa editorial · vista previa</div>
         <h2>Publicar Resumen</h2>
-        <p>Ordena las 5 noticias, marca hasta 2 como principales, ajusta etiqueta y cuerpo, y revisa cómo se verá la portada antes de publicar.</p>
+        <p>Ordena las noticias, marca hasta 4 como principales (van en grande, en rejilla 2×2), ajusta etiqueta y cuerpo, y revisa cómo se verá la portada antes de publicar. Si publicas menos, la portada se ajusta sola.</p>
       </div>
       <div class="composer-actions">
         <button onclick="closeNewsComposer()">Cerrar</button>
@@ -5007,7 +5091,7 @@ function toggleComposerFeature(index, checked) {
   if (!newsComposerDraft[index]) return;
   const active = newsComposerDraft.filter(x => x.feature).length;
   if (checked && active >= NEWS_FEATURE_LIMIT) {
-    toast('Solo puedes dejar 2 noticias en grande', 'warn');
+    toast(`Solo puedes dejar ${NEWS_FEATURE_LIMIT} noticias en grande`, 'warn');
     renderNewsComposer();
     return;
   }
@@ -5057,7 +5141,7 @@ function renderNewsComposerPreview() {
   const preview = document.getElementById('news-composer-preview');
   if (!preview) return;
   const featured = newsComposerDraft.filter(x => x.feature).slice(0, NEWS_FEATURE_LIMIT);
-  const small = newsComposerDraft.filter(x => !featured.some(f => f.id === x.id)).slice(0, 3);
+  const small = newsComposerDraft.filter(x => !featured.some(f => f.id === x.id)).slice(0, NEWS_SIDE_LIMIT);
   preview.innerHTML = `
     <div class="preview-browser">
       <div class="preview-chrome"><span class="preview-dot"></span><span class="preview-dot"></span><span class="preview-dot"></span></div>
@@ -5091,9 +5175,9 @@ function applyNewsSummaryToFront(items) {
   const layout = document.querySelector('#view-hoy .news-layout');
   if (!layout || !items?.length) return;
   const featured = items.filter(x => x.feature).slice(0, NEWS_FEATURE_LIMIT);
-  const small = items.filter(x => !featured.some(f => f.id === x.id)).slice(0, 3);
+  const small = items.filter(x => !featured.some(f => f.id === x.id)).slice(0, NEWS_SIDE_LIMIT);
   layout.innerHTML = `
-    <div class="news-feature-grid">
+    <div class="news-feature-grid" data-count="${featured.length}">
       ${featured.map(item => `
         <article class="news-feature reveal">
           <span class="cat-tag">${escapeHtml(item.tag)}</span>
@@ -5107,7 +5191,7 @@ function applyNewsSummaryToFront(items) {
         </article>
       `).join('')}
     </div>
-    <aside class="news-side compact">
+    <aside class="news-side compact" data-count="${small.length}"${small.length ? '' : ' hidden'}>
       <div class="news-side-head">Otras Noticias</div>
       ${small.map(item => `
         <div class="news-item reveal">
@@ -5123,8 +5207,8 @@ function applyNewsSummaryToFront(items) {
 function finalPublishSummary() {
   if (!newsComposerDraft.length) { toast('No hay resumen para publicar', 'warn'); return; }
   const featuredCount = newsComposerDraft.filter(x => x.feature).length;
-  if (featuredCount !== NEWS_FEATURE_LIMIT && newsComposerDraft.length >= NEWS_FEATURE_LIMIT) {
-    toast('Marca exactamente 2 noticias para la parte grande', 'warn');
+  if (featuredCount > NEWS_FEATURE_LIMIT) {
+    toast(`Marca como máximo ${NEWS_FEATURE_LIMIT} noticias para la parte grande`, 'warn');
     return;
   }
   localStorage.setItem('ln-published-news-summary', JSON.stringify(newsComposerDraft));
@@ -9220,7 +9304,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
 
   window.approveAllNews = function(){
     const arr = getArr();
-    const eligible = arr.filter(p => p.status !== 'rejected').slice(0, 5);
+    const eligible = arr.filter(p => p.status !== 'rejected').slice(0, NEWS_TARGET_COUNT);
     if (!eligible.length) { window.toast?.('No hay noticias para aprobar', 'warn'); return; }
     eligible.forEach(p => { p.status = 'approved'; saveStatus(p.id, 'approved'); });
     writeJson(LOCAL_KEY, arr);
@@ -9241,7 +9325,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   try { openProposalInComposer = window.openProposalInComposer; } catch {}
 
   window.publish = function(){
-    const approved = getArr().filter(p => p.status === 'approved').slice(0, 5);
+    const approved = getArr().filter(p => p.status === 'approved').slice(0, NEWS_TARGET_COUNT);
     if (!approved.length) { window.toast?.('Aprueba al menos una nota antes de publicar', 'warn'); return; }
     if (typeof window.openNewsComposer === 'function') window.openNewsComposer(approved);
   };
@@ -9277,7 +9361,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     const draft = (typeof newsComposerDraft !== 'undefined') ? newsComposerDraft : window.newsComposerDraft;
     if (!draft || !draft.length) { window.toast?.('No hay resumen para publicar', 'warn'); return; }
     const featuredCount = draft.filter(x => x.feature).length;
-    if (featuredCount !== 2 && draft.length >= 2) { window.toast?.('Marca exactamente 2 noticias para la parte grande', 'warn'); return; }
+    if (featuredCount > NEWS_FEATURE_LIMIT) { window.toast?.('Marca hasta 4 noticias para la parte grande', 'warn'); return; }
     try {
       const rows = draft.map(itemToNewsRow);
       if (sb()) {
@@ -9318,7 +9402,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
         .eq('status','published')
         .order('sort_order', { ascending:true })
         .order('updated_at', { ascending:false })
-        .limit(5);
+        .limit(NEWS_TARGET_COUNT);
       if (error) throw error;
       const items = (data || []).map((row, idx) => {
         const visual = categoryVisual(row.category);
@@ -9653,7 +9737,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
 
   window.approveAllNews = function(){
     const arr = hydrateAll();
-    const eligible = arr.filter(p => p.status !== 'rejected').slice(0, 5);
+    const eligible = arr.filter(p => p.status !== 'rejected').slice(0, NEWS_TARGET_COUNT);
     if (!eligible.length) return safeToast('No hay noticias para aprobar', 'warn');
     const ids = new Set(eligible.map(stableId));
     arr.forEach(p => { if (ids.has(stableId(p))) { p.status = 'approved'; saveStatus(stableId(p), 'approved'); } });
@@ -9668,12 +9752,12 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     if (!p) return safeToast('No pude abrir esa noticia en el editor', 'warn');
     window.LN_setProposalStatus(stableId(p), 'approved');
     const approved = hydrateAll().filter(x => x.status === 'approved');
-    if (typeof window.openNewsComposer === 'function') window.openNewsComposer([p, ...approved.filter(x => stableId(x) !== stableId(p))].slice(0, 5));
+    if (typeof window.openNewsComposer === 'function') window.openNewsComposer([p, ...approved.filter(x => stableId(x) !== stableId(p))].slice(0, NEWS_TARGET_COUNT));
   };
   try { openProposalInComposer = window.openProposalInComposer; } catch {}
 
   window.publish = function(){
-    const approved = hydrateAll().filter(p => p.status === 'approved').slice(0, 5);
+    const approved = hydrateAll().filter(p => p.status === 'approved').slice(0, NEWS_TARGET_COUNT);
     if (!approved.length) return safeToast('Aprueba al menos una nota antes de publicar', 'warn');
     if (typeof window.openNewsComposer === 'function') return window.openNewsComposer(approved);
     safeToast('Editor de publicación no disponible en este HTML', 'warn');
@@ -9743,8 +9827,9 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   const PUBLISHED_KEY = 'ln-published-news-summary';
   const PUBLISHED_CACHE_KEY = 'ln-news-published-cache-v1';
   const PUBLISHED_CACHE_AT = 'ln-news-published-cache-at-v1';
-  const MAX_ITEMS = 5;
-  const MAX_FEATURED = 2;
+  const MAX_FEATURED = 4;   // noticias en grande (rejilla 2x2)
+  const MAX_SIDE     = 5;   // "Otras Noticias"
+  const MAX_ITEMS    = MAX_FEATURED + MAX_SIDE;
 
   let composerDraftV7 = [];
 
@@ -10114,7 +10199,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     const d = getDraft();
     if (!d[index]) return;
     if (checked && d.filter(x => x.feature).length >= MAX_FEATURED) {
-      toastSafe('Solo puedes dejar hasta 2 noticias en grande', 'warn');
+      toastSafe(`Solo puedes dejar hasta ${MAX_FEATURED} noticias en grande`, 'warn');
       return window.renderNewsComposerList();
     }
     d[index].feature = !!checked;
@@ -10174,7 +10259,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     if (!preview) return;
     const d = getDraft();
     const featured = d.filter(x => x.feature).slice(0, MAX_FEATURED);
-    const small = d.filter(x => !featured.some(f => f.id === x.id)).slice(0, 3);
+    const small = d.filter(x => !featured.some(f => f.id === x.id)).slice(0, MAX_SIDE);
     preview.innerHTML = `
       <div class="preview-browser">
         <div class="preview-chrome"><span class="preview-dot"></span><span class="preview-dot"></span><span class="preview-dot"></span></div>
@@ -10182,7 +10267,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
           <div class="eyebrow">Cobertura editorial</div>
           <h2 class="serif" style="font-size:34px;margin:6px 0 6px">Resumen de noticias</h2>
           <div class="preview-meta">Validado por Planeación Estratégica · ${d.length} notas seleccionadas</div>
-          <div class="preview-hero-grid">
+          <div class="preview-hero-grid" data-count="${featured.length}">
             ${featured.map(item => `
               <article class="preview-feature">
                 <span class="tag ${tagClass(item.cat)}">${esc(item.tag)}</span>
@@ -10192,7 +10277,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
               </article>
             `).join('')}
           </div>
-          <div class="preview-small-grid">
+          <div class="preview-small-grid" data-count="${small.length}">
             ${small.map(item => `
               <article class="preview-small">
                 <span class="tag ${tagClass(item.cat)}">${esc(item.tag)}</span>
@@ -10210,9 +10295,10 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     const layout = document.querySelector('#view-hoy .news-layout');
     if (!layout || !items?.length) return;
     const featured = items.filter(x => x.feature).slice(0, MAX_FEATURED);
-    const small = items.filter(x => !featured.some(f => f.id === x.id)).slice(0, 3);
+    const small = items.filter(x => !featured.some(f => f.id === x.id)).slice(0, MAX_SIDE);
+    // data-count deja que el CSS adapte la rejilla al número real de notas publicadas.
     layout.innerHTML = `
-      <div class="news-feature-grid">
+      <div class="news-feature-grid" data-count="${featured.length}">
         ${featured.map(item => `
           <article class="news-feature reveal">
             <span class="cat-tag">${esc(item.tag)}</span>
@@ -10226,7 +10312,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
           </article>
         `).join('')}
       </div>
-      <aside class="news-side compact">
+      <aside class="news-side compact" data-count="${small.length}"${small.length ? '' : ' hidden'}>
         <div class="news-side-head">Otras Noticias</div>
         ${small.map(item => `
           <div class="news-item reveal">
@@ -10289,8 +10375,9 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   function normalizeFeatures(){
     const d = getDraft().slice(0, MAX_ITEMS);
     let featured = d.filter(x => x.feature);
-    if (d.length >= 2 && featured.length === 0) {
-      d[0].feature = true; d[1].feature = true;
+    if (d.length && featured.length === 0) {
+      // Sin selección manual: las primeras van en grande, hasta donde alcancen.
+      d.slice(0, Math.min(MAX_FEATURED, d.length)).forEach(x => { x.feature = true; });
     }
     if (d.filter(x => x.feature).length > MAX_FEATURED) {
       let count = 0;
@@ -13458,11 +13545,38 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
 .archive-day.selected { background: var(--cyan-deep); border-color: var(--cyan-deep); color: #fff; box-shadow: none; }
 .archive-legend { margin-top: 16px; font-size: 11px; color: var(--ink-mute); line-height: 1.6; }
 .archive-legend .dot { display: inline-block; width: 9px; height: 9px; border-radius: 2px; background: var(--cyan-deep); margin-right: 6px; vertical-align: -1px; }
+.archive-legend .dot.pdf { background: #C2410C; }
+
+/* Días cuyo resumen vive como PDF (los previos al observatorio). */
+.archive-day.has-data.is-pdf { border-color: rgba(194,65,12,.36); box-shadow: inset 0 -2px 0 #C2410C; }
+.archive-day.has-data.is-pdf:hover { border-color: #C2410C; }
+.archive-day.has-data.is-pdf.selected { background: #C2410C; border-color: #C2410C; color: #fff; box-shadow: none; }
+
+.archive-pdf { display: flex; flex-direction: column; gap: 14px; }
+.archive-pdf-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.archive-pdf-btn {
+  font-family: inherit; font-size: 12px; font-weight: 600; letter-spacing: .05em; text-decoration: none;
+  border: 1px solid var(--line); border-radius: 4px; padding: 11px 20px; color: var(--ink);
+  background: var(--white); transition: all .2s var(--ease-out);
+}
+.archive-pdf-btn:hover { border-color: var(--cyan-deep); color: var(--cyan-deep); transform: translateY(-1px); }
+.archive-pdf-btn.primary { background: var(--cyan-deep); border-color: var(--cyan-deep); color: #fff; }
+.archive-pdf-btn.primary:hover { color: #fff; filter: brightness(1.08); }
+.archive-pdf-frame { width: 100%; min-height: 62vh; border: 1px solid var(--line); border-radius: 8px; background: var(--off-white); }
+.archive-pdf-note { font-size: 11px; color: var(--ink-mute); line-height: 1.6; }
+@media (max-width: 900px) {
+  .archive-pdf-frame { min-height: 52vh; }
+}
 .archive-panel { padding: 26px 30px 34px; overflow-y: auto; }
 .archive-panel-head { border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 22px; }
 .archive-panel-head h3 { font-family: 'Fraunces', Georgia, serif; font-size: 26px; font-weight: 500; letter-spacing: -.02em; }
 .archive-panel-head .meta { font-size: 11px; color: var(--ink-mute); letter-spacing: .04em; margin-top: 6px; }
 .archive-empty { padding: 40px 0; color: var(--ink-mute); font-size: 13px; line-height: 1.7; max-width: 460px; }
+/* El resumen archivado repite la portada: 2x2 en grande y el resto adaptativo. */
+.archive-panel .news-feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.archive-panel .news-feature-grid[data-count="1"] { grid-template-columns: 1fr; }
+.archive-panel .news-feature-grid[data-count="3"] > .news-feature:nth-child(3) { grid-column: 1 / -1; }
+.archive-panel .news-side.compact { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
 .archive-empty strong { display: block; color: var(--ink); font-size: 15px; margin-bottom: 8px; }
 @media (max-width: 900px) {
   .archive-modal { inset: 12px; }
@@ -13487,11 +13601,35 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   const ARCHIVE_KEY   = 'ln-news-archive-v1';
   const PUBLISHED_KEY = 'ln-published-news-summary';
   const TABLE         = 'news_summary_snapshots';
-  const MAX_FEATURED  = 2;
-  const MAX_SIDE      = 3;
+  const MAX_FEATURED  = 4;
+  const MAX_SIDE      = 5;
   const DOW           = ['Do','Lu','Ma','Mi','Ju','Vi','Sá'];
 
+  /* ---------- Resúmenes en PDF (los días anteriores al sitio) ----------
+     Los resúmenes de julio 2026 y anteriores no se hicieron con esta
+     herramienta, así que viven como PDF. El manifiesto declara qué días
+     tienen PDF y dónde está cada archivo:
+
+       data/resumenes_pdf.json
+       {
+         "base": "docs/resumenes/",           // o la URL pública de Supabase Storage
+         "files": { "2026-07-01": "resumen-2026-07-01.pdf", ... }
+       }
+
+     Un valor puede ser un nombre de archivo (se le antepone "base") o una URL
+     completa (http/https), por si el PDF vive en Supabase Storage o GitHub.
+     Antes de pintar el calendario se comprueba con una petición HEAD que el
+     archivo exista: los días cuyo PDF todavía no se haya subido no se marcan,
+     así la interfaz siempre refleja lo que realmente está cargado. */
+  const PDF_MANIFEST_URL = 'data/resumenes_pdf.json';
+  const PDF_DEFAULT_BASE = 'docs/resumenes/';
+  const PDF_NAME_PATTERN = 'resumen-{date}.pdf';
+  // Meses previos al sitio que se publicaron en PDF (respaldo si falta el manifiesto).
+  const PDF_FALLBACK_MONTHS = ['2026-07'];
+
   let archive = {};          // { 'YYYY-MM-DD': { published_at, items:[] } }
+  let pdfArchive = {};       // { 'YYYY-MM-DD': url del PDF }
+  let pdfLoaded = false;
   let remoteLoaded = false;  // ya se intentó leer el archivo remoto
   let viewYear = 0, viewMonth = 0, selectedDate = '';
 
@@ -13671,6 +13809,79 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     return archive;
   }
 
+  /* ---------- archivo en PDF de los resúmenes anteriores ---------- */
+  function pdfUrl(base, value){
+    const v = txt(value).trim();
+    if (!v) return '';
+    if (/^(https?:)?\/\//i.test(v) || v.startsWith('/')) return v;
+    return txt(base || PDF_DEFAULT_BASE).replace(/\/?$/, '/') + v;
+  }
+
+  // Respaldo: días hábiles de los meses declarados en PDF_FALLBACK_MONTHS.
+  function fallbackPdfCandidates(){
+    const out = {};
+    PDF_FALLBACK_MONTHS.forEach(month => {
+      const [y, m] = txt(month).split('-').map(Number);
+      if (!y || !m) return;
+      const days = new Date(y, m, 0).getDate();
+      for (let day = 1; day <= days; day++) {
+        const dow = new Date(y, m - 1, day).getDay();
+        if (dow === 0 || dow === 6) continue;   // el resumen es de lunes a viernes
+        const pad = n => String(n).padStart(2, '0');
+        const key = `${y}-${pad(m)}-${pad(day)}`;
+        out[key] = pdfUrl(PDF_DEFAULT_BASE, PDF_NAME_PATTERN.replace('{date}', key));
+      }
+    });
+    return out;
+  }
+
+  async function readPdfManifest(){
+    try {
+      const res = await fetch(PDF_MANIFEST_URL, { cache: 'no-cache' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const json = await res.json();
+      const base = txt(json.base || PDF_DEFAULT_BASE);
+      const files = json.files || json.items || {};
+      const map = {};
+      Object.keys(files).forEach(key => {
+        const url = pdfUrl(base, files[key]);
+        if (url) map[key] = url;
+      });
+      return Object.keys(map).length ? map : fallbackPdfCandidates();
+    } catch (err) {
+      console.info('[LN-ARCHIVE] Sin manifiesto de PDF; se usan los días por convención:', err.message || err);
+      return fallbackPdfCandidates();
+    }
+  }
+
+  /* Solo se marcan los días cuyo PDF responde. Si la petición falla por CORS o
+     por red (no por un 404/403), se conserva el día: no hay forma de saberlo y
+     es preferible mostrar el enlace a esconder un resumen que sí existe. */
+  async function verifyPdf(url){
+    try {
+      const res = await fetch(url, { method: 'HEAD', cache: 'no-cache' });
+      if (res.status === 404 || res.status === 403 || res.status === 410) return false;
+      return true;
+    } catch { return true; }
+  }
+
+  async function loadPdfArchive(force){
+    if (pdfLoaded && !force) return pdfArchive;
+    pdfLoaded = true;
+    const candidates = await readPdfManifest();
+    const keys = Object.keys(candidates).sort();
+    const checks = await Promise.all(keys.map(key => verifyPdf(candidates[key])));
+    const map = {};
+    keys.forEach((key, i) => { if (checks[i]) map[key] = candidates[key]; });
+    pdfArchive = map;
+    return pdfArchive;
+  }
+
+  function hasEntry(key){ return !!archive[key] || !!pdfArchive[key]; }
+  function allKeys(){
+    return Array.from(new Set([...Object.keys(archive), ...Object.keys(pdfArchive)])).sort();
+  }
+
   /* ---------- guardar el snapshot del día al publicar ---------- */
   async function archiveToday(items){
     const list = (Array.isArray(items) ? items : []).map(normalizeItem);
@@ -13721,7 +13932,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
           <div>
             <div class="eyebrow">Archivo editorial</div>
             <h2>Resúmenes pasados</h2>
-            <p>Elige una fecha marcada en el calendario para ver el resumen de noticias tal como se publicó ese día.</p>
+            <p>Elige una fecha marcada en el calendario para ver el resumen de noticias tal como se publicó ese día. Los resúmenes anteriores al observatorio (julio y antes) se abren como PDF.</p>
           </div>
           <button type="button" class="archive-close" id="archive-close">Cerrar</button>
         </div>
@@ -13733,7 +13944,10 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
               <button type="button" id="archive-next" title="Mes siguiente" aria-label="Mes siguiente">›</button>
             </div>
             <div class="archive-grid" id="archive-grid"></div>
-            <div class="archive-legend"><span class="dot"></span>Días con resumen publicado</div>
+            <div class="archive-legend">
+              <span class="dot"></span>Días con resumen publicado<br>
+              <span class="dot pdf"></span>Días con resumen en PDF (anteriores al sitio)
+            </div>
           </div>
           <div class="archive-panel" id="archive-panel"></div>
         </div>`;
@@ -13769,19 +13983,24 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     for (let i = 0; i < first; i++) cells.push('<div class="archive-day empty"></div>');
     for (let day = 1; day <= days; day++) {
       const key = `${viewYear}-${pad(viewMonth + 1)}-${pad(day)}`;
-      const has = !!archive[key];
+      const isPdf = !!pdfArchive[key];
+      const has = !!archive[key] || isPdf;
       const classes = ['archive-day'];
       if (has) classes.push('has-data');
+      if (isPdf && !archive[key]) classes.push('is-pdf');
       if (key === selectedDate) classes.push('selected');
+      const title = isPdf && !archive[key]
+        ? `Abrir el resumen en PDF del ${esc(longDate(key))}`
+        : `Ver el resumen del ${esc(longDate(key))}`;
       cells.push(
         `<div class="${classes.join(' ')}" data-date="${key}"` +
-        (has ? ` role="button" tabindex="0" title="Ver el resumen del ${esc(longDate(key))}"` : '') +
+        (has ? ` role="button" tabindex="0" title="${title}"` : '') +
         `>${day}</div>`
       );
     }
     grid.innerHTML = cells.join('');
 
-    const keys = Object.keys(archive).sort();
+    const keys = allKeys();
     const prev = document.getElementById('archive-prev');
     const next = document.getElementById('archive-next');
     if (prev && keys.length) prev.disabled = `${viewYear}-${pad(viewMonth + 1)}` <= keys[0].slice(0, 7);
@@ -13792,8 +14011,10 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     const panel = document.getElementById('archive-panel');
     if (!panel) return;
     const snapshot = archive[key];
+    // Los días previos al sitio solo existen como PDF: se muestra el visor.
+    if (!snapshot && pdfArchive[key]) { renderPdfSnapshot(key); return; }
     if (!snapshot) {
-      const total = Object.keys(archive).length;
+      const total = allKeys().length;
       panel.innerHTML = `
         <div class="archive-empty">
           <strong>${total ? 'Elige una fecha marcada en el calendario.' : 'Todavía no hay resúmenes archivados.'}</strong>
@@ -13815,7 +14036,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
         <h3>${esc(longDate(key))}</h3>
         <div class="meta">Validado por Planeación Estratégica · ${items.length} ${items.length === 1 ? 'nota' : 'notas'}${stamp ? ' · publicado ' + esc(stamp) : ''}</div>
       </div>
-      ${featured.length ? `<div class="news-feature-grid">
+      ${featured.length ? `<div class="news-feature-grid" data-count="${featured.length}">
         ${featured.map(item => `
           <article class="news-feature">
             <span class="cat-tag">${esc(item.tag)}</span>
@@ -13827,7 +14048,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
             </div>
           </article>`).join('')}
       </div>` : ''}
-      ${rest.length ? `<aside class="news-side compact">
+      ${rest.length ? `<aside class="news-side compact" data-count="${rest.length}">
         <div class="news-side-head">Otras Noticias</div>
         ${rest.map(item => `
           <div class="news-item">
@@ -13838,9 +14059,34 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
       </aside>` : ''}`;
   }
 
+  function renderPdfSnapshot(key){
+    const panel = document.getElementById('archive-panel');
+    if (!panel) return;
+    const url = pdfArchive[key];
+    const safe = esc(url);
+    panel.innerHTML = `
+      <div class="archive-panel-head">
+        <h3>${esc(longDate(key))}</h3>
+        <div class="meta">Resumen publicado antes del observatorio · documento PDF</div>
+      </div>
+      <div class="archive-pdf">
+        <div class="archive-pdf-actions">
+          <a class="archive-pdf-btn primary" href="${safe}" target="_blank" rel="noopener">Abrir el PDF en una pestaña nueva</a>
+          <a class="archive-pdf-btn" href="${safe}" download>Descargar</a>
+        </div>
+        <object class="archive-pdf-frame" data="${safe}" type="application/pdf">
+          <iframe class="archive-pdf-frame" src="${safe}" title="Resumen del ${esc(longDate(key))}" loading="lazy"></iframe>
+        </object>
+        <p class="archive-pdf-note">Si el visor no carga en tu navegador, usa “Abrir el PDF en una pestaña nueva”.</p>
+      </div>`;
+  }
+
   function selectDate(key){
     selectedDate = key;
     renderCalendar();
+    // Un día que solo existe en PDF abre el documento directamente, además de
+    // dejarlo visible en el panel.
+    if (!archive[key] && pdfArchive[key]) window.open(pdfArchive[key], '_blank', 'noopener');
     renderSnapshot(key);
   }
 
@@ -13849,8 +14095,8 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     document.getElementById('archive-backdrop')?.classList.add('open');
     document.getElementById('archive-modal')?.classList.add('open');
     document.getElementById('archive-panel').innerHTML = '<div class="archive-empty">Cargando archivo…</div>';
-    await ensureArchive(false);
-    const keys = Object.keys(archive).sort();
+    await Promise.all([ensureArchive(false), loadPdfArchive(false)]);
+    const keys = allKeys();
     const last = keys[keys.length - 1] || dateKey();
     const [y, m] = last.split('-').map(Number);
     viewYear = y; viewMonth = m - 1;
@@ -13869,7 +14115,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   function updateArchiveMeta(){
     const meta = document.getElementById('news-archive-meta');
     if (!meta) return;
-    const total = Object.keys(archive).length;
+    const total = allKeys().length;
     meta.textContent = total
       ? `${total} ${total === 1 ? 'resumen guardado' : 'resúmenes guardados'} · elige una fecha para ver cómo quedó ese día`
       : 'Consulta cómo quedó el resumen de noticias en una fecha anterior';
