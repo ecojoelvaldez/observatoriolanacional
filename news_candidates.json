@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-08-03T13:57:02.133459+00:00",
+  "generated_at": "2026-08-03T18:21:02.446095+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
   "count": 9,
   "errors": 0,
   "sources": 12,
-  "elapsed_s": 186.6,
+  "elapsed_s": 226.1,
   "candidates": [
     {
       "id": "n_65ae4c3602d8fe97",
@@ -178,6 +178,19 @@
       "status": "pending"
     }
   ],
-  "discarded_count": 0,
-  "discarded": []
+  "discarded_count": 1,
+  "discarded": [
+    {
+      "id": "n_0464e98e9fd3b33f",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Monorriel de SD",
+      "url": "https://www.diariolibre.com/actualidad/nacional/2026/08/03/auditoria-revela-inconsistencias-en-monorriel-santo-domingo/3618035",
+      "source_name": "Diario Libre economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-03T18:21:00.943795+00:00"
+    }
+  ]
 }
