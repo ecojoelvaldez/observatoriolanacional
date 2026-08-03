@@ -1,0 +1,29 @@
+{
+  "_comentario": "Resúmenes de noticias publicados antes del observatorio. 'base' es la carpeta o URL pública donde viven los PDF; cada valor de 'files' puede ser un nombre de archivo (se le antepone 'base') o una URL completa. El sitio comprueba con una petición HEAD que cada PDF exista: los que falten no se marcan en el calendario.",
+  "base": "docs/resumenes/",
+  "files": {
+    "2026-07-01": "resumen-2026-07-01.pdf",
+    "2026-07-02": "resumen-2026-07-02.pdf",
+    "2026-07-03": "resumen-2026-07-03.pdf",
+    "2026-07-06": "resumen-2026-07-06.pdf",
+    "2026-07-07": "resumen-2026-07-07.pdf",
+    "2026-07-08": "resumen-2026-07-08.pdf",
+    "2026-07-09": "resumen-2026-07-09.pdf",
+    "2026-07-10": "resumen-2026-07-10.pdf",
+    "2026-07-13": "resumen-2026-07-13.pdf",
+    "2026-07-14": "resumen-2026-07-14.pdf",
+    "2026-07-15": "resumen-2026-07-15.pdf",
+    "2026-07-16": "resumen-2026-07-16.pdf",
+    "2026-07-17": "resumen-2026-07-17.pdf",
+    "2026-07-20": "resumen-2026-07-20.pdf",
+    "2026-07-21": "resumen-2026-07-21.pdf",
+    "2026-07-22": "resumen-2026-07-22.pdf",
+    "2026-07-23": "resumen-2026-07-23.pdf",
+    "2026-07-24": "resumen-2026-07-24.pdf",
+    "2026-07-27": "resumen-2026-07-27.pdf",
+    "2026-07-28": "resumen-2026-07-28.pdf",
+    "2026-07-29": "resumen-2026-07-29.pdf",
+    "2026-07-30": "resumen-2026-07-30.pdf",
+    "2026-07-31": "resumen-2026-07-31.pdf"
+  }
+}
