@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-08-03T13:30:02.417529+00:00",
+  "generated_at": "2026-08-03T13:57:02.133459+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
   "count": 9,
   "errors": 0,
   "sources": 12,
-  "elapsed_s": 371.9,
+  "elapsed_s": 186.6,
   "candidates": [
     {
       "id": "n_65ae4c3602d8fe97",
@@ -178,55 +178,6 @@
       "status": "pending"
     }
   ],
-  "discarded_count": 4,
-  "discarded": [
-    {
-      "id": "n_0464e98e9fd3b33f",
-      "motivo": "relevancia_baja",
-      "motivo_texto": "El modelo le puso poca relevancia financiera",
-      "title": "Auditoría al proyecto del Monorriel de SD detecta inconsistencias",
-      "url": "https://www.diariolibre.com/actualidad/nacional/2026/08/03/auditoria-revela-inconsistencias-en-monorriel-santo-domingo/3618035",
-      "source_name": "Diario Libre economía",
-      "relevance": 5,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-03T13:24:25.869624+00:00"
-    },
-    {
-      "id": "n_f3b962414258d798",
-      "motivo": "relevancia_baja",
-      "motivo_texto": "El modelo le puso poca relevancia financiera",
-      "title": "Gobierno congela precios de gasolinas, gasoil y GLP; otros combustibles suben",
-      "url": "https://www.diariolibre.com/economia/energia/2026/07/31/gobierno-congela-precios-de-gasolinas-gasoil-y-glp/3616503",
-      "source_name": "Diario Libre economía",
-      "relevance": 5,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-03T13:24:36.835977+00:00"
-    },
-    {
-      "id": "n_a8d01efbb507f587",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Petróleo Texas cae US80.85 ; OPEP+ elevará producción",
-      "url": "https://hoy.com.do/economia/petroleo-texas-cae-us80-85-opep-elevara-produccion_1097338.html",
-      "source_name": "Fuente guardada",
-      "relevance": null,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-03T13:30:00.889802+00:00"
-    },
-    {
-      "id": "n_f689ec7ad56978e0",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "El BCRD mantiene la tasa de política monetaria en 5.25 %",
-      "url": "https://hoy.com.do/economia/bcrd-mantiene-tasa-politica-monetaria-5-25_1097196.html",
-      "source_name": "Fuente guardada",
-      "relevance": null,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-03T13:30:00.914574+00:00"
-    }
-  ]
+  "discarded_count": 0,
+  "discarded": []
 }
