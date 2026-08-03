@@ -13649,12 +13649,20 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   // Meses previos al sitio que se publicaron como documento.
   const DOC_FALLBACK_MONTHS = ['2026-07'];
 
+  /* Piso del calendario: julio 2026 es el primer mes con resúmenes. Nunca
+     habrá nada antes, así que no se puede navegar más atrás. Además fija el
+     estado inicial: sin esto, viewYear = 0 pinta "Enero de 1900" mientras
+     carga el archivo. */
+  const ARCHIVE_FLOOR = '2026-07';
+  const FLOOR_YEAR  = Number(ARCHIVE_FLOOR.split('-')[0]);
+  const FLOOR_MONTH = Number(ARCHIVE_FLOOR.split('-')[1]) - 1;   // 0-based
+
   let archive = {};          // { 'YYYY-MM-DD': { published_at, items:[] } }
   let docArchive = {};       // { 'YYYY-MM-DD': { url, ext, name } }
   let docLoaded = false;
   let docPattern = null;     // { variant, ext } que ya funcionó, se prueba primero
   let remoteLoaded = false;  // ya se intentó leer el archivo remoto
-  let viewYear = 0, viewMonth = 0, selectedDate = '';
+  let viewYear = FLOOR_YEAR, viewMonth = FLOOR_MONTH, selectedDate = '';
 
   function sb(){ return window.lnSupabase || window.supabase || null; }
   function txt(v){ return String(v ?? ''); }
@@ -14067,10 +14075,23 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     return modal;
   }
 
+  // Índice de mes absoluto, para comparar y acotar sin pelear con las fechas.
+  function monthIndex(year, month){ return year * 12 + month; }
+  const FLOOR_INDEX = monthIndex(FLOOR_YEAR, FLOOR_MONTH);
+  function currentIndex(){ const n = new Date(); return monthIndex(n.getFullYear(), n.getMonth()); }
+
+  // El calendario vive entre julio 2026 y el mes en curso: fuera de ese rango
+  // no hay ni puede haber resúmenes.
+  function clampMonth(year, month){
+    const limited = Math.min(Math.max(monthIndex(year, month), FLOOR_INDEX), Math.max(currentIndex(), FLOOR_INDEX));
+    return { year: Math.floor(limited / 12), month: limited % 12 };
+  }
+
   function shiftMonth(delta){
     const d = new Date(viewYear, viewMonth + delta, 1);
-    viewYear = d.getFullYear();
-    viewMonth = d.getMonth();
+    const next = clampMonth(d.getFullYear(), d.getMonth());
+    viewYear = next.year;
+    viewMonth = next.month;
     renderCalendar();
   }
 
@@ -14104,11 +14125,13 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     }
     grid.innerHTML = cells.join('');
 
-    const keys = allKeys();
+    const here = monthIndex(viewYear, viewMonth);
     const prev = document.getElementById('archive-prev');
     const next = document.getElementById('archive-next');
-    if (prev && keys.length) prev.disabled = `${viewYear}-${pad(viewMonth + 1)}` <= keys[0].slice(0, 7);
-    if (next) next.disabled = new Date(viewYear, viewMonth, 1) >= new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+    // El tope inferior es el piso del archivo, no la primera fecha cargada: así
+    // el botón queda bien acotado incluso mientras el archivo todavía carga.
+    if (prev) prev.disabled = here <= FLOOR_INDEX;
+    if (next) next.disabled = here >= Math.max(currentIndex(), FLOOR_INDEX);
   }
 
   function renderSnapshot(key){
@@ -14205,11 +14228,18 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     document.getElementById('archive-backdrop')?.classList.add('open');
     document.getElementById('archive-modal')?.classList.add('open');
     document.getElementById('archive-panel').innerHTML = '<div class="archive-empty">Cargando archivo…</div>';
+    // Se pinta ya, con el mes acotado al rango válido, para no dejar el
+    // encabezado en blanco (ni en un año inventado) mientras carga.
+    const start = clampMonth(viewYear, viewMonth);
+    viewYear = start.year; viewMonth = start.month;
+    renderCalendar();
+
     await Promise.all([ensureArchive(false), loadDocArchive(false)]);
     const keys = allKeys();
     const last = keys[keys.length - 1] || dateKey();
     const [y, m] = last.split('-').map(Number);
-    viewYear = y; viewMonth = m - 1;
+    const view = clampMonth(y, m - 1);
+    viewYear = view.year; viewMonth = view.month;
     selectedDate = keys.length ? last : '';
     renderCalendar();
     renderSnapshot(selectedDate);
