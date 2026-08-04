@@ -2,21 +2,33 @@
 Observatorio Estratégico La Nacional — Pipeline de Noticias v4 LOCAL/STATIC
 ============================================================================
 Flujo:
-  1. Lee fuentes activas desde Supabase (news_sources). Esto es liviano.
-  2. Lee cada página índice con Jina Reader.
-  3. Gemini extrae URLs reales de artículos candidatos.
-  4. Para cada artículo, lee la URL individual con Jina (en paralelo, 3 hilos).
+  1. Calcula la VENTANA EDITORIAL del día: desde las 2:00 PM del día hábil
+     anterior hasta ahora (hora de Santo Domingo). El lunes eso arrastra desde
+     el viernes 2:00 PM, o sea viernes tarde + todo el fin de semana.
+  2. Lee fuentes activas desde Supabase (news_sources). Esto es liviano.
+  3. Lee cada página índice con Jina Reader.
+  4. Gemini extrae URLs reales de artículos candidatos.
+  5. Para cada artículo, lee la URL individual con Jina (en paralelo, 3 hilos).
      Si esa URL no abre, se busca el mismo titular en la web y se lee la
      cobertura de otro medio.
-  5. Gemini genera resumen ejecutivo + lead + relevancia financiera (0-10).
-  6. Se aceptan candidatos con relevancia >= NEWS_MIN_RELEVANCE, con un PISO
+  6. Gemini genera resumen ejecutivo + lead + "por qué importa" + tipo de pieza
+     + relevancia financiera (0-10).
+  7. Se descartan de plano los temas que el analista no quiere ver: sector
+     eléctrico, opinión/editorial/columna, variedades y notas de servicio
+     (ver TEMAS_EXCLUIDOS y TIPOS_EXCLUIDOS).
+  8. Se aceptan candidatos con relevancia >= NEWS_MIN_RELEVANCE, con un PISO
      institucional que el modelo no puede bajar (ver SEÑALES_RELEVANCIA).
-  7. Barrido propio en la web sobre los temas que importan, además de las
+  9. Barrido propio en la web sobre los temas que importan, además de las
      fuentes fijas, con el cupo que sobre.
-  8. Se colapsan las notas que cuentan la misma noticia desde distintos medios.
-  9. Escribe un archivo estático news_candidates.json en la raíz del repo, con
-     los candidatos Y todo lo descartado junto con su motivo, para que el panel
-     lo muestre y el analista pueda recuperarlo.
+ 10. Se colapsan las notas que cuentan la misma noticia desde distintos medios.
+ 11. GARANTÍA DE PISO: si tras todo eso no hay al menos NEWS_MIN_CANDIDATES,
+     se relaja en escalera (ver completar_minimo) hasta llenar la cuota.
+ 12. Gemini redacta el BRIEF del día sobre los candidatos ya elegidos: qué pasó,
+     por qué importa y qué vigilar. Es lo primero que ve el analista.
+ 13. Escribe un archivo estático news_candidates.json en la raíz del repo, con
+     los candidatos, el brief, la salud de cada fuente Y todo lo descartado
+     junto con su motivo, para que el panel lo muestre y el analista pueda
+     recuperarlo.
 
 Redes de seguridad, todas por la misma razón: que ninguna noticia importante
 obligue a buscarla a mano.
@@ -29,6 +41,10 @@ obligue a buscarla a mano.
   * Deduplicación por tema — la misma noticia desde dos medios es una sola.
   * Filtro de páginas inválidas — errores 404 y muros de pago no son noticia.
   * Corta-circuito de cuota — si Gemini se agota, terminar limpio y rápido.
+  * Piso de candidatos — un día flojo no puede dejar al analista sin material.
+  * Salud de fuentes — se anota qué rindió cada fuente, corrida a corrida, para
+    que sustituir una fuente muerta sea una decisión con datos y no una
+    corazonada (data/news_source_health.json).
 
 El analista carga ese JSON desde el panel, lo guarda en localStorage y aprueba/rechaza localmente.
 Solo las noticias publicadas se guardan en Supabase (news_items).
@@ -43,11 +59,16 @@ Variables opcionales:
   NEWS_CANDIDATES_PATH=news_candidates.json
   MAX_TOTAL_PROPOSALS=30
   NEWS_MIN_RELEVANCE=6        # umbral 0-10 de relevancia financiera
+  NEWS_MIN_CANDIDATES=6       # piso de candidatos por corrida (garantia)
+  NEWS_WINDOW_CUTOFF_HOUR=14  # "la tarde de ayer" empieza a esta hora (RD)
+  NEWS_WINDOW_MAX_DAYS=5      # tope de arrastre de la ventana (feriados largos)
   ARTICLE_WORKERS=3           # hilos por fuente para leer articulos
   NEWS_SEARCH_ENABLED=true    # barrido propio en la web ademas de las fuentes
   NEWS_SEARCH_QUERIES=...     # consultas separadas por "|" (ver DEFAULT_SEARCH_QUERIES)
   NEWS_SEARCH_MAX_PER_QUERY=4
   NEWS_RESCUE_ENABLED=true    # buscar el titular en otro medio si la URL no abre
+  NEWS_BRIEF_ENABLED=true     # brief del dia redactado por Gemini
+  NEWS_HEALTH_PATH=data/news_source_health.json
 """
 
 from __future__ import annotations
@@ -62,7 +83,7 @@ import logging
 import threading
 import unicodedata
 from pathlib import Path
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone, timedelta, time as _time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urlparse, urljoin, parse_qsl, urlencode, urlunparse
 
@@ -81,6 +102,7 @@ GEMINI_API_KEY = os.environ["GEMINI_API_KEY"]
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash-lite")
 
 NEWS_CANDIDATES_PATH = Path(os.getenv("NEWS_CANDIDATES_PATH", "news_candidates.json"))
+NEWS_HEALTH_PATH = Path(os.getenv("NEWS_HEALTH_PATH", "data/news_source_health.json"))
 
 JINA_READER_BASE = "https://r.jina.ai/"
 GEMINI_ENDPOINT = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
@@ -91,12 +113,30 @@ MAX_INDEX_MARKDOWN_CHARS = 9000
 MAX_ARTICLE_MARKDOWN_CHARS = 12000
 MIN_CONTENT_CHARS = 250
 DELAY_BETWEEN_SOURCES = 1.5
-MAX_HEADLINES_PER_SOURCE = 6
 MAX_TOTAL_PROPOSALS = int(os.getenv("MAX_TOTAL_PROPOSALS", "30"))
-NEWS_MAX_AGE_HOURS = int(os.getenv("NEWS_MAX_AGE_HOURS", "72"))
-CANDIDATE_TTL_DAYS = int(os.getenv("CANDIDATE_TTL_DAYS", "3"))
 NEWS_MIN_RELEVANCE = int(os.getenv("NEWS_MIN_RELEVANCE", "6"))
+# Piso de candidatos por corrida. El analista abre el panel esperando material
+# de trabajo; un dia flojo no puede dejarlo con dos notas.
+NEWS_MIN_CANDIDATES = int(os.getenv("NEWS_MIN_CANDIDATES", "6"))
 ARTICLE_WORKERS = max(1, int(os.getenv("ARTICLE_WORKERS", "3")))
+
+# --- Ventana editorial -----------------------------------------------------
+# El resumen se arma con lo de la tarde de ayer en adelante: lo de la mañana de
+# ayer ya salio en el resumen de ayer. Antes esto era una edad maxima en horas
+# (72h), que es otra cosa: dejaba entrar notas de anteayer y, peor, no
+# distinguia el lunes — y el lunes es justo el dia que necesita mas arrastre,
+# porque debe cubrir la tarde del viernes y todo el fin de semana.
+TZ_RD = timezone(timedelta(hours=-4))  # Santo Domingo, sin horario de verano
+NEWS_WINDOW_CUTOFF_HOUR = int(os.getenv("NEWS_WINDOW_CUTOFF_HOUR", "14"))
+NEWS_WINDOW_MAX_DAYS = int(os.getenv("NEWS_WINDOW_MAX_DAYS", "5"))
+# Cuanto se ensancha la ventana en cada peldaño de la escalera de rescate.
+NEWS_WINDOW_RELAX_HOURS = int(os.getenv("NEWS_WINDOW_RELAX_HOURS", "24"))
+CANDIDATE_TTL_DAYS = int(os.getenv("CANDIDATE_TTL_DAYS", "3"))
+# Titulares que se piden por fuente. El lunes se sube el cupo porque la ventana
+# cubre tres dias de publicaciones en vez de uno.
+MAX_HEADLINES_PER_SOURCE = int(os.getenv("MAX_HEADLINES_PER_SOURCE", "6"))
+MAX_HEADLINES_LUNES = int(os.getenv("MAX_HEADLINES_LUNES", "9"))
+NEWS_BRIEF_ENABLED = os.getenv("NEWS_BRIEF_ENABLED", "true").strip().lower() not in ("0", "false", "no")
 # El free tier de Gemini limita las peticiones por minuto; espaciar las
 # llamadas evita tormentas de 429 que agotan los reintentos y dejan fuentes
 # sin procesar (observado en el run del 2026-07-06).
@@ -121,6 +161,20 @@ DEFAULT_SEARCH_QUERIES = [
 ]
 NEWS_SEARCH_QUERIES = [
     q.strip() for q in os.getenv("NEWS_SEARCH_QUERIES", "|".join(DEFAULT_SEARCH_QUERIES)).split("|") if q.strip()
+]
+# Segunda tanda: solo se usa cuando la corrida se queda corta del piso de
+# candidatos. Abre el abanico sin ensuciar el dia normal.
+DEFAULT_SEARCH_QUERIES_EXTRA = [
+    "Junta Monetaria resolución República Dominicana",
+    "crédito hipotecario vivienda República Dominicana",
+    "Ministerio de Hacienda deuda pública República Dominicana",
+    "calificación crediticia República Dominicana Fitch Moody's S&P",
+    "reservas internacionales dólar peso dominicano mercado cambiario",
+    "Reserva Federal tasas de interés impacto América Latina",
+    "fintech pagos digitales inclusión financiera República Dominicana",
+]
+NEWS_SEARCH_QUERIES_EXTRA = [
+    q.strip() for q in os.getenv("NEWS_SEARCH_QUERIES_EXTRA", "|".join(DEFAULT_SEARCH_QUERIES_EXTRA)).split("|") if q.strip()
 ]
 # Recuperar por titular cuando no se puede leer el cuerpo en la fuente original.
 NEWS_RESCUE_ENABLED = os.getenv("NEWS_RESCUE_ENABLED", "true").strip().lower() not in ("0", "false", "no")
@@ -181,6 +235,66 @@ PATRONES_PAGINA_INVALIDA = [
     "are you a robot", "attention required", "service unavailable",
 ]
 
+# --- Temas que el analista no quiere ver -----------------------------------
+# Tres familias distintas, y conviene no mezclarlas:
+#   * TEMAS_EXCLUIDOS  -> el asunto no interesa (sector electrico, variedades).
+#     Manda incluso sobre el piso institucional: "el Superintendente de
+#     Electricidad anuncia..." dispara la señal "regulador" por la palabra
+#     "superintendente", y no es una noticia de este observatorio.
+#   * SECCIONES_EXCLUIDAS -> la URL delata la seccion (/opinion/, /deportes/).
+#     Es el filtro mas barato y el mas fiable: no gasta ni una llamada.
+#   * TIPOS_EXCLUIDOS  -> el modelo clasifica la pieza y decimos que no es
+#     noticia (columna de opinion, publirreportaje, nota de servicio).
+TEMAS_EXCLUIDOS = [
+    ("electricidad", [
+        "apagon", "apagones", "edeeste", "edenorte", "edesur", "cdeee", "eted",
+        "punta catalina", "generacion electrica", "energia electrica", "sector electrico",
+        "tarifa electrica", "pacto electrico", "subsidio electrico", "distribuidoras electricas",
+        "kilovatio", "megavatio", "kwh", "superintendencia de electricidad",
+        "superintendente de electricidad", "sistema electrico nacional",
+        "generadoras electricas", "electricidad",
+    ]),
+    ("variedades", [
+        "farandula", "espectaculo", "espectaculos", "entretenimiento", "horoscopo",
+        "concurso de belleza", "reina de belleza", "telenovela", "celebridad",
+        "beisbol", "futbol", "baloncesto", "olimpicos", "loteria", "quiniela",
+    ]),
+    ("sucesos", [
+        "homicidio", "asesinato", "tiroteo", "narcotrafico", "incautacion de droga",
+        "accidente de transito", "feminicidio", "reo", "carcel preventiva",
+    ]),
+]
+
+SECCIONES_EXCLUIDAS = [
+    "/opinion", "/opiniones", "/editorial", "/editoriales", "/columna", "/columnas",
+    "/columnistas", "/punto-de-vista", "/blogs", "/blog/",
+    "/variedades", "/gente", "/farandula", "/entretenimiento", "/espectaculos",
+    "/deportes", "/estilo", "/vida-y-estilo", "/revista", "/sociales", "/tendencias",
+    "/sucesos", "/policiales", "/judicial",
+    "/electricidad", "/energia",
+    "/horoscopo", "/loteria", "/loterias", "/servicios/loterias",
+]
+
+# Piezas que no son noticia dura. "servicio" es la nota rutinaria que se repite
+# igual cada dia o cada semana (la tasa del dolar de hoy, el precio semanal de
+# los combustibles): no es falsa ni irrelevante, pero el analista ya sabe que
+# existe y no necesita que se la propongan como hallazgo del dia. Queda en la
+# reserva, por si un dia flojo hace falta completar la cuota.
+TIPOS_EXCLUIDOS = {"opinion", "publirreportaje", "servicio"}
+TIPOS_VALIDOS = {"noticia", "analisis", "opinion", "publirreportaje", "servicio"}
+
+# Titulares de nota rutinaria: el modelo a veces las etiqueta "noticia" porque
+# traen cifras. Se reconocen por el patron del titular.
+PATRONES_RUTINA = [
+    r"\bprecio del dolar\b.*\bhoy\b", r"\bdolar hoy\b", r"\btasa del dolar\b",
+    r"\bprecios? de (los )?combustibles?\b", r"\bcombustibles\b.*\b(semana|congel|suben|bajan)\b",
+    # El aviso semanal de combustibles: "Gobierno congela precios de gasolinas,
+    # gasoil y GLP". Sale igual todos los viernes y no es un hallazgo del dia.
+    r"\b(congel|mantien|sube|baja|varia)\w*\b.{0,40}\bprecios?\b.{0,40}\b(gasolina|gasoil|glp|gas natural)",
+    r"\bprecios?\b.{0,30}\b(gasolinas?|gasoil|glp)\b.{0,40}\b(semana|congel)",
+    r"\bhoroscopo\b", r"\bloteri", r"\bresultados de las loterias\b",
+]
+
 # Palabras vacias para comparar titulares (deteccion de duplicados).
 STOPWORDS = {
     "a", "al", "ante", "con", "como", "de", "del", "desde", "el", "en", "entre", "es",
@@ -203,6 +317,93 @@ def now_iso() -> str:
 
 def stable_id(url: str) -> str:
     return "n_" + hashlib.sha1((url or "").encode("utf-8")).hexdigest()[:16]
+
+
+# ---------------------------------------------------------------------------
+# Ventana editorial
+# ---------------------------------------------------------------------------
+DIAS_ES = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"]
+
+
+def _ultima_corrida() -> datetime | None:
+    """Cuando corrio el pipeline por ultima vez, segun el JSON en el repo.
+
+    Sirve para cubrir el hueco de un feriado: si el lunes fue dia libre y no
+    hubo corrida, el martes la ventana arrastra desde el viernes sola, sin
+    tener que mantener un calendario de feriados dominicanos.
+    """
+    try:
+        if not NEWS_CANDIDATES_PATH.exists():
+            return None
+        data = json.loads(NEWS_CANDIDATES_PATH.read_text(encoding="utf-8"))
+        return parse_iso_date(data.get("generated_at"))
+    except Exception:
+        return None
+
+
+def calcular_ventana(ahora: datetime | None = None) -> dict:
+    """Desde las 2:00 PM del dia habil anterior hasta ahora, hora de RD.
+
+    Martes a viernes: desde ayer 2:00 PM (la mañana de ayer ya se resumio).
+    Lunes: el dia habil anterior es el viernes, asi que la ventana arrastra
+    viernes 2:00 PM + sabado + domingo. Ese es justo el dia que venia flojo.
+    Si la corrida anterior es mas vieja que ese corte (feriado, workflow caido),
+    la ventana se estira hasta ella para no perder nada en el hueco.
+    """
+    ahora_utc = (ahora or datetime.now(timezone.utc)).astimezone(timezone.utc)
+    ahora_rd = ahora_utc.astimezone(TZ_RD)
+
+    dia_anterior = ahora_rd.date() - timedelta(days=1)
+    while dia_anterior.weekday() >= 5:  # 5 sabado, 6 domingo
+        dia_anterior -= timedelta(days=1)
+    inicio = datetime.combine(dia_anterior, _time(NEWS_WINDOW_CUTOFF_HOUR), tzinfo=TZ_RD)
+
+    motivo = "tarde de ayer en adelante"
+    if ahora_rd.weekday() == 0:
+        motivo = "lunes: desde la tarde del viernes, con el fin de semana completo"
+
+    previa = _ultima_corrida()
+    if previa and previa < inicio.astimezone(timezone.utc):
+        inicio = previa.astimezone(TZ_RD)
+        motivo = "estirada hasta la corrida anterior (hubo un hueco sin pipeline)"
+
+    tope = ahora_rd - timedelta(days=NEWS_WINDOW_MAX_DAYS)
+    if inicio < tope:
+        inicio = tope
+        motivo = f"recortada al tope de {NEWS_WINDOW_MAX_DAYS} dias"
+
+    return {
+        "inicio": inicio.astimezone(timezone.utc),
+        "fin": ahora_utc,
+        "es_lunes": ahora_rd.weekday() == 0,
+        "dia": DIAS_ES[ahora_rd.weekday()],
+        "motivo": motivo,
+        "horas": round((ahora_utc - inicio.astimezone(timezone.utc)).total_seconds() / 3600, 1),
+        "inicio_local": inicio.strftime("%Y-%m-%d %H:%M"),
+        "fin_local": ahora_rd.strftime("%Y-%m-%d %H:%M"),
+    }
+
+
+# La ventana se calcula una vez por corrida y se relaja, si hace falta, en la
+# escalera de rescate. Vive en un dict para que ensancharla no obligue a pasarla
+# por parametro por todo el pipeline.
+VENTANA: dict = {}
+
+
+def fuera_de_ventana(published_at: str | None) -> bool:
+    """True si la nota quedo fuera de la ventana editorial.
+
+    Sin fecha NO es motivo de descarte: muchos medios dominicanos no la
+    publican en el markdown y tirarlas por eso perderia noticias buenas. Se
+    marcan con `sin_fecha` para que el analista lo sepa.
+    """
+    dt = parse_iso_date(published_at)
+    if not dt or not VENTANA:
+        return False
+    if dt > VENTANA["fin"] + timedelta(hours=6):
+        # Fecha futura: casi siempre es basura del CMS, no se castiga.
+        return False
+    return dt < VENTANA["inicio"]
 
 
 # ---------------------------------------------------------------------------
@@ -229,6 +430,44 @@ def es_pagina_invalida(*textos: str) -> bool:
     """True si el texto es una pagina de error, un muro de pago o un captcha."""
     blob = norm_texto(" ".join(t for t in textos if t)[:1200])
     return any(p in blob for p in PATRONES_PAGINA_INVALIDA)
+
+
+def tema_excluido(*textos: str) -> str | None:
+    """Etiqueta del tema vetado que aparece en el texto, o None.
+
+    Se mira sobre todo el titular y el resumen: una mencion de pasada al sector
+    electrico dentro de una nota macro no deberia tumbarla, pero una nota cuyo
+    titular habla de apagones no es materia de este observatorio.
+    """
+    blob = norm_texto(" ".join(t for t in textos if t))
+    if not blob:
+        return None
+    for etiqueta, terminos in TEMAS_EXCLUIDOS:
+        if any(re.search(rf"\b{re.escape(term)}", blob) for term in terminos):
+            return etiqueta
+    return None
+
+
+def seccion_excluida(url: str) -> str | None:
+    """Seccion vetada segun la ruta de la URL, o None.
+
+    El filtro mas barato del pipeline: se aplica antes de leer el articulo, asi
+    que una columna de opinion no gasta ni una lectura ni una llamada a Gemini.
+    """
+    try:
+        ruta = urlparse(ensure_scheme(url)).path.lower()
+    except Exception:
+        return None
+    for seccion in SECCIONES_EXCLUIDAS:
+        if seccion in ruta:
+            return seccion.strip("/")
+    return None
+
+
+def es_nota_rutinaria(titulo: str) -> bool:
+    """True si el titular es de nota de servicio que se repite cada dia/semana."""
+    blob = norm_texto(titulo)
+    return any(re.search(p, blob) for p in PATRONES_RUTINA)
 
 
 def tokens_titular(titulo: str) -> set[str]:
@@ -296,7 +535,16 @@ def sb_insert_log(entry: dict) -> None:
 
 
 def load_sources() -> list[dict]:
-    rows = sb_get("news_sources", params={"enabled": "eq.true", "select": "source_key,name,url,enabled"})
+    # url_alterna es opcional: si la columna no existe todavia (migracion sin
+    # aplicar), se vuelve a pedir sin ella en vez de tumbar la corrida.
+    try:
+        rows = sb_get("news_sources", params={
+            "enabled": "eq.true",
+            "select": "source_key,name,url,url_alterna,enabled",
+        })
+    except Exception:
+        log.info("news_sources sin columna url_alterna; se lee el esquema anterior")
+        rows = sb_get("news_sources", params={"enabled": "eq.true", "select": "source_key,name,url,enabled"})
     log.info("Fuentes activas: %d", len(rows))
     return rows
 
@@ -308,24 +556,42 @@ def load_sources() -> list[dict]:
 # ---------------------------------------------------------------------------
 _descartes: list[dict] = []
 _descartes_lock = threading.Lock()
+# Candidatos completos apartados por un criterio de calidad (ventana, umbral,
+# rutina). Son la reserva de la que tira completar_minimo si el dia viene flojo.
+_reserva: list[dict] = []
 
 MOTIVO_TEXTO = {
     "relevancia_baja": "El modelo le puso poca relevancia financiera",
     "modelo_irrelevante": "El modelo la marco como no noticiosa",
     "sin_cuerpo": "No se pudo leer el cuerpo del articulo",
     "sin_detalle": "El articulo no devolvio datos utiles",
-    "vieja": "Publicada fuera de la ventana de frescura",
+    "vieja": "Publicada fuera de la ventana editorial del dia",
     "duplicada": "Ya cubierta por otra nota del mismo tema",
+    "tema_vetado": "Tema que el analista pidio no ver",
+    "seccion_vetada": "Viene de una seccion que no se cubre",
+    "opinion": "Es opinion, columna o editorial, no noticia",
+    "publirreportaje": "Es contenido patrocinado, no noticia",
+    "rutinaria": "Nota de servicio que se repite cada dia o cada semana",
 }
+
+# Motivos que la escalera de rescate puede revertir cuando faltan candidatos:
+# son notas reales y ya procesadas, apartadas por un criterio de calidad, no
+# por ser basura. Se listan en el orden en que se prefiere recuperarlas.
+MOTIVOS_RESCATABLES = ["vieja", "relevancia_baja", "rutinaria", "modelo_irrelevante"]
 
 
 def registrar_descarte(motivo: str, titulo: str, url: str, fuente: str = "",
-                       relevancia=None, señales=None, detalle: str = "") -> None:
+                       relevancia=None, señales=None, detalle: str = "",
+                       candidato: dict | None = None) -> None:
     if not (titulo or url):
         return
     with _descartes_lock:
         if any(d.get("url") == url for d in _descartes):
             return
+        if candidato and motivo in MOTIVOS_RESCATABLES:
+            # Se guarda el candidato completo, no solo el titular: si al final
+            # falta cupo, recuperarlo no cuesta ni una lectura ni una llamada.
+            _reserva.append({**candidato, "motivo_original": motivo})
         _descartes.append({
             "id": stable_id(url or titulo),
             "motivo": motivo,
@@ -555,16 +821,27 @@ Prioriza (en este orden):
 4. Indicadores macroeconomicos de RD (PIB, IMAE, deuda, IED, empleo)
 5. Economia global SOLO si tiene canal claro hacia RD (Fed, petroleo, remesas, turismo)
 
-Descarta sin excepcion: navegacion, relleno, opinion sin dato economico, publirreportajes, tecnologia de consumo, deportes, entretenimiento, sucesos, politica sin componente economico, noticias militares o de seguridad sin impacto financiero cuantificable.
+DESCARTA SIN EXCEPCION (el analista pidio expresamente no verlos):
+- OPINION en cualquier forma: columnas, editoriales, analisis de autor, cartas, "punto de vista".
+  Si el texto es la postura de alguien y no un hecho ocurrido, no lo devuelvas.
+- SECTOR ELECTRICO: apagones, EDEs, generacion, tarifa electrica, Punta Catalina, pacto electrico.
+- VARIEDADES: farandula, entretenimiento, deportes, sociales, estilo de vida, loterias, horoscopos.
+- NOTAS DE SERVICIO que se repiten igual cada dia o cada semana: "precio del dolar hoy",
+  precios semanales de combustibles, resultados de loterias.
+- Publirreportajes y contenido patrocinado, navegacion, relleno, tecnologia de consumo,
+  sucesos, politica sin componente economico, seguridad sin impacto financiero cuantificable.
 
 Devuelve SOLO JSON valido con esta estructura exacta:
 {"headlines":[{"title":"titular exacto","link":"URL del articulo individual","category":"Economia"}]}
 
 Reglas:
-- Devuelve entre 0 y 6 titulares. Menos y mejores es preferible a mas y debiles.
+- Devuelve entre 0 y {max_titulares} titulares. Menos y mejores es preferible a mas y debiles.
 - category debe ser exactamente una de: Monetario, Financiero, Regulatorio, Economia, Global.
 - link debe ser la URL del articulo individual. Si no hay enlace claro, omite el titular.
 - No inventes enlaces.
+
+VENTANA: solo interesan hechos ocurridos o publicados en este periodo: {ventana}.
+Si el indice muestra fecha y la nota es claramente anterior, omitela.
 
 Markdown de pagina indice:
 """
@@ -578,6 +855,8 @@ Devuelve SOLO JSON valido con esta estructura exacta:
   "title": "titulo completo del articulo",
   "summary": "resumen ejecutivo en 2 oraciones, en espanol, con impacto para el sector financiero dominicano",
   "body": "lead propio de 1 parrafo, 45-90 palabras, basado en el cuerpo de la noticia, no repitas el titulo y no copies texto largo literalmente",
+  "por_que_importa": "1 oracion (max 25 palabras) sobre el efecto concreto para una asociacion de ahorros y prestamos dominicana",
+  "tipo": "noticia",
   "published_at": "fecha ISO 8601 si aparece, o null",
   "category": "Economia",
   "relevance": 7,
@@ -585,6 +864,14 @@ Devuelve SOLO JSON valido con esta estructura exacta:
 }
 
 Reglas:
+- tipo debe ser exactamente uno de: noticia, analisis, opinion, publirreportaje, servicio.
+  * "opinion": columna, editorial, carta o analisis firmado donde lo que se cuenta es la
+    postura del autor y no un hecho ocurrido. El analista NO quiere opinion: clasificala bien.
+  * "publirreportaje": contenido pagado o promocional de una empresa.
+  * "servicio": nota rutinaria que se repite igual cada dia o cada semana (precio del dolar
+    de hoy, precios semanales de combustibles, resultados de loterias).
+  * "analisis": reportaje con datos y contexto propio, escrito por la redaccion, no por un columnista.
+  * "noticia": hecho ocurrido, reportado. Ante la duda entre noticia y analisis, usa "noticia".
 - category debe ser exactamente una de: Monetario, Financiero, Regulatorio, Economia, Global.
 - relevance es un entero 0-10 que mide el impacto para el SECTOR FINANCIERO dominicano:
   * 9-10: decision de politica monetaria/regulatoria, datos de banca o credito, tasas, tipo de cambio,
@@ -607,20 +894,43 @@ IMPORTANTE — errores a no repetir. Estas SI son relevantes y se estaban descar
 Ante la duda entre descartar y proponer una nota que menciona un regulador, un banco dominicano o
 la politica monetaria: PROPONLA. El analista filtra despues; lo que no se propone no se ve.
 
+TEMAS QUE NO SE CUBREN (aunque traigan cifras): sector electrico (apagones, EDEs, generacion,
+tarifa, Punta Catalina), variedades, deportes, farandula, sociales, loterias y horoscopos.
+Si el articulo trata principalmente de eso, devuelve {"relevant": false}.
+
 - Si el articulo no tiene contenido noticioso util, devuelve {"relevant": false}.
 - Si no encuentras fecha, usa null; no inventes fechas.
 - El body debe ser un parrafo informativo, no una lista ni el titular.
+- por_que_importa se escribe para La Nacional (asociacion de ahorros y prestamos): fondeo,
+  costo del dinero, demanda de credito hipotecario, cumplimiento, competencia. Nunca lo dejes vacio.
 
 Markdown del articulo:
 """
 
 
+def cupo_titulares() -> int:
+    """Titulares por fuente. El lunes se pide mas: la ventana cubre 3 dias."""
+    return MAX_HEADLINES_LUNES if VENTANA.get("es_lunes") else MAX_HEADLINES_PER_SOURCE
+
+
+def texto_ventana() -> str:
+    if not VENTANA:
+        return "las ultimas 24 horas"
+    return (f"desde {VENTANA['inicio_local']} hasta {VENTANA['fin_local']} "
+            f"(hora de Republica Dominicana)")
+
+
 def extract_headlines(index_markdown: str) -> list[dict]:
-    parsed = gemini_json(HEADLINE_PROMPT + index_markdown, max_tokens=1600)
+    cupo = cupo_titulares()
+    # replace y no format: el prompt lleva JSON con llaves literales.
+    prompt = (HEADLINE_PROMPT
+              .replace("{max_titulares}", str(cupo))
+              .replace("{ventana}", texto_ventana()))
+    parsed = gemini_json(prompt + index_markdown, max_tokens=1600 + 100 * cupo)
     if not parsed:
         return []
     headlines = parsed.get("headlines", [])
-    return headlines[:MAX_HEADLINES_PER_SOURCE] if isinstance(headlines, list) else []
+    return headlines[:cupo] if isinstance(headlines, list) else []
 
 
 def extract_article_details(article_markdown: str, titular_previo: str = "",
@@ -642,6 +952,16 @@ def extract_article_details(article_markdown: str, titular_previo: str = "",
     parsed["title"] = titulo
     parsed["summary"] = limpiar_texto(parsed.get("summary"))
     parsed["body"] = limpiar_texto(parsed.get("body"))
+    parsed["por_que_importa"] = limpiar_texto(parsed.get("por_que_importa"))
+
+    tipo = norm_texto(parsed.get("tipo") or "noticia").replace(" ", "")
+    if tipo not in TIPOS_VALIDOS:
+        tipo = "noticia"
+    # El modelo etiqueta "noticia" la tasa del dolar del dia porque trae cifras;
+    # el patron del titular la reconoce como lo que es.
+    if tipo == "noticia" and es_nota_rutinaria(titulo):
+        tipo = "servicio"
+    parsed["tipo"] = tipo
 
     # Segunda red: a veces el lector trae algo de texto y el modelo igual
     # describe la pagina de error. Paso el 2026-07-30 con "Error 404 | Hoy
@@ -651,6 +971,17 @@ def extract_article_details(article_markdown: str, titular_previo: str = "",
         registrar_descarte("sin_cuerpo", titulo, url, fuente,
                            detalle="El modelo resumio una pagina de error")
         return None
+
+    # Temas vetados: van ANTES del piso institucional a proposito. "El
+    # Superintendente de Electricidad anuncia..." dispara la señal "regulador"
+    # por la palabra superintendente, y aun asi no es materia del observatorio.
+    veto = tema_excluido(titulo, parsed.get("summary"))
+    if veto:
+        log.info("  -> tema vetado (%s): %s", veto, titulo[:70])
+        registrar_descarte("tema_vetado", titulo, url, fuente,
+                           detalle=f"Tema apartado por politica editorial: {veto}")
+        return None
+
     piso, etiquetas = señales_detectadas(titulo, parsed.get("summary"), parsed.get("body"))
 
     try:
@@ -670,13 +1001,24 @@ def extract_article_details(article_markdown: str, titular_previo: str = "",
     parsed["señales"] = etiquetas
     parsed["rescatado_por_regla"] = bool(piso) and piso >= NEWS_MIN_RELEVANCE and not parsed.get("relevant", True)
 
+    # Opinion y publirreportaje se van sin apelacion: no son hechos, y el piso
+    # institucional no deberia colar una columna sobre el Banco Central.
+    if tipo in ("opinion", "publirreportaje"):
+        log.info("  -> %s, no es noticia: %s", tipo, titulo[:70])
+        registrar_descarte(tipo, titulo, url, fuente, relevance, etiquetas)
+        return None
+
+    # Los motivos que siguen NO tiran la nota aqui: la marcan. build_candidate
+    # termina de armarla y la manda a la reserva, para que la escalera de
+    # rescate pueda recuperarla sin volver a leer ni a llamar a Gemini.
     if not parsed.get("relevant", True) and piso < NEWS_MIN_RELEVANCE:
-        registrar_descarte("modelo_irrelevante", titulo, url, fuente, relevance, etiquetas)
-        return None
-    if relevance < NEWS_MIN_RELEVANCE:
-        log.info("  -> relevancia %d < %d, descartado: %s", relevance, NEWS_MIN_RELEVANCE, titulo[:70])
-        registrar_descarte("relevancia_baja", titulo, url, fuente, relevance, etiquetas)
-        return None
+        parsed["_motivo_reserva"] = "modelo_irrelevante"
+    elif relevance < NEWS_MIN_RELEVANCE:
+        log.info("  -> relevancia %d < %d, a reserva: %s", relevance, NEWS_MIN_RELEVANCE, titulo[:70])
+        parsed["_motivo_reserva"] = "relevancia_baja"
+    elif tipo == "servicio":
+        log.info("  -> nota de servicio, a reserva: %s", titulo[:70])
+        parsed["_motivo_reserva"] = "rutinaria"
     return parsed
 
 
@@ -707,11 +1049,56 @@ def parse_iso_date(value: str | None) -> datetime | None:
         return None
 
 
-def is_stale(published_at: str | None) -> bool:
+def etiqueta_ventana(published_at: str | None) -> str:
+    """"hoy" / "ayer tarde" / "fin de semana"... para el panel.
+
+    El analista prioriza distinto lo de hoy y lo del viernes por la tarde; sin
+    esta etiqueta tendria que leer cada fecha ISO a mano.
+    """
     dt = parse_iso_date(published_at)
     if not dt:
-        return False
-    return (datetime.now(timezone.utc) - dt).total_seconds() / 3600 > NEWS_MAX_AGE_HOURS
+        return "sin fecha"
+    local = dt.astimezone(TZ_RD)
+    hoy = datetime.now(TZ_RD).date()
+    dias = (hoy - local.date()).days
+    if dias <= 0:
+        return "hoy"
+    if dias == 1:
+        return "ayer tarde" if local.hour >= NEWS_WINDOW_CUTOFF_HOUR else "ayer"
+    if local.weekday() >= 5:
+        return "fin de semana"
+    return f"{DIAS_ES[local.weekday()]} {local.strftime('%d/%m')}"
+
+
+# Muchas fuentes se guardaron desde el panel sin nombre y quedaron todas como
+# "Fuente guardada": en el JSON del 2026-08-04, 13 de 18 candidatos decian eso,
+# asi que el analista no sabia de que medio venia ninguno.
+NOMBRES_POR_DOMINIO = {
+    "hoy.com.do": "Hoy Digital",
+    "eldinero.com.do": "El Dinero",
+    "diariolibre.com": "Diario Libre",
+    "elcaribe.com.do": "El Caribe",
+    "listindiario.com": "Listín Diario",
+    "acento.com.do": "Acento",
+    "elnuevodiario.com.do": "El Nuevo Diario",
+    "bancentral.gov.do": "Banco Central (BCRD)",
+    "sb.gob.do": "Superintendencia de Bancos",
+    "hacienda.gob.do": "Ministerio de Hacienda",
+    "bloomberglinea.com": "Bloomberg Línea",
+    "forbes.com.do": "Forbes RD",
+    "revistamercado.do": "Revista Mercado",
+    "federalreserve.gov": "Reserva Federal (EE. UU.)",
+}
+
+
+def nombre_fuente(source: dict, url: str = "") -> str:
+    nombre = (source.get("name") or "").strip()
+    if nombre and nombre.lower() not in ("fuente guardada", "desconocida", ""):
+        return nombre
+    dominio = urlparse(ensure_scheme(url or source.get("url") or "")).netloc.lower().replace("www.", "")
+    if dominio in NOMBRES_POR_DOMINIO:
+        return NOMBRES_POR_DOMINIO[dominio]
+    return dominio or nombre or source.get("source_key") or "desconocida"
 
 
 def normalize_category(value: str | None) -> str:
@@ -754,7 +1141,22 @@ def build_candidate(source: dict, headline: dict, base_url: str) -> dict | None:
     if not headline_title or not link:
         return None
 
-    fuente_nombre = source.get("name", source.get("source_key", "desconocida"))
+    fuente_nombre = nombre_fuente(source, link)
+
+    # Filtros baratos primero: descartar por seccion o por titular no cuesta ni
+    # una lectura ni una llamada a Gemini.
+    seccion = seccion_excluida(link)
+    if seccion:
+        log.info("  -> seccion vetada (%s): %s", seccion, headline_title[:70])
+        registrar_descarte("seccion_vetada", headline_title, link, fuente_nombre,
+                           detalle=f"La URL cae en la seccion /{seccion}")
+        return None
+    veto_titular = tema_excluido(headline_title)
+    if veto_titular:
+        log.info("  -> tema vetado en el titular (%s): %s", veto_titular, headline_title[:70])
+        registrar_descarte("tema_vetado", headline_title, link, fuente_nombre,
+                           detalle=f"Tema apartado por politica editorial: {veto_titular}")
+        return None
 
     article_markdown = fetch_with_jina(link, MAX_ARTICLE_MARKDOWN_CHARS)
     recuperado = False
@@ -775,15 +1177,8 @@ def build_candidate(source: dict, headline: dict, base_url: str) -> dict | None:
         return None
 
     published_at = details.get("published_at")
-    if is_stale(published_at):
-        log.info("  -> articulo viejo, se omite: %s", headline_title[:70])
-        registrar_descarte("vieja", details.get("title") or headline_title, link, fuente_nombre,
-                           details.get("relevance"), details.get("señales"),
-                           detalle=f"published_at={published_at}")
-        return None
-
     title = limpiar_texto(details.get("title") or headline_title)
-    return {
+    candidato = {
         "id": stable_id(link),
         "source_key": source.get("source_key", ""),
         "source_name": fuente_nombre,
@@ -791,33 +1186,66 @@ def build_candidate(source: dict, headline: dict, base_url: str) -> dict | None:
         "title": title,
         "summary": limpiar_texto(details.get("summary")),
         "body": limpiar_texto(details.get("body")),
+        "por_que_importa": limpiar_texto(details.get("por_que_importa")),
+        "tipo": details.get("tipo") or "noticia",
         "category": normalize_category(details.get("category") or headline.get("category")),
         "relevance": details.get("relevance", NEWS_MIN_RELEVANCE),
         "señales": details.get("señales") or [],
         "rescatado_por_regla": bool(details.get("rescatado_por_regla")),
         "cuerpo_recuperado": recuperado,
         "published_at": published_at,
+        "sin_fecha": not bool(parse_iso_date(published_at)),
+        "ventana": etiqueta_ventana(published_at),
         "fetched_at": now_iso(),
         "status": "pending",
     }
 
+    motivo = details.get("_motivo_reserva")
+    if fuera_de_ventana(published_at) and not motivo:
+        motivo = "vieja"
+    if motivo:
+        log.info("  -> a reserva (%s): %s", motivo, title[:70])
+        registrar_descarte(motivo, title, link, fuente_nombre,
+                           candidato["relevance"], candidato["señales"],
+                           detalle=(f"published_at={published_at}" if motivo == "vieja"
+                                    else MOTIVO_TEXTO.get(motivo, motivo)),
+                           candidato=candidato)
+        return None
+    return candidato
+
 
 def process_source(source: dict, existing_urls: set[str]) -> list[dict]:
-    name = source.get("name", source.get("source_key", "desconocida"))
+    name = nombre_fuente(source)
     base_url = (source.get("url") or "").strip()
+    telemetria = _telemetria_fuente(source, name)
     if not base_url:
         log.warning("Fuente '%s' sin URL, se omite", name)
+        telemetria["fallo"] = "sin_url"
         return []
 
     log.info("Procesando fuente: %s (%s)", name, base_url)
     index_markdown = fetch_with_jina(base_url, MAX_INDEX_MARKDOWN_CHARS)
+    # Segunda puerta para las fuentes institucionales: el BCRD y la SIB son las
+    # que mas importan y las que peor se dejan leer. Si su indice no abre, se
+    # prueba la portada u otra ruta antes de darlas por perdidas.
+    alterna = (source.get("url_alterna") or "").strip()
+    if not index_markdown and alterna:
+        log.info("  -> indice principal ilegible, pruebo la alterna: %s", alterna)
+        index_markdown = fetch_with_jina(alterna, MAX_INDEX_MARKDOWN_CHARS)
+        if index_markdown:
+            base_url = alterna
+            telemetria["via_alterna"] = True
     if not index_markdown:
         log.info("  -> Jina no devolvio indice util")
+        telemetria["fallo"] = "indice_ilegible"
         return []
+    telemetria["indice_leido"] = True
 
     headlines = extract_headlines(index_markdown)
+    telemetria["titulares"] = len(headlines)
     if not headlines:
         log.info("  -> Gemini no extrajo titulares utiles")
+        telemetria["fallo"] = "sin_titulares"
         return []
 
     # Filtrar titulares nuevos ANTES de lanzar trabajo pesado (Jina + Gemini).
@@ -851,9 +1279,113 @@ def process_source(source: dict, existing_urls: set[str]) -> list[dict]:
                 candidates.append(candidate)
                 existing_urls.add(candidate["url"])
                 log.info("  ✓ candidato (rel %s): %s", candidate.get("relevance", "?"), candidate["title"][:90])
-    candidates = candidates[:MAX_HEADLINES_PER_SOURCE]
+    candidates = candidates[:cupo_titulares()]
+    telemetria["candidatos"] = len(candidates)
+    if not candidates and not telemetria.get("fallo"):
+        telemetria["fallo"] = "titulares_sin_candidato"
     log.info("  -> %d candidatos nuevos de %s", len(candidates), name)
     return candidates
+
+
+# ---------------------------------------------------------------------------
+# Salud de fuentes
+# Sustituir una fuente era una corazonada: nadie sabia cuales llevaban semanas
+# sin aportar una sola nota. Aqui se anota, corrida a corrida, en que peldaño
+# falla cada una — no se pudo leer el indice / se leyo pero no hubo titulares /
+# hubo titulares pero ninguno paso el filtro — y se acumula en un historico.
+# Con eso, decidir que fuente se cambia deja de ser opinion.
+# ---------------------------------------------------------------------------
+_telemetria: list[dict] = []
+_telemetria_lock = threading.Lock()
+
+FALLO_TEXTO = {
+    "sin_url": "La fuente no tiene URL configurada",
+    "indice_ilegible": "No se pudo leer la pagina indice (bloqueo, JS o caida)",
+    "sin_titulares": "El indice se leyo pero no traia titulares del sector",
+    "titulares_sin_candidato": "Hubo titulares pero ninguno paso el filtro",
+}
+
+
+def _telemetria_fuente(source: dict, nombre: str) -> dict:
+    entrada = {
+        "source_key": source.get("source_key", ""),
+        "name": nombre,
+        "url": source.get("url", ""),
+        "indice_leido": False,
+        "titulares": 0,
+        "candidatos": 0,
+        "fallo": "",
+    }
+    with _telemetria_lock:
+        _telemetria.append(entrada)
+    return entrada
+
+
+def actualizar_salud_fuentes() -> dict:
+    """Acumula la telemetria de esta corrida en el historico y señala las
+    fuentes candidatas a sustitucion (las que llevan muchas corridas en cero).
+    """
+    historico = {"corridas": 0, "actualizado_en": "", "fuentes": {}}
+    try:
+        if NEWS_HEALTH_PATH.exists():
+            historico = json.loads(NEWS_HEALTH_PATH.read_text(encoding="utf-8"))
+    except Exception as exc:
+        log.info("No se pudo leer el historico de fuentes: %s", exc)
+
+    fuentes = historico.setdefault("fuentes", {})
+    historico["corridas"] = int(historico.get("corridas") or 0) + 1
+    historico["actualizado_en"] = now_iso()
+
+    with _telemetria_lock:
+        actual = list(_telemetria)
+
+    for t in actual:
+        clave = t["source_key"] or t["url"]
+        if not clave:
+            continue
+        f = fuentes.setdefault(clave, {
+            "name": t["name"], "url": t["url"], "corridas": 0, "indices_ok": 0,
+            "titulares": 0, "candidatos": 0, "corridas_sin_candidato": 0,
+            "ultimo_candidato_en": None, "ultimo_fallo": "",
+        })
+        f["name"], f["url"] = t["name"], t["url"]
+        f["corridas"] += 1
+        f["indices_ok"] += 1 if t["indice_leido"] else 0
+        f["titulares"] += t["titulares"]
+        f["candidatos"] += t["candidatos"]
+        f["ultimo_fallo"] = t["fallo"]
+        if t["candidatos"]:
+            f["corridas_sin_candidato"] = 0
+            f["ultimo_candidato_en"] = now_iso()
+        else:
+            f["corridas_sin_candidato"] = int(f.get("corridas_sin_candidato") or 0) + 1
+
+    # Veredicto legible, para que el analista no tenga que interpretar contadores.
+    for clave, f in fuentes.items():
+        seguidas = f.get("corridas_sin_candidato") or 0
+        if f.get("corridas", 0) >= 8 and seguidas >= 8:
+            f["veredicto"] = "sustituir"
+            f["veredicto_texto"] = (
+                f"{seguidas} corridas seguidas sin aportar una sola noticia. "
+                + (FALLO_TEXTO.get(f.get("ultimo_fallo", ""), "") or "")
+            ).strip()
+        elif seguidas >= 4:
+            f["veredicto"] = "vigilar"
+            f["veredicto_texto"] = f"{seguidas} corridas seguidas sin aportar noticias."
+        else:
+            f["veredicto"] = "ok"
+            f["veredicto_texto"] = ""
+
+    try:
+        NEWS_HEALTH_PATH.parent.mkdir(parents=True, exist_ok=True)
+        NEWS_HEALTH_PATH.write_text(json.dumps(historico, ensure_ascii=False, indent=2), encoding="utf-8")
+    except Exception as exc:
+        log.warning("No se pudo escribir la salud de fuentes: %s", exc)
+
+    sustituir = [f["name"] for f in fuentes.values() if f.get("veredicto") == "sustituir"]
+    if sustituir:
+        log.warning("Fuentes candidatas a sustitucion (nunca aportan): %s", ", ".join(sustituir))
+    return historico
 
 
 def dedupe_por_tema(candidatos: list[dict]) -> list[dict]:
@@ -893,7 +1425,8 @@ def dedupe_por_tema(candidatos: list[dict]) -> list[dict]:
     return [c for c in candidatos if id(c) in ids]
 
 
-def procesar_busqueda_general(existing_urls: set[str], cupo: int) -> list[dict]:
+def procesar_busqueda_general(existing_urls: set[str], cupo: int,
+                              consultas: list[str] | None = None) -> list[dict]:
     """Barrido propio de la web, ademas de las fuentes configuradas.
 
     Las fuentes fijas fallan de dos maneras: el indice no lista la nota, o el
@@ -905,7 +1438,7 @@ def procesar_busqueda_general(existing_urls: set[str], cupo: int) -> list[dict]:
 
     fuente_busqueda = {"source_key": "busqueda_web", "name": "Búsqueda web"}
     encontrados: list[dict] = []
-    for consulta in NEWS_SEARCH_QUERIES:
+    for consulta in (consultas if consultas is not None else NEWS_SEARCH_QUERIES):
         if len(encontrados) >= cupo or _quota_agotada.is_set():
             break
         log.info("Búsqueda general: %s", consulta)
@@ -936,6 +1469,155 @@ def procesar_busqueda_general(existing_urls: set[str], cupo: int) -> list[dict]:
     return encontrados
 
 
+# ---------------------------------------------------------------------------
+# Garantia de piso: minimo NEWS_MIN_CANDIDATES por corrida
+# El panel tiene que abrir con material de trabajo. Los lunes flojos venian con
+# dos o tres notas y el analista terminaba buscando a mano, que es exactamente
+# lo que este pipeline existe para evitar.
+# La escalera va de lo mas barato y menos invasivo a lo mas caro:
+#   1. Reserva de la propia corrida — notas ya leidas y puntuadas que quedaron
+#      fuera por la ventana, por el umbral o por ser rutinarias. Coste cero.
+#   2. Busquedas extra en la web — abre el abanico de temas. Cuesta Gemini.
+#   3. Se acepta quedarse corto, pero se dice en el JSON, no en silencio.
+# Nunca se relajan los temas vetados ni la opinion: completar cuota con lo que
+# el analista pidio no ver seria peor que quedarse corto.
+# ---------------------------------------------------------------------------
+PRIORIDAD_RESERVA = {"vieja": 0, "relevancia_baja": 1, "rutinaria": 2, "modelo_irrelevante": 3}
+
+
+def completar_minimo(candidatos: list[dict], existing_urls: set[str]) -> dict:
+    """Rellena hasta NEWS_MIN_CANDIDATES. Devuelve el acta de lo que se relajo."""
+    acta = {"piso": NEWS_MIN_CANDIDATES, "al_inicio": len(candidatos), "pasos": [], "cumplido": True}
+    if len(candidatos) >= NEWS_MIN_CANDIDATES:
+        return acta
+
+    urls = {c.get("url") for c in candidatos}
+
+    # Paso 1 — reserva de la corrida, de la mas recuperable a la menos.
+    with _descartes_lock:
+        reserva = [r for r in _reserva if r.get("url") not in urls]
+    reserva.sort(key=lambda r: (PRIORIDAD_RESERVA.get(r.get("motivo_original", ""), 9),
+                                -(r.get("relevance") or 0)))
+    recuperados = 0
+    for item in reserva:
+        if len(candidatos) >= NEWS_MIN_CANDIDATES:
+            break
+        if any(mismo_tema(item.get("title", ""), c.get("title", "")) for c in candidatos):
+            continue
+        item = {**item, "recuperado_por_piso": True,
+                "motivo_recuperacion": MOTIVO_TEXTO.get(item.get("motivo_original", ""), "")}
+        candidatos.append(item)
+        urls.add(item.get("url"))
+        existing_urls.add(item.get("url"))
+        recuperados += 1
+        log.info("  ↑ recuperado por piso (%s, rel %s): %s",
+                 item.get("motivo_original"), item.get("relevance"), item.get("title", "")[:70])
+    if recuperados:
+        acta["pasos"].append({
+            "paso": "reserva",
+            "sumados": recuperados,
+            "detalle": "Notas ya leidas que estaban fuera de ventana, bajo el umbral o eran rutinarias",
+        })
+
+    # Paso 2 — busquedas extra, con la ventana ensanchada un dia.
+    if len(candidatos) < NEWS_MIN_CANDIDATES and NEWS_SEARCH_ENABLED and not _quota_agotada.is_set():
+        faltan = NEWS_MIN_CANDIDATES - len(candidatos)
+        log.info("Piso sin cubrir: faltan %d. Se abren busquedas extra.", faltan)
+        VENTANA["inicio"] = VENTANA["inicio"] - timedelta(hours=NEWS_WINDOW_RELAX_HOURS)
+        VENTANA["relajada_horas"] = NEWS_WINDOW_RELAX_HOURS
+        extra = procesar_busqueda_general(existing_urls, faltan, NEWS_SEARCH_QUERIES_EXTRA)
+        if extra:
+            candidatos.extend(extra)
+            acta["pasos"].append({
+                "paso": "busquedas_extra",
+                "sumados": len(extra),
+                "detalle": f"Consultas adicionales con la ventana ensanchada {NEWS_WINDOW_RELAX_HOURS}h",
+            })
+
+    acta["al_final"] = len(candidatos)
+    acta["cumplido"] = len(candidatos) >= NEWS_MIN_CANDIDATES
+    if not acta["cumplido"]:
+        acta["nota"] = (
+            f"Solo se consiguieron {len(candidatos)} de {NEWS_MIN_CANDIDATES}. "
+            "No se rebajaron los temas vetados ni se coló opinión para llenar el cupo; "
+            "revisa la salud de fuentes."
+        )
+        log.warning(acta["nota"])
+    return acta
+
+
+# ---------------------------------------------------------------------------
+# Brief del dia
+# Lo primero que ve el analista: que paso desde ayer por la tarde, agrupado por
+# tema y con el angulo para La Nacional. Antes tenia que leerse 18 tarjetas para
+# hacerse esa idea; ahora las tarjetas son el respaldo del brief, no el punto
+# de partida.
+# ---------------------------------------------------------------------------
+BRIEF_PROMPT = """Eres el analista senior del Observatorio Estratégico de La Nacional (asociacion de
+ahorros y prestamos dominicana). Recibes las noticias candidatas de la ventana editorial de hoy.
+
+Redacta el brief con el que un directivo entiende el dia en 30 segundos. Sobrio, sin adjetivos de
+mas, sin recomendaciones de inversion, sin inventar cifras: solo puedes usar lo que esta abajo.
+
+Devuelve SOLO JSON valido con esta forma exacta:
+{
+  "titular": "una linea con lo mas importante del periodo (max 90 caracteres)",
+  "resumen": "2 o 3 oraciones con el panorama de la ventana",
+  "temas": [{"tema":"etiqueta corta","que_paso":"1 oracion","por_que_importa":"1 oracion para una AAyP","ids":["id de las notas"]}],
+  "vigilar": ["1 a 3 viñetas de lo que conviene seguir en los proximos dias"],
+  "destacadas": ["ids de las 3 notas que el analista deberia publicar si solo pudiera elegir tres"]
+}
+
+Reglas:
+- Entre 2 y 4 temas. Agrupa las notas que cuentan lo mismo bajo un solo tema.
+- Usa exactamente los ids que se te dan; no inventes ninguno.
+- Si el material del dia es flojo, dilo en el resumen en vez de inflarlo.
+
+NOTAS DE LA VENTANA (%s):
+"""
+
+
+def generar_brief(candidatos: list[dict]) -> dict | None:
+    """Brief del dia sobre los candidatos ya elegidos. Una sola llamada."""
+    if not NEWS_BRIEF_ENABLED or not candidatos or _quota_agotada.is_set():
+        return None
+    lineas = []
+    for c in sorted(candidatos, key=lambda x: -(x.get("relevance") or 0))[:14]:
+        lineas.append(
+            f"- id={c.get('id')} | {c.get('ventana', '')} | rel {c.get('relevance')} | "
+            f"{c.get('category')} | {c.get('source_name')}\n"
+            f"  {c.get('title')}\n  {c.get('summary') or ''}"
+        )
+    parsed = gemini_json((BRIEF_PROMPT % texto_ventana()) + "\n".join(lineas), max_tokens=1800)
+    if not isinstance(parsed, dict):
+        log.warning("No se pudo generar el brief del dia")
+        return None
+
+    ids_validos = {c.get("id") for c in candidatos}
+    temas = []
+    for t in (parsed.get("temas") or [])[:4]:
+        if not isinstance(t, dict):
+            continue
+        temas.append({
+            "tema": limpiar_texto(t.get("tema"))[:60],
+            "que_paso": limpiar_texto(t.get("que_paso"))[:400],
+            "por_que_importa": limpiar_texto(t.get("por_que_importa"))[:400],
+            "ids": [i for i in (t.get("ids") or []) if i in ids_validos],
+        })
+    brief = {
+        "titular": limpiar_texto(parsed.get("titular"))[:120],
+        "resumen": limpiar_texto(parsed.get("resumen"))[:900],
+        "temas": temas,
+        "vigilar": [limpiar_texto(v)[:280] for v in (parsed.get("vigilar") or [])[:3] if str(v).strip()],
+        "destacadas": [i for i in (parsed.get("destacadas") or [])[:3] if i in ids_validos],
+        "generado_en": now_iso(),
+    }
+    if not brief["resumen"]:
+        return None
+    log.info("Brief del dia: %s", brief["titular"][:90])
+    return brief
+
+
 def load_previous_candidates() -> list[dict]:
     try:
         if not NEWS_CANDIDATES_PATH.exists():
@@ -957,18 +1639,30 @@ def load_previous_candidates() -> list[dict]:
         return []
 
 
-def write_candidates(candidates: list[dict], errors: int, sources_count: int, elapsed: float) -> None:
+def write_candidates(candidates: list[dict], errors: int, sources_count: int, elapsed: float,
+                     acta: dict | None = None, brief: dict | None = None,
+                     salud: dict | None = None) -> None:
     NEWS_CANDIDATES_PATH.parent.mkdir(parents=True, exist_ok=True)
 
     merged = []
     seen = set()
-    for item in candidates + load_previous_candidates():
+    arrastradas = 0
+    for i, item in enumerate(candidates + load_previous_candidates()):
         url = canonicalize_url(item.get("url") or "")
         if not url or url in seen:
             continue
+        es_previa = i >= len(candidates)
+        # Las de corridas anteriores solo siguen si aun caen en la ventana: el
+        # panel es el resumen de HOY, no un archivo de tres dias. Antes se
+        # arrastraban por TTL y el lunes convivian notas del miercoles.
+        if es_previa and fuera_de_ventana(item.get("published_at")):
+            continue
+        if es_previa:
+            arrastradas += 1
         item["url"] = url
         item["id"] = item.get("id") or stable_id(url)
         item["status"] = "pending"
+        item.setdefault("ventana", etiqueta_ventana(item.get("published_at")))
         merged.append(item)
         seen.add(url)
 
@@ -977,20 +1671,53 @@ def write_candidates(candidates: list[dict], errors: int, sources_count: int, el
     # tambien se colapsa.
     merged = dedupe_por_tema(merged)
 
-    merged = sorted(merged, key=lambda x: x.get("fetched_at") or "", reverse=True)[:MAX_TOTAL_PROPOSALS]
+    # Orden de trabajo, no de llegada: primero lo mas relevante y, a igual
+    # relevancia, lo mas reciente. El analista lee de arriba hacia abajo.
+    merged = sorted(
+        merged,
+        key=lambda x: ((x.get("relevance") or 0),
+                       x.get("published_at") or x.get("fetched_at") or ""),
+        reverse=True,
+    )[:MAX_TOTAL_PROPOSALS]
+
     with _descartes_lock:
-        descartes = sorted(_descartes, key=lambda d: (d.get("relevance") or 0), reverse=True)[:40]
+        recuperadas = {c.get("url") for c in merged}
+        descartes = [d for d in _descartes if d.get("url") not in recuperadas]
+        descartes = sorted(descartes, key=lambda d: (d.get("relevance") or 0), reverse=True)[:40]
+    with _telemetria_lock:
+        telemetria = list(_telemetria)
+
     payload = {
         "generated_at": now_iso(),
         "gemini_model": GEMINI_MODEL,
         "min_relevance": NEWS_MIN_RELEVANCE,
+        "min_candidates": NEWS_MIN_CANDIDATES,
+        "ventana": {
+            "desde": VENTANA.get("inicio_local"),
+            "hasta": VENTANA.get("fin_local"),
+            "desde_utc": VENTANA["inicio"].isoformat() if VENTANA.get("inicio") else None,
+            "dia": VENTANA.get("dia"),
+            "es_lunes": VENTANA.get("es_lunes"),
+            "horas": VENTANA.get("horas"),
+            "motivo": VENTANA.get("motivo"),
+            "relajada_horas": VENTANA.get("relajada_horas", 0),
+        },
         "count": len(merged),
+        "arrastradas": arrastradas,
         "errors": errors,
         "sources": sources_count,
         "elapsed_s": elapsed,
+        "brief": brief,
+        "garantia": acta,
         "candidates": merged,
         "discarded_count": len(descartes),
         "discarded": descartes,
+        "fuentes": telemetria,
+        "fuentes_a_sustituir": [
+            {"name": f.get("name"), "url": f.get("url"), "motivo": f.get("veredicto_texto")}
+            for f in (salud or {}).get("fuentes", {}).values()
+            if f.get("veredicto") == "sustituir"
+        ],
     }
     NEWS_CANDIDATES_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     log.info("JSON escrito: %s (%d candidatos)", NEWS_CANDIDATES_PATH, len(merged))
@@ -999,6 +1726,13 @@ def write_candidates(candidates: list[dict], errors: int, sources_count: int, el
 def run() -> None:
     log.info("=== Pipeline de noticias static/local iniciado ===")
     start = time.time()
+    global VENTANA
+    VENTANA = calcular_ventana()
+    log.info("Ventana editorial (%s): %s → %s · %.1f h · %s",
+             VENTANA["dia"], VENTANA["inicio_local"], VENTANA["fin_local"],
+             VENTANA["horas"], VENTANA["motivo"])
+    if VENTANA["es_lunes"]:
+        log.info("Lunes: cupo de titulares por fuente elevado a %d", MAX_HEADLINES_LUNES)
     sources = load_sources()
     if not sources:
         log.warning("No hay fuentes activas en Supabase.")
@@ -1034,17 +1768,38 @@ def run() -> None:
         log.error("Error en la busqueda general: %s", exc)
         errors += 1
 
+    # Garantia de piso antes de escribir: si el dia vino flojo, la escalera
+    # recupera de la reserva y, si hace falta, abre busquedas extra.
+    try:
+        acta = completar_minimo(all_candidates, existing)
+    except Exception as exc:
+        log.error("Error completando el piso de candidatos: %s", exc)
+        acta = {"error": str(exc)}
+        errors += 1
+
+    salud = actualizar_salud_fuentes()
+
+    brief = None
+    try:
+        brief = generar_brief(all_candidates)
+    except Exception as exc:
+        log.warning("No se pudo generar el brief: %s", exc)
+
     elapsed = round(time.time() - start, 1)
-    write_candidates(all_candidates, errors, len(sources), elapsed)
+    write_candidates(all_candidates, errors, len(sources), elapsed, acta, brief, salud)
 
     sb_insert_log({
         "source": "NEWS",
         "section": "Pipeline candidatos",
-        "status": "success" if errors == 0 else "warning",
+        "status": "success" if errors == 0 and acta.get("cumplido", True) else "warning",
         "rows_processed": len(all_candidates),
-        "message": (f"Pipeline JSON: {len(all_candidates)} candidatos nuevos, "
-                    f"{len(_descartes)} descartados, {errors} errores, {elapsed}s"),
-        "metadata": {"mode": "static_json", "path": str(NEWS_CANDIDATES_PATH), "gemini_model": GEMINI_MODEL},
+        "message": (f"Pipeline JSON: {len(all_candidates)} candidatos "
+                    f"(piso {NEWS_MIN_CANDIDATES}), ventana {VENTANA['horas']}h desde "
+                    f"{VENTANA['inicio_local']}, {len(_descartes)} descartados, "
+                    f"{errors} errores, {elapsed}s"),
+        "metadata": {"mode": "static_json", "path": str(NEWS_CANDIDATES_PATH),
+                     "gemini_model": GEMINI_MODEL, "ventana": VENTANA.get("motivo"),
+                     "garantia": acta},
         "updated_at": now_iso(),
     })
     log.info("=== Finalizado: %d candidatos nuevos en %.1fs ===", len(all_candidates), elapsed)

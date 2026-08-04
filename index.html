@@ -14469,5 +14469,188 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
 })();
 </script>
 
+<style id="ln-news-brief-css">
+/* ===== Brief del día · encabezado de la cola editorial =====
+   El pipeline ya resume la ventana en news_candidates.json (clave "brief").
+   Aquí se pinta arriba de las propuestas: el analista entiende el día antes de
+   abrir la primera tarjeta, en vez de reconstruirlo leyendo 18 de ellas. */
+.news-brief {
+  border: 1px solid var(--line); border-left: 3px solid var(--cyan-deep);
+  border-radius: 6px; background: var(--white); padding: 20px 22px; margin: 0 0 18px;
+}
+.news-brief-top {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; margin-bottom: 12px;
+}
+.news-brief-kicker {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--cyan-deep);
+}
+.news-brief-window {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-soft);
+  margin-left: auto; text-align: right;
+}
+.news-brief h3 { font-size: 19px; line-height: 1.3; margin: 0 0 8px; }
+.news-brief-lead { font-size: 14px; line-height: 1.6; color: var(--ink-soft); margin: 0 0 14px; }
+.news-brief-topics { display: grid; gap: 10px; margin-bottom: 14px; }
+.news-brief-topic { border-top: 1px solid var(--line); padding-top: 10px; font-size: 13px; line-height: 1.55; }
+.news-brief-topic b { display: block; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 3px; }
+.news-brief-topic .why { color: var(--cyan-deep); }
+.news-brief-watch { font-size: 12.5px; line-height: 1.6; color: var(--ink-soft); margin: 0; padding-left: 18px; }
+.news-brief-flags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.news-brief-flag {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 4px 8px;
+  border: 1px solid var(--line); border-radius: 3px; color: var(--ink-soft);
+}
+.news-brief-flag.warn { border-color: #c98a1a; color: #8a5d00; }
+/* Ángulo para La Nacional dentro de cada tarjeta de propuesta. */
+.proposal-why {
+  margin-top: 8px; padding: 7px 10px; border-left: 2px solid var(--cyan-deep);
+  background: rgba(0,0,0,.02); font-size: 12.5px; line-height: 1.5; color: var(--ink-soft);
+}
+.proposal-why b { color: var(--cyan-deep); font-weight: 600; }
+.proposal-window {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 3px 7px;
+  border: 1px solid var(--line); border-radius: 3px; color: var(--ink-soft);
+}
+.proposal-window.hoy { border-color: var(--cyan-deep); color: var(--cyan-deep); }
+</style>
+
+<script id="ln-news-brief-js">
+/* ========================================================================
+   La Nacional · Brief del día y contexto de la cola editorial
+   Pinta tres cosas que el pipeline ya calcula y que antes no se veían:
+     - el brief de la ventana (qué pasó desde ayer por la tarde),
+     - la ventana misma y si hubo que relajarla para llegar al piso,
+     - el "por qué importa" y la etiqueta de recencia en cada tarjeta.
+   Todo es aditivo: si el JSON viene del pipeline viejo y no trae estas
+   claves, no se pinta nada y la cola se comporta igual que antes.
+   ======================================================================== */
+(function(){
+  'use strict';
+
+  const CANDIDATES_URL = '/news_candidates.json';
+  let datos = null;
+
+  function esc(v){
+    const s = String(v ?? '');
+    if (typeof window.escapeHtml === 'function') return window.escapeHtml(s);
+    return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function renderBrief(){
+    const anchor = document.getElementById('proposals-list');
+    if (!anchor || !datos) return;
+    const brief = datos.brief;
+    const ventana = datos.ventana || {};
+    const garantia = datos.garantia || {};
+    if (!brief && !ventana.desde) return;
+
+    let box = document.getElementById('news-brief');
+    if (!box) {
+      box = document.createElement('section');
+      box.className = 'news-brief';
+      box.id = 'news-brief';
+      anchor.parentNode.insertBefore(box, anchor);
+    }
+
+    const temas = Array.isArray(brief?.temas) ? brief.temas : [];
+    const vigilar = Array.isArray(brief?.vigilar) ? brief.vigilar : [];
+
+    // Avisos: lo que el analista necesita saber para confiar (o no) en la cola.
+    const flags = [];
+    if (ventana.es_lunes) flags.push({ t: 'lunes · arrastra desde el viernes 2:00 PM', warn: false });
+    if (garantia.pasos?.length) {
+      const sumados = garantia.pasos.reduce((n, p) => n + (p.sumados || 0), 0);
+      flags.push({ t: `piso de ${garantia.piso}: ${sumados} recuperadas para llegar`, warn: false });
+    }
+    if (garantia.cumplido === false) flags.push({ t: garantia.nota || 'no se alcanzó el piso de candidatos', warn: true });
+    if (datos.discarded_count) flags.push({ t: `${datos.discarded_count} descartadas (abajo, recuperables)`, warn: false });
+    (datos.fuentes_a_sustituir || []).forEach(f => {
+      flags.push({ t: `fuente sin rendir: ${f.name}`, warn: true });
+    });
+
+    box.innerHTML = `
+      <div class="news-brief-top">
+        <span class="news-brief-kicker">Brief del día</span>
+        <span class="news-brief-window">
+          ${esc(ventana.desde || '')} → ${esc(ventana.hasta || '')}<br>${esc(ventana.motivo || '')}
+        </span>
+      </div>
+      ${brief ? `
+        <h3 class="serif">${esc(brief.titular || '')}</h3>
+        <p class="news-brief-lead">${esc(brief.resumen || '')}</p>
+        ${temas.length ? `<div class="news-brief-topics">${temas.map(t => `
+          <div class="news-brief-topic">
+            <b>${esc(t.tema || '')}</b>
+            ${esc(t.que_paso || '')}
+            ${t.por_que_importa ? ` <span class="why">${esc(t.por_que_importa)}</span>` : ''}
+          </div>`).join('')}</div>` : ''}
+        ${vigilar.length ? `<ul class="news-brief-watch">${vigilar.map(v => `<li>${esc(v)}</li>`).join('')}</ul>` : ''}
+      ` : `<p class="news-brief-lead">Cola de ${esc(datos.count ?? 0)} candidatos para la ventana indicada.</p>`}
+      <div class="news-brief-flags">
+        ${flags.map(f => `<span class="news-brief-flag${f.warn ? ' warn' : ''}">${esc(f.t)}</span>`).join('')}
+      </div>`;
+  }
+
+  // Las tarjetas las pinta renderProposals; aquí solo se les añade lo nuevo,
+  // para no duplicar ni reemplazar ese render.
+  function decorarTarjetas(){
+    if (!datos) return;
+    const porId = new Map();
+    (datos.candidates || []).forEach(c => porId.set(String(c.id), c));
+    const destacadas = new Set(datos.brief?.destacadas || []);
+
+    document.querySelectorAll('.proposal[data-proposal-id]').forEach(card => {
+      const c = porId.get(card.getAttribute('data-proposal-id'));
+      if (!c || card.querySelector('.proposal-why, .proposal-window')) return;
+
+      const tags = card.querySelector('.proposal-tags');
+      if (tags && c.ventana) {
+        const chip = document.createElement('span');
+        chip.className = 'proposal-window' + (c.ventana === 'hoy' ? ' hoy' : '');
+        chip.textContent = c.ventana + (destacadas.has(String(c.id)) ? ' · destacada' : '');
+        tags.appendChild(chip);
+      }
+      if (c.por_que_importa) {
+        const why = document.createElement('div');
+        why.className = 'proposal-why';
+        why.innerHTML = `<b>Para La Nacional:</b> ${esc(c.por_que_importa)}`;
+        const dek = card.querySelector('.dek');
+        if (dek) dek.parentNode.insertBefore(why, dek.nextSibling);
+        else card.appendChild(why);
+      }
+    });
+  }
+
+  async function cargar(){
+    try {
+      const res = await fetch(CANDIDATES_URL + '?t=' + Date.now(), { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      datos = await res.json();
+    } catch (err) {
+      console.warn('[LN-BRIEF] No se pudo cargar el brief:', err);
+      return;
+    }
+    renderBrief();
+    decorarTarjetas();
+  }
+
+  // Repintar después de cada render de la cola (aprobar/rechazar la redibuja).
+  const original = window.renderProposals;
+  if (typeof original === 'function') {
+    window.renderProposals = function(){
+      const out = original.apply(this, arguments);
+      renderBrief();
+      decorarTarjetas();
+      return out;
+    };
+  }
+
+  window.LN_reloadBrief = cargar;
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', cargar);
+  else cargar();
+})();
+</script>
+
 </body>
 </html>

@@ -33,6 +33,7 @@
 # ==============================================================================
 
 import os
+import re
 import sys
 import json
 import time
@@ -71,7 +72,24 @@ if not SUPABASE_URL or not SUPABASE_KEY:
 
 # Meses de historia que se resumen en el contexto de cada serie.
 MESES_CONTEXTO = 13
-MAX_NOTICIAS = 8
+MAX_NOTICIAS = 10
+# Antigüedad máxima de un titular para entrar al contexto macro. Sin este tope,
+# el resumen del día 21 podía citar como "reciente" una nota de hace dos semanas
+# que seguía en news_candidates.json, y nadie lo notaba porque el texto no dice
+# de cuándo es cada cosa.
+NOTICIAS_MAX_DIAS = int(os.environ.get("NOTICIAS_MAX_DIAS", "12"))
+# Tipos de pieza que el pipeline de noticias etiqueta y que no deben alimentar
+# un resumen ejecutivo: la opinión de un columnista no es un hecho, y la tasa
+# del dólar del martes no es contexto macro.
+TIPOS_NO_CONTEXTO = {"opinion", "publirreportaje", "servicio"}
+# Respaldo por titular para los candidatos generados antes de que el pipeline
+# empezara a etiquetar `tipo`: sin esto, el resumen de esta semana seguiría
+# abriendo con dos notas del precio del dólar.
+PATRONES_RUTINA = re.compile(
+    r"(precio del d[oó]lar|d[oó]lar hoy|tasas? de compra y venta|"
+    r"precios? de (los )?combustibles|loter[ií]a|hor[oó]scopo)",
+    re.IGNORECASE,
+)
 
 INDICADOR_LABEL = {
     "morosidad": "Morosidad (%)",
@@ -233,23 +251,70 @@ def fetch_bcrd_series():
     return "\n".join(lines) if lines else None
 
 
+def _dias_desde(iso):
+    if not iso:
+        return None
+    try:
+        dt = datetime.fromisoformat(str(iso).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return (datetime.now(timezone.utc) - dt).days
+
+
 def load_news_headlines():
+    """Titulares frescos y noticiosos para el contexto macro.
+
+    Se filtran tres cosas que antes entraban sin más: piezas de opinión o de
+    servicio (el pipeline ya las etiqueta con `tipo`), notas viejas que seguían
+    en el archivo de candidatos, y las que el propio pipeline apartó por tema.
+    Devuelve (texto, usadas) para poder dejar constancia de qué se citó.
+    """
     try:
         with open(NEWS_CANDIDATES_PATH, encoding="utf-8") as f:
             data = json.load(f)
     except (OSError, json.JSONDecodeError):
-        return None
-    cands = data.get("candidates") or []
-    cands = sorted(cands, key=lambda c: c.get("relevance") or 0, reverse=True)
-    lines = []
+        return None, []
+
+    cands = []
+    for c in (data.get("candidates") or []):
+        if (c.get("tipo") or "noticia") in TIPOS_NO_CONTEXTO:
+            continue
+        dias = _dias_desde(c.get("published_at") or c.get("fetched_at"))
+        if dias is not None and dias > NOTICIAS_MAX_DIAS:
+            continue
+        titulo = (c.get("title") or "").strip()
+        if not titulo or PATRONES_RUTINA.search(titulo):
+            continue
+        cands.append(c)
+
+    # Primero lo más relevante y, a igual relevancia, lo más reciente.
+    cands.sort(key=lambda c: ((c.get("relevance") or 0),
+                              c.get("published_at") or c.get("fetched_at") or ""),
+               reverse=True)
+
+    lines, usadas = [], []
     for c in cands[:MAX_NOTICIAS]:
-        fecha = str(c.get("published_at") or "")[:10]
+        fecha = str(c.get("published_at") or c.get("fetched_at") or "")[:10]
         titulo = (c.get("title") or "").strip()
         resumen = (c.get("summary") or "").strip()
-        if not titulo:
-            continue
-        lines.append(f"- [{fecha}] {titulo}. {resumen}")
-    return "\n".join(lines) if lines else None
+        angulo = (c.get("por_que_importa") or "").strip()
+        linea = f"- [{fecha}] {titulo}. {resumen}"
+        if angulo:
+            linea += f" (Para una AAyP: {angulo})"
+        lines.append(linea)
+        usadas.append({"fecha": fecha, "titulo": titulo, "url": c.get("url") or ""})
+
+    # El brief del día que redacta el pipeline de noticias resume la ventana
+    # editorial completa; darle ese encabezado al modelo evita que reconstruya
+    # a mano un panorama que ya está escrito.
+    brief = data.get("brief") or {}
+    if brief.get("resumen"):
+        cabecera = f"Brief del día ({brief.get('titular','')}): {brief['resumen']}"
+        lines.insert(0, cabecera)
+
+    return ("\n".join(lines) if lines else None), usadas
 
 
 def build_macro_context():
@@ -262,10 +327,18 @@ def build_macro_context():
             "== SERIES MACRO BCRD ==\n(No disponibles en esta corrida; "
             "apóyate en los titulares y en el panorama general dominicano.)"
         )
-    noticias = load_news_headlines()
+    noticias, usadas = load_news_headlines()
     if noticias:
-        partes.append("== TITULARES RECIENTES (curados por el Observatorio) ==\n" + noticias)
-    return "\n\n".join(partes)
+        partes.append(
+            f"== TITULARES RECIENTES (curados por el Observatorio, últimos {NOTICIAS_MAX_DIAS} días) ==\n"
+            + noticias
+        )
+    else:
+        partes.append(
+            "== TITULARES RECIENTES ==\n(Sin titulares frescos en esta corrida; "
+            "no cites hechos noticiosos que no estén en las series de arriba.)"
+        )
+    return "\n\n".join(partes), usadas
 
 
 # ------------------------------------------------------------------
@@ -458,8 +531,8 @@ def main():
     log(f"   SIB: {'OK · corte ' + str(sib_periodo) if sib_ctx else 'sin datos'}")
 
     log(">> Construyendo contexto Macro...")
-    macro_ctx = build_macro_context()
-    log("   Macro: OK")
+    macro_ctx, noticias_usadas = build_macro_context()
+    log(f"   Macro: OK · {len(noticias_usadas)} titulares frescos en el contexto")
 
     if dry_run:
         log("\n===== CONTEXTO MACRO =====\n" + macro_ctx)
@@ -481,6 +554,9 @@ def main():
     parsed = gemini_json(MACRO_PROMPT + macro_ctx, api_key)
     nueva = validar_seccion(parsed, periodo_actual)
     if nueva:
+        # Trazabilidad: qué noticias vio el modelo. Sin esto, verificar una
+        # afirmación del resumen obligaba a adivinar de dónde salió.
+        nueva["noticias_usadas"] = noticias_usadas
         secciones["macro"] = nueva
         log("   Macro: OK")
     elif previas.get("macro"):

@@ -48,15 +48,23 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: gemini-2.5-flash-lite
           NEWS_CANDIDATES_PATH: news_candidates.json
+          NEWS_HEALTH_PATH: data/news_source_health.json
           MAX_TOTAL_PROPOSALS: "30"
+          # Ventana editorial: desde las 2:00 PM del día hábil anterior. El
+          # lunes eso arrastra solo desde el viernes 2:00 PM, sin configuración
+          # aparte (ver calcular_ventana en scripts/news_pipeline.py).
+          NEWS_WINDOW_CUTOFF_HOUR: "14"
+          # Piso de candidatos por corrida: por debajo de esto el panel no le
+          # sirve al analista, así que el pipeline relaja en escalera.
+          NEWS_MIN_CANDIDATES: "6"
         run: python scripts/news_pipeline.py
 
       - name: Commit de candidatos si cambiaron
         run: |
-          if [ -n "$(git status --porcelain news_candidates.json)" ]; then
+          if [ -n "$(git status --porcelain news_candidates.json data/news_source_health.json)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add news_candidates.json
+            git add news_candidates.json data/news_source_health.json
             git commit -m "Actualizar candidatos de noticias [skip ci]"
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
