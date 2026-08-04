@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-08-04T12:33:00.863986+00:00",
+  "generated_at": "2026-08-04T18:15:02.301385+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
   "count": 18,
   "errors": 0,
   "sources": 12,
-  "elapsed_s": 490.7,
+  "elapsed_s": 215.6,
   "candidates": [
     {
       "id": "n_19f7c4e0009863c6",
@@ -354,43 +354,6 @@
       "status": "pending"
     }
   ],
-  "discarded_count": 3,
-  "discarded": [
-    {
-      "id": "n_108112d9c0f889b7",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Precio del dólar hoy martes 4 de agosto de 2026 en RD",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-4-agosto-2026",
-      "source_name": "Fuente guardada",
-      "relevance": null,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-04T12:31:06.791870+00:00"
-    },
-    {
-      "id": "n_224d12e6242dd448",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Resaltan madurez del sistema financiero en su paso a lo digital",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/resaltan-madurez-del-sistema-financiero-en-su-paso-a-lo-digital",
-      "source_name": "Fuente guardada",
-      "relevance": null,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-04T12:32:00.786462+00:00"
-    },
-    {
-      "id": "n_074a4ae30680db2a",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "RD salió del mapa del hambre, pero enfrenta grandes retos",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/rd-salio-del-mapa-del-hambre-pero-enfrenta-grandes-retos",
-      "source_name": "Fuente guardada",
-      "relevance": null,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-04T12:33:00.859085+00:00"
-    }
-  ]
+  "discarded_count": 0,
+  "discarded": []
 }
