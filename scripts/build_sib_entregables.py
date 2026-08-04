@@ -149,8 +149,9 @@ def filtrar_moneda(filas, modo):
 
 def agregar(filas, productos, clasificador, campo_valor, con_region):
     """Devuelve (periodos, regiones, datos) donde
-    datos[entidad][region][producto][periodo] = suma.
-    La region 'TOTAL' agrega todas las regiones (vista nacional)."""
+    datos[entidad][region][producto][periodo] = [total, mn, me].
+    La region 'TOTAL' agrega todas las regiones (vista nacional); mn/me
+    permiten filtrar por moneda sin re-descargar ni pedir otro archivo."""
     periodos = sorted({f["periodo"] for f in filas})
     regiones = sorted({f.get("region") or SIN_REGION for f in filas}) if con_region else []
     datos = {}
@@ -164,14 +165,21 @@ def agregar(filas, productos, clasificador, campo_valor, con_region):
             continue
         destinos = clasificador(f)
         reg = (f.get("region") or SIN_REGION) if con_region else None
+        mon = _n(f.get("moneda"))
+        # indice 1 = moneda nacional, 2 = extranjera; sin moneda solo suma total
+        idx = 1 if "nacional" in mon else (2 if "extranjera" in mon else None)
 
         e = datos.setdefault(ent, {})
         for zona in (["TOTAL", reg] if con_region else ["TOTAL"]):
             z = e.setdefault(zona, {})
             for prod in destinos:
-                if prod in productos:
-                    z.setdefault(prod, {})
-                    z[prod][f["periodo"]] = z[prod].get(f["periodo"], 0.0) + val
+                if prod not in productos:
+                    continue
+                serie = z.setdefault(prod, {})
+                acc = serie.setdefault(f["periodo"], [0.0, 0.0, 0.0])
+                acc[0] += val
+                if idx:
+                    acc[idx] += val
     return periodos, regiones, datos, tipo_de
 
 
@@ -184,19 +192,25 @@ def sistema_totales(datos, productos, periodos, zonas):
         for z, prods in zonas_e.items():
             if z not in tot:
                 continue
-            for p, serie in prods.items():
-                for per, v in serie.items():
-                    tot[z][p][per] += v
+            for p, serie_p in prods.items():
+                for per, acc in serie_p.items():
+                    tot[z][p][per] += acc[0]
     return tot
 
 
-def serie(prods, producto, periodos, sistema=None):
-    """Lista [{periodo, valor, share_pct}] para un producto."""
+def serie(prods, producto, periodos, sistema=None, con_moneda=False):
+    """Lista [{periodo, valor, share_pct}] para un producto.
+    Con con_moneda agrega valor_mn / valor_me para poder filtrar por moneda
+    sin pedir otro archivo."""
     d = prods.get(producto, {})
     out = []
     for per in periodos:
-        v = round(d.get(per, 0.0), 2)
+        acc = d.get(per) or [0.0, 0.0, 0.0]
+        v = round(acc[0], 2)
         item = {"periodo": per, "valor": v}
+        if con_moneda:
+            item["valor_mn"] = round(acc[1], 2)
+            item["valor_me"] = round(acc[2], 2)
         if sistema is not None:
             base = sistema.get(producto, {}).get(per, 0.0)
             item["share_pct"] = round(v / base * 100, 4) if base else None
@@ -229,7 +243,8 @@ def escribir(path, payload):
     print(f"  -> {path} ({os.path.getsize(path):,} bytes)")
 
 
-def construir_bloque(filas, productos, clasificador, campo_valor, con_region):
+def construir_bloque(filas, productos, clasificador, campo_valor, con_region,
+                     con_moneda=False):
     periodos, regiones, datos, tipo_de = agregar(
         filas, productos, clasificador, campo_valor, con_region)
     zonas = ["TOTAL"] + [r for r in regiones]
@@ -240,11 +255,11 @@ def construir_bloque(filas, productos, clasificador, campo_valor, con_region):
         bloque = {
             "tipo_entidad": tipo_de.get(ent),
             "series": {p: serie(zonas_e.get("TOTAL", {}), p, periodos,
-                                sist["TOTAL"]) for p in productos},
+                                sist["TOTAL"], con_moneda) for p in productos},
         }
         if con_region:
             bloque["regiones"] = {
-                r: {p: serie(zonas_e.get(r, {}), p, periodos, sist[r])
+                r: {p: serie(zonas_e.get(r, {}), p, periodos, sist[r], con_moneda)
                     for p in productos}
                 for r in regiones
             }
@@ -284,14 +299,22 @@ def main():
         "nota_share": ("share_pct = balance de la entidad / balance del sistema "
                        "(suma de entidades) para el mismo producto, periodo y "
                        "region."),
+        "nota_moneda": ("En la vista de todas las monedas cada punto trae "
+                        "valor_mn y valor_me (nacional / extranjera) para "
+                        "filtrar sin pedir otro archivo; valor = valor_mn + "
+                        "valor_me."),
     }
 
     if args.cartera:
         print("Cartera:")
         filas = filtrar_moneda(cargar(args.cartera, "cartera_agg"), args.moneda)
         con_region = any("region" in f for f in filas[:50])
+        # El desglose por moneda solo tiene sentido en la vista completa; en
+        # las variantes ya filtradas el total ES la moneda pedida.
+        con_moneda = (args.moneda == "todas") and any("moneda" in f for f in filas[:50])
         periodos, regiones, entidades, sistema = construir_bloque(
-            filas, PRODUCTOS_CARTERA, clasifica_cartera, "deuda", con_region)
+            filas, PRODUCTOS_CARTERA, clasifica_cartera, "deuda", con_region,
+            con_moneda)
         payload = dict(
             base,
             endpoint="estadisticas/v2/carteras/creditos (granular)",
