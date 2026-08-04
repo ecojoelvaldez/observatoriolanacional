@@ -1,12 +1,188 @@
 {
-  "generated_at": "2026-08-03T18:21:02.446095+00:00",
+  "generated_at": "2026-08-04T12:33:00.863986+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
-  "count": 9,
+  "count": 18,
   "errors": 0,
   "sources": 12,
-  "elapsed_s": 226.1,
+  "elapsed_s": 490.7,
   "candidates": [
+    {
+      "id": "n_19f7c4e0009863c6",
+      "source_key": "news_extra_12",
+      "source_name": "Fuente guardada",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-3-agosto-2026",
+      "title": "Precio del dólar hoy Lunes 3 de agosto de 2026 en RD",
+      "summary": "El Banco Central de la República Dominicana reporta que el dólar se cotiza a RD$58.13 para la compra y RD$58.62 para la venta. Estas variaciones se alinean con el comportamiento internacional y presiones moderadas en la demanda local.",
+      "body": "El tipo de cambio del dólar en República Dominicana se mantiene estable este lunes 3 de agosto de 2026, según el Banco Central. Las tasas de compra y venta reflejan un comportamiento alineado con las tendencias globales y la demanda interna, con variaciones menores en plataformas de envío y bancos comerciales.",
+      "category": "Financiero",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "politica_monetaria"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-03T11:33:06+00:00",
+      "fetched_at": "2026-08-04T12:29:14.281076+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_9be26f0c277e6232",
+      "source_key": "news_extra_12",
+      "source_name": "Fuente guardada",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/aumenta-inventario-de-viviendas-nuevas-por-ventas-mas-lentas",
+      "title": "Aumenta inventario de viviendas nuevas por ventas más lentas",
+      "summary": "El sector inmobiliario dominicano experimenta un aumento en el inventario de viviendas nuevas debido a una desaceleración en las ventas, atribuida principalmente al encarecimiento del financiamiento hipotecario. Esta situación reduce el poder de compra de los hogares y prolonga los tiempos de comercialización de los proyectos.",
+      "body": "El mercado inmobiliario dominicano enfrenta una acumulación de inventario, especialmente en apartamentos de segmentos medio y medio-alto. Organizaciones del sector señalan que el alto costo del financiamiento hipotecario ha mermado la capacidad de compra de las familias y extendido los plazos de venta de los proyectos. La Asociación de Constructores y Promotores de Viviendas (Acoprovi) estima un incremento en las viviendas terminadas sin vender, aunque no hay estadísticas oficiales precisas.",
+      "category": "Economia",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-04T00:00:00Z",
+      "fetched_at": "2026-08-04T12:28:55.144121+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_b4110e1b89018af4",
+      "source_key": "news_extra_12",
+      "source_name": "Fuente guardada",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/evaluan-impacto-riesgos-externos-para-economia-rd",
+      "title": "Evalúan impacto riesgos externos para economía RD",
+      "summary": "Autoridades económicas y la banca múltiple de República Dominicana analizaron los riesgos internacionales y su impacto en la economía local. Se destacó la fortaleza del sistema financiero dominicano y la estabilidad macroeconómica como pilares para enfrentar la incertidumbre global.",
+      "body": "Representantes del Banco Central, Ministerio de Hacienda y Economía, MICM, y la Asociación de Bancos Múltiples (ABA) se reunieron para evaluar los desafíos económicos derivados de la volatilidad internacional. Se resaltó la solidez del sistema financiero dominicano y el crecimiento del IMAE, así como la expansión del crédito privado, como factores clave para mantener la confianza y la estabilidad.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "banca",
+        "macro",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-04T04:00:00+00:00",
+      "fetched_at": "2026-08-04T12:28:44.724165+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_fa0f53f1c0d71de2",
+      "source_key": "news_extra_9",
+      "source_name": "Fuente guardada",
+      "url": "https://hoy.com.do/economia/wall-street-abre-verde-caida-petroleo-anunciar-donald-trump-conversaciones-iran_1097381.html",
+      "title": "Wall Street abre en verde tras caída de petróleo al anunciar Donald Trump conversaciones con Irán",
+      "summary": "Los mercados bursátiles de Wall Street abrieron al alza, impulsados por la noticia de que el presidente de EE.UU. Donald Trump anunció la reanudación de conversaciones con Irán. Esta declaración provocó una caída significativa en los precios del petróleo, generando optimismo en los índices bursátiles.",
+      "body": "El principal índice bursátil de Wall Street, el Dow Jones, experimentó un alza considerable al inicio de la jornada, impulsado por el anuncio del presidente estadounidense Donald Trump sobre la reanudación de conversaciones con Irán. Este desarrollo geopolítico provocó una notable caída en los precios del petróleo, lo que a su vez generó un sentimiento positivo en los mercados financieros.",
+      "category": "Economia",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-03T11:53:07-04:00",
+      "fetched_at": "2026-08-04T12:27:17.257236+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_c84008dc92fd2eb4",
+      "source_key": "news_extra_9",
+      "source_name": "Fuente guardada",
+      "url": "https://hoy.com.do/economia/apreciacion-moneda-diferente_1097439.html",
+      "title": "Cuando la apreciación de la moneda es diferente",
+      "summary": "El peso dominicano ha mostrado una apreciación suave y sostenida, impulsada por un aumento significativo y diversificado en la entrada de divisas. Esta estabilidad contrasta con la volatilidad de otras monedas regionales, reflejando la resiliencia económica y una gestión cambiaria prudente del Banco Central.",
+      "body": "El peso dominicano se ha apreciado más de un 4.33% interanual, un comportamiento atribuido a un incremento sustancial en la entrada de divisas provenientes de turismo, remesas, IED y exportaciones. Esta diversificación de ingresos, junto a una política de flotación administrada por el Banco Central, fortalece la economía y preserva las reservas internacionales.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "macro"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-04T00:00:00-04:00",
+      "fetched_at": "2026-08-04T12:27:11.054637+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_4ea82b76bdd8a130",
+      "source_key": "news_extra_9",
+      "source_name": "Fuente guardada",
+      "url": "https://hoy.com.do/economia/republica-dominicana-avanza-firme-mayor-equilibrio-fiscal_1097442.html",
+      "title": "República Dominicana avanza firme hacia mayor equilibrio fiscal",
+      "summary": "El ministro de Hacienda y Economía destacó los avances de la República Dominicana hacia un equilibrio presupuestario y un sistema tributario más justo. La iniciativa busca fortalecer la confianza y respaldar el desarrollo económico a través de un sistema financiero sólido y digitalizado.",
+      "body": "El ministro de Hacienda y Economía, Magín Díaz, afirmó que la República Dominicana progresa hacia un mayor equilibrio presupuestario y un sistema tributario más equitativo. Durante un encuentro con autoridades económicas y representantes bancarios, se enfatizó la necesidad de un sistema financiero robusto y digitalizado para respaldar el desarrollo económico y la distribución de la riqueza.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "banca",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-04T00:00:00-04:00",
+      "fetched_at": "2026-08-04T12:27:05.076502+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_600e726307f8cddc",
+      "source_key": "news_extra_9",
+      "source_name": "Fuente guardada",
+      "url": "https://hoy.com.do/economia/elevan-calificacion-altio-bbb-af-fa_1097444.html",
+      "title": "Elevan calificación de ALTIO de BBB+af a A-fa",
+      "summary": "La calificadora Feller Rate mejoró la calificación del Fondo Cerrado de Desarrollo ALTIO II a A-fa, destacando la solidez de su cartera y gestión. Este ascenso refleja la confianza en la estrategia de inversión del fondo y su contribución al desarrollo económico dominicano.",
+      "body": "La firma Feller Rate ha elevado la calificación crediticia del Fondo Cerrado de Desarrollo ALTIO II de BBB+fa a A-fa. Esta mejora se fundamenta en la consolidación de su cartera de inversiones, la alta proporción de activos alineados con sus objetivos y la fortaleza de su estructura de administración. El fondo administra un patrimonio de US$150.6 millones, con un crecimiento del 10.2% en el último año.",
+      "category": "Financiero",
+      "relevance": 9,
+      "señales": [
+        "macro",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-04T00:00:00-04:00",
+      "fetched_at": "2026-08-04T12:26:59.082215+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_618e6aeedf5a82e7",
+      "source_key": "news_extra_9",
+      "source_name": "Fuente guardada",
+      "url": "https://hoy.com.do/economia/resaltan-evolucion-sistema-financiero_1097446.html",
+      "title": "Resaltan evolución sistema financiero",
+      "summary": "El sistema financiero dominicano ha experimentado una notable transformación digital, con un 83% de operaciones bancarias realizadas a través de canales digitales y la oferta generalizada de aplicaciones móviles. Esta evolución fortalece la experiencia del usuario y amplía el acceso a servicios financieros.",
+      "body": "Representantes de Visa, Mastercard y CardNET destacaron la sólida base de la República Dominicana para la transformación digital financiera. Señalaron avances en banca digital, pagos sin contacto y billeteras electrónicas, lo que ha fortalecido la experiencia del usuario y ampliado el acceso a productos financieros. Cerca del 90% de las transacciones con tarjetas son sin contacto y aproximadamente 1.5 millones de productos financieros se han abierto digitalmente en los últimos dos años.",
+      "category": "Financiero",
+      "relevance": 9,
+      "señales": [
+        "banca",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-04T00:00:00-04:00",
+      "fetched_at": "2026-08-04T12:26:52.957123+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_c57c74badec822e8",
+      "source_key": "news_extra_9",
+      "source_name": "Fuente guardada",
+      "url": "https://hoy.com.do/economia/fortalecio-regulacion-supervision-gestion_1097443.html",
+      "title": "Fortaleció regulación y supervisión durante su gestión",
+      "summary": "La Superintendencia de Bancos (SB) fortaleció la supervisión del sistema financiero dominicano, actualizó regulaciones y amplió la protección al usuario durante la gestión de Alejandro Fernández Whipple. La salida del funcionario, tras seis años, marca un hito en la modernización del sector.",
+      "body": "La gestión de Alejandro Fernández en la Superintendencia de Bancos (SB) se caracterizó por un fortalecimiento en la supervisión y regulación del sistema financiero dominicano. Durante su mandato, se realizaron numerosas inspecciones, se modernizó el modelo de supervisión con nuevas áreas especializadas y se emitieron diversas normativas para proteger a los usuarios y promover la inclusión financiera.",
+      "category": "Regulatorio",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "banca"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-04T00:00:00-04:00",
+      "fetched_at": "2026-08-04T12:26:46.706725+00:00",
+      "status": "pending"
+    },
     {
       "id": "n_65ae4c3602d8fe97",
       "source_key": "news_extra_9",
@@ -178,19 +354,43 @@
       "status": "pending"
     }
   ],
-  "discarded_count": 1,
+  "discarded_count": 3,
   "discarded": [
     {
-      "id": "n_0464e98e9fd3b33f",
+      "id": "n_108112d9c0f889b7",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Monorriel de SD",
-      "url": "https://www.diariolibre.com/actualidad/nacional/2026/08/03/auditoria-revela-inconsistencias-en-monorriel-santo-domingo/3618035",
-      "source_name": "Diario Libre economía",
+      "title": "Precio del dólar hoy martes 4 de agosto de 2026 en RD",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-4-agosto-2026",
+      "source_name": "Fuente guardada",
       "relevance": null,
       "señales": [],
       "detalle": "",
-      "fetched_at": "2026-08-03T18:21:00.943795+00:00"
+      "fetched_at": "2026-08-04T12:31:06.791870+00:00"
+    },
+    {
+      "id": "n_224d12e6242dd448",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Resaltan madurez del sistema financiero en su paso a lo digital",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/resaltan-madurez-del-sistema-financiero-en-su-paso-a-lo-digital",
+      "source_name": "Fuente guardada",
+      "relevance": null,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-04T12:32:00.786462+00:00"
+    },
+    {
+      "id": "n_074a4ae30680db2a",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "RD salió del mapa del hambre, pero enfrenta grandes retos",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/rd-salio-del-mapa-del-hambre-pero-enfrenta-grandes-retos",
+      "source_name": "Fuente guardada",
+      "relevance": null,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-04T12:33:00.859085+00:00"
     }
   ]
 }
