@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-08-05T12:30:01.620143+00:00",
+  "generated_at": "2026-08-05T18:10:01.724112+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
   "count": 26,
   "errors": 0,
   "sources": 12,
-  "elapsed_s": 437.7,
+  "elapsed_s": 273.1,
   "candidates": [
     {
       "id": "n_cc09dbf71f84a8c9",
@@ -501,6 +501,19 @@
       "status": "pending"
     }
   ],
-  "discarded_count": 0,
-  "discarded": []
+  "discarded_count": 1,
+  "discarded": [
+    {
+      "id": "n_570a7e8341f66995",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Pago licencia médica",
+      "url": "https://www.diariolibre.com/actualidad/salud/2026/08/04/cnss-establece-metodo-para-calcular-subsidio/3619669",
+      "source_name": "Diario Libre economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-05T18:10:00.213704+00:00"
+    }
+  ]
 }
