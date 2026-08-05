@@ -77,14 +77,20 @@ def clasifica_cartera(fila):
     if "comercial" in tc:
         dest.add("comercial_total")
 
-    if "tarjeta" in tcred:
+    # Tarjetas: solo las personales. Las comerciales no entran aqui; su
+    # tipoCartera es comercial y ya quedaron sumadas en comercial_total.
+    # Con esta regla cierra consumo_sin_tarjeta + tarjetas = consumo_total.
+    if "tarjeta" in tcred and "personal" in tcred:
         dest.add("tarjetas_credito")
-    elif "consumo" in tcred:
+    elif "consumo" in tcred and "tarjeta" not in tcred:
         dest.add("consumo_sin_tarjeta")
 
     if "mayores deudores" in tcred:
         dest.add("mayores_deudores_interinos")
-    if ("medianos deudores" in tcred or "menores deudores" in tcred
+    # Pymes: menores deudores + microcredito. Los medianos quedan fuera. El
+    # microcredito es lo que trae al ranking a ADOPEM, ADEMI y BANFONDESA,
+    # cuyo negocio comercial es casi todo microcredito.
+    if ("menores deudores" in tcred
             or "microcredito" in tcred or "microcrédito" in tcred):
         dest.add("pymes")
     return dest
