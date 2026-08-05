@@ -30,9 +30,27 @@ Todo el sector financiero, sin excluir tipos. Al día de hoy:
 | *(pendiente)* | Banca pública de desarrollo — **BANDEX** |
 
 > **Importante**: descargar solo BM+AAyP+BAyC deja fuera a BANDEX, que sí
-> aparece en los rankings de la presentación (8º en mayores deudores, 10º en
-> comercial total al corte 2026-05). Omitirlo corre un puesto hacia arriba a
-> todas las entidades por debajo — La Nacional aparecía 12ª en vez de 13ª.
+> aparece en los rankings de la presentación (8º en mayores deudores con
+> 10,104 MM, 10º en comercial total con 10,980 MM al corte 2026-05). Omitirlo
+> corre un puesto hacia arriba a todas las entidades por debajo — La Nacional
+> aparecía 12ª en vez de 13ª en esos dos productos. En tarjetas, donde BANDEX
+> no participa, el ranking ya coincidía.
+
+### Pendiente: código de tipo de entidad de BANDEX
+
+No se pudo resolver contra el API. Lo verificado:
+
+- `tipoEntidad=CC` **sí existe** (Corporaciones de Crédito: Monumental,
+  Norpresa, Oficorp), pero no contiene a BANDEX.
+- Sin datos: `EPIF`, `BD`, `OEIF`, `IFD`, `BANDEX`, `EPSF`, `EIFP`, `IFP`,
+  `EPIFP`, `BPD`, `EFP`, `BNEX`, `OPSF`, `BANCA`, `PUBLICA`, `TODOS`, `BAC`.
+- El API **no expone catálogo** de tipos ni de entidades: `entidades`,
+  `catalogos/entidades`, `catalogos/tipos-entidad`, `tipos-entidad`,
+  `entidades/tipos`, `catalogos`, `estadisticas/entidades` e
+  `indicadores/entidades` responden 404.
+
+Cuando se conozca el código, basta agregarlo al input `tipos` del workflow y
+regenerar: el resto del pipeline ya lo absorbe sin cambios.
 
 La fila `TODOS` que publica la SIB es el agregado del sistema: **se excluye de
 los rankings** para no contarla dos veces, y se usa solo como control (la suma
