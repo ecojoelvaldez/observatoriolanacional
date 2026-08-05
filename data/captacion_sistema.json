@@ -1,7 +1,7 @@
 {
   "fuente": "Superintendencia de Bancos de la Republica Dominicana (SIB) - API v2",
   "unidad": "RD$ (pesos dominicanos)",
-  "generado_en": "2026-08-05T03:07:11.256043+00:00",
+  "generado_en": "2026-08-05T14:14:25.838536+00:00",
   "nota_agregado": "La entidad 'TODOS' es el agregado que publica la SIB; se excluye del ranking y del sistema.",
   "nota_share": "share_pct = balance de la entidad / balance del sistema (suma de entidades) para el mismo producto, periodo y region.",
   "nota_moneda": "En la vista de todas las monedas cada punto trae valor_mn y valor_me (nacional / extranjera) para filtrar sin pedir otro archivo; valor = valor_mn + valor_me.",
