@@ -1,22 +1,23 @@
 {
-  "generado_en": "2026-07-31T14:07:19.417399+00:00",
+  "generado_en": "2026-08-06T14:25:24.406550+00:00",
   "modelo": "gemini-2.5-flash-lite",
   "secciones": {
     "macro": {
-      "periodo": "2026-07",
-      "titulo": "Panorama macroeconómico dominicano: Dólar estable, impulso a mipymes y formalización",
-      "resumen": "El tipo de cambio del dólar se mantiene estable, con tasas de compra y venta publicadas por el Banco Central. Se observa un impulso al financiamiento de las mipymes, sector clave para la economía, y la implementación de la Ley 30-26 busca fomentar la formalización empresarial y ampliar la base tributaria.",
+      "periodo": "2026-08",
+      "titulo": "Apreciación del peso y debate sobre aranceles marcan el panorama",
+      "resumen": "El peso dominicano muestra una apreciación significativa frente al dólar, impulsado por factores externos y el flujo de divisas. Paralelamente, el sector privado expresa preocupación por la imposición de aranceles por parte de Estados Unidos, mientras el gobierno busca negociaciones para mitigar su impacto.",
       "puntos": [
-        "Tasas de cambio del dólar publicadas por el BCRD para el 20 de julio de 2026.",
-        "Crecimiento interanual del 4.1% en financiamiento para mipymes.",
-        "Ley 30-26 promueve la formalización empresarial con incentivos."
+        "El peso dominicano se apreció 8% al cierre de julio y 4.4% interanual.",
+        "El sector privado manifiesta inquietud por nuevos aranceles de EE.UU.",
+        "Gobierno negocia activamente con EE.UU. para reducir aranceles a exportaciones.",
+        "Expertos debaten estrategias para asegurar crecimiento sostenido y evitar trampa de ingresos medios."
       ],
       "vigilar": [
-        "Impacto de la suspensión de importaciones de mango a EE. UU. en exportaciones agrícolas.",
-        "Evolución de la ejecución de la inversión pública en provincias.",
-        "Tendencia de cotización a la TSS de personas mayores de 64 años."
+        "Evolución de las negociaciones comerciales con Estados Unidos.",
+        "Publicaciones del Banco Central sobre el comportamiento del tipo de cambio.",
+        "Impacto de los aranceles en la competitividad de las exportaciones dominicanas."
       ],
-      "generado_en": "2026-07-21T14:06:29.296877+00:00"
+      "generado_en": "2026-08-06T14:25:26.833123+00:00"
     },
     "sib": {
       "periodo": "2026-05",
