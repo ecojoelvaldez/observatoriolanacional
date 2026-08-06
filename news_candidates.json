@@ -1,12 +1,189 @@
 {
-  "generated_at": "2026-08-05T18:10:01.724112+00:00",
+  "generated_at": "2026-08-06T12:32:01.548480+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
-  "count": 26,
+  "count": 30,
   "errors": 0,
   "sources": 12,
-  "elapsed_s": 273.1,
+  "elapsed_s": 407.5,
   "candidates": [
+    {
+      "id": "n_88fa0bd422d1b15d",
+      "source_key": "news_extra_9",
+      "source_name": "Fuente guardada",
+      "url": "https://hoy.com.do/economia/aranceles-ee-uu-generan-preocupacion-sector-privado-gobierno-promete-solucion_1097700.html",
+      "title": "Aranceles de EE.UU. generan preocupación en el sector privado; Gobierno promete solución",
+      "summary": "La imposición de nuevos aranceles por parte de Estados Unidos genera inquietud en el sector privado dominicano, afectando la competitividad de las exportaciones. El gobierno asegura estar gestionando la situación diplomática y comercialmente para mitigar el impacto.",
+      "body": "El presidente del CONEP, Celso Juan Marranzini, alertó sobre el riesgo que representan los nuevos aranceles estadounidenses para las exportaciones dominicanas, a pesar de su desempeño positivo actual. El Ministro de la Presidencia, José Ignacio Paliza, aseguró que el gobierno está activamente gestionando la situación diplomática y comercial para revertir o mitigar el impacto de estas medidas.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-05T16:59:47-04:00",
+      "fetched_at": "2026-08-06T12:29:08.671192+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_4269bc6e04dab2b2",
+      "source_key": "news_extra_9",
+      "source_name": "Fuente guardada",
+      "url": "https://hoy.com.do/economia/gobierno-mantiene-negociando-rebaja-arancel-impuesto-donald-trump_1097709.html",
+      "title": "Gobierno se mantiene negociando rebaja de arancel impuesto por Donald Trump",
+      "summary": "El gobierno dominicano está en negociaciones activas con Estados Unidos para reducir el arancel del 12.5% a las exportaciones, buscando mejorar la competitividad del país. Existe optimismo en alcanzar un acuerdo que beneficie el comercio bilateral.",
+      "body": "El Ministerio de Hacienda y Economía, a través de Magín Díaz, ha confirmado que una comisión de alto nivel dialoga con el Departamento de Comercio de EE.UU. para lograr la disminución de un arancel que encarece las exportaciones dominicanas. La medida, impuesta por la administración Trump, afecta la competitividad frente a otros países.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-05T17:31:42-04:00",
+      "fetched_at": "2026-08-06T12:28:18.178843+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_0601c633c853944d",
+      "source_key": "news_extra_9",
+      "source_name": "Fuente guardada",
+      "url": "https://hoy.com.do/economia/banreservas-recibe-maxima-calificacion-crediticia-aaa_1097739.html",
+      "title": "Banreservas recibe máxima calificación crediticia AAA",
+      "summary": "Moody's Local República Dominicana ha reafirmado la calificación crediticia AAA.do con perspectiva Estable para Banreservas, destacando la solidez financiera de la entidad. Esta ratificación subraya la calidad de sus activos, rentabilidad y liquidez, consolidando su liderazgo en el sistema financiero nacional.",
+      "body": "Banreservas ha sido nuevamente galardonado con la máxima calificación crediticia AAA.do por Moody's Local República Dominicana, reafirmando su solidez financiera. La agencia calificadora destacó la calidad de sus activos, su rentabilidad y sus niveles de liquidez, además de su liderazgo en el mercado dominicano. El presidente ejecutivo de Banreservas, Leonardo Aguilera, señaló que esta distinción reconoce el desempeño sostenido de la institución y sus indicadores de gestión.",
+      "category": "Financiero",
+      "relevance": 9,
+      "señales": [
+        "politica_monetaria",
+        "banca",
+        "macro",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-06T00:00:00-04:00",
+      "fetched_at": "2026-08-06T12:28:06.313088+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_a7d88d74efbc1595",
+      "source_key": "news_extra_9",
+      "source_name": "Fuente guardada",
+      "url": "https://hoy.com.do/economia/banco-popular-sube-17-puestos-ranking-mundial_1097735.html",
+      "title": "Banco Popular sube 17 puestos ranking mundial",
+      "summary": "El Banco Popular Dominicano ha escalado 17 posiciones en el ranking mundial de bancos, alcanzando el puesto 688. Este avance se atribuye principalmente al crecimiento de su capital primario, un indicador clave de fortaleza financiera.",
+      "body": "El Banco Popular Dominicano ha ascendido significativamente en el ranking mundial de bancos, ubicándose en la posición 688 según la publicación Top 1,000 World Banks 2026. Este logro, impulsado por el crecimiento de su capital primario (Tier 1), refleja una sólida fortaleza financiera y una mayor generación de resultados, consolidando su relevancia en el sector bancario.",
+      "category": "Financiero",
+      "relevance": 9,
+      "señales": [
+        "banca",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-06T00:00:00-04:00",
+      "fetched_at": "2026-08-06T12:27:59.687526+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_726b2e2e3dabbc51",
+      "source_key": "news_extra_9",
+      "source_name": "Fuente guardada",
+      "url": "https://hoy.com.do/economia/costo-sesgo-debate-sobre-moneda_1097734.html",
+      "title": "El costo del sesgo en el debate sobre moneda",
+      "summary": "El debate sobre el valor del peso dominicano se desvía de los fundamentos económicos, afectando la confianza y la toma de decisiones. Un análisis sesgado puede generar volatilidad y distorsionar la asignación de recursos, impactando negativamente la credibilidad y el riesgo país.",
+      "body": "El debate sobre el valor del peso dominicano, influenciado por percepciones y narrativas en lugar de fundamentos económicos, tiene un costo real. Esta desconexión erosiona la confianza en las instituciones, distorsiona las decisiones económicas y debilita la política pública, pudiendo generar volatilidad y afectar la asignación de recursos productivos.",
+      "category": "Economia",
+      "relevance": 8,
+      "señales": [
+        "macro"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-06T00:00:00-04:00",
+      "fetched_at": "2026-08-06T12:27:53.945926+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_12445070b245624b",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero",
+      "url": "https://eldinero.com.do/375068/banco-popular-informa-que-escala-17-posiciones-en-los-mil-mejores-bancos-del-mundo",
+      "title": "Banco Popular informa que escala 17 posiciones en los mil mejores bancos del mundo",
+      "summary": "El Banco Popular Dominicano ha escalado 17 posiciones en el ranking mundial de The Banker, ubicándose en el puesto 688. Este avance consolida su fortaleza financiera y competitividad en el sector bancario internacional.",
+      "body": "El Banco Popular Dominicano ha ascendido 17 lugares en el ranking Top 1,000 World Banks 2026 de The Banker, alcanzando la posición 688. Este logro se atribuye al crecimiento de su capital primario, activos, generación de resultados y sólidos niveles de rentabilidad y solvencia, reforzando su liderazgo entre las entidades financieras privadas dominicanas.",
+      "category": "Financiero",
+      "relevance": 8,
+      "señales": [
+        "banca"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-05T15:35:02+00:00",
+      "fetched_at": "2026-08-06T12:27:17.108755+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_449c469ac0a9a6c3",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero",
+      "url": "https://eldinero.com.do/375228/la-dgii-no-puede-ser-subjetiva-para-cobrar-mas-impuestos",
+      "title": "La DGII no puede ser subjetiva para cobrar más impuestos",
+      "summary": "La Suprema Corte de Justicia reafirma que la Dirección General de Impuestos Internos (DGII) debe basar sus decisiones de cobro en pruebas objetivas y no en apreciaciones subjetivas. Esta sentencia es crucial para la seguridad jurídica de los contribuyentes en el sistema tributario dominicano.",
+      "body": "La Dirección General de Impuestos Internos (DGII) no puede alterar la naturaleza de un bien o una operación basándose en presunciones subjetivas para incrementar la recaudación fiscal. La Suprema Corte de Justicia ha dictaminado que la Administración Tributaria debe presentar pruebas objetivas y suficientes que respalden sus decisiones, garantizando así la legalidad y el debido proceso en materia tributaria.",
+      "category": "Regulatorio",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-06T04:43:05+00:00",
+      "fetched_at": "2026-08-06T12:26:45.612533+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_09572e10c40bee34",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero",
+      "url": "https://eldinero.com.do/375166/economistas-ponderan-medidas-para-crecimiento-sostenido-del-pais-en-foro-meta-rd-2036",
+      "title": "Economistas ponderan medidas para crecimiento sostenido del país en Foro Meta RD 2036",
+      "summary": "Expertos económicos debatieron en el Foro Meta RD 2036 estrategias para que República Dominicana evite la trampa de ingresos medios y asegure un crecimiento sostenido. Se enfatizó la necesidad de crear espacio fiscal para inversión en infraestructura y la importancia de alianzas público-privadas para el desarrollo a largo plazo.",
+      "body": "Durante el Foro Meta RD 2036, economistas y ministros dominicanos discutieron medidas clave para impulsar el crecimiento sostenible y evitar la \"trampa de ingresos medios\". Se resaltó la urgencia de generar espacio fiscal para la inversión en infraestructura pública, equivalente al 4% del PIB, y la relevancia de las alianzas público-privadas para la ejecución de políticas de desarrollo a largo plazo.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "macro",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-05T20:21:55+00:00",
+      "fetched_at": "2026-08-06T12:26:40.000858+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_0bddec74eeded084",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero",
+      "url": "https://eldinero.com.do/375219/republica-dominicana-apuesta-por-resiliencia-ante-la-incertidumbre-global",
+      "title": "República Dominicana apuesta por resiliencia ante la incertidumbre global",
+      "summary": "La República Dominicana busca fortalecer su resiliencia económica ante la creciente incertidumbre global, enfocándose en la construcción de instituciones sólidas y la adopción de políticas responsables. La viceministra de Crédito Público, María José Martínez, destacó que la preparación previa a las crisis es clave para mitigar impactos y mantener la estabilidad macroeconómica.",
+      "body": "La viceministra de Crédito Público, María José Martínez, enfatizó durante el XXIX Congreso Internacional de Finanzas y Auditoría que la resiliencia económica dominicana se construye antes de las crisis, a través de decisiones responsables y el fortalecimiento institucional. Ante la \"incertidumbre radical\" global, el país debe enfocarse en su capacidad de respuesta, gestionando impactos para proteger a familias y empresas.",
+      "category": "Economia",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-06T04:41:59+00:00",
+      "fetched_at": "2026-08-06T12:26:33.760421+00:00",
+      "status": "pending"
+    },
     {
       "id": "n_cc09dbf71f84a8c9",
       "source_key": "news_eldinero",
@@ -406,114 +583,57 @@
       "published_at": "2026-08-03T00:00:00-04:00",
       "fetched_at": "2026-08-03T13:26:44.433728+00:00",
       "status": "pending"
-    },
-    {
-      "id": "n_1f19b7f17b80c9a3",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero",
-      "url": "https://eldinero.com.do/374657/acelerar-pagos-digitales-es-clave-para-reducir-la-informalidad-economica",
-      "title": "Acelerar pagos digitales es clave para reducir la informalidad económica",
-      "summary": "La expansión de los pagos digitales en pequeños comercios es un reto crucial para la transformación financiera dominicana. Aumentar la adopción de medios electrónicos se correlaciona directamente con el crecimiento del PIB y fortalece la economía formal.",
-      "body": "Luis Bencosme, presidente de Cardnet, destacó que la digitalización de pagos en pequeños comercios es fundamental para la economía dominicana. Señaló que la adopción de medios electrónicos impulsa el crecimiento del PIB y que la economía informal limita la trazabilidad y el acceso a mejores condiciones financieras para los negocios.",
-      "category": "Financiero",
-      "relevance": 8,
-      "señales": [
-        "macro"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-01T18:40:26+00:00",
-      "fetched_at": "2026-08-03T13:25:39.923693+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_fda9f5a4771766c2",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero",
-      "url": "https://eldinero.com.do/374640/pagos-sin-contacto-representan-90-de-las-operaciones-en-rd",
-      "title": "Pagos sin contacto representan 90% de las operaciones en RD",
-      "summary": "Los pagos sin contacto han experimentado un crecimiento exponencial en República Dominicana, pasando de 1.5% en 2019 a cerca del 90% de las operaciones actuales. Esta tendencia digitalizada podría facilitar el acceso al crédito y abre la puerta a futuras innovaciones tecnológicas en el sector financiero.",
-      "body": "El gerente de Visa para República Dominicana, Gustavo Turquía, destacó que los pagos sin contacto ahora constituyen aproximadamente el 90% de las transacciones en el país, un aumento drástico desde el 1.5% registrado en 2019. Esta adopción digital por parte de los consumidores dominicanos facilita la generación de datos transaccionales, lo que a su vez puede expandir el acceso al crédito y promueve la innovación en el ecosistema financiero.",
-      "category": "Financiero",
-      "relevance": 9,
-      "señales": [
-        "banca",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-01T16:03:38+00:00",
-      "fetched_at": "2026-08-03T13:25:30.290587+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_8153eb9173dab0fd",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero",
-      "url": "https://eldinero.com.do/374669/la-inclusion-financiera-en-rd-sube-de-51-a-65-en-dos-anos",
-      "title": "La inclusión financiera en RD sube de 51% a 65% en dos años",
-      "summary": "La inclusión financiera en República Dominicana ha experimentado un notable aumento, pasando del 51% al 65% en los últimos dos años, impulsada significativamente por la adopción de cuentas digitales y la transformación digital del sector bancario. Este avance representa una oportunidad para expandir el acceso a servicios financieros a una mayor parte de la población.",
-      "body": "La inclusión financiera en República Dominicana ha crecido del 51% al 65% en los últimos dos años, gracias al impulso de las cuentas digitales y la transformación digital bancaria. Luis Bencosme, presidente del Consejo de Cardnet, destacó que 5.3 millones de adultos tienen productos financieros abiertos, reflejando una acelerada digitalización bancaria y el uso de canales electrónicos.",
-      "category": "Financiero",
-      "relevance": 7,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-02T12:23:53+00:00",
-      "fetched_at": "2026-08-03T13:25:18.067406+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_6680793629bf22f2",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero",
-      "url": "https://eldinero.com.do/374647/el-proximo-salto-digital-sera-llevar-pagos-electronicos-a-microcomercios",
-      "title": "El próximo salto digital será llevar pagos electrónicos a microcomercios",
-      "summary": "La expansión de los pagos digitales a microcomercios representa el próximo gran desafío para la transformación financiera en República Dominicana. Ampliar la aceptación de estas tecnologías en pequeños negocios es clave para la inclusión financiera y el acceso a crédito.",
-      "body": "Tomás Alonso, gerente de Mastercard en República Dominicana, señaló que el principal reto actual es incrementar la adopción de pagos digitales en los microcomercios del país. A pesar de los avances en digitalización, existe una brecha entre el acceso a productos financieros y su uso efectivo, siendo crucial la educación financiera para aprovechar plenamente estos instrumentos.",
-      "category": "Financiero",
-      "relevance": 7,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-01T16:15:18+00:00",
-      "fetched_at": "2026-08-03T13:25:12.353559+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_f3b962414258d798",
-      "source_key": "news_diariolibre_finanzas",
-      "source_name": "Diario Libre finanzas",
-      "url": "https://www.diariolibre.com/economia/energia/2026/07/31/gobierno-congela-precios-de-gasolinas-gasoil-y-glp/3616503",
-      "title": "Gobierno congela precios de gasolinas, gasoil y GLP; otros combustibles suben",
-      "summary": "El gobierno dominicano ha decidido congelar los precios de la gasolina, el gasoil y el Gas Licuado de Petróleo (GLP) para mitigar el impacto en los consumidores. Sin embargo, otros combustibles experimentarán un alza en sus costos.",
-      "body": "Ante la volatilidad del mercado internacional, las autoridades dominicanas han intervenido para estabilizar los precios de los combustibles de mayor consumo. Esta medida busca proteger a los ciudadanos de posibles aumentos desproporcionados, aunque se espera que otros derivados del petróleo reflejen ajustes al alza.",
-      "category": "Economia",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-07-31T16:48:00-04:00",
-      "fetched_at": "2026-08-03T13:24:54.199538+00:00",
-      "status": "pending"
     }
   ],
-  "discarded_count": 1,
+  "discarded_count": 4,
   "discarded": [
     {
-      "id": "n_570a7e8341f66995",
+      "id": "n_b03b967a3cea2706",
+      "motivo": "relevancia_baja",
+      "motivo_texto": "El modelo le puso poca relevancia financiera",
+      "title": "Los decomisos de drogas aumentaron 34 % en el primer semestre del 2026",
+      "url": "https://www.diariolibre.com/actualidad/nacional/2026/08/06/decomisos-de-drogas-aumentaron-34--en-primer-semestre-del-2026/3620987",
+      "source_name": "Diario Libre economía",
+      "relevance": 5,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-06T12:25:51.513348+00:00"
+    },
+    {
+      "id": "n_53e68786819a4ecb",
+      "motivo": "relevancia_baja",
+      "motivo_texto": "El modelo le puso poca relevancia financiera",
+      "title": "Proyecto habitacional concentra el mayor presupuesto de inversión pública en San Juan",
+      "url": "https://eldinero.com.do/375157/proyecto-habitacional-concentra-el-mayor-presupuesto-de-inversion-publica-en-san-juan",
+      "source_name": "El Dinero",
+      "relevance": 5,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-06T12:26:51.979503+00:00"
+    },
+    {
+      "id": "n_30b102efaafa2d57",
+      "motivo": "sin_cuerpo",
+      "motivo_texto": "No se pudo leer el cuerpo del articulo",
+      "title": "Banreservas recibe calificación crediticia AAA de Moody’s Local RD con perspectiva Estable",
+      "url": "https://eldinero.com.do/375158/banreservas-recibe-calificacion-crediticia-aaa-de-moodys-local-rd-con-perspectiva-estable",
+      "source_name": "El Dinero",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Ni la URL original ni una cobertura alterna se pudieron leer",
+      "fetched_at": "2026-08-06T12:27:08.937432+00:00"
+    },
+    {
+      "id": "n_55654b605acb5bb9",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Pago licencia médica",
-      "url": "https://www.diariolibre.com/actualidad/salud/2026/08/04/cnss-establece-metodo-para-calcular-subsidio/3619669",
-      "source_name": "Diario Libre economía",
+      "title": "¿Qué significa que el peso dominicano se aprecie frente al dólar?",
+      "url": "https://hoy.com.do/economia/significa-peso-dominicano-aprecie-frente-dolar_1097715.html",
+      "source_name": "Fuente guardada",
       "relevance": null,
       "señales": [],
       "detalle": "",
-      "fetched_at": "2026-08-05T18:10:00.213704+00:00"
+      "fetched_at": "2026-08-06T12:32:00.031289+00:00"
     }
   ]
 }
