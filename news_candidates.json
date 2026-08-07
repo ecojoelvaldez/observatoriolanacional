@@ -1,12 +1,287 @@
 {
-  "generated_at": "2026-08-06T12:32:01.548480+00:00",
+  "generated_at": "2026-08-07T11:28:02.135963+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
   "count": 30,
   "errors": 0,
   "sources": 12,
-  "elapsed_s": 407.5,
+  "elapsed_s": 434.6,
   "candidates": [
+    {
+      "id": "n_dfc2a94f7bf362ab",
+      "source_key": "news_extra_12",
+      "source_name": "El Caribe · Dinero",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-6-agosto-2026",
+      "title": "Precio del dólar hoy jueves 6 de agosto de 2026 en RD",
+      "summary": "El Banco Central de la República Dominicana reporta que el dólar se cotiza a RD$58.18 para la compra y RD$58.39 para la venta. Las tasas de cambio, tanto oficiales como las ofrecidas por entidades financieras y de envío de remesas, reflejan las fluctuaciones del mercado y la demanda local.",
+      "body": "El tipo de cambio del dólar estadounidense en República Dominicana se mantiene bajo observación este jueves 6 de agosto de 2026, con el Banco Central estableciendo las tasas oficiales. Entidades bancarias como Banreservas y Banco Popular, junto a servicios de remesas como Western Union y Caribe Express, presentan sus propias cotizaciones, reflejando la dinámica del mercado cambiario dominicano.",
+      "category": "Financiero",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "politica_monetaria",
+        "banca",
+        "macro",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-06T12:08:36+00:00",
+      "fetched_at": "2026-08-07T11:24:29.583410+00:00",
+      "status": "pending",
+      "tambien_en": [
+        {
+          "source_name": "Fuente guardada",
+          "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-3-agosto-2026",
+          "title": "Precio del dólar hoy Lunes 3 de agosto de 2026 en RD"
+        }
+      ]
+    },
+    {
+      "id": "n_ff74d80c2c5fbb9c",
+      "source_key": "news_extra_12",
+      "source_name": "El Caribe · Dinero",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/el-bcrd-avanza-en-sistema-de-pagos-instantaneos-24-h",
+      "title": "El BCRD avanza en sistema de pagos instantáneos 24 H",
+      "summary": "El Banco Central de la República Dominicana está desarrollando una plataforma tecnológica para pagos instantáneos que operará las 24 horas, buscando fortalecer los pagos electrónicos y la inclusión financiera. Esta iniciativa, anunciada por el gobernador Héctor Valdez Albizu, posiciona al país a la vanguardia regional en sistemas de pago.",
+      "body": "El Banco Central de la República Dominicana (BCRD) avanza en la implementación de un sistema de pagos instantáneos que funcionará las 24 horas, los siete días de la semana. Esta plataforma tecnológica busca potenciar los pagos electrónicos y la inclusión financiera en el país, según informó el gobernador Héctor Valdez Albizu. El proyecto se alinea con la Estrategia Nacional de Inclusión Financiera y busca modernizar las transacciones.",
+      "category": "Financiero",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-07T04:00:00+00:00",
+      "fetched_at": "2026-08-07T11:24:23.495106+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_240e3604faee672e",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero",
+      "url": "https://eldinero.com.do/375352/banco-central-inflacion-interanual-baja-0-20-pun",
+      "title": "Banco Central: Inflación interanual baja 0.20 puntos y se sitúa en 5.47% a julio de 2026",
+      "summary": "El Banco Central de la República Dominicana reportó que la inflación interanual disminuyó a 5.47% en julio de 2026, mostrando una tendencia a la baja. Sin embargo, esta cifra aún se mantiene por encima del rango meta establecido por la institución, lo que sugiere una vigilancia continua sobre las políticas monetarias.",
+      "body": "El Banco Central de la República Dominicana informó una reducción de 0.20 puntos en la inflación interanual, situándola en 5.47% para julio de 2026. Esta desaceleración, aunque positiva, aún supera el objetivo del 4.0% ± 1.0%, influenciada por la baja en precios de combustibles y variaciones en alimentos y servicios. La inflación subyacente se mantiene dentro del rango meta.",
+      "category": "Monetario",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "politica_monetaria",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-06T18:52:35+00:00",
+      "fetched_at": "2026-08-07T11:24:03.476792+00:00",
+      "status": "pending",
+      "tambien_en": [
+        {
+          "source_name": "El Caribe · Dinero",
+          "url": "https://www.elcaribe.com.do/panorama/dinero/inflacion-interanual-baja-0-20-puntos-porcentuales-y-se-situa-en-5-47",
+          "title": "Inflación interanual baja 0.20 puntos porcentuales y se sitúa en 5.47 %"
+        }
+      ]
+    },
+    {
+      "id": "n_178a30ee2a512e9a",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero",
+      "url": "https://eldinero.com.do/375395/de-79-proyectos-de-inversion-publica-en-san-pedro-de-macoris-35-permanecen-sin-ejecucion",
+      "title": "De 79 proyectos de inversión pública en San Pedro de Macorís, 35 permanecen sin ejecución",
+      "summary": "La provincia San Pedro de Macorís tiene 35 de 79 proyectos de inversión pública sin ejecutar, representando el 44.3% de las obras previstas. De RD$1,735 millones asignados, solo se han devengado RD$524.4 millones, lo que indica un bajo ritmo de ejecución y posible impacto en el desarrollo local.",
+      "body": "En San Pedro de Macorís, 35 de 79 proyectos de inversión pública no han iniciado su ejecución, lo que representa el 44.3% del total. La provincia ha recibido RD$1,735 millones para estas obras, pero solo ha devengado RD$524.4 millones hasta la fecha. Algunas obras viales y de salud muestran avances significativos, mientras que otras, como viviendas y carreteras, permanecen paralizadas.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-06T20:18:21+00:00",
+      "fetched_at": "2026-08-07T11:23:03.831754+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_deffa07b519dc909",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero",
+      "url": "https://eldinero.com.do/375408/vicepresidenta-meta-rd-2036-es-hoja-de-ruta-para-duplicar-economia-dominicana-y-ampliar-oportunidades",
+      "title": "Vicepresidenta: Meta RD 2036 es hoja de ruta para duplicar economía dominicana y ampliar oportunidades",
+      "summary": "La estrategia Meta RD 2036 busca duplicar la economía dominicana para 2036, elevando el ingreso per cápita a US$22,900 mediante reformas, productividad e innovación. Esta hoja de ruta ambiciosa requiere el esfuerzo conjunto del sector público y privado para generar mayor bienestar y oportunidades para todos los ciudadanos.",
+      "body": "La vicepresidenta Raquel Peña presentó la estrategia Meta RD 2036 como una visión nacional para impulsar el desarrollo económico y social de la República Dominicana. El plan aspira a duplicar el PIB y elevar el ingreso per cápita a US$22,900 para 2036, enfocándose en reformas, productividad, innovación y generación de empleos de calidad. Se busca que el crecimiento beneficie a toda la población a través de mejores servicios y oportunidades.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "macro",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-06T20:36:59+00:00",
+      "fetched_at": "2026-08-07T11:22:57.046256+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_c42a972d9f41af28",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero",
+      "url": "https://eldinero.com.do/375415/presidente-abinader-llama-a-impulsar-reformas-y-consensos-para-acelerar-desarrollo-hacia-2036",
+      "title": "Presidente Abinader llama a impulsar reformas y consensos para acelerar desarrollo hacia 2036",
+      "summary": "El presidente Luis Abinader instó a acelerar reformas estructurales y consolidar acuerdos nacionales para transformar el crecimiento económico en desarrollo sostenible. La iniciativa Meta RD 2036 busca elevar la productividad y ampliar oportunidades, reconociendo que el futuro se construye con decisiones y consensos actuales.",
+      "body": "El mandatario enfatizó la responsabilidad gubernamental en la ejecución de políticas públicas y la búsqueda de consensos para lograr una transformación económica visible. Abinader destacó la necesidad de innovar, formar talento y modernizar el Estado, advirtiendo que el crecimiento pasado no garantiza el futuro y que las reformas deben iniciarse ahora.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-06T20:51:08+00:00",
+      "fetched_at": "2026-08-07T11:22:51.249961+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_01c39b96fb849dc0",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero",
+      "url": "https://eldinero.com.do/375399/ministro-paliza-republica-dominicana-debe-duplicar-su-economia-para-alcanzar-el-desarrollo-pleno-en-2036",
+      "title": "Ministro Paliza: “República Dominicana debe duplicar su economía para alcanzar el desarrollo pleno en 2036”",
+      "summary": "El Ministro de la Presidencia, José Ignacio Paliza, presentó la iniciativa META RD 2036, que busca duplicar la economía dominicana para 2036 mediante el impulso a la productividad y la innovación. Esta estrategia subraya la necesidad de un crecimiento cualitativo y una mayor articulación público-privada para alcanzar el desarrollo pleno.",
+      "body": "El ministro de la Presidencia, José Ignacio Paliza, presentó la iniciativa META RD 2036, enfocada en duplicar la economía dominicana para el año 2036 y alcanzar el desarrollo pleno. La estrategia busca fortalecer la productividad, fomentar la innovación y mejorar la coordinación entre los sectores público y privado, aprovechando la fortaleza económica actual del país.",
+      "category": "Economia",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-06T20:21:20+00:00",
+      "fetched_at": "2026-08-07T11:22:45.043188+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_977fdd03b5140094",
+      "source_key": "news_extra_9",
+      "source_name": "Hoy Digital · Economía",
+      "url": "https://hoy.com.do/economia/cita-retos-evitar-trampa-ingreso-medio_1097897.html",
+      "title": "Cita retos para evitar la trampa del ingreso medio",
+      "summary": "El economista Andrés Velasco advierte que República Dominicana debe impulsar la innovación, fortalecer la competencia y preservar el espacio fiscal para evitar la trampa del ingreso medio y alcanzar el estatus de país de altos ingresos. El país ha logrado avances, pero aún enfrenta una brecha significativa con las economías desarrolladas.",
+      "body": "El economista Andrés Velasco señaló que República Dominicana debe abordar retos clave para escapar de la \"trampa del ingreso medio\" y ascender a economías de altos ingresos. Esto implica aumentar la productividad mediante la adopción de tecnologías, diversificar la matriz productiva y fortalecer la competencia, evitando políticas que desincentiven el crecimiento empresarial.",
+      "category": "Economia",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-07T00:00:00-04:00",
+      "fetched_at": "2026-08-07T11:21:43.366402+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_30590952d313d98a",
+      "source_key": "news_extra_9",
+      "source_name": "Hoy Digital · Economía",
+      "url": "https://hoy.com.do/economia/coopnama-resalta-gestion-eficiente-recursos_1097906.html",
+      "title": "Coopnama resalta hace gestión eficiente recursos",
+      "summary": "La Cooperativa Nacional de Servicios Múltiples de los Maestros (Coopnama) ha destacado su solidez financiera y crecimiento sostenible, evidenciados por activos de RD$110,761 millones y un patrimonio de RD$72,379 millones al cierre del año pasado. La entidad proyecta una expansión de su red de oficinas y la distribución de excedentes significativos, reafirmando su compromiso con el desarrollo del sector cooperativo dominicano.",
+      "body": "El presidente de Coopnama, Santiago Portes, resaltó la gestión eficiente de la cooperativa, citando indicadores financieros que demuestran su fortaleza patrimonial y visión estratégica. Con activos que superan los RD$110 mil millones y una cartera de créditos robusta, la entidad se enfoca en la expansión de su red de oficinas y la distribución de excedentes, asegurando su crecimiento sostenible y permanencia a largo plazo.",
+      "category": "Financiero",
+      "relevance": 9,
+      "señales": [
+        "banca",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-07T00:00:00-04:00",
+      "fetched_at": "2026-08-07T11:21:37.535548+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_e8ae11df203a5923",
+      "source_key": "news_extra_9",
+      "source_name": "Hoy Digital · Economía",
+      "url": "https://hoy.com.do/economia/inflacion-rd-registra-menor-ritmo-crecimiento-julio-informa-banco-central_1097841.html",
+      "title": "Inflación en RD registra menor ritmo de crecimiento en julio, informa el Banco Central",
+      "summary": "El Banco Central de la República Dominicana reportó que la inflación interanual en julio de 2026 se situó en 5.47%, mostrando una desaceleración respecto al mes anterior. La inflación subyacente se mantuvo estable en 4.96%, dentro del rango meta, indicando un control en las presiones inflacionarias.",
+      "body": "El Banco Central de la República Dominicana anunció que la inflación interanual en julio de 2026 disminuyó a 5.47%, una reducción de 0.20 puntos porcentuales. Este descenso se atribuye en parte a la baja en los precios de los combustibles. La inflación subyacente se mantuvo en 4.96%, dentro del objetivo del 4.0% ± 1.0%.",
+      "category": "Monetario",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "politica_monetaria",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-06T15:07:01-04:00",
+      "fetched_at": "2026-08-07T11:21:31.525585+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_1e043a051b1e02fd",
+      "source_key": "news_extra_9",
+      "source_name": "Hoy Digital · Economía",
+      "url": "https://hoy.com.do/economia/precio-petroleo-wti-sube-2-75-cierra-77-29-dolares-tensiones-ormuz_1097865.html",
+      "title": "Precio del petróleo WTI sube 2,75 % y cierra en 77,29 dólares ante tensiones en Ormuz",
+      "summary": "El precio del petróleo WTI aumentó 2,75% hasta los 77,29 dólares por barril, impulsado por las tensiones geopolíticas en el estrecho de Ormuz. Esta fluctuación en los precios del crudo tiene implicaciones directas en los costos de importación y en la inflación dominicana.",
+      "body": "El precio del petróleo intermedio de Texas (WTI) experimentó un alza del 2,75%, cerrando en 77,29 dólares por barril. Este incremento se atribuye a las tensiones en el estrecho de Ormuz y las negociaciones entre Estados Unidos e Irán. El mercado sigue de cerca estos eventos, que podrían afectar el tránsito energético global y, por ende, la economía dominicana.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "politica_monetaria",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-06T18:31:12-04:00",
+      "fetched_at": "2026-08-07T11:21:25.593589+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_53dd4f3fd5e788a8",
+      "source_key": "news_extra_9",
+      "source_name": "Hoy Digital · Economía",
+      "url": "https://hoy.com.do/economia/petroleo-texas-cierra-us-77-29_1097904.html",
+      "title": "Petróleo Texas cierra US 77.29",
+      "summary": "El precio del petróleo intermedio de Texas (WTI) aumentó un 2.75% hasta los 77.29 dólares por barril, impulsado por la expectativa de un acuerdo entre Estados Unidos e Irán. Este movimiento en los precios del crudo tiene implicaciones directas en los costos de importación y transporte, afectando la inflación y la balanza comercial de la República Dominicana.",
+      "body": "El petróleo de referencia en Estados Unidos, el West Texas Intermediate (WTI), cerró la jornada en 77.29 dólares el barril, registrando un alza del 2.75%. Este incremento se atribuye a las expectativas de un posible acuerdo diplomático entre Estados Unidos e Irán, lo cual podría influir en la estabilidad del estrecho de Ormuz. Mientras tanto, el Brent se mantuvo estable en 80.33 dólares.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "politica_monetaria",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-07T00:00:00-04:00",
+      "fetched_at": "2026-08-07T11:21:19.789724+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_ddfba2c929c1c122",
+      "source_key": "news_extra_9",
+      "source_name": "Hoy Digital · Economía",
+      "url": "https://hoy.com.do/economia/bajan-combustibles-suben-pollo-arroz_1097874.html",
+      "title": "Bajan combustibles, pero suben el pollo y el arroz",
+      "summary": "La inflación en República Dominicana se moderó en julio a 0.19%, impulsada por la baja en combustibles, pero el alza en alimentos básicos como pollo y arroz mantiene la presión sobre el costo de vida. La tasa interanual descendió a 5.47%, acercándose a la meta del Banco Central.",
+      "body": "El Banco Central de la República Dominicana informó que la inflación de julio fue de 0.19%, una desaceleración respecto a meses anteriores, gracias a la disminución en el precio de los combustibles y algunos vehículos. Sin embargo, el aumento en alimentos esenciales como pollo, arroz y papas, junto a servicios y comidas preparadas, contrarrestó parcialmente este efecto, elevando la inflación acumulada y la interanual a 5.47%.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "politica_monetaria",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-07T00:00:00-04:00",
+      "fetched_at": "2026-08-07T11:21:13.808913+00:00",
+      "status": "pending"
+    },
     {
       "id": "n_88fa0bd422d1b15d",
       "source_key": "news_extra_9",
@@ -330,310 +605,76 @@
       "published_at": "2026-08-05T00:01:00-04:00",
       "fetched_at": "2026-08-05T12:24:01.119080+00:00",
       "status": "pending"
+    }
+  ],
+  "discarded_count": 5,
+  "discarded": [
+    {
+      "id": "n_5dd7f33e88a28cde",
+      "motivo": "duplicada",
+      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
+      "title": "Inflación interanual baja 0.20 puntos porcentuales y se sitúa en 5.47 %",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/inflacion-interanual-baja-0-20-puntos-porcentuales-y-se-situa-en-5-47",
+      "source_name": "El Caribe · Dinero",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "politica_monetaria",
+        "hecho"
+      ],
+      "detalle": "Misma noticia que: Banco Central: Inflación interanual baja 0.20 puntos y se sitúa en 5.47% a julio de 2026",
+      "fetched_at": "2026-08-07T11:28:02.123066+00:00"
     },
     {
       "id": "n_19f7c4e0009863c6",
-      "source_key": "news_extra_12",
-      "source_name": "Fuente guardada",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-3-agosto-2026",
+      "motivo": "duplicada",
+      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
       "title": "Precio del dólar hoy Lunes 3 de agosto de 2026 en RD",
-      "summary": "El Banco Central de la República Dominicana reporta que el dólar se cotiza a RD$58.13 para la compra y RD$58.62 para la venta. Estas variaciones se alinean con el comportamiento internacional y presiones moderadas en la demanda local.",
-      "body": "El tipo de cambio del dólar en República Dominicana se mantiene estable este lunes 3 de agosto de 2026, según el Banco Central. Las tasas de compra y venta reflejan un comportamiento alineado con las tendencias globales y la demanda interna, con variaciones menores en plataformas de envío y bancos comerciales.",
-      "category": "Financiero",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-3-agosto-2026",
+      "source_name": "Fuente guardada",
       "relevance": 9,
       "señales": [
         "regulador",
         "politica_monetaria"
       ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-03T11:33:06+00:00",
-      "fetched_at": "2026-08-04T12:29:14.281076+00:00",
-      "status": "pending"
+      "detalle": "Misma noticia que: Precio del dólar hoy jueves 6 de agosto de 2026 en RD",
+      "fetched_at": "2026-08-07T11:28:02.126740+00:00"
     },
     {
-      "id": "n_9be26f0c277e6232",
-      "source_key": "news_extra_12",
-      "source_name": "Fuente guardada",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/aumenta-inventario-de-viviendas-nuevas-por-ventas-mas-lentas",
-      "title": "Aumenta inventario de viviendas nuevas por ventas más lentas",
-      "summary": "El sector inmobiliario dominicano experimenta un aumento en el inventario de viviendas nuevas debido a una desaceleración en las ventas, atribuida principalmente al encarecimiento del financiamiento hipotecario. Esta situación reduce el poder de compra de los hogares y prolonga los tiempos de comercialización de los proyectos.",
-      "body": "El mercado inmobiliario dominicano enfrenta una acumulación de inventario, especialmente en apartamentos de segmentos medio y medio-alto. Organizaciones del sector señalan que el alto costo del financiamiento hipotecario ha mermado la capacidad de compra de las familias y extendido los plazos de venta de los proyectos. La Asociación de Constructores y Promotores de Viviendas (Acoprovi) estima un incremento en las viviendas terminadas sin vender, aunque no hay estadísticas oficiales precisas.",
-      "category": "Economia",
-      "relevance": 7,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-04T00:00:00Z",
-      "fetched_at": "2026-08-04T12:28:55.144121+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_b4110e1b89018af4",
-      "source_key": "news_extra_12",
-      "source_name": "Fuente guardada",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/evaluan-impacto-riesgos-externos-para-economia-rd",
-      "title": "Evalúan impacto riesgos externos para economía RD",
-      "summary": "Autoridades económicas y la banca múltiple de República Dominicana analizaron los riesgos internacionales y su impacto en la economía local. Se destacó la fortaleza del sistema financiero dominicano y la estabilidad macroeconómica como pilares para enfrentar la incertidumbre global.",
-      "body": "Representantes del Banco Central, Ministerio de Hacienda y Economía, MICM, y la Asociación de Bancos Múltiples (ABA) se reunieron para evaluar los desafíos económicos derivados de la volatilidad internacional. Se resaltó la solidez del sistema financiero dominicano y el crecimiento del IMAE, así como la expansión del crédito privado, como factores clave para mantener la confianza y la estabilidad.",
-      "category": "Economia",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "banca",
-        "macro",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-04T04:00:00+00:00",
-      "fetched_at": "2026-08-04T12:28:44.724165+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_fa0f53f1c0d71de2",
-      "source_key": "news_extra_9",
-      "source_name": "Fuente guardada",
-      "url": "https://hoy.com.do/economia/wall-street-abre-verde-caida-petroleo-anunciar-donald-trump-conversaciones-iran_1097381.html",
-      "title": "Wall Street abre en verde tras caída de petróleo al anunciar Donald Trump conversaciones con Irán",
-      "summary": "Los mercados bursátiles de Wall Street abrieron al alza, impulsados por la noticia de que el presidente de EE.UU. Donald Trump anunció la reanudación de conversaciones con Irán. Esta declaración provocó una caída significativa en los precios del petróleo, generando optimismo en los índices bursátiles.",
-      "body": "El principal índice bursátil de Wall Street, el Dow Jones, experimentó un alza considerable al inicio de la jornada, impulsado por el anuncio del presidente estadounidense Donald Trump sobre la reanudación de conversaciones con Irán. Este desarrollo geopolítico provocó una notable caída en los precios del petróleo, lo que a su vez generó un sentimiento positivo en los mercados financieros.",
-      "category": "Economia",
-      "relevance": 7,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-03T11:53:07-04:00",
-      "fetched_at": "2026-08-04T12:27:17.257236+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_c84008dc92fd2eb4",
-      "source_key": "news_extra_9",
-      "source_name": "Fuente guardada",
-      "url": "https://hoy.com.do/economia/apreciacion-moneda-diferente_1097439.html",
-      "title": "Cuando la apreciación de la moneda es diferente",
-      "summary": "El peso dominicano ha mostrado una apreciación suave y sostenida, impulsada por un aumento significativo y diversificado en la entrada de divisas. Esta estabilidad contrasta con la volatilidad de otras monedas regionales, reflejando la resiliencia económica y una gestión cambiaria prudente del Banco Central.",
-      "body": "El peso dominicano se ha apreciado más de un 4.33% interanual, un comportamiento atribuido a un incremento sustancial en la entrada de divisas provenientes de turismo, remesas, IED y exportaciones. Esta diversificación de ingresos, junto a una política de flotación administrada por el Banco Central, fortalece la economía y preserva las reservas internacionales.",
-      "category": "Economia",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "macro"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-04T00:00:00-04:00",
-      "fetched_at": "2026-08-04T12:27:11.054637+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_4ea82b76bdd8a130",
-      "source_key": "news_extra_9",
-      "source_name": "Fuente guardada",
-      "url": "https://hoy.com.do/economia/republica-dominicana-avanza-firme-mayor-equilibrio-fiscal_1097442.html",
-      "title": "República Dominicana avanza firme hacia mayor equilibrio fiscal",
-      "summary": "El ministro de Hacienda y Economía destacó los avances de la República Dominicana hacia un equilibrio presupuestario y un sistema tributario más justo. La iniciativa busca fortalecer la confianza y respaldar el desarrollo económico a través de un sistema financiero sólido y digitalizado.",
-      "body": "El ministro de Hacienda y Economía, Magín Díaz, afirmó que la República Dominicana progresa hacia un mayor equilibrio presupuestario y un sistema tributario más equitativo. Durante un encuentro con autoridades económicas y representantes bancarios, se enfatizó la necesidad de un sistema financiero robusto y digitalizado para respaldar el desarrollo económico y la distribución de la riqueza.",
-      "category": "Economia",
-      "relevance": 9,
-      "señales": [
-        "banca",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-04T00:00:00-04:00",
-      "fetched_at": "2026-08-04T12:27:05.076502+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_600e726307f8cddc",
-      "source_key": "news_extra_9",
-      "source_name": "Fuente guardada",
-      "url": "https://hoy.com.do/economia/elevan-calificacion-altio-bbb-af-fa_1097444.html",
-      "title": "Elevan calificación de ALTIO de BBB+af a A-fa",
-      "summary": "La calificadora Feller Rate mejoró la calificación del Fondo Cerrado de Desarrollo ALTIO II a A-fa, destacando la solidez de su cartera y gestión. Este ascenso refleja la confianza en la estrategia de inversión del fondo y su contribución al desarrollo económico dominicano.",
-      "body": "La firma Feller Rate ha elevado la calificación crediticia del Fondo Cerrado de Desarrollo ALTIO II de BBB+fa a A-fa. Esta mejora se fundamenta en la consolidación de su cartera de inversiones, la alta proporción de activos alineados con sus objetivos y la fortaleza de su estructura de administración. El fondo administra un patrimonio de US$150.6 millones, con un crecimiento del 10.2% en el último año.",
-      "category": "Financiero",
-      "relevance": 9,
-      "señales": [
-        "macro",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-04T00:00:00-04:00",
-      "fetched_at": "2026-08-04T12:26:59.082215+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_618e6aeedf5a82e7",
-      "source_key": "news_extra_9",
-      "source_name": "Fuente guardada",
-      "url": "https://hoy.com.do/economia/resaltan-evolucion-sistema-financiero_1097446.html",
-      "title": "Resaltan evolución sistema financiero",
-      "summary": "El sistema financiero dominicano ha experimentado una notable transformación digital, con un 83% de operaciones bancarias realizadas a través de canales digitales y la oferta generalizada de aplicaciones móviles. Esta evolución fortalece la experiencia del usuario y amplía el acceso a servicios financieros.",
-      "body": "Representantes de Visa, Mastercard y CardNET destacaron la sólida base de la República Dominicana para la transformación digital financiera. Señalaron avances en banca digital, pagos sin contacto y billeteras electrónicas, lo que ha fortalecido la experiencia del usuario y ampliado el acceso a productos financieros. Cerca del 90% de las transacciones con tarjetas son sin contacto y aproximadamente 1.5 millones de productos financieros se han abierto digitalmente en los últimos dos años.",
-      "category": "Financiero",
-      "relevance": 9,
-      "señales": [
-        "banca",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-04T00:00:00-04:00",
-      "fetched_at": "2026-08-04T12:26:52.957123+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_c57c74badec822e8",
-      "source_key": "news_extra_9",
-      "source_name": "Fuente guardada",
-      "url": "https://hoy.com.do/economia/fortalecio-regulacion-supervision-gestion_1097443.html",
-      "title": "Fortaleció regulación y supervisión durante su gestión",
-      "summary": "La Superintendencia de Bancos (SB) fortaleció la supervisión del sistema financiero dominicano, actualizó regulaciones y amplió la protección al usuario durante la gestión de Alejandro Fernández Whipple. La salida del funcionario, tras seis años, marca un hito en la modernización del sector.",
-      "body": "La gestión de Alejandro Fernández en la Superintendencia de Bancos (SB) se caracterizó por un fortalecimiento en la supervisión y regulación del sistema financiero dominicano. Durante su mandato, se realizaron numerosas inspecciones, se modernizó el modelo de supervisión con nuevas áreas especializadas y se emitieron diversas normativas para proteger a los usuarios y promover la inclusión financiera.",
-      "category": "Regulatorio",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "banca"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-04T00:00:00-04:00",
-      "fetched_at": "2026-08-04T12:26:46.706725+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_65ae4c3602d8fe97",
-      "source_key": "news_extra_9",
-      "source_name": "Fuente guardada",
-      "url": "https://hoy.com.do/economia/inflacion-eurozona-repunta-2-9-afecta-euro-frente-dolar_1097217.html",
-      "title": "Inflación en la eurozona repunta al 2,9 %: ¿cómo afecta al euro frente al dólar?",
-      "summary": "La inflación en la eurozona ha repuntado al 2,9% en julio, impulsada principalmente por el alza en los precios de la energía. Este incremento podría influir en las decisiones del Banco Central Europeo y afectar la paridad del euro frente al dólar.",
-      "body": "La eurozona experimentó un repunte en su tasa de inflación interanual, alcanzando el 2,9% en julio, revirtiendo el descenso observado en junio. Este incremento, atribuido en gran medida al alza del 10% en los precios de la energía, genera expectativas sobre las futuras políticas del Banco Central Europeo y su impacto en el tipo de cambio del euro frente al dólar.",
-      "category": "Economia",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "politica_monetaria"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-01T08:53:15-04:00",
-      "fetched_at": "2026-08-03T13:28:14.390498+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_13474091a078ed43",
-      "source_key": "news_extra_9",
-      "source_name": "Fuente guardada",
-      "url": "https://hoy.com.do/economia/republica-dominicana-escalon-retador-inb-per-capita_1097302.html",
-      "title": "República Dominicana está en un escalón retador INB per cápita",
-      "summary": "La República Dominicana se acerca a la categoría de economías de altos ingresos, con un INB per cápita de US$11,749 en 2025. El desafío ahora es lograr avances sostenidos en productividad e innovación para converger con naciones más desarrolladas.",
-      "body": "La República Dominicana se encuentra en una etapa crucial de su desarrollo económico, acercándose a la categoría de economías de altos ingresos según la clasificación del Banco Mundial. Con un Ingreso Nacional Bruto (INB) per cápita de aproximadamente US$11,749 al cierre de 2025, el país enfrenta el reto de mejorar su productividad, innovación y capital humano para alcanzar los niveles de las naciones más desarrolladas.",
-      "category": "Economia",
-      "relevance": 7,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-02T00:00:00-04:00",
-      "fetched_at": "2026-08-03T13:28:02.188557+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_2250d90da2347b29",
-      "source_key": "news_extra_9",
-      "source_name": "Fuente guardada",
-      "url": "https://hoy.com.do/economia/dolar-hoy-tasas-compra-venta-actualizadas-03-agosto-2026_1097368.html",
-      "title": "Dólar hoy: tasas de compra y venta actualizadas para este 03 de agosto 2026",
-      "summary": "El Banco Central de la República Dominicana ha publicado las tasas de cambio actualizadas para el dólar estadounidense, fijando la compra en RD$58.1321 y la venta en RD$58.6210. Estas cifras son cruciales para el sector financiero y las operaciones comerciales del país.",
-      "body": "El Banco Central de la República Dominicana ha informado las tasas de cambio oficiales para el dólar estadounidense correspondientes al 03 de agosto de 2026. La tasa de compra se sitúa en RD$58.1321 por dólar, mientras que la tasa de venta es de RD$58.6210. Estas cifras representan el promedio ponderado de las transacciones del mercado spot.",
-      "category": "Financiero",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-03T08:42:23-04:00",
-      "fetched_at": "2026-08-03T13:26:50.645655+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_cee82aa880d32bb6",
-      "source_key": "news_extra_9",
-      "source_name": "Fuente guardada",
-      "url": "https://hoy.com.do/economia/haran-investigacion-sobre-turismo-deportivo_1097301.html",
-      "title": "Harán investigación sobre turismo deportivo",
-      "summary": "El Banco BHD y Adoturd inician la primera investigación nacional sobre turismo deportivo para medir su inversión y contribución económica. El objetivo es optimizar políticas y fomentar la sostenibilidad de un sector que representa el 10% del gasto turístico global.",
-      "body": "El Banco BHD y la Asociación Dominicana de Turismo Deportivo (Adoturd) anunciaron la realización de la primera investigación nacional sobre turismo deportivo. Este estudio busca cuantificar la inversión y el aporte de este subsector a la economía dominicana, además de perfilar a sus consumidores. La iniciativa pretende optimizar políticas públicas y potenciar el crecimiento de este nicho turístico.",
-      "category": "Economia",
-      "relevance": 9,
-      "señales": [
-        "banca",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-03T00:00:00-04:00",
-      "fetched_at": "2026-08-03T13:26:44.433728+00:00",
-      "status": "pending"
-    }
-  ],
-  "discarded_count": 4,
-  "discarded": [
-    {
-      "id": "n_b03b967a3cea2706",
-      "motivo": "relevancia_baja",
-      "motivo_texto": "El modelo le puso poca relevancia financiera",
-      "title": "Los decomisos de drogas aumentaron 34 % en el primer semestre del 2026",
-      "url": "https://www.diariolibre.com/actualidad/nacional/2026/08/06/decomisos-de-drogas-aumentaron-34--en-primer-semestre-del-2026/3620987",
-      "source_name": "Diario Libre economía",
-      "relevance": 5,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-06T12:25:51.513348+00:00"
-    },
-    {
-      "id": "n_53e68786819a4ecb",
-      "motivo": "relevancia_baja",
-      "motivo_texto": "El modelo le puso poca relevancia financiera",
-      "title": "Proyecto habitacional concentra el mayor presupuesto de inversión pública en San Juan",
-      "url": "https://eldinero.com.do/375157/proyecto-habitacional-concentra-el-mayor-presupuesto-de-inversion-publica-en-san-juan",
-      "source_name": "El Dinero",
-      "relevance": 5,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-06T12:26:51.979503+00:00"
-    },
-    {
-      "id": "n_30b102efaafa2d57",
-      "motivo": "sin_cuerpo",
-      "motivo_texto": "No se pudo leer el cuerpo del articulo",
-      "title": "Banreservas recibe calificación crediticia AAA de Moody’s Local RD con perspectiva Estable",
-      "url": "https://eldinero.com.do/375158/banreservas-recibe-calificacion-crediticia-aaa-de-moodys-local-rd-con-perspectiva-estable",
-      "source_name": "El Dinero",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Ni la URL original ni una cobertura alterna se pudieron leer",
-      "fetched_at": "2026-08-06T12:27:08.937432+00:00"
-    },
-    {
-      "id": "n_55654b605acb5bb9",
+      "id": "n_d188f79f47c24483",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "¿Qué significa que el peso dominicano se aprecie frente al dólar?",
-      "url": "https://hoy.com.do/economia/significa-peso-dominicano-aprecie-frente-dolar_1097715.html",
-      "source_name": "Fuente guardada",
+      "title": "Qik Banco Digital obtiene cuatro premios en los Effie Awards",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/qik-banco-digital-obtiene-cuatro-premios-en-los-effie-awards",
+      "source_name": "El Caribe · Dinero",
       "relevance": null,
       "señales": [],
       "detalle": "",
-      "fetched_at": "2026-08-06T12:32:00.031289+00:00"
+      "fetched_at": "2026-08-07T11:28:00.543334+00:00"
+    },
+    {
+      "id": "n_d6414630e2bf84b3",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Feller Rate eleva perspectiva a “positiva” al Banco Santa Cruz",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/feller-rate-eleva-perspectiva-a-positiva-al-banco-santa-cruz",
+      "source_name": "El Caribe · Dinero",
+      "relevance": null,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-07T11:28:00.597983+00:00"
+    },
+    {
+      "id": "n_cbbb287cc03d89a4",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "El petróleo sube un 2.75 % hasta 77.29 dólares",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/el-petroleo-sube-un-2-75-hasta-77-29-dolares",
+      "source_name": "El Caribe · Dinero",
+      "relevance": null,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-07T11:28:00.615835+00:00"
     }
   ]
 }
