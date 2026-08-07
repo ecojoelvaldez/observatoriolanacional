@@ -18,11 +18,21 @@
    Métodos:
      GET   → estado de las últimas corridas de cada workflow (para pintar
              el panel sin tener que abrir GitHub).
+     GET ?diagnostico=1
+           → qué está configurado y qué cookie llegó, sin exponer valores.
+             Es lo primero que hay que mirar cuando el panel dice que no
+             pudo lanzar nada.
      POST  → { workflow: "noticias" | "gemini" | "indicadores" | "cartera",
                inputs?: {...} }  dispara la corrida.
 
+   Quién puede llamar: cualquiera con sesión válida del portal (la cookie
+   que emite el login de Microsoft) o del panel. Ver api/_lib/analyst-session.js
+   para el detalle de por qué son dos cookies y no una.
+
    Variables de entorno requeridas en Vercel:
-     INTERNAL_SESSION_SECRET   ya existente (sesión del analista).
+     LN_GATE_SECRET            ya existente (sesión del portal). También
+                               sirve INTERNAL_SESSION_SECRET si algún día el
+                               panel vuelve a usar /api/internal-auth.
      GITHUB_ACTIONS_TOKEN      PAT fine-grained con permiso
                                "Actions: read and write" sobre este repo.
                                (También se acepta GITHUB_DISPATCH_TOKEN.)
@@ -32,7 +42,11 @@
      GITHUB_ACTIONS_REF        rama sobre la que corre. Default: main.
    ===================================================================== */
 
-const { normalizeEnvValue, getAnalystSession } = require('./_lib/analyst-session');
+const {
+  normalizeEnvValue,
+  getAuthorizedSession,
+  describeAuthContext
+} = require('./_lib/analyst-session');
 
 const DEFAULT_REPO = 'ecojoelvaldez/observatoriolanacional';
 const DEFAULT_REF = 'main';
@@ -212,24 +226,48 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ ok: false, error: 'Método no permitido.' });
   }
 
-  const session = getAnalystSession(req);
-  if (!session) {
-    return res.status(401).json({
-      ok: false,
-      error: 'Sesión de analista requerida. Inicia sesión en el panel y vuelve a intentar.'
+  const auth = getAuthorizedSession(req);
+  const context = describeAuthContext(req);
+  const token = readToken();
+  const repo = readRepo();
+  const ref = readRef();
+
+  // El diagnóstico se responde antes del control de sesión, a propósito: si
+  // devolviera 401 no serviría justamente cuando hay que usarlo. Solo dice
+  // qué está configurado y qué cookie llegó — nunca un valor.
+  if (req.method === 'GET' && String(req.query?.diagnostico || '') === '1') {
+    return res.status(200).json({
+      ok: true,
+      diagnostico: {
+        autorizado: Boolean(auth),
+        via: auth ? auth.via : null,
+        ...context,
+        githubTokenConfigurado: Boolean(token),
+        repo,
+        ref,
+        pipelines: Object.keys(WORKFLOWS)
+      }
     });
   }
 
-  const token = readToken();
+  if (!auth) {
+    const pista = context.cookies.gate || context.cookies.analyst
+      ? 'La sesión existe pero venció o no se pudo verificar; recarga la página para renovarla.'
+      : 'No llegó ninguna cookie de sesión. Entra al sitio por el acceso institucional y vuelve a intentar.';
+
+    return res.status(401).json({
+      ok: false,
+      error: `Sesión requerida para lanzar pipelines. ${pista}`,
+      diagnostico: context
+    });
+  }
+
   if (!token) {
     return res.status(503).json({
       ok: false,
       error: 'Falta GITHUB_ACTIONS_TOKEN en las variables de entorno de Vercel. Sin ese token el sitio no puede lanzar los pipelines.'
     });
   }
-
-  const repo = readRepo();
-  const ref = readRef();
 
   if (req.method === 'GET') {
     const workflows = await collectStatus(token, repo);
@@ -280,6 +318,7 @@ module.exports = async function handler(req, res) {
     // Si la corrida aún no aparece en el API, el analista igual tiene a
     // dónde ir: la vista del workflow en GitHub.
     runsUrl: `https://github.com/${repo}/actions/workflows/${config.file}`,
-    triggeredBy: session.username || 'analista'
+    triggeredBy: auth.user,
+    triggeredVia: auth.via
   });
 };

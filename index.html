@@ -15176,6 +15176,18 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
       ...options
     });
 
+    // Si el endpoint todavía no está desplegado, Vercel devuelve su página
+    // de 404 en HTML. Sin este caso el analista solo veía "HTTP 404" y no
+    // podía saber que el problema es el despliegue, no el permiso.
+    const contentType = response.headers.get('content-type') || '';
+    if (!contentType.includes('json')){
+      const error = new Error(response.status === 404
+        ? 'El endpoint /api/github-actions no existe en este despliegue. Falta desplegar la rama que lo añade.'
+        : `El servidor respondió HTTP ${response.status} sin JSON.`);
+      error.status = response.status;
+      throw error;
+    }
+
     let payload = null;
     try { payload = await response.json(); } catch(_) { payload = null; }
 
@@ -15188,6 +15200,27 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
 
     return payload;
   }
+
+  /* Diagnóstico a mano: lnDiagnosticoPipelines() en la consola dice qué
+     cookie llegó, si el token de GitHub está configurado y contra qué repo
+     y rama apunta. No devuelve ningún valor secreto. */
+  window.lnDiagnosticoPipelines = async function(){
+    try {
+      const response = await fetch(`${PIPELINE_ENDPOINT}?diagnostico=1`, { credentials:'same-origin' });
+      const contentType = response.headers.get('content-type') || '';
+      if (!contentType.includes('json')){
+        const salida = { problema: `El endpoint respondió HTTP ${response.status} sin JSON: probablemente no está desplegado.` };
+        console.table(salida);
+        return salida;
+      }
+      const payload = await response.json();
+      console.log('[LN-PIPELINES] diagnóstico:', payload.diagnostico);
+      return payload.diagnostico;
+    } catch (error){
+      console.error('[LN-PIPELINES] no se pudo diagnosticar:', error.message);
+      return { problema: error.message };
+    }
+  };
 
   window.lnRefreshPipelineStatus = async function(silent = false){
     if (!document.getElementById('pipeline-grid')) return;

@@ -17,7 +17,7 @@ El navegador **no** habla con GitHub. Disparar un workflow exige un token con
 permiso de escritura sobre Actions, y ese token no puede vivir en el HTML. El
 botón llama a `POST /api/github-actions` (Vercel), que:
 
-1. Verifica la cookie de sesión del analista (`oe_internal_session`).
+1. Verifica que quien llama tenga sesión válida del sitio.
 2. Comprueba que el pipeline pedido esté en la lista blanca del endpoint.
    Un cliente no puede pedir un archivo de workflow arbitrario.
 3. Llama al `workflow_dispatch` de GitHub con el token del servidor.
@@ -26,6 +26,27 @@ botón llama a `POST /api/github-actions` (Vercel), que:
 
 `GET /api/github-actions` devuelve el estado de la última corrida de cada
 workflow; es lo que pinta las etiquetas "OK · 07 ago 09:12" de cada tarjeta.
+
+## Qué sesión hace falta (y por qué no es la del panel)
+
+En el sitio hay dos cookies de sesión y es fácil confundirlas:
+
+| Cookie | Quién la emite | ¿Existe? |
+|---|---|---|
+| `ln_gate_session` | `/api/session`, después de validar el token de Microsoft contra Supabase. `middleware.js` la exige para servir cualquier página. | Sí. Si estás viendo el sitio, la tienes. |
+| `oe_internal_session` | `/api/internal-auth` | Normalmente **no**. |
+
+El login del panel del analista (usuario y clave) se valida **en el navegador**
+—ver el bloque `ln-hardcoded-bypass-final` en `index.html`—: guarda un flag en
+`sessionStorage` y nunca llama a `/api/internal-auth`, así que esa cookie no se
+emite. La primera versión de este endpoint exigía justo esa cookie, y por eso
+los cuatro botones respondían "no se lanzó" sin importar qué se hiciera.
+
+Ahora el endpoint acepta cualquiera de las dos. Exigir solo la del panel no
+añadía seguridad real: su clave viaja en el HTML y cualquiera puede leerla,
+mientras que la del portal la firma el servidor con `LN_GATE_SECRET` y no se
+puede fabricar. La barrera efectiva sigue siendo el login institucional de
+Microsoft, que es la misma que protege todo el resto del sitio.
 
 ## Variables de entorno en Vercel
 
@@ -42,17 +63,25 @@ Opcionales:
 | `GITHUB_ACTIONS_REPO` | `ecojoelvaldez/observatoriolanacional` |
 | `GITHUB_ACTIONS_REF` | `main` |
 
-Ya existente y también requerida (es la que valida la sesión del analista):
-`INTERNAL_SESSION_SECRET`.
+Ya existente y también requerida, porque es la que valida la sesión:
+`LN_GATE_SECRET`. (`INTERNAL_SESSION_SECRET` solo hace falta si algún día el
+panel vuelve a autenticarse por `/api/internal-auth`.)
 
 Sin `GITHUB_ACTIONS_TOKEN` el endpoint responde 503 y la tarjeta muestra el
 mensaje exacto de qué falta; no falla en silencio.
 
 ## Errores que verás y qué significan
 
+Antes de nada: abre la consola del navegador y ejecuta
+`lnDiagnosticoPipelines()`. Dice si llegó la cookie, si el token de GitHub está
+configurado y contra qué repo y rama se apunta — sin exponer ningún secreto.
+Equivale a abrir `/api/github-actions?diagnostico=1`.
+
 | Mensaje | Causa |
 |---|---|
-| "Sesión de analista requerida" | La cookie expiró (dura 8 horas). Vuelve a iniciar sesión en el panel. |
+| "El endpoint /api/github-actions no existe en este despliegue" | Falta desplegar la rama que lo añade. |
+| "No llegó ninguna cookie de sesión" | Entraste sin pasar por el acceso institucional. |
+| "La sesión existe pero venció" | La cookie del portal dura 8 horas. Recarga la página. |
 | "El token de GitHub no es válido o expiró" | Renueva el PAT en Vercel. |
 | "GitHub rechazó la solicitud por permisos" | Al token le falta *Actions: Read and write*. |
 | "GitHub no encontró el workflow o el repositorio" | `GITHUB_ACTIONS_REPO` apunta a otro repo, o el archivo no existe en la rama de `GITHUB_ACTIONS_REF`. |
