@@ -3143,8 +3143,8 @@ footer .mark{
     </div>
     <nav class="nav-tabs">
       <button class="nav-tab active" data-view="hoy">Resumen de Noticias</button>
-      <button class="nav-tab" data-view="macro">Estadísticas Macro</button>
       <button class="nav-tab" data-view="sib">Estadísticas SIB</button>
+      <button class="nav-tab" data-view="macro">Estadísticas Macro</button>
     </nav>
     <div class="user-area" id="user-area" aria-live="polite"></div>
   </div>
@@ -3168,29 +3168,29 @@ footer .mark{
     <div class="market-cell mkt-interactive" data-fx="usd" role="button" tabindex="0" aria-expanded="false">
       <div class="label">USD / DOP</div>
       <div class="value" id="fx-usd-value">59.42</div>
-      <div class="row"><span class="delta up" id="fx-usd-delta">▲ +0.04 (+0.07%)</span></div>
+      <div class="row"><span class="delta up" id="fx-usd-delta">▲ +0.04 (+0.07%) vs ayer</span></div>
       <div class="source" id="fx-usd-source">Cierre BCRD · ayer</div>
       <span class="mkt-hint">7 días <span class="chev">▾</span></span>
     </div>
     <div class="market-cell mkt-interactive" data-fx="eur" role="button" tabindex="0" aria-expanded="false">
       <div class="label">EUR / DOP</div>
       <div class="value" id="fx-eur-value">66.81</div>
-      <div class="row"><span class="delta down" id="fx-eur-delta">▼ −0.12 (−0.18%)</span></div>
+      <div class="row"><span class="delta down" id="fx-eur-delta">▼ −0.12 (−0.18%) vs ayer</span></div>
       <div class="source" id="fx-eur-source">Cierre BCRD · ayer</div>
       <span class="mkt-hint">7 días <span class="chev">▾</span></span>
     </div>
     <div class="market-cell featured mkt-interactive" data-fx="wti" role="button" tabindex="0" aria-expanded="false">
       <div class="label">WTI Crudo</div>
       <div class="value" id="fx-wti-value">62.18</div>
-      <div class="row"><span class="delta down" id="fx-wti-delta">▼ −0.31 (−0.50%)</span></div>
+      <div class="row"><span class="delta down" id="fx-wti-delta">▼ −0.31 (−0.50%) vs ayer</span></div>
       <div class="source" id="fx-wti-source">Bloomberg · última actualización pendiente</div>
       <span class="mkt-hint">7 días <span class="chev">▾</span></span>
     </div>
     <div class="market-cell">
       <div class="label">TPM · BCRD</div>
-      <div class="value">5.75%</div>
+      <div class="value">5.25%</div>
       <div class="row"><span class="delta" style="color:var(--ink-mute)">— sin cambios</span></div>
-      <div class="source">Reunión 15 mayo</div>
+      <div class="source">Reunión 15 julio</div>
     </div>
   </div>
 
@@ -3914,21 +3914,26 @@ footer .mark{
             <h3>Actualizar cola editorial desde fuentes autorizadas</h3>
             <p>Configura los URLs/RSS de la lista blanca. El botón consulta las fuentes, normaliza título, fecha, fuente, link y resumen, y carga candidatos al panel para aprobación del analista.</p>
             <div class="news-url-grid" id="news-source-grid">
-              <div class="news-source-field"><label>BCRD noticias</label><input data-news-source="1" id="news-bcrd" value="https://www.bancentral.gov.do/a/d/2539-noticias"></div>
-              <div class="news-source-field"><label>SIB noticias</label><input data-news-source="1" id="news-sib" value="https://sb.gob.do/noticias/"></div>
-              <div class="news-source-field"><label>Diario Libre economía</label><input data-news-source="1" id="news-diariolibre" value="https://www.diariolibre.com/economia"></div>
-              <div class="news-source-field"><label>Diario Libre finanzas</label><input data-news-source="1" id="news-diariolibre-finanzas" value="https://www.diariolibre.com/economia/finanzas"></div>
-              <div class="news-source-field"><label>El Dinero</label><input data-news-source="1" id="news-eldinero" value="https://eldinero.com.do/categoria/economia/"></div>
-              <div class="news-source-field"><label>Bloomberg Línea RD</label><input data-news-source="1" id="news-bloomberg" value="https://www.bloomberglinea.com/latinoamerica/republica-dominicana/"></div>
-              <div class="news-source-field"><label>Listín Diario economía</label><input data-news-source="1" id="news-listin" value="https://listindiario.com/economia"></div>
-              <div class="news-source-field"><label>Acento economía</label><input data-news-source="1" id="news-acento" value="https://acento.com.do/economia"></div>
+              <div class="news-source-field"><label>El Dinero · Finanzas</label><input data-news-source="1" id="news-eldinero" value="https://eldinero.com.do/finanzas/"><div class="news-source-meta"><span class="news-source-badge" data-source-badge>sin verificar</span><button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button></div></div>
+              <div class="news-source-field"><label>El Dinero · RSS</label><input data-news-source="1" id="news-eldinero-rss" value="https://eldinero.com.do/feed/"><div class="news-source-meta"><span class="news-source-badge" data-source-badge>sin verificar</span><button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button></div></div>
+              <div class="news-source-field"><label>Hoy Digital · Economía</label><input data-news-source="1" id="news-hoy" value="https://hoy.com.do/economia/"><div class="news-source-meta"><span class="news-source-badge" data-source-badge>sin verificar</span><button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button></div></div>
+              <div class="news-source-field"><label>Hoy Digital · RSS</label><input data-news-source="1" id="news-hoy-rss" value="https://hoy.com.do/feed/"><div class="news-source-meta"><span class="news-source-badge" data-source-badge>sin verificar</span><button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button></div></div>
+              <div class="news-source-field"><label>Diario Libre · Economía</label><input data-news-source="1" id="news-diariolibre" value="https://www.diariolibre.com/economia"><div class="news-source-meta"><span class="news-source-badge" data-source-badge>sin verificar</span><button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button></div></div>
+              <div class="news-source-field"><label>Diario Libre · Finanzas</label><input data-news-source="1" id="news-diariolibre-finanzas" value="https://www.diariolibre.com/economia/finanzas"><div class="news-source-meta"><span class="news-source-badge" data-source-badge>sin verificar</span><button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button></div></div>
+              <div class="news-source-field"><label>El Caribe · Dinero</label><input data-news-source="1" id="news-elcaribe" value="https://www.elcaribe.com.do/seccion/panorama/dinero/"><div class="news-source-meta"><span class="news-source-badge" data-source-badge>sin verificar</span><button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button></div></div>
+              <div class="news-source-field"><label>El Caribe · RSS</label><input data-news-source="1" id="news-elcaribe-rss" value="https://www.elcaribe.com.do/feed/"><div class="news-source-meta"><span class="news-source-badge" data-source-badge>sin verificar</span><button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button></div></div>
+              <div class="news-source-field"><label>Google News · BCRD y política monetaria</label><input data-news-source="1" id="news-gnews-bcrd" value="https://news.google.com/rss/search?q=%22Banco+Central%22+Rep%C3%BAblica+Dominicana+inflaci%C3%B3n+OR+tasa+OR+remesas&hl=es-419&gl=DO&ceid=DO:es-419"><div class="news-source-meta"><span class="news-source-badge" data-source-badge>sin verificar</span><button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button></div></div>
+              <div class="news-source-field"><label>Google News · Banca y Superintendencia</label><input data-news-source="1" id="news-gnews-banca" value="https://news.google.com/rss/search?q=%22Superintendencia+de+Bancos%22+OR+%22banca+dominicana%22+OR+%22asociaciones+de+ahorros+y+pr%C3%A9stamos%22&hl=es-419&gl=DO&ceid=DO:es-419"><div class="news-source-meta"><span class="news-source-badge" data-source-badge>sin verificar</span><button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button></div></div>
             </div>
             <div class="news-source-toolbar">
               <button class="ops-btn" onclick="readNewsSources()">Leer fuentes</button>
+              <button class="ops-btn ghost" onclick="lnCheckNewsSources()">Verificar fuentes</button>
               <button class="ops-btn ghost" onclick="addNewsSourceField()">Añadir URL</button>
               <button class="ops-btn ghost" onclick="toggleSingleNewsPanel()">Leer noticia específica</button>
               <button class="ops-btn ghost" onclick="saveNewsSources()">Guardar fuentes</button>
+              <button class="ops-btn ghost" onclick="lnRestoreRecommendedNewsSources()">Restaurar recomendadas</button>
             </div>
+            <div class="news-source-health" id="news-source-health" aria-live="polite">Pulsa <strong>Verificar fuentes</strong> para probar una por una y quitar las que no devuelven titulares.</div>
             <div class="news-source-panel" id="single-news-panel" aria-live="polite">
               <div class="news-source-field"><label>URL de la noticia</label><input id="single-news-url" placeholder="https://..."></div>
               <div class="panel-actions">
@@ -3943,6 +3948,58 @@ footer .mark{
             </div>
             <div class="ops-progress"><span></span></div>
             <div class="ops-updated" id="updated-news">Actualizado: <strong>pendiente</strong></div>
+          </article>
+
+          <!-- Disparador manual de los GitHub Actions del observatorio.
+               Los cuatro pipelines corren por calendario; este bloque
+               permite lanzarlos a mano el día que el analista los necesita
+               antes de la hora programada. El token vive en Vercel
+               (api/github-actions.js), nunca en este HTML. -->
+          <article class="ops-card full" id="ops-pipelines">
+            <div class="ops-kicker">
+              <span class="ops-label">Automatizaciones GitHub</span>
+              <span class="ops-pill">Ejecución manual</span>
+            </div>
+            <h3>Lanzar los pipelines del observatorio</h3>
+            <p>Cada botón dispara el workflow correspondiente en GitHub Actions sobre la rama de producción. La corrida tarda unos minutos: al terminar, el dato queda commiteado y el sitio lo toma en la siguiente carga.</p>
+            <div class="pipeline-grid" id="pipeline-grid">
+              <div class="pipeline-item" data-pipeline="noticias">
+                <div class="pipeline-head">
+                  <span class="pipeline-name">Resumen de noticias</span>
+                  <span class="pipeline-state" data-pipeline-state="noticias">Estado sin consultar</span>
+                </div>
+                <p class="pipeline-note">Lee las fuentes autorizadas y deja candidatas en <code>news_candidates.json</code>.</p>
+                <button class="ops-btn" type="button" data-run-pipeline="noticias">Ejecutar</button>
+              </div>
+              <div class="pipeline-item" data-pipeline="gemini">
+                <div class="pipeline-head">
+                  <span class="pipeline-name">Resumen IA Gemini</span>
+                  <span class="pipeline-state" data-pipeline-state="gemini">Estado sin consultar</span>
+                </div>
+                <p class="pipeline-note">Regenera los resúmenes ejecutivos con el corte SIB más reciente.</p>
+                <button class="ops-btn" type="button" data-run-pipeline="gemini">Ejecutar</button>
+              </div>
+              <div class="pipeline-item" data-pipeline="indicadores">
+                <div class="pipeline-head">
+                  <span class="pipeline-name">Indicadores pipeline</span>
+                  <span class="pipeline-state" data-pipeline-state="indicadores">Estado sin consultar</span>
+                </div>
+                <p class="pipeline-note">Descarga ROA, ROE, morosidad y cobertura desde el API de la SIB.</p>
+                <button class="ops-btn" type="button" data-run-pipeline="indicadores">Ejecutar</button>
+              </div>
+              <div class="pipeline-item" data-pipeline="cartera">
+                <div class="pipeline-head">
+                  <span class="pipeline-name">Cartera pipeline</span>
+                  <span class="pipeline-state" data-pipeline-state="cartera">Estado sin consultar</span>
+                </div>
+                <p class="pipeline-note">Reconstruye cartera y captación por producto, región y moneda.</p>
+                <button class="ops-btn" type="button" data-run-pipeline="cartera">Ejecutar</button>
+              </div>
+            </div>
+            <div class="news-source-toolbar">
+              <button class="ops-btn ghost" type="button" id="pipeline-refresh-btn">Actualizar estado</button>
+            </div>
+            <div class="ops-updated" id="pipeline-feedback">Sin ejecuciones lanzadas desde el panel en esta sesión.</div>
           </article>
         </section>
 
@@ -6989,7 +7046,7 @@ function updateMarketFxCard(key, transformed) {
   if (valueEl) valueEl.textContent = latest.value.toFixed(2);
   if (deltaEl) {
     deltaEl.classList.toggle('up', favorable); deltaEl.classList.toggle('down', !favorable);
-    deltaEl.textContent = `${diff >= 0 ? '▲' : '▼'} ${diff >= 0 ? '+' : '−'}${Math.abs(diff).toFixed(2)} (${diff >= 0 ? '+' : '−'}${Math.abs(pct).toFixed(2)}%) vs previo`;
+    deltaEl.textContent = `${diff >= 0 ? '▲' : '▼'} ${diff >= 0 ? '+' : '−'}${Math.abs(diff).toFixed(2)} (${diff >= 0 ? '+' : '−'}${Math.abs(pct).toFixed(2)}%) vs ayer`;
   }
   updateTopbarFxQuote(key, latest, diff);
   if (sourceEl) sourceEl.textContent = `BCRD · ${shortDay(latest.date)}`;
@@ -8434,7 +8491,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
       const favorable = diff >= 0;
       deltaEl.classList.toggle('up', favorable);
       deltaEl.classList.toggle('down', !favorable);
-      deltaEl.textContent = `${diff >= 0 ? '▲' : '▼'} ${diff >= 0 ? '+' : '−'}${Math.abs(diff).toFixed(2)} (${diff >= 0 ? '+' : '−'}${Math.abs(pct).toFixed(2)}%) vs previo`;
+      deltaEl.textContent = `${diff >= 0 ? '▲' : '▼'} ${diff >= 0 ? '+' : '−'}${Math.abs(diff).toFixed(2)} (${diff >= 0 ? '+' : '−'}${Math.abs(pct).toFixed(2)}%) vs ayer`;
     }
     if (sourceEl) {
       const updateHour = new Date().toLocaleTimeString('es-DO', { hour:'2-digit', minute:'2-digit' });
@@ -14464,6 +14521,755 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     // colocada aunque #proposals-list todavía no existiera al cargar.
     [800, 2000, 4000].forEach(t => setTimeout(() => { if (descartadas.length) render(); }, t));
   }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
+  else boot();
+})();
+</script>
+
+<style id="ln-v6-manual-reader">
+/* =====================================================================
+   Panel del analista · fuentes de noticias y disparador de pipelines
+   ===================================================================== */
+.news-source-field { position: relative; }
+.news-source-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; margin-top: 6px;
+}
+.news-source-badge {
+  font-size: 9.5px; letter-spacing: .8px; text-transform: uppercase;
+  font-weight: 700; color: var(--ink-mute);
+  border: 1px solid var(--line-soft); border-radius: 999px;
+  padding: 2px 8px; background: #fff; white-space: nowrap;
+}
+.news-source-badge.ok { color: #0F7B4F; border-color: rgba(15,123,79,.35); background: rgba(15,123,79,.07); }
+.news-source-badge.warn { color: #9A6400; border-color: rgba(154,100,0,.35); background: rgba(154,100,0,.07); }
+.news-source-badge.dead { color: #A32020; border-color: rgba(163,32,32,.35); background: rgba(163,32,32,.07); }
+.news-source-badge.testing { color: var(--cyan-deep); border-color: var(--cyan-line); background: var(--cyan-soft); }
+.news-source-remove {
+  border: 1px solid var(--line-soft); background: #fff; color: var(--ink-mute);
+  border-radius: 6px; padding: 3px 9px; font: inherit; font-size: 10px;
+  letter-spacing: .6px; text-transform: uppercase; font-weight: 700;
+  cursor: pointer; transition: color .18s var(--ease-out), border-color .18s var(--ease-out);
+}
+.news-source-remove:hover { color: #A32020; border-color: rgba(163,32,32,.45); }
+.news-source-field.is-dead { opacity: .72; }
+.news-source-health {
+  font-size: 11.5px; color: var(--ink-mute); line-height: 1.6;
+  margin: 0 0 14px; padding: 10px 12px;
+  border: 1px dashed var(--line-soft); border-radius: 8px; background: #FCFCFB;
+}
+.news-source-health strong { color: var(--cyan-deep); }
+
+/* Disparador de GitHub Actions */
+.pipeline-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px; margin: 6px 0 14px;
+}
+.pipeline-item {
+  border: 1px solid var(--line-soft); border-radius: 8px;
+  padding: 13px 14px; background: #fff;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.pipeline-head { display: flex; flex-direction: column; gap: 4px; }
+.pipeline-name { font-size: 12.5px; font-weight: 700; color: var(--ink); }
+.pipeline-state {
+  font-size: 9.5px; letter-spacing: .8px; text-transform: uppercase;
+  font-weight: 700; color: var(--ink-mute);
+}
+.pipeline-state.ok { color: #0F7B4F; }
+.pipeline-state.running { color: var(--cyan-deep); }
+.pipeline-state.fail { color: #A32020; }
+.pipeline-note { font-size: 11px; color: var(--ink-mute); line-height: 1.55; margin: 0; }
+.pipeline-item .ops-btn { align-self: flex-start; }
+.pipeline-item .ops-btn[disabled] { opacity: .55; cursor: progress; }
+.pipeline-state a { color: inherit; }
+</style>
+
+<script>
+/* ============================================================================
+   LECTURA MANUAL DE NOTICIAS · CAPA v6 (robustez) + PIPELINES DE GITHUB
+   ============================================================================
+
+   Esta capa es la última que corre, así que es la que manda. Resuelve tres
+   cosas que en la práctica rompían el flujo manual:
+
+     1. Lista de fuentes depurada. Sobre 19 corridas del pipeline automático,
+        solo cuatro dominios devolvieron titulares: eldinero, hoy, diariolibre
+        y elcaribe. BCRD, SIB, Listín, Acento, Bloomberg Línea, Hacienda, Fed,
+        Mercado y El Nuevo Diario nunca devolvieron nada (portadas que se
+        arman con JavaScript, así que el lector solo ve el cascarón). Quedan
+        fuera de las recomendadas y su cobertura institucional se recupera vía
+        feeds RSS, que sí se pueden parsear.
+
+     2. Descubrimiento de RSS. Si la portada HTML no da enlaces, la lectura
+        busca el <link rel="alternate"> del propio sitio y, si no lo hay,
+        prueba las rutas de feed convencionales. Antes una portada JS era una
+        fuente perdida; ahora casi siempre hay un feed detrás.
+
+     3. Fecha desde el feed. El filtro descartaba como "sin fecha" notas que
+        traían pubDate en el RSS. Ahora esa fecha viaja con el candidato y se
+        usa cuando el artículo no expone la suya.
+
+   Además: "Verificar fuentes" prueba cada URL y marca las que no devuelven
+   nada, con un botón para quitarlas de una vez; y "Restaurar recomendadas"
+   devuelve la lista curada.
+   ============================================================================ */
+(function(){
+  'use strict';
+
+  /* ---- 1. LISTA CURADA -------------------------------------------------- */
+  const RECOMMENDED_SOURCES = [
+    { id:'news-eldinero',             label:'El Dinero · Finanzas',              url:'https://eldinero.com.do/finanzas/' },
+    { id:'news-eldinero-rss',         label:'El Dinero · RSS',                   url:'https://eldinero.com.do/feed/' },
+    { id:'news-hoy',                  label:'Hoy Digital · Economía',            url:'https://hoy.com.do/economia/' },
+    { id:'news-hoy-rss',              label:'Hoy Digital · RSS',                 url:'https://hoy.com.do/feed/' },
+    { id:'news-diariolibre',          label:'Diario Libre · Economía',           url:'https://www.diariolibre.com/economia' },
+    { id:'news-diariolibre-finanzas', label:'Diario Libre · Finanzas',           url:'https://www.diariolibre.com/economia/finanzas' },
+    { id:'news-elcaribe',             label:'El Caribe · Dinero',                url:'https://www.elcaribe.com.do/seccion/panorama/dinero/' },
+    { id:'news-elcaribe-rss',         label:'El Caribe · RSS',                   url:'https://www.elcaribe.com.do/feed/' },
+    { id:'news-gnews-bcrd',           label:'Google News · BCRD y política monetaria', url:'https://news.google.com/rss/search?q=%22Banco+Central%22+Rep%C3%BAblica+Dominicana+inflaci%C3%B3n+OR+tasa+OR+remesas&hl=es-419&gl=DO&ceid=DO:es-419' },
+    { id:'news-gnews-banca',          label:'Google News · Banca y Superintendencia', url:'https://news.google.com/rss/search?q=%22Superintendencia+de+Bancos%22+OR+%22banca+dominicana%22+OR+%22asociaciones+de+ahorros+y+pr%C3%A9stamos%22&hl=es-419&gl=DO&ceid=DO:es-419' }
+  ];
+
+  /* Fuentes retiradas: nunca devolvieron un titular. Se listan por fragmento
+     de URL para poder limpiarlas del localStorage de quien ya las tenía. */
+  const RETIRED_URL_FRAGMENTS = [
+    'bancentral.gov.do',
+    'sb.gob.do',
+    'bloomberglinea.com',
+    'listindiario.com',
+    'acento.com.do',
+    'hacienda.gob.do',
+    'federalreserve.gov',
+    'revistamercado.do',
+    'elnuevodiario.com.do',
+    'fxstreet.es'
+  ];
+
+  const MIGRATION_FLAG = 'ln-news-sources-curated-v6';
+  const SOURCES_KEY = 'ln-news-sources';
+
+  function esc(value){
+    if (typeof window.escapeHtml === 'function') return window.escapeHtml(value);
+    return String(value ?? '').replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+  }
+  function toastSafe(message, kind){
+    if (typeof window.toast === 'function') window.toast(message, kind);
+  }
+  function logSafe(message, kind){
+    if (typeof window.addNewsLog === 'function') window.addNewsLog(message, kind);
+  }
+  function isRetired(url){
+    const key = String(url || '').toLowerCase();
+    return RETIRED_URL_FRAGMENTS.some(fragment => key.includes(fragment));
+  }
+  function healthBox(){ return document.getElementById('news-source-health'); }
+  function setHealth(html){
+    const box = healthBox();
+    if (box) box.innerHTML = html;
+  }
+
+  /* ---- 2. RENDER DE LA REJILLA ------------------------------------------ */
+  function fieldMarkup(id, label, url){
+    return '<div class="news-source-field">'
+      + `<label>${esc(label)}</label>`
+      + `<input data-news-source="1" id="${esc(id)}" value="${esc(url)}" placeholder="https://...">`
+      + '<div class="news-source-meta">'
+      + '<span class="news-source-badge" data-source-badge>sin verificar</span>'
+      + '<button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button>'
+      + '</div></div>';
+  }
+
+  function renderSourceGrid(list){
+    const grid = document.getElementById('news-source-grid');
+    if (!grid) return;
+    grid.innerHTML = list.map(s => fieldMarkup(s.id, s.label, s.url)).join('');
+  }
+
+  /* Toda fuente añadida a mano nace con badge y botón de quitar, igual que
+     las recomendadas: si no, la rejilla queda con dos formatos distintos. */
+  window.addNewsSourceField = function(value = '', label = 'Nueva fuente'){
+    const grid = document.getElementById('news-source-grid');
+    if (!grid) return;
+    const id = `news-extra-${Date.now().toString(36)}`;
+    grid.insertAdjacentHTML('beforeend', fieldMarkup(id, label, value));
+    const input = document.getElementById(id);
+    if (input) input.focus();
+    logSafe('Nueva fuente añadida al panel.', 'info');
+  };
+
+  window.lnRemoveNewsSource = function(button){
+    const field = button?.closest('.news-source-field');
+    if (!field) return;
+    const label = field.querySelector('label')?.textContent?.trim() || 'fuente';
+    field.remove();
+    logSafe(`Fuente retirada del panel: ${label}. Guarda para que el cambio persista.`, 'info');
+    toastSafe(`${label} quitada. Pulsa "Guardar fuentes" para fijarlo.`, 'success');
+  };
+
+  window.lnRestoreRecommendedNewsSources = function(){
+    renderSourceGrid(RECOMMENDED_SOURCES);
+    setHealth('Lista recomendada restaurada: <strong>' + RECOMMENDED_SOURCES.length + ' fuentes</strong>. Pulsa "Guardar fuentes" para fijarla y "Verificar fuentes" para probarlas.');
+    logSafe(`Lista de fuentes restaurada a las ${RECOMMENDED_SOURCES.length} recomendadas.`, 'info');
+    toastSafe('Fuentes recomendadas restauradas', 'success');
+  };
+
+  /* Migración de quien ya tenía fuentes guardadas: se conservan las suyas,
+     se descartan las que nunca leyeron nada y se añaden las recomendadas que
+     falten. Corre una sola vez por navegador. */
+  function migrateStoredSources(){
+    let stored = {};
+    try { stored = JSON.parse(localStorage.getItem(SOURCES_KEY) || '{}') || {}; } catch(_) { stored = {}; }
+
+    const keep = [];
+    const seen = new Set();
+    const dropped = [];
+
+    RECOMMENDED_SOURCES.forEach(s => { keep.push(s); seen.add(s.url.toLowerCase()); });
+
+    Object.entries(stored).forEach(([id, url]) => {
+      const clean = String(url || '').trim();
+      if (!clean) return;
+      if (isRetired(clean)) { dropped.push(clean); return; }
+      if (seen.has(clean.toLowerCase())) return;
+      seen.add(clean.toLowerCase());
+      keep.push({ id, label: 'Fuente guardada', url: clean });
+    });
+
+    renderSourceGrid(keep);
+
+    const map = {};
+    keep.forEach(s => { map[s.id] = s.url; });
+    try {
+      localStorage.setItem(SOURCES_KEY, JSON.stringify(map));
+      localStorage.setItem(MIGRATION_FLAG, new Date().toISOString());
+    } catch(_) {}
+
+    if (dropped.length){
+      logSafe(`${dropped.length} fuente(s) que nunca devolvieron titulares se retiraron de la lista guardada.`, 'warn');
+    }
+  }
+
+  /* ---- 3. DESCUBRIMIENTO DE RSS ----------------------------------------- */
+  /* Rutas de feed que cubren los CMS que usa la prensa dominicana:
+     WordPress (/feed/, ?feed=rss2) y Arc XP (Diario Libre, Listín). */
+  function feedGuesses(url){
+    let base;
+    try { base = new URL(url.startsWith('http') ? url : `https://${url}`); }
+    catch(_) { return []; }
+
+    const origin = base.origin;
+    const path = base.pathname.replace(/\/+$/, '');
+    const out = [];
+
+    // Si la URL ya es un feed y aun así no dio nada, adivinar rutas solo
+    // gasta lecturas: el problema está en el feed, no en la ruta.
+    if (/(feed|rss|atom|\.xml)(\/|$)/i.test(path) || /feed=|outputType=xml/i.test(base.search)) return [];
+
+    if (path) out.push(`${origin}${path}/feed/`);
+    out.push(`${origin}/feed/`);
+    out.push(`${origin}/rss`);
+    out.push(`${origin}/arc/outboundfeeds/rss/?outputType=xml`);
+    if (path) out.push(`${origin}/arc/outboundfeeds/rss/category${path}/?outputType=xml`);
+
+    // Sin duplicados y sin devolver la misma URL que ya se leyó.
+    const current = base.href.replace(/\/$/, '');
+    return Array.from(new Set(out)).filter(u => u.replace(/\/$/, '') !== current);
+  }
+
+  function discoverFeedsFromHtml(text, baseUrl){
+    const out = [];
+    try {
+      const doc = new DOMParser().parseFromString(text, 'text/html');
+      doc.querySelectorAll('link[rel~="alternate"][type]').forEach(node => {
+        const type = (node.getAttribute('type') || '').toLowerCase();
+        if (!/rss|atom|xml/.test(type)) return;
+        const href = node.getAttribute('href');
+        if (!href) return;
+        try { out.push(new URL(href, baseUrl).href); } catch(_) {}
+      });
+    } catch(_) {}
+    return out;
+  }
+
+  /* ---- 4. FECHA DESDE EL FEED ------------------------------------------- */
+  function feedItemsWithDates(text, sourceUrl, sourceName){
+    const out = [];
+    const push = (title, rawLink, rawDate) => {
+      if (!title || !rawLink) return;
+      let url = null;
+      try { url = new URL(rawLink, sourceUrl).href; } catch(_) { return; }
+      if (typeof window.isLikelyArticleUrl === 'function' && !window.isLikelyArticleUrl(url, title)) return;
+      const parsed = rawDate ? new Date(rawDate) : null;
+      const publishedAt = parsed && !Number.isNaN(parsed.getTime()) ? parsed.toISOString() : '';
+      out.push({ url, title, source: sourceName, publishedAt });
+    };
+
+    try {
+      const doc = new DOMParser().parseFromString(text, 'text/xml');
+      const clean = value => String(value || '').replace(/\s+/g, ' ').trim();
+
+      Array.from(doc.querySelectorAll('item')).forEach(item => {
+        push(
+          clean(item.querySelector('title')?.textContent),
+          clean(item.querySelector('link')?.textContent || item.querySelector('guid')?.textContent),
+          clean(item.querySelector('pubDate')?.textContent || item.getElementsByTagName('dc:date')[0]?.textContent)
+        );
+      });
+
+      Array.from(doc.querySelectorAll('entry')).forEach(entry => {
+        const linkNode = entry.querySelector('link[rel="alternate"], link[href]');
+        push(
+          clean(entry.querySelector('title')?.textContent),
+          linkNode?.getAttribute('href') || clean(entry.querySelector('link')?.textContent),
+          clean(entry.querySelector('published')?.textContent || entry.querySelector('updated')?.textContent)
+        );
+      });
+    } catch(_) {}
+
+    return out;
+  }
+
+  /* Un candidato que traía fecha del feed no debe morir como "sin fecha"
+     porque el artículo no la exponga en el HTML. */
+  const baseBuildProposal = window.buildProposalFromUrl;
+  window.buildProposalFromUrl = async function(url, sourceName = '', seed = {}){
+    const proposal = await baseBuildProposal.call(this, url, sourceName, seed);
+    if (proposal && !proposal.publishedAt && seed && seed.publishedAt){
+      proposal.publishedAt = seed.publishedAt;
+      if (typeof window.formatArticleTime === 'function'){
+        proposal.time = window.formatArticleTime(seed.publishedAt, proposal.url || url);
+      }
+      proposal.dateFrom = 'feed';
+    }
+    return proposal;
+  };
+
+  /* ---- 5. LECTURA DE UNA FUENTE, CON CASCADA --------------------------- */
+  /* Devuelve { candidates, trace, feedUsed, error }. La cascada es:
+     portada → feed declarado por el sitio → rutas de feed convencionales. */
+  async function readOneSource(url, sourceName){
+    const attempts = [];
+    let firstError = null;
+    let discovered = [];
+
+    const tryUrl = async (target, kind) => {
+      const read = await window.fetchTextSmart(target);
+      const html = typeof window.parseHtmlLinks === 'function' ? window.parseHtmlLinks(read.text, target, sourceName) : [];
+      const md = typeof window.parseMarkdownLinks === 'function' ? window.parseMarkdownLinks(read.text, target, sourceName) : [];
+      const feed = feedItemsWithDates(read.text, target, sourceName);
+      const merged = typeof window.dedupeCandidates === 'function'
+        ? window.dedupeCandidates([...feed, ...html, ...md])
+        : [...feed, ...html, ...md];
+
+      // dedupeCandidates conserva el primer registro de cada URL: el feed va
+      // primero justamente para que gane su publishedAt.
+      const scored = merged
+        .map(item => ({
+          ...item,
+          score: typeof window.scoreCandidateLink === 'function' ? window.scoreCandidateLink(item, target) : 0.5,
+          seedMode: read.mode
+        }))
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 20);
+
+      attempts.push({ target, kind, mode: read.mode, count: scored.length, trace: read.trace });
+      if (!discovered.length) discovered = discoverFeedsFromHtml(read.text, target);
+      return scored;
+    };
+
+    // Intento 1: la URL tal como la escribió el analista.
+    try {
+      const candidates = await tryUrl(url, 'origen');
+      if (candidates.length) return { candidates, attempts, feedUsed: null };
+    } catch (error){
+      firstError = error;
+      attempts.push({ target: url, kind: 'origen', count: 0, failed: true, trace: error?.trace });
+    }
+
+    // Intento 2 y 3: feeds declarados por el sitio, luego rutas convencionales.
+    const feedTargets = Array.from(new Set([...discovered, ...feedGuesses(url)])).slice(0, 5);
+
+    for (const target of feedTargets){
+      try {
+        const candidates = await tryUrl(target, 'feed');
+        if (candidates.length) return { candidates, attempts, feedUsed: target };
+      } catch (error){
+        attempts.push({ target, kind: 'feed', count: 0, failed: true });
+        if (!firstError) firstError = error;
+      }
+    }
+
+    return { candidates: [], attempts, feedUsed: null, error: firstError };
+  }
+
+  window.lnReadOneNewsSource = readOneSource;
+
+  /* ---- 6. VERIFICADOR DE FUENTES --------------------------------------- */
+  let deadFields = [];
+
+  function badgeOf(input){
+    return input?.closest('.news-source-field')?.querySelector('[data-source-badge]') || null;
+  }
+  function setBadge(input, text, cls){
+    const badge = badgeOf(input);
+    if (!badge) return;
+    badge.textContent = text;
+    badge.className = `news-source-badge ${cls || ''}`.trim();
+    input.closest('.news-source-field')?.classList.toggle('is-dead', cls === 'dead');
+  }
+
+  window.lnCheckNewsSources = async function(){
+    const inputs = typeof window.collectNewsSourceInputs === 'function' ? window.collectNewsSourceInputs() : [];
+    if (!inputs.length){ toastSafe('No hay fuentes que verificar', 'warn'); return; }
+
+    deadFields = [];
+    let ok = 0, viaFeed = 0;
+    setHealth(`Verificando ${inputs.length} fuentes…`);
+    inputs.forEach(input => setBadge(input, 'probando…', 'testing'));
+
+    for (const input of inputs){
+      const url = input.value.trim();
+      const name = typeof window.sourceLabelFromInput === 'function' ? window.sourceLabelFromInput(input) : url;
+      const result = await readOneSource(url, name);
+
+      if (result.candidates.length){
+        ok++;
+        if (result.feedUsed){
+          viaFeed++;
+          setBadge(input, `${result.candidates.length} vía RSS`, 'warn');
+          logSafe(`${name}: la portada no dio enlaces, pero el feed ${result.feedUsed} devolvió ${result.candidates.length}.`, 'info');
+        } else {
+          setBadge(input, `${result.candidates.length} titulares`, 'ok');
+        }
+      } else {
+        deadFields.push(input);
+        setBadge(input, 'no lee nada', 'dead');
+        logSafe(`${name}: sin titulares legibles (${result.error?.message || 'la portada se arma con JavaScript'}).`, 'warn');
+      }
+    }
+
+    const parts = [`<strong>${ok} de ${inputs.length}</strong> fuentes devolvieron titulares`];
+    if (viaFeed) parts.push(`${viaFeed} solo a través de su RSS`);
+    if (deadFields.length){
+      parts.push(`${deadFields.length} no leen nada`);
+      setHealth(parts.join(' · ') + '. <button class="ops-btn ghost" type="button" onclick="lnPruneDeadNewsSources()">Quitar las que no leen nada</button>');
+    } else {
+      setHealth(parts.join(' · ') + '. Ninguna fuente muerta: el flujo manual está garantizado.');
+    }
+
+    toastSafe(`Verificación: ${ok}/${inputs.length} fuentes con titulares`, deadFields.length ? 'warn' : 'success');
+  };
+
+  window.lnPruneDeadNewsSources = function(){
+    if (!deadFields.length){ toastSafe('No hay fuentes muertas marcadas', 'warn'); return; }
+    const removed = deadFields.length;
+    deadFields.forEach(input => input.closest('.news-source-field')?.remove());
+    deadFields = [];
+    setHealth(`${removed} fuente(s) quitadas. Pulsa <strong>Guardar fuentes</strong> para fijar la lista.`);
+    logSafe(`${removed} fuente(s) sin lectura quitadas del panel.`, 'warn');
+    toastSafe(`${removed} fuente(s) quitadas. Guarda para fijarlo.`, 'success');
+  };
+
+  /* ---- 7. GUARDADO: TAMBIÉN APAGA LAS QUE SE QUITARON ------------------ */
+  /* El guardado original hace upsert de lo que está en pantalla, pero nunca
+     apagaba lo eliminado: el pipeline automático seguía leyendo fuentes que
+     el analista ya había sacado del panel. Aquí se cierra ese hueco. */
+  const baseSaveNewsSources = window.saveNewsSources;
+  window.saveNewsSources = async function(){
+    const count = await Promise.resolve(baseSaveNewsSources ? baseSaveNewsSources.call(this) : 0);
+
+    try {
+      const client = window.lnSupabase || null;
+      if (!client) return count;
+
+      const inputs = typeof window.collectNewsSourceInputs === 'function' ? window.collectNewsSourceInputs() : [];
+      const activeKeys = inputs
+        .map(input => (input.id || '').replace(/[^a-zA-Z0-9_]/g, '_'))
+        .filter(Boolean);
+      if (!activeKeys.length) return count;
+
+      const { data, error } = await client
+        .from('news_sources')
+        .update({ enabled: false, updated_at: new Date().toISOString() })
+        .eq('enabled', true)
+        .not('source_key', 'in', `(${activeKeys.join(',')})`)
+        .select('source_key');
+
+      if (error) throw error;
+      if (data && data.length){
+        logSafe(`${data.length} fuente(s) retiradas también se apagaron en Supabase: el pipeline automático deja de leerlas.`, 'info');
+      }
+    } catch (error){
+      // No es fatal: lo local ya quedó guardado.
+      logSafe(`Fuentes guardadas, pero no se pudo apagar las retiradas en Supabase: ${error.message}`, 'warn');
+    }
+
+    return count;
+  };
+
+  /* ---- 8. LECTURA COMPLETA (sobreescribe la v5) ------------------------ */
+  window.readNewsSources = async function(){
+    const inputs = typeof window.collectNewsSourceInputs === 'function' ? window.collectNewsSourceInputs() : [];
+    if (!inputs.length){ toastSafe('Añade al menos una fuente de noticias', 'warn'); return; }
+
+    if (typeof window.saveNewsSources === 'function') await Promise.resolve(window.saveNewsSources());
+    if (typeof window.syncRememberedNewsKeys === 'function') window.syncRememberedNewsKeys();
+
+    const card = document.getElementById('ops-news');
+    if (typeof window.resetWorkflowVisuals === 'function') window.resetWorkflowVisuals('news');
+    card?.classList.add('running');
+
+    const steps = [0,1,2].map(i => document.querySelector(`[data-step="news-${i}"]`));
+    steps[0]?.classList.add('active');
+    logSafe(`Lectura iniciada: ${inputs.length} fuentes. Si una portada no da enlaces, se intenta su RSS.`, 'info');
+
+    const target = typeof window.NEWS_TARGET_COUNT === 'number' ? window.NEWS_TARGET_COUNT : 9;
+    const maxAge = typeof window.NEWS_MAX_AGE_DAYS === 'number' ? window.NEWS_MAX_AGE_DAYS : 2;
+
+    let added = 0, sourcesOk = 0, sourcesFailed = 0, viaFeed = 0, duplicateSeeds = 0;
+
+    try {
+      const pool = [];
+
+      for (const input of inputs){
+        const url = input.value.trim();
+        if (!url) continue;
+        const name = typeof window.sourceLabelFromInput === 'function' ? window.sourceLabelFromInput(input) : url;
+
+        const result = await readOneSource(url, name);
+        result.attempts.forEach(a => { if (a.trace) logSafe({ type:'trace', source:name, trace:a.trace }); });
+
+        if (!result.candidates.length){
+          sourcesFailed++;
+          setBadge(input, 'no lee nada', 'dead');
+          if (!deadFields.includes(input)) deadFields.push(input);
+          logSafe({
+            type:'discard', reason:'unreadable', source:name,
+            url: url, title:`Sin titulares en ${name}`,
+            detail: result.error?.message || 'ni la portada ni su RSS devolvieron enlaces'
+          });
+          continue;
+        }
+
+        sourcesOk++;
+        if (result.feedUsed){ viaFeed++; setBadge(input, `${result.candidates.length} vía RSS`, 'warn'); }
+        else setBadge(input, `${result.candidates.length} titulares`, 'ok');
+
+        const filtered = typeof window.filterAlreadyProposedCandidates === 'function'
+          ? window.filterAlreadyProposedCandidates(result.candidates)
+          : { out: result.candidates, skipped: 0 };
+
+        duplicateSeeds += filtered.skipped;
+        filtered.out.forEach(c => pool.push(c));
+        logSafe(`${name}: ${result.candidates.length} enlaces · ${filtered.skipped} repetidos · ${filtered.out.length} a validación${result.feedUsed ? ' (vía RSS)' : ''}.`, filtered.out.length ? 'success' : 'info');
+      }
+
+      steps[0]?.classList.remove('active'); steps[0]?.classList.add('done');
+      steps[1]?.classList.add('active');
+
+      const deduped = typeof window.dedupeCandidates === 'function' ? window.dedupeCandidates(pool) : pool;
+      const selected = typeof window.roundRobinCandidates === 'function'
+        ? window.roundRobinCandidates(deduped.sort((a,b) => (b.score || 0) - (a.score || 0)), 60)
+        : deduped.slice(0, 60);
+
+      logSafe(`Normalización: ${selected.length} candidatos balanceados. ${sourcesOk} fuentes legibles${viaFeed ? ` (${viaFeed} vía RSS)` : ''}, ${sourcesFailed} sin lectura. Filtro: últimas ${maxAge} días.`, sourcesFailed ? 'warn' : 'success');
+      steps[1]?.classList.remove('active'); steps[1]?.classList.add('done');
+      steps[2]?.classList.add('active');
+
+      let stale = 0, undated = 0, duplicates = duplicateSeeds;
+
+      for (const seed of selected){
+        if (added >= target) break;
+        if (typeof window.hasNewsBeenProposed === 'function' && window.hasNewsBeenProposed(seed)){ duplicates++; continue; }
+
+        const candidate = await window.buildProposalFromUrl(seed.url, seed.source, {
+          title: seed.title, score: seed.score, url: seed.url, publishedAt: seed.publishedAt
+        });
+
+        if (typeof window.hasNewsBeenProposed === 'function' && window.hasNewsBeenProposed(candidate)){
+          duplicates++;
+          logSafe({ type:'discard', reason:'duplicate', source:candidate.source, url:candidate.url, title:candidate.title });
+          continue;
+        }
+        if (!candidate.publishedAt){
+          undated++;
+          logSafe({ type:'discard', reason:'undated', source:candidate.source, url:candidate.url, title:candidate.title, detail:'abre el enlace para verificar la fecha' });
+          continue;
+        }
+        if (typeof window.isFreshArticleDate === 'function' && !window.isFreshArticleDate(candidate.publishedAt, candidate.url)){
+          stale++;
+          logSafe({ type:'discard', reason:'stale', source:candidate.source, url:candidate.url, title:candidate.title, detail: typeof window.formatArticleTime === 'function' ? window.formatArticleTime(candidate.publishedAt, candidate.url) : '' });
+          continue;
+        }
+        if (window.upsertProposal(candidate)){
+          added++;
+          logSafe({ type:'candidate', source:candidate.source, title:candidate.title, url:candidate.url, publishedAt:candidate.publishedAt, stamp:candidate.time, message:`${candidate.source}: ${candidate.title}` });
+        } else {
+          duplicates++;
+        }
+      }
+
+      if (stale || undated || duplicates){
+        logSafe(`Resumen del filtro: ${duplicates} repetidas · ${stale} antiguas · ${undated} sin fecha (rescatables abajo).`, (stale || undated) ? 'warn' : 'info');
+      }
+      steps[2]?.classList.remove('active'); steps[2]?.classList.add('done');
+      card?.classList.add('done');
+    } finally {
+      card?.classList.remove('running');
+      if (typeof window.persistProposals === 'function') window.persistProposals();
+      if (typeof window.renderProposals === 'function') window.renderProposals();
+      if (typeof window.updateCounts === 'function') window.updateCounts();
+      if (typeof window.renderNewsLog === 'function') window.renderNewsLog();
+    }
+
+    const stamp = new Date().toLocaleTimeString('es-DO', { hour:'2-digit', minute:'2-digit' });
+    const status = document.getElementById('news-reader-status');
+    if (status){
+      status.textContent = `${added} candidatas frescas en cola a las ${stamp}. ${sourcesFailed ? sourcesFailed + ' fuente(s) sin lectura — pulsa "Verificar fuentes" para depurarlas.' : 'Todas las fuentes respondieron.'}`;
+    }
+    if (sourcesFailed && deadFields.length){
+      setHealth(`La última lectura dejó <strong>${sourcesFailed} fuente(s) sin titulares</strong>. <button class="ops-btn ghost" type="button" onclick="lnPruneDeadNewsSources()">Quitar las que no leen nada</button>`);
+    }
+    if (typeof window.setUpdated === 'function') window.setUpdated('news');
+    toastSafe(`Lectura completada: ${added} propuestas nuevas`, added ? 'success' : 'warn');
+  };
+
+  /* ---- 9. DISPARADOR DE GITHUB ACTIONS -------------------------------- */
+  const PIPELINE_ENDPOINT = '/api/github-actions';
+  const PIPELINE_LABELS = {
+    noticias: 'Resumen de noticias',
+    gemini: 'Resumen IA Gemini',
+    indicadores: 'Indicadores pipeline',
+    cartera: 'Cartera pipeline'
+  };
+
+  function feedbackBox(){ return document.getElementById('pipeline-feedback'); }
+  function setFeedback(html){
+    const box = feedbackBox();
+    if (box) box.innerHTML = html;
+  }
+  function stateEl(key){ return document.querySelector(`[data-pipeline-state="${key}"]`); }
+
+  function describeRun(run){
+    if (!run) return { text:'Sin corridas registradas', cls:'' };
+    if (run.status !== 'completed') return { text:'En ejecución…', cls:'running' };
+    const when = run.updatedAt ? new Date(run.updatedAt).toLocaleString('es-DO', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }) : '';
+    if (run.conclusion === 'success') return { text:`OK · ${when}`, cls:'ok' };
+    return { text:`${run.conclusion || 'sin concluir'} · ${when}`, cls:'fail' };
+  }
+
+  function paintRun(key, run){
+    const el = stateEl(key);
+    if (!el) return;
+    const info = describeRun(run);
+    el.className = `pipeline-state ${info.cls}`.trim();
+    el.innerHTML = run && run.url
+      ? `<a href="${esc(run.url)}" target="_blank" rel="noopener">${esc(info.text)}</a>`
+      : esc(info.text);
+  }
+
+  async function callPipelineApi(options){
+    const response = await fetch(PIPELINE_ENDPOINT, {
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      ...options
+    });
+
+    let payload = null;
+    try { payload = await response.json(); } catch(_) { payload = null; }
+
+    if (!response.ok || !payload || payload.ok === false){
+      const message = (payload && payload.error) || `El servidor respondió HTTP ${response.status}.`;
+      const error = new Error(message);
+      error.status = response.status;
+      throw error;
+    }
+
+    return payload;
+  }
+
+  window.lnRefreshPipelineStatus = async function(silent = false){
+    if (!document.getElementById('pipeline-grid')) return;
+    try {
+      const payload = await callPipelineApi({ method: 'GET' });
+      Object.entries(payload.workflows || {}).forEach(([key, info]) => {
+        if (info.error){
+          const el = stateEl(key);
+          if (el){ el.className = 'pipeline-state fail'; el.textContent = 'Estado no disponible'; }
+          return;
+        }
+        paintRun(key, info.lastRun);
+      });
+      if (!silent) setFeedback(`Estado consultado sobre <strong>${esc(payload.repo)}</strong> · rama ${esc(payload.ref)}.`);
+    } catch (error){
+      if (!silent) setFeedback(`No se pudo consultar el estado: ${esc(error.message)}`);
+    }
+  };
+
+  window.lnRunPipeline = async function(key, button){
+    const label = PIPELINE_LABELS[key] || key;
+    if (button){ button.disabled = true; button.textContent = 'Lanzando…'; }
+
+    const el = stateEl(key);
+    if (el){ el.className = 'pipeline-state running'; el.textContent = 'Lanzando…'; }
+
+    try {
+      const payload = await callPipelineApi({
+        method: 'POST',
+        body: JSON.stringify({ workflow: key })
+      });
+
+      const link = (payload.run && payload.run.url) || payload.runsUrl;
+      setFeedback(`<strong>${esc(label)}</strong> lanzado sobre la rama ${esc(payload.ref)}. <a href="${esc(link)}" target="_blank" rel="noopener">Ver la corrida en GitHub</a>. El dato queda commiteado al terminar.`);
+      paintRun(key, payload.run || { status:'queued', url: link });
+      logSafe(`Pipeline lanzado desde el panel: ${label}.`, 'success');
+      toastSafe(`${label} lanzado en GitHub Actions`, 'success');
+
+      // La corrida tarda minutos: se refresca solo un par de veces para que
+      // el estado se actualice sin obligar al analista a recargar.
+      [20000, 60000, 150000].forEach(delay => setTimeout(() => window.lnRefreshPipelineStatus(true), delay));
+    } catch (error){
+      setFeedback(`No se pudo lanzar <strong>${esc(label)}</strong>: ${esc(error.message)}`);
+      if (el){ el.className = 'pipeline-state fail'; el.textContent = 'No se lanzó'; }
+      logSafe(`Fallo al lanzar ${label}: ${error.message}`, 'warn');
+      toastSafe(`No se pudo lanzar ${label}`, 'warn');
+    } finally {
+      if (button){ button.disabled = false; button.textContent = 'Ejecutar'; }
+    }
+  };
+
+  function bindPipelinePanel(){
+    document.querySelectorAll('[data-run-pipeline]').forEach(button => {
+      if (button.dataset.bound === '1') return;
+      button.dataset.bound = '1';
+      button.addEventListener('click', () => window.lnRunPipeline(button.dataset.runPipeline, button));
+    });
+
+    const refresh = document.getElementById('pipeline-refresh-btn');
+    if (refresh && refresh.dataset.bound !== '1'){
+      refresh.dataset.bound = '1';
+      refresh.addEventListener('click', () => window.lnRefreshPipelineStatus(false));
+    }
+  }
+
+  /* ---- 10. ARRANQUE ---------------------------------------------------- */
+  function boot(){
+    try {
+      if (!localStorage.getItem(MIGRATION_FLAG)) migrateStoredSources();
+    } catch(_) {}
+
+    bindPipelinePanel();
+
+    // El estado de los pipelines solo se consulta con sesión de analista:
+    // sin ella el endpoint responde 401 y no hay nada que pintar.
+    const tryStatus = () => {
+      if (document.body.classList.contains('analyst-logged')) window.lnRefreshPipelineStatus(true);
+    };
+    tryStatus();
+    [1500, 6000].forEach(delay => setTimeout(tryStatus, delay));
+  }
+
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
   else boot();
 })();
