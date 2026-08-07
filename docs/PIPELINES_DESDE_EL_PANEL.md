@@ -57,6 +57,42 @@ mensaje exacto de qué falta; no falla en silencio.
 | "GitHub rechazó la solicitud por permisos" | Al token le falta *Actions: Read and write*. |
 | "GitHub no encontró el workflow o el repositorio" | `GITHUB_ACTIONS_REPO` apunta a otro repo, o el archivo no existe en la rama de `GITHUB_ACTIONS_REF`. |
 
+## Cómo commitean los workflows (y por qué ya no fallan)
+
+Los cinco workflows terminaban así:
+
+```bash
+git add archivo && git commit -m "..." && git pull --rebase origin main && git push
+```
+
+El `--rebase` reproduce el commit del job encima del remoto. Si entre el
+checkout y el push alguien más tocó el mismo archivo —otra corrida del mismo
+pipeline, el pipeline de Gemini, o un push a mano— el replay chocaba y el job
+moría con:
+
+```
+error: could not apply <sha>... Actualizar candidatos de noticias
+```
+
+Lanzar los pipelines a mano desde el panel hace esa colisión mucho más
+probable, porque ya no están espaciados por el calendario.
+
+Un conflicto ahí no tiene sentido: estos archivos no se editan a mano, se
+regeneran completos en cada corrida, así que la versión recién generada
+siempre es la correcta. Ahora el commit va por `scripts/commit_generated.sh`,
+que en vez de rebasar:
+
+1. Guarda los archivos generados fuera del árbol de trabajo.
+2. Hace `fetch` + `reset --hard` al remoto.
+3. Vuelve a escribir los archivos generados encima.
+4. Commitea y empuja. Si pierde la carrera contra otro job, repite el ciclo
+   hasta cinco veces con espera creciente.
+
+El push nunca conflictúa, no se pierde el commit del otro pipeline y, si dos
+corridas coinciden, gana la que termina de último — la que trae el dato más
+fresco. El script deja `pushed=true|false` en los outputs del paso, y no crea
+commits vacíos cuando el dato regenerado es idéntico al que ya está en el repo.
+
 ## Nota sobre tiempos
 
 Una corrida tarda entre dos y veinte minutos según el pipeline. El panel

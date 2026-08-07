@@ -54,15 +54,6 @@ jobs:
             python scripts/generate_gemini_summaries.py
           fi
 
+      # Ver scripts/commit_generated.sh: push sin rebase, con reintentos.
       - name: Commit del resumen si cambió
-        run: |
-          if [ -n "$(git status --porcelain data/gemini_summaries.json)" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/gemini_summaries.json
-            git commit -m "Actualizar resúmenes ejecutivos Gemini [skip ci]"
-            git pull --rebase origin "${GITHUB_REF_NAME}"
-            git push
-          else
-            echo "Sin cambios en los resúmenes."
-          fi
+        run: bash scripts/commit_generated.sh "Actualizar resúmenes ejecutivos Gemini [skip ci]" data/gemini_summaries.json

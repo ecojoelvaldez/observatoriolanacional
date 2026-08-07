@@ -51,15 +51,9 @@ jobs:
           MAX_TOTAL_PROPOSALS: "30"
         run: python scripts/news_pipeline.py
 
+      # El commit va por scripts/commit_generated.sh: sincroniza con el
+      # remoto y reescribe el JSON generado encima, en vez de rebasar. El
+      # rebase moría con "could not apply ... Actualizar candidatos de
+      # noticias" cada vez que otra corrida tocaba el mismo archivo.
       - name: Commit de candidatos si cambiaron
-        run: |
-          if [ -n "$(git status --porcelain news_candidates.json)" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add news_candidates.json
-            git commit -m "Actualizar candidatos de noticias [skip ci]"
-            git pull --rebase origin "${GITHUB_REF_NAME}"
-            git push
-          else
-            echo "Sin cambios en candidatos."
-          fi
+        run: bash scripts/commit_generated.sh "Actualizar candidatos de noticias [skip ci]" news_candidates.json

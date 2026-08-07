@@ -66,18 +66,12 @@ jobs:
             python scripts/fetch_sib_indicadores.py
           fi
 
+      # Ver scripts/commit_generated.sh: push sin rebase, con reintentos.
       - name: Commit del snapshot si cambio
+        id: commit-snapshot
         env:
           SALIDA: ${{ github.event.inputs.salida || 'data/sib_snapshot.json' }}
-        run: |
-          if [ -n "$(git status --porcelain "$SALIDA")" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add "$SALIDA"
-            git commit -m "Actualizar snapshot SIB indicadores [skip ci]"
-            git pull --rebase origin "${GITHUB_REF_NAME}"
-            git push
-            echo "snapshot_actualizado=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "Sin cambios en el snapshot SIB."
-          fi
+        # El script deja pushed=true|false en los outputs del paso; antes esta
+        # línea escribía siempre "true" y además el paso no tenía id, así que
+        # el valor no se podía leer desde ninguna parte.
+        run: bash scripts/commit_generated.sh "Actualizar snapshot SIB indicadores [skip ci]" "$SALIDA"
