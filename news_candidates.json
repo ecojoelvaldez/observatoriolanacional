@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-08-07T11:28:02.135963+00:00",
+  "generated_at": "2026-08-07T17:28:02.242534+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
   "count": 30,
   "errors": 0,
-  "sources": 12,
-  "elapsed_s": 434.6,
+  "sources": 37,
+  "elapsed_s": 246.2,
   "candidates": [
     {
       "id": "n_dfc2a94f7bf362ab",
@@ -607,74 +607,6 @@
       "status": "pending"
     }
   ],
-  "discarded_count": 5,
-  "discarded": [
-    {
-      "id": "n_5dd7f33e88a28cde",
-      "motivo": "duplicada",
-      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
-      "title": "Inflación interanual baja 0.20 puntos porcentuales y se sitúa en 5.47 %",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/inflacion-interanual-baja-0-20-puntos-porcentuales-y-se-situa-en-5-47",
-      "source_name": "El Caribe · Dinero",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "politica_monetaria",
-        "hecho"
-      ],
-      "detalle": "Misma noticia que: Banco Central: Inflación interanual baja 0.20 puntos y se sitúa en 5.47% a julio de 2026",
-      "fetched_at": "2026-08-07T11:28:02.123066+00:00"
-    },
-    {
-      "id": "n_19f7c4e0009863c6",
-      "motivo": "duplicada",
-      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
-      "title": "Precio del dólar hoy Lunes 3 de agosto de 2026 en RD",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-3-agosto-2026",
-      "source_name": "Fuente guardada",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "politica_monetaria"
-      ],
-      "detalle": "Misma noticia que: Precio del dólar hoy jueves 6 de agosto de 2026 en RD",
-      "fetched_at": "2026-08-07T11:28:02.126740+00:00"
-    },
-    {
-      "id": "n_d188f79f47c24483",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Qik Banco Digital obtiene cuatro premios en los Effie Awards",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/qik-banco-digital-obtiene-cuatro-premios-en-los-effie-awards",
-      "source_name": "El Caribe · Dinero",
-      "relevance": null,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-07T11:28:00.543334+00:00"
-    },
-    {
-      "id": "n_d6414630e2bf84b3",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Feller Rate eleva perspectiva a “positiva” al Banco Santa Cruz",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/feller-rate-eleva-perspectiva-a-positiva-al-banco-santa-cruz",
-      "source_name": "El Caribe · Dinero",
-      "relevance": null,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-07T11:28:00.597983+00:00"
-    },
-    {
-      "id": "n_cbbb287cc03d89a4",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "El petróleo sube un 2.75 % hasta 77.29 dólares",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/el-petroleo-sube-un-2-75-hasta-77-29-dolares",
-      "source_name": "El Caribe · Dinero",
-      "relevance": null,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-07T11:28:00.615835+00:00"
-    }
-  ]
+  "discarded_count": 0,
+  "discarded": []
 }
