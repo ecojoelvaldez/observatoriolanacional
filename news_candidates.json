@@ -1,12 +1,69 @@
 {
-  "generated_at": "2026-08-10T11:38:07.925947+00:00",
+  "generated_at": "2026-08-10T17:30:02.168512+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
-  "count": 11,
+  "count": 14,
   "errors": 0,
   "sources": 37,
-  "elapsed_s": 490.6,
+  "elapsed_s": 222.0,
   "candidates": [
+    {
+      "id": "n_5309b657e5bfba2a",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/375716/feller-rate-mantiene-calificacion-a-de-asociacion-cibao-y-destaca-su-fortaleza-financiera",
+      "title": "Feller Rate mantiene calificación A+ de Asociación Cibao y destaca su fortaleza financiera",
+      "summary": "La calificadora Feller Rate reafirmó la clasificación A+ de la Asociación Cibao, reconociendo su sólida fortaleza financiera, respaldo patrimonial y calidad de activos. Este dictamen subraya la estabilidad y el crecimiento sostenible de la entidad en el sector financiero dominicano.",
+      "body": "Feller Rate ha ratificado la calificación A+ de la Asociación Cibao, destacando su robusto patrimonio, calidad de cartera y gestión de riesgos. La entidad financiera ha fortalecido su posición en el mercado dominicano, con activos que alcanzaron RD$116,614 millones a junio de 2026, evidenciando una estrategia de crecimiento sostenible y diversificación de operaciones.",
+      "category": "Financiero",
+      "relevance": 8,
+      "señales": [
+        "banca"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-10T15:46:17+00:00",
+      "fetched_at": "2026-08-10T17:29:08.011467+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_3dd6fde163f7439f",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/375652/sb-emite-lineamientos-para-el-trato-digno-en-cobro-de-deudas-a-usuarios-del-sector-financiero",
+      "title": "SB emite lineamientos para el trato digno en cobro de deudas a usuarios del sector financiero",
+      "summary": "La Superintendencia de Bancos ha emitido una nueva normativa para regular las prácticas de cobro de deudas en el sector financiero dominicano. Esta regulación busca garantizar un trato digno y transparente a los usuarios, incluso cuando la gestión es delegada a terceros.",
+      "body": "La Superintendencia de Bancos (SB) ha establecido directrices claras para mejorar el trato a los usuarios en los procesos de cobro de deudas. La nueva normativa busca asegurar que las entidades financieras y sus gestores externos apliquen prácticas equitativas y respetuosas, cumpliendo con límites de contacto y protegiendo la confidencialidad de los datos. Se exige notificar formalmente a los deudores sobre la cesión de sus deudas y promover una cultura de transparencia.",
+      "category": "Regulatorio",
+      "relevance": 9,
+      "señales": [
+        "regulador"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-10T14:04:38+00:00",
+      "fetched_at": "2026-08-10T17:26:41.992286+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_77da9a6fa0be63da",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/375639/dgii-recauda-rd81475-1-millones-en-julio-un-6-5-mas-que-en-2025",
+      "title": "DGII recauda RD$81,475.1 millones en julio, un 6.5% más que en 2025",
+      "summary": "La Dirección General de Impuestos Internos (DGII) reportó un aumento del 6.5% en sus recaudaciones durante julio de 2026, alcanzando RD$81,475.1 millones. Este crecimiento, impulsado por el Itbis y el ISR de Personas Físicas, supera la meta presupuestaria y refleja una tendencia positiva en los ingresos tributarios del país.",
+      "body": "La DGII informó que en julio de 2026 sus recaudaciones ascendieron a RD$81,475.1 millones, un 6.5% más que el año anterior. Este incremento se debió principalmente al buen desempeño del Itbis y el Impuesto sobre la Renta de Personas Físicas. La cifra superó la meta presupuestaria, mostrando un avance significativo en la captación de ingresos tributarios.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "regulador"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-10T13:51:02+00:00",
+      "fetched_at": "2026-08-10T17:26:35.916878+00:00",
+      "status": "pending"
+    },
     {
       "id": "n_5b5f6c9dbe62f7c0",
       "source_key": "news_hoy",
@@ -244,135 +301,31 @@
       "status": "pending"
     }
   ],
-  "discarded_count": 10,
+  "discarded_count": 2,
   "discarded": [
     {
       "id": "n_0f8091bbb7c0ac2b",
-      "motivo": "duplicada",
-      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
       "title": "Banco Central informa remesas recibidas fueron de US$7,316.4 millones entre enero y julio de 2026",
       "url": "https://eldinero.com.do/375616/banco-central-informa-remesas-recibidas-fueron-de-us7316-4-millones-entre-enero-y-julio-de-2026",
       "source_name": "El Dinero · Finanzas",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "politica_monetaria",
-        "macro"
-      ],
-      "detalle": "Misma noticia que: Remesas llegan a US$7,316.4 millones entre enero y julio",
-      "fetched_at": "2026-08-10T11:38:07.923201+00:00"
-    },
-    {
-      "id": "n_407a2dc92180839b",
-      "motivo": "duplicada",
-      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
-      "title": "Remesas alcanzaron US$7,316.4 millones entre enero y julio, informa el Banco Central",
-      "url": "https://www.elcaribe.com.do/economia/remesas-alcanzaron-us7316-4-millones-entre-enero-y-julio-informa-el-banco-central",
-      "source_name": "El Caribe · Dinero",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "politica_monetaria",
-        "macro"
-      ],
-      "detalle": "Misma noticia que: Remesas llegan a US$7,316.4 millones entre enero y julio",
-      "fetched_at": "2026-08-10T11:38:07.923682+00:00"
-    },
-    {
-      "id": "n_d915148cb46cb897",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera de la ventana de frescura",
-      "title": "De la Espriella se compromete a salvaguardar libertad periodística durante su Gobierno",
-      "url": "https://www.diariolibre.com/mundo/america-latina/2026/08/06/libertad-periodistica-en-colombia-bajo-abelardo-de-la-espriella/3622124",
-      "source_name": "Diario Libre · Economía",
-      "relevance": 7,
+      "relevance": null,
       "señales": [],
-      "detalle": "published_at=2026-08-06T22:27:00-04:00",
-      "fetched_at": "2026-08-10T11:31:26.997329+00:00"
-    },
-    {
-      "id": "n_18082a81067fa3b0",
-      "motivo": "duplicada",
-      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
-      "title": "AES Dominicana capta US$500 millones en la mayor emisión de bonos corporativos desde 2012",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/aes-dominicana-capta-us500-millones-en-la-mayor-emision-de-bonos-corporativos-desde-2012",
-      "source_name": "El Caribe · Dinero",
-      "relevance": 7,
-      "señales": [],
-      "detalle": "Misma noticia que: AES Dominicana capta US$ 500 millones en bonos",
-      "fetched_at": "2026-08-10T11:38:07.925316+00:00"
+      "detalle": "",
+      "fetched_at": "2026-08-10T17:30:00.595283+00:00"
     },
     {
       "id": "n_ecfd594737218937",
-      "motivo": "duplicada",
-      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
       "title": "AES Dominicana capta US$500 millones en la mayor emisión de bonos corporativos desde 2012",
       "url": "https://eldinero.com.do/375631/aes-dominicana-capta-us500-millones-en-la-mayor-emision-de-bonos-corporativos-desde-2012",
       "source_name": "El Dinero · Finanzas",
-      "relevance": 7,
-      "señales": [],
-      "detalle": "Misma noticia que: AES Dominicana capta US$ 500 millones en bonos",
-      "fetched_at": "2026-08-10T11:38:07.925900+00:00"
-    },
-    {
-      "id": "n_37df4745cc13edb1",
-      "motivo": "relevancia_baja",
-      "motivo_texto": "El modelo le puso poca relevancia financiera",
-      "title": "Gobierno reajusta combustibles ante presión internacional",
-      "url": "https://eldinero.com.do/375565/gobierno-reajusta-combustibles-ante-presion-internacional",
-      "source_name": "El Dinero · RSS",
-      "relevance": 5,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-10T11:32:37.174262+00:00"
-    },
-    {
-      "id": "n_3f985beec3ff6bf7",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Dólar hoy: tasas de compra y venta actualizadas desde el 08 hasta el 10 de agosto 2026",
-      "url": "https://hoy.com.do/economia/dolar-hoy-tasas-compra-venta-actualizadas-08-10-agosto-2026_1098070.html",
-      "source_name": "Hoy Digital · Economía",
       "relevance": null,
       "señales": [],
       "detalle": "",
-      "fetched_at": "2026-08-10T11:38:00.044170+00:00"
-    },
-    {
-      "id": "n_b4ad806ea887f4e1",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "AES capta US$500 millones a 7.75%",
-      "url": "https://hoy.com.do/economia/aes-capta-us-500-millones-7-75_1098136.html",
-      "source_name": "Hoy Digital · Economía",
-      "relevance": null,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-10T11:38:00.048638+00:00"
-    },
-    {
-      "id": "n_1e3570ee0b7045c0",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Dólar hoy: tasas de compra y venta para este 09 de agosto 2026",
-      "url": "https://hoy.com.do/economia/dolar-hoy-tasas-compra-venta-09-agosto-2026_1098102.html",
-      "source_name": "Hoy Digital · Economía",
-      "relevance": null,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-10T11:38:01.005502+00:00"
-    },
-    {
-      "id": "n_d1215c263ae42521",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Apreciación del peso afecta a quienes generan dólares",
-      "url": "https://hoy.com.do/economia/apreciacion-peso-afecta-quienes-generan-dolares_1098029.html",
-      "source_name": "Hoy Digital · Economía",
-      "relevance": null,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-10T11:38:06.420850+00:00"
+      "fetched_at": "2026-08-10T17:30:00.664403+00:00"
     }
   ]
 }
