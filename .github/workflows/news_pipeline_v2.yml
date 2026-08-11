@@ -48,7 +48,12 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: gemini-2.5-flash-lite
           NEWS_CANDIDATES_PATH: news_candidates.json
+          # Cupo de candidatos NUEVOS por corrida.
           MAX_TOTAL_PROPOSALS: "30"
+          # Cupo y vida del archivo: la cola guarda varios días, no solo el
+          # cupo de una corrida. Sin esto lo de ayer se caía del JSON.
+          MAX_STORED_CANDIDATES: "90"
+          CANDIDATE_TTL_DAYS: "7"
         run: python scripts/news_pipeline.py
 
       - name: Commit de candidatos si cambiaron

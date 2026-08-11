@@ -94,7 +94,18 @@ DELAY_BETWEEN_SOURCES = 1.5
 MAX_HEADLINES_PER_SOURCE = 6
 MAX_TOTAL_PROPOSALS = int(os.getenv("MAX_TOTAL_PROPOSALS", "30"))
 NEWS_MAX_AGE_HOURS = int(os.getenv("NEWS_MAX_AGE_HOURS", "72"))
-CANDIDATE_TTL_DAYS = int(os.getenv("CANDIDATE_TTL_DAYS", "3"))
+# Cuanto vive un candidato en el JSON antes de caducar. Con 3 dias, lo generado
+# un viernes ya no existia el lunes: el analista perdia la cola del fin de
+# semana sin haberla visto. Una semana cubre el ciclo real de revision.
+CANDIDATE_TTL_DAYS = int(os.getenv("CANDIDATE_TTL_DAYS", "7"))
+# Cuantos candidatos se conservan en el JSON en total (varios dias). Antes se
+# reusaba MAX_TOTAL_PROPOSALS (30) para las dos cosas, asi que cada corrida
+# nueva empujaba fuera del archivo a los pendientes del dia anterior.
+MAX_STORED_CANDIDATES = int(os.getenv("MAX_STORED_CANDIDATES", "90"))
+# Los descartes tambien se acumulan entre corridas: antes cada corrida
+# sobrescribia la lista y un falso negativo desaparecia en la siguiente.
+DISCARD_TTL_DAYS = int(os.getenv("DISCARD_TTL_DAYS", "3"))
+MAX_STORED_DISCARDS = int(os.getenv("MAX_STORED_DISCARDS", "60"))
 NEWS_MIN_RELEVANCE = int(os.getenv("NEWS_MIN_RELEVANCE", "6"))
 ARTICLE_WORKERS = max(1, int(os.getenv("ARTICLE_WORKERS", "3")))
 # El free tier de Gemini limita las peticiones por minuto; espaciar las
@@ -726,15 +737,28 @@ def normalize_category(value: str | None) -> str:
     return "Economia"
 
 
-def load_existing_urls() -> set[str]:
-    urls: set[str] = set()
-    # 1) Ya publicados en Supabase: pequeño y necesario para no reproponer lo publicado.
+def load_published_urls() -> set[str]:
+    """URLs ya publicadas en el sitio (news_items) en las últimas 2 semanas.
+
+    Sirven para dos cosas distintas: no volver a proponerlas, y sacar del JSON
+    las candidatas que el analista ya publicó — si no, la cola se llena de
+    notas ya publicadas y las pendientes reales quedan al fondo.
+    """
     cutoff = (datetime.now(timezone.utc) - timedelta(days=14)).isoformat()
     try:
         rows = sb_get("news_items", params={"select": "url", "updated_at": f"gte.{cutoff}"})
-        urls.update(canonicalize_url(r.get("url") or "") for r in rows if r.get("url"))
+        urls = {canonicalize_url(r.get("url") or "") for r in rows if r.get("url")}
+        urls.discard(None)
+        return urls
     except Exception as exc:
         log.info("No se pudo leer news_items para deduplicar: %s", exc)
+        return set()
+
+
+def load_existing_urls(publicados: set[str] | None = None) -> set[str]:
+    urls: set[str] = set()
+    # 1) Ya publicados en Supabase: pequeño y necesario para no reproponer lo publicado.
+    urls.update(publicados if publicados is not None else load_published_urls())
 
     # 2) Candidatos estáticos previos en el repo.
     try:
@@ -957,14 +981,43 @@ def load_previous_candidates() -> list[dict]:
         return []
 
 
-def write_candidates(candidates: list[dict], errors: int, sources_count: int, elapsed: float) -> None:
+def load_previous_discards() -> list[dict]:
+    """Descartes de corridas anteriores que siguen dentro del TTL."""
+    try:
+        if not NEWS_CANDIDATES_PATH.exists():
+            return []
+        data = json.loads(NEWS_CANDIDATES_PATH.read_text(encoding="utf-8"))
+        arr = data.get("discarded", [])
+        if not isinstance(arr, list):
+            return []
+        cutoff = datetime.now(timezone.utc) - timedelta(days=DISCARD_TTL_DAYS)
+        kept = []
+        for x in arr:
+            dt = parse_iso_date(x.get("fetched_at"))
+            if dt and dt < cutoff:
+                continue
+            kept.append(x)
+        return kept
+    except Exception as exc:
+        log.info("No se pudieron cargar descartes previos: %s", exc)
+        return []
+
+
+def write_candidates(candidates: list[dict], errors: int, sources_count: int, elapsed: float,
+                     publicados: set[str] | None = None) -> None:
     NEWS_CANDIDATES_PATH.parent.mkdir(parents=True, exist_ok=True)
+    publicados = publicados or set()
 
     merged = []
     seen = set()
+    ya_publicados = 0
     for item in candidates + load_previous_candidates():
         url = canonicalize_url(item.get("url") or "")
         if not url or url in seen:
+            continue
+        # Lo que el analista ya publicó sale de la cola: cumplió su ciclo.
+        if url in publicados:
+            ya_publicados += 1
             continue
         item["url"] = url
         item["id"] = item.get("id") or stable_id(url)
@@ -977,14 +1030,42 @@ def write_candidates(candidates: list[dict], errors: int, sources_count: int, el
     # tambien se colapsa.
     merged = dedupe_por_tema(merged)
 
-    merged = sorted(merged, key=lambda x: x.get("fetched_at") or "", reverse=True)[:MAX_TOTAL_PROPOSALS]
+    # El cupo del archivo es MAX_STORED_CANDIDATES, no el cupo por corrida:
+    # si se recortara con MAX_TOTAL_PROPOSALS, cada corrida nueva desalojaria
+    # a los pendientes de los dias anteriores aunque nadie los hubiera visto.
+    merged = sorted(merged, key=lambda x: x.get("fetched_at") or "", reverse=True)[:MAX_STORED_CANDIDATES]
+
     with _descartes_lock:
-        descartes = sorted(_descartes, key=lambda d: (d.get("relevance") or 0), reverse=True)[:40]
+        nuevos_descartes = list(_descartes)
+    descartes = []
+    vistos_descarte = set()
+    for d in nuevos_descartes + load_previous_discards():
+        url_descarte = canonicalize_url(d.get("url") or "") if d.get("url") else None
+        clave = url_descarte or d.get("id") or d.get("title")
+        if not clave or clave in vistos_descarte:
+            continue
+        # Si la misma nota entro despues por otra fuente, ya no es un descarte.
+        if url_descarte and url_descarte in seen:
+            continue
+        vistos_descarte.add(clave)
+        descartes.append(d)
+    descartes = sorted(descartes, key=lambda d: (d.get("relevance") or 0), reverse=True)[:MAX_STORED_DISCARDS]
+
+    por_dia: dict[str, int] = {}
+    for item in merged:
+        dia = (item.get("fetched_at") or "")[:10]
+        if dia:
+            por_dia[dia] = por_dia.get(dia, 0) + 1
+
     payload = {
         "generated_at": now_iso(),
         "gemini_model": GEMINI_MODEL,
         "min_relevance": NEWS_MIN_RELEVANCE,
         "count": len(merged),
+        "count_by_day": dict(sorted(por_dia.items(), reverse=True)),
+        "new_this_run": len(candidates),
+        "already_published": ya_publicados,
+        "ttl_days": CANDIDATE_TTL_DAYS,
         "errors": errors,
         "sources": sources_count,
         "elapsed_s": elapsed,
@@ -993,7 +1074,8 @@ def write_candidates(candidates: list[dict], errors: int, sources_count: int, el
         "discarded": descartes,
     }
     NEWS_CANDIDATES_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-    log.info("JSON escrito: %s (%d candidatos)", NEWS_CANDIDATES_PATH, len(merged))
+    log.info("JSON escrito: %s (%d candidatos; nuevos %d, ya publicados fuera %d, por dia %s)",
+             NEWS_CANDIDATES_PATH, len(merged), len(candidates), ya_publicados, payload["count_by_day"])
 
 
 def run() -> None:
@@ -1004,8 +1086,9 @@ def run() -> None:
         log.warning("No hay fuentes activas en Supabase.")
         return
 
-    existing = load_existing_urls()
-    log.info("Articulos ya vistos/publicados: %d", len(existing))
+    publicados = load_published_urls()
+    existing = load_existing_urls(publicados)
+    log.info("Articulos ya vistos/publicados: %d (publicados: %d)", len(existing), len(publicados))
 
     all_candidates: list[dict] = []
     errors = 0
@@ -1035,7 +1118,7 @@ def run() -> None:
         errors += 1
 
     elapsed = round(time.time() - start, 1)
-    write_candidates(all_candidates, errors, len(sources), elapsed)
+    write_candidates(all_candidates, errors, len(sources), elapsed, publicados)
 
     sb_insert_log({
         "source": "NEWS",
