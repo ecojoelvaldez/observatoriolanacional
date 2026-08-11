@@ -1,12 +1,51 @@
 {
-  "generated_at": "2026-08-11T11:20:02.019149+00:00",
+  "generated_at": "2026-08-11T17:32:02.135222+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
-  "count": 27,
+  "count": 29,
   "errors": 0,
   "sources": 37,
-  "elapsed_s": 421.1,
+  "elapsed_s": 206.8,
   "candidates": [
+    {
+      "id": "n_0deae314a6643a5b",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/375807/viviendas-adaptadas-una-propuesta-de-diseno-que-se-hace-necesaria-en-republica-dominicana",
+      "title": "Viviendas adaptadas: una propuesta de diseño que se hace necesaria en República Dominicana",
+      "summary": "Marcelo Roisman, fundador de Inclusive Living International, propone que el sector inmobiliario dominicano incorpore el diseño de viviendas adaptadas desde el inicio. Esta medida busca reducir costos futuros para familias y el Estado, anticipándose al envejecimiento poblacional y a necesidades de accesibilidad que pueden surgir en cualquier etapa de la vida.",
+      "body": "El sector inmobiliario dominicano enfrenta la necesidad de diseñar viviendas adaptadas para todas las edades, considerando el envejecimiento poblacional y los costos de modificaciones posteriores. Marcelo Roisman, fundador de Inclusive Living International, enfatiza que la accesibilidad residencial es una necesidad que puede presentarse en cualquier momento de la vida, no solo para personas mayores o con discapacidad. Incorporar estas adaptaciones desde el diseño inicial representa un costo mínimo y puede generar un diferencial para el mercado inmobiliario.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-10T20:05:30+00:00",
+      "fetched_at": "2026-08-11T17:30:01.714749+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_65c0bff915a4070c",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/375872/bhd-inaugura-sucursal-en-blue-mall-punta-cana",
+      "title": "BHD inaugura sucursal en Blue Mall Punta Cana",
+      "summary": "El Banco BHD expande su red con una nueva sucursal en Blue Mall Punta Cana, fortaleciendo su presencia en una zona turística y económica clave. Esta apertura busca ofrecer una experiencia financiera integral y moderna a clientes personales, comerciales y empresariales.",
+      "body": "El Banco BHD ha inaugurado una nueva oficina en Blue Mall Punta Cana, reforzando su compromiso con el crecimiento de la región Este. La sucursal, ubicada estratégicamente, ofrecerá servicios financieros completos para clientes personales, comerciales y empresariales, integrando soluciones especializadas y de otras filiales del Centro Financiero BHD.",
+      "category": "Financiero",
+      "relevance": 8,
+      "señales": [
+        "banca"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-11T13:20:05+00:00",
+      "fetched_at": "2026-08-11T17:28:57.353690+00:00",
+      "status": "pending"
+    },
     {
       "id": "n_00223b15392b28b7",
       "source_key": "news_hoy",
@@ -555,67 +594,19 @@
       "status": "pending"
     }
   ],
-  "discarded_count": 5,
+  "discarded_count": 1,
   "discarded": [
     {
-      "id": "n_b4ad806ea887f4e1",
-      "motivo": "duplicada",
-      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
-      "title": "AES capta US$500 millones a 7.75%",
-      "url": "https://hoy.com.do/economia/aes-capta-us-500-millones-7-75_1098136.html",
-      "source_name": "Hoy Digital · Economía",
-      "relevance": 7,
-      "señales": [],
-      "detalle": "Misma noticia que: AES Dominicana capta US$ 500 millones en bonos",
-      "fetched_at": "2026-08-11T11:20:02.018300+00:00"
-    },
-    {
-      "id": "n_3a23c447bd23739e",
-      "motivo": "relevancia_baja",
-      "motivo_texto": "El modelo le puso poca relevancia financiera",
-      "title": "Edesur realiza trabajos de expansión de redes eléctricas en San Cristóbal con una inversión de RD$324.8 millones",
-      "url": "https://eldinero.com.do/375765/edesur-realiza-trabajos-de-expansion-de-redes-electricas-en-san-cristobal-con-una-inversion-de-rd324-8-millones",
-      "source_name": "El Dinero · RSS",
-      "relevance": 5,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-11T11:14:47.791879+00:00"
-    },
-    {
-      "id": "n_4969e097359f5de3",
-      "motivo": "relevancia_baja",
-      "motivo_texto": "El modelo le puso poca relevancia financiera",
-      "title": "Edesur expande redes eléctricas San Cristóbal",
-      "url": "https://www.elcaribe.com.do/panorama/pais/edesur-expande-redes-electricas-san-cristobal",
-      "source_name": "El Caribe · RSS",
-      "relevance": 5,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-11T11:16:13.568614+00:00"
-    },
-    {
-      "id": "n_137590e753c60d9e",
-      "motivo": "relevancia_baja",
-      "motivo_texto": "El modelo le puso poca relevancia financiera",
-      "title": "MIDE entrega RD$600 MM en sueldo por año a 327 militares",
-      "url": "https://www.elcaribe.com.do/panorama/pais/mide-entrega-rd600-mm-en-sueldo-por-ano-a-327-militares",
-      "source_name": "El Caribe · RSS",
-      "relevance": 5,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-11T11:19:07.880083+00:00"
-    },
-    {
-      "id": "n_000a9d5c59023ed4",
+      "id": "n_8268a17eca5e180f",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Planta San Felipe Andrés I aportará sistema 467 MW",
-      "url": "https://www.elcaribe.com.do/panorama/pais/planta-san-felipe-andres-i-aportara-sistema-467-mw",
-      "source_name": "El Caribe · RSS",
+      "title": "Sánchez Ramírez ejecuta el 84.5% de su presupuesto de inversión pública",
+      "url": "https://eldinero.com.do/375845/sanchez-ramirez-ejecuta-el-84-5-de-su-presupuesto-de-inversion-publica",
+      "source_name": "El Dinero · Finanzas",
       "relevance": null,
       "señales": [],
       "detalle": "",
-      "fetched_at": "2026-08-11T11:20:00.507415+00:00"
+      "fetched_at": "2026-08-11T17:32:00.621958+00:00"
     }
   ]
 }
