@@ -1,12 +1,221 @@
 {
-  "generated_at": "2026-08-11T17:32:02.135222+00:00",
+  "generated_at": "2026-08-12T11:31:02.467280+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
-  "count": 29,
+  "count": 30,
   "errors": 0,
   "sources": 37,
-  "elapsed_s": 206.8,
+  "elapsed_s": 613.1,
   "candidates": [
+    {
+      "id": "n_07f81fa55de5689b",
+      "source_key": "news_hoy",
+      "source_name": "Hoy Digital · Economía",
+      "url": "https://hoy.com.do/economia/ministro-agricultura-asegura-bienes-estan-precio-meses-ipc-julio-reporto-alzas_1098370.html",
+      "title": "Ministro de Agricultura asegura bienes están al mismo precio hace meses; IPC de julio reportó alzas",
+      "summary": "El Ministro de Agricultura afirma que los precios de productos básicos se mantienen estables, contradiciendo el reporte del IPC de julio que indica alzas. Esta discrepancia genera incertidumbre sobre la inflación y el costo de vida en República Dominicana.",
+      "body": "El Ministro de Agricultura, Oliverio Espaillat, declaró que existe abundancia y estabilidad en los precios de productos básicos como arroz, huevos y pollo, asegurando que no hay razón para alzas. Sin embargo, el informe del Banco Central sobre el Índice de Precios al Consumidor (IPC) de julio reportó incrementos en alimentos clave, creando una aparente contradicción.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "politica_monetaria",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-11T10:56:12-04:00",
+      "fetched_at": "2026-08-12T11:27:02.016859+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_db5944ab1dcec70d",
+      "source_key": "news_hoy",
+      "source_name": "Hoy Digital · Economía",
+      "url": "https://hoy.com.do/economia/petroleo-texas-sube-us-83-2-barril_1098482.html",
+      "title": "El petróleo de Texas sube a US$83.2 barril",
+      "summary": "El precio del petróleo intermedio de Texas (WTI) cerró con una subida del 1.3%, situándose en 83.2 dólares por barril, impulsado por la escalada de tensión entre Estados Unidos e Irán. Este incremento en el precio del crudo podría tener implicaciones en los costos de importación y transporte en la República Dominicana, afectando la inflación y el poder adquisitivo.",
+      "body": "El petróleo intermedio de Texas (WTI) cerró la jornada con un alza del 1.3%, alcanzando los 83.2 dólares por barril. Este movimiento se atribuye a la creciente tensión geopolítica entre Estados Unidos e Irán, lo que genera incertidumbre en los mercados energéticos globales. El aumento en el precio del crudo podría impactar indirectamente la economía dominicana a través de los costos de importación y transporte.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "politica_monetaria",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-12T00:00:00-04:00",
+      "fetched_at": "2026-08-12T11:26:10.725939+00:00",
+      "status": "pending",
+      "tambien_en": [
+        {
+          "source_name": "El Dinero · RSS",
+          "url": "https://eldinero.com.do/375984/el-petroleo-de-texas-sube-el-1-3-apoyado-por-la-escalada-de-tension-entre-ee-uu-e-iran",
+          "title": "El petróleo de Texas sube el 1.3% apoyado por la escalada de tensión entre EE.UU. e Irán"
+        },
+        {
+          "source_name": "Hoy Digital · Economía",
+          "url": "https://hoy.com.do/economia/petroleo-texas-sube-5-medio-tensiones-ee-uu-e-iran_1098267.html",
+          "title": "El petróleo de Texas sube un 5 % en medio de tensiones entre EE.UU. e Irán"
+        }
+      ]
+    },
+    {
+      "id": "n_8cf2a2d1f57f457a",
+      "source_key": "news_eldinero_rss",
+      "source_name": "El Dinero · RSS",
+      "url": "https://eldinero.com.do/375992/mella-cohn-pide-proporcionalidad-para-evitar-que-el-compliance-encarezca-la-formalidad",
+      "title": "Mella Cohn pide proporcionalidad para evitar que el “compliance” encarezca la formalidad",
+      "summary": "Roberto Mella Cohn, especialista en gestión de riesgos, aboga por una aplicación proporcional de las normativas de compliance en República Dominicana. Propone que las regulaciones consideren la capacidad de las empresas para evitar que los costos de cumplimiento se conviertan en una barrera para la formalización.",
+      "body": "Roberto Mella Cohn, socio fundador de Risk Management and Compliance Consulting, enfatizó la necesidad de que las normativas de gestión de riesgos y compliance sean proporcionales a la capacidad de las empresas. Señaló que las regulaciones no deben convertirse en una barrera que encarezca la formalidad, especialmente para sectores con bajos niveles de formalización y recursos limitados.",
+      "category": "Regulatorio",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-11T20:04:32+00:00",
+      "fetched_at": "2026-08-12T11:23:02.180153+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_4da44e02dde7b0ca",
+      "source_key": "news_eldinero_rss",
+      "source_name": "El Dinero · RSS",
+      "url": "https://eldinero.com.do/375965/refidomsa-comercializa-2302962-barriles-en-julio-de-2026",
+      "title": "Refidomsa comercializa 2,302,962 barriles en julio de 2026",
+      "summary": "Refidomsa alcanzó su mayor volumen de ventas de productos petroleros en un mes de julio en 14 años, comercializando 2,302,962 barriles. Este logro, que supera récords anteriores y las proyecciones, evidencia el dinamismo económico dominicano y el rol de la empresa en la seguridad energética nacional.",
+      "body": "La Refinería Dominicana de Petróleo (Refidomsa) reportó ventas récord para un mes de julio, alcanzando 2,302,962 barriles de productos derivados del petróleo. Este volumen supera las cifras de 2012 y representa un incremento significativo respecto al año anterior, reflejando el dinamismo económico del país y el compromiso de Refidomsa con el abastecimiento energético.",
+      "category": "Economia",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-11T19:20:35+00:00",
+      "fetched_at": "2026-08-12T11:22:55.821406+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_a359792e8963e597",
+      "source_key": "news_eldinero_rss",
+      "source_name": "El Dinero · RSS",
+      "url": "https://eldinero.com.do/375989/visa-lanza-programa-para-apoyar-a-emprendedoras-ante-falta-de-acceso-a-capital",
+      "title": "Visa lanza programa para apoyar a emprendedoras ante falta de acceso a capital",
+      "summary": "Visa ha lanzado \"Empresaria Visa\", una iniciativa integral para emprendedoras en Latinoamérica y el Caribe, buscando cerrar la brecha de acceso a capital que afecta al 73% de las pymes lideradas por mujeres. El programa, en alianza con el BID, ofrece herramientas financieras, de bienestar y comunitarias para impulsar el crecimiento de estos negocios.",
+      "body": "La compañía de pagos Visa ha introducido \"Empresaria Visa\", un programa diseñado para apoyar a las emprendedoras en Latinoamérica y el Caribe, donde la falta de acceso a capital es una barrera significativa. Esta iniciativa busca empoderar a las mujeres que lideran pymes, ofreciendo no solo herramientas financieras sino también recursos de bienestar y desarrollo personal, en colaboración con el Grupo BID.",
+      "category": "Financiero",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-11T20:02:59+00:00",
+      "fetched_at": "2026-08-12T11:22:50.423311+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_ade3d798cdc0a932",
+      "source_key": "news_eldinero_rss",
+      "source_name": "El Dinero · RSS",
+      "url": "https://eldinero.com.do/375946/actividad-manufacturera-dominicana-se-ubico-en-55-5-en-julio-de-2026",
+      "title": "Actividad manufacturera dominicana se ubicó en 55.5 en julio de 2026",
+      "summary": "El Índice Mensual de Actividad Manufacturera (IMAM) de la República Dominicana se situó en 55.5 en julio de 2026, mostrando una ligera contracción respecto al mes anterior pero manteniéndose sobre el umbral de expansión. Este indicador, que mide variables clave como ventas, producción y empleo, ofrece una visión temprana del desempeño del sector industrial.",
+      "body": "La Asociación de Industrias de la República Dominicana (AIRD) reportó que el Índice Mensual de Actividad Manufacturera (IMAM) alcanzó 55.5 en julio de 2026, una disminución de 1.9 puntos respecto a junio. A pesar de la baja, el índice se mantiene por encima de 50, lo que indica una expansión continua en la actividad industrial, con todas sus variables principales superando este umbral.",
+      "category": "Economia",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-11T18:26:57+00:00",
+      "fetched_at": "2026-08-12T11:22:44.089249+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_d240b5f6faa85e35",
+      "source_key": "news_elcaribe",
+      "source_name": "El Caribe · Dinero",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/hub-conectara-a-empresas-de-rd-con-125-naciones",
+      "title": "HUB conectará a empresas de RD con 125 naciones",
+      "summary": "La séptima edición de HUB Cámara Santo Domingo facilitará la conexión de empresas dominicanas con más de 150 compradores internacionales de 25 países. El evento busca impulsar las exportaciones, que alcanzaron un récord de US$15,930.6 millones en 2025, ofreciendo rondas de negocios y capacitación tecnológica.",
+      "body": "La Cámara Santo Domingo organiza la séptima edición de HUB, un evento enfocado en conectar empresas dominicanas con compradores internacionales de más de 25 países. La iniciativa busca facilitar la colocación de productos y servicios en mercados extranjeros, aprovechando el récord de exportaciones alcanzado en 2025. El programa incluye rondas de negocios, capacitación sobre ventas en Amazon y conferencias de figuras tecnológicas.",
+      "category": "Economia",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-11T04:00:00+00:00",
+      "fetched_at": "2026-08-12T11:22:26.073500+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_260987cc8110de85",
+      "source_key": "news_elcaribe",
+      "source_name": "El Caribe · Dinero",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/economia-dominicana-balance-seis-anos-abinader",
+      "title": "Economía dominicana: expertos evalúan gestión de Abinader",
+      "summary": "Expertos económicos analizaron la gestión del gobierno de Abinader, destacando la recuperación económica pero también vulnerabilidades persistentes. Se debatió sobre el crecimiento, el costo de vida, el empleo, la deuda pública y el crucial sector eléctrico.",
+      "body": "Economistas como Jaime Aristy Escuder, Alejandro Grisanti e Ysrael Abreu evaluaron la economía dominicana en su sexto año de gestión gubernamental. Si bien reconocen una recuperación y aceleración de la actividad económica, discrepan sobre su alcance y sostenibilidad, señalando el sector eléctrico, la inflación, los salarios y la deuda pública como puntos críticos que afectan el bienestar de los hogares.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "politica_monetaria",
+        "macro"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-11T00:00:00Z",
+      "fetched_at": "2026-08-12T11:22:20.281588+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_0f79685f6f80e64d",
+      "source_key": "news_elcaribe",
+      "source_name": "El Caribe · Dinero",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/las-autoridades-desmienten-la-quiebra-en-en-el-sector-tabaquero",
+      "title": "Las autoridades desmienten la quiebra en el sector tabaquero",
+      "summary": "El Instituto del Tabaco y el Ministerio de Agricultura de República Dominicana han desmentido categóricamente las afirmaciones sobre una quiebra en el sector tabaquero de Montecristi. Las autoridades presentan datos oficiales que indican un crecimiento en las exportaciones y estabilidad en la producción, contradiciendo las denuncias de falta de compradores y mercados.",
+      "body": "El Instituto del Tabaco (Intabaco) y el Ministerio de Agricultura rechazaron las versiones sobre una supuesta quiebra en el sector tabaquero de Montecristi. Iván Hernández Guzmán, director ejecutivo del Intabaco, citó un aumento del 87% en la exportación de tabaco en rama y un incremento del 10% en la comercialización respecto al año anterior, desmintiendo la falta de compradores.",
+      "category": "Economia",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-12T04:00:00+00:00",
+      "fetched_at": "2026-08-12T11:22:14.026386+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_6e12cb59a7b618b8",
+      "source_key": "news_diariolibre",
+      "source_name": "Diario Libre · Economía",
+      "url": "https://www.diariolibre.com/economia/vivienda/2026/08/12/torres-y-viviendas-lideran-demanda-de-permisologia-en-rd/3626263",
+      "title": "Las torres y proyectos habitacionales son los que más han demandado licencias de construcción en RD",
+      "summary": "La demanda de licencias de construcción en República Dominicana está liderada por proyectos habitacionales, incluyendo torres de apartamentos y viviendas unifamiliares. Este auge en el sector de la construcción, especialmente en el área residencial, sugiere una dinámica económica activa y una demanda sostenida de nuevos desarrollos inmobiliarios en el país.",
+      "body": "Los proyectos de construcción de torres habitacionales y viviendas unifamiliares encabezan la lista de solicitudes de licencias en República Dominicana. Esta tendencia refleja un dinamismo significativo en el sector inmobiliario y de la construcción, impulsado por la demanda de nuevas unidades residenciales en el país. La actividad constructora es un indicador clave de la salud económica y el desarrollo urbano.",
+      "category": "Economia",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-12T00:01:00-04:00",
+      "fetched_at": "2026-08-12T11:21:31.020972+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_5eae6f6d7af95891",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/376010/inversiones-reservas-obtiene-certificacion-iso-37001-en-gestion-antisoborno",
+      "title": "Inversiones & Reservas obtiene certificación ISO 37001 en gestión antisoborno",
+      "summary": "Inversiones & Reservas, filial del Banco de Reservas, se convierte en el primer puesto de bolsa de República Dominicana y el Caribe en obtener la certificación ISO 37001 en gestión antisoborno. Este logro refuerza su compromiso con la transparencia y las mejores prácticas corporativas en el sector financiero.",
+      "body": "Inversiones & Reservas ha obtenido la certificación ISO 37001:2017 para su Sistema de Gestión Antisoborno (SGAS), un hito para el sector financiero dominicano y caribeño. La acreditación, otorgada por TÜV NORD, valida los procesos de la entidad en abastecimiento, administración de proveedores y trámites de pago, fortaleciendo su compromiso con la ética y la transparencia.",
+      "category": "Financiero",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-11T20:34:00+00:00",
+      "fetched_at": "2026-08-12T11:21:08.625709+00:00",
+      "status": "pending"
+    },
     {
       "id": "n_0deae314a6643a5b",
       "source_key": "news_eldinero",
@@ -64,26 +273,6 @@
       "cuerpo_recuperado": false,
       "published_at": "2026-08-10T08:56:26-04:00",
       "fetched_at": "2026-08-11T11:15:30.596073+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_5d5f058a11283885",
-      "source_key": "news_hoy",
-      "source_name": "Hoy Digital · Economía",
-      "url": "https://hoy.com.do/economia/petroleo-texas-sube-5-medio-tensiones-ee-uu-e-iran_1098267.html",
-      "title": "El petróleo de Texas sube un 5 % en medio de tensiones entre EE.UU. e Irán",
-      "summary": "El precio del petróleo WTI experimentó un alza del 5% debido a la incertidumbre geopolítica entre Estados Unidos e Irán, lo que podría afectar el suministro global de crudo. Esta volatilidad en los precios energéticos tiene implicaciones directas en la economía dominicana, impactando costos de importación y la inflación.",
-      "body": "El precio del petróleo de Texas (WTI) cerró con un incremento del 5%, alcanzando los 82,13 dólares por barril. Esta alza se atribuye a las tensiones entre Estados Unidos e Irán y la duda sobre la reapertura del estrecho de Ormuz, vital para el suministro mundial de crudo. La situación genera presión en el mercado energético global.",
-      "category": "Economia",
-      "relevance": 9,
-      "señales": [
-        "politica_monetaria",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-10T20:00:00-04:00",
-      "fetched_at": "2026-08-11T11:15:23.877433+00:00",
       "status": "pending"
     },
     {
@@ -184,7 +373,14 @@
       "cuerpo_recuperado": false,
       "published_at": "2026-08-10T11:42:48+00:00",
       "fetched_at": "2026-08-11T11:14:29.800034+00:00",
-      "status": "pending"
+      "status": "pending",
+      "tambien_en": [
+        {
+          "source_name": "El Caribe · Dinero",
+          "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-11-agosto-2026",
+          "title": "Precio del dólar hoy martes 11 de agosto de 2026 en RD"
+        }
+      ]
     },
     {
       "id": "n_3d02ed7d520dd846",
@@ -392,221 +588,128 @@
       "published_at": "2026-08-10T00:00:00-04:00",
       "fetched_at": "2026-08-10T11:34:11.893120+00:00",
       "status": "pending"
-    },
+    }
+  ],
+  "discarded_count": 9,
+  "discarded": [
     {
-      "id": "n_77c2543dc16a7c77",
-      "source_key": "news_eldinero_rss",
+      "id": "n_8c8dd34561308273",
+      "motivo": "duplicada",
+      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
+      "title": "El petróleo de Texas sube el 1.3% apoyado por la escalada de tensión entre EE.UU. e Irán",
+      "url": "https://eldinero.com.do/375984/el-petroleo-de-texas-sube-el-1-3-apoyado-por-la-escalada-de-tension-entre-ee-uu-e-iran",
       "source_name": "El Dinero · RSS",
-      "url": "https://eldinero.com.do/375578/nuevo-arancel-de-12-5-de-ee-uu-aumenta-presion-a-exportaciones-de-rd-y-costa-rica",
-      "title": "Nuevo arancel de 12.5% de EE.UU. aumenta presión a exportaciones de RD y Costa Rica",
-      "summary": "Estados Unidos ha implementado un nuevo arancel del 12.5% sobre ciertas exportaciones de República Dominicana y Costa Rica, lo que genera presión sobre la competitividad de estas naciones. Deloitte recomienda a las empresas revisar sus costos, reglas de origen y estrategias para mitigar el impacto de esta medida comercial.",
-      "body": "La firma Deloitte alerta sobre el impacto del nuevo arancel de 12.5% de Estados Unidos a las exportaciones dominicanas y costarricenses. Se recomienda a las empresas evaluar su exposición, revisar los beneficios del Cafta-DR y optimizar costos y cadenas de suministro para mantener la competitividad. La medida podría influir en futuras decisiones de inversión extranjera directa.",
-      "category": "Economia",
       "relevance": 9,
       "señales": [
-        "macro",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-07T20:44:09+00:00",
-      "fetched_at": "2026-08-10T11:32:43.428017+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_d1f6d7c37aeb303a",
-      "source_key": "news_elcaribe",
-      "source_name": "El Caribe · Dinero",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/sb-regula-cobro-de-deudas-para-la-transparencia",
-      "title": "SB regula cobro de deudas para la transparencia",
-      "summary": "La Superintendencia de Bancos (SB) ha emitido una nueva circular para establecer estándares de transparencia y dignidad en el cobro de deudas bancarias. La medida busca prevenir prácticas abusivas y asegurar la confidencialidad de los datos de los usuarios.",
-      "body": "La Superintendencia de Bancos (SB) ha publicado la Carta Circular CCI-REG-2026000007, que impone directrices para un cobro de deudas más transparente y respetuoso. Se instruye a las entidades financieras a evitar prácticas abusivas, tanto en su gestión directa como a través de terceros, y a cumplir con normativas de contacto y confidencialidad de datos.",
-      "category": "Regulatorio",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-10T04:00:00+00:00",
-      "fetched_at": "2026-08-10T11:32:13.354762+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_36de4105757fb432",
-      "source_key": "news_elcaribe",
-      "source_name": "El Caribe · Dinero",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/remesas-llegan-a-us7316-4-millones-entre-enero-y-julio",
-      "title": "Remesas llegan a US$7,316.4 millones entre enero y julio",
-      "summary": "Las remesas hacia República Dominicana alcanzaron US$7,316.4 millones en los primeros siete meses de 2026, un aumento del 6.4% respecto al año anterior. Este flujo, impulsado principalmente por dominicanos en EE.UU., fortalece la moneda nacional y contrarresta presiones inflacionarias globales.",
-      "body": "El Banco Central de la República Dominicana reportó que las remesas recibidas entre enero y julio de 2026 sumaron US$7,316.4 millones, evidenciando un crecimiento del 6.4% interanual. A pesar de un contexto internacional adverso, este flujo de capital, mayoritariamente desde Estados Unidos, ha contribuido a la apreciación del peso dominicano y a la estabilidad económica del país.",
-      "category": "Economia",
-      "relevance": 9,
-      "señales": [
-        "regulador",
         "politica_monetaria",
-        "macro"
+        "hecho"
       ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-10T04:00:00+00:00",
-      "fetched_at": "2026-08-10T11:32:07.358496+00:00",
-      "status": "pending",
-      "tambien_en": [
-        {
-          "source_name": "El Dinero · Finanzas",
-          "url": "https://eldinero.com.do/375616/banco-central-informa-remesas-recibidas-fueron-de-us7316-4-millones-entre-enero-y-julio-de-2026",
-          "title": "Banco Central informa remesas recibidas fueron de US$7,316.4 millones entre enero y julio de 2026"
-        },
-        {
-          "source_name": "El Caribe · Dinero",
-          "url": "https://www.elcaribe.com.do/economia/remesas-alcanzaron-us7316-4-millones-entre-enero-y-julio-informa-el-banco-central",
-          "title": "Remesas alcanzaron US$7,316.4 millones entre enero y julio, informa el Banco Central"
-        }
-      ]
+      "detalle": "Misma noticia que: El petróleo de Texas sube a US$83.2 barril",
+      "fetched_at": "2026-08-12T11:31:02.448298+00:00"
     },
     {
-      "id": "n_ec5ecaf2aed3921b",
-      "source_key": "news_elcaribe",
+      "id": "n_77d5f60f224ecf4c",
+      "motivo": "duplicada",
+      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
+      "title": "Precio del dólar hoy martes 11 de agosto de 2026 en RD",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-11-agosto-2026",
       "source_name": "El Caribe · Dinero",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/aes-dominicana-capta-us-500-millones-en-bonos",
-      "title": "AES Dominicana capta US$ 500 millones en bonos",
-      "summary": "AES Dominicana ha captado US$500 millones en una emisión internacional de bonos, la mayor colocación corporativa dominicana desde 2012. Esta operación fortalece su estructura financiera y respalda su crecimiento, reflejando la confianza de inversionistas globales en la economía dominicana.",
-      "body": "AES Dominicana ha fortalecido su estructura financiera al captar US$500 millones mediante una emisión internacional de bonos a siete años con una tasa de 7.75%. Esta operación, la mayor colocación corporativa dominicana desde 2012, recibió una demanda superior a US$1,500 millones, evidenciando la confianza de inversionistas institucionales en la empresa y en el impulso económico de la República Dominicana.",
-      "category": "Financiero",
-      "relevance": 7,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-10T04:00:00+00:00",
-      "fetched_at": "2026-08-10T11:32:01.296036+00:00",
-      "status": "pending",
-      "tambien_en": [
-        {
-          "source_name": "El Caribe · Dinero",
-          "url": "https://www.elcaribe.com.do/panorama/dinero/aes-dominicana-capta-us500-millones-en-la-mayor-emision-de-bonos-corporativos-desde-2012",
-          "title": "AES Dominicana capta US$500 millones en la mayor emisión de bonos corporativos desde 2012"
-        },
-        {
-          "source_name": "El Dinero · Finanzas",
-          "url": "https://eldinero.com.do/375631/aes-dominicana-capta-us500-millones-en-la-mayor-emision-de-bonos-corporativos-desde-2012",
-          "title": "AES Dominicana capta US$500 millones en la mayor emisión de bonos corporativos desde 2012"
-        },
-        {
-          "source_name": "Hoy Digital · Economía",
-          "url": "https://hoy.com.do/economia/aes-capta-us-500-millones-7-75_1098136.html",
-          "title": "AES capta US$500 millones a 7.75%"
-        }
-      ]
-    },
-    {
-      "id": "n_44ee6bbfa61d1887",
-      "source_key": "news_elcaribe",
-      "source_name": "El Caribe · Dinero",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/aritmetica-de-la-apreciacion-del-peso",
-      "title": "Aritmética de la apreciación del peso",
-      "summary": "Un análisis detalla cómo la apreciación del peso dominicano frente al dólar impacta las finanzas públicas y la distribución de la riqueza. El estudio, basado en la \"Aritmética Política\" de William Petty, examina los beneficios y costos fiscales de una moneda más fuerte.",
-      "body": "El artículo explora el impacto fiscal de la apreciación del peso dominicano, utilizando la \"Aritmética Política\" como marco analítico. Se evalúa cómo la reducción de la tasa de cambio afecta tanto los gastos como los ingresos del gobierno, considerando la deuda externa, subsidios y tributación. El análisis también aborda las implicaciones distributivas de esta apreciación en diversos sectores económicos y actores.",
-      "category": "Economia",
-      "relevance": 7,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-10T04:00:00+00:00",
-      "fetched_at": "2026-08-10T11:31:55.375744+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_908831b69f404f6a",
-      "source_key": "news_diariolibre",
-      "source_name": "Diario Libre · Economía",
-      "url": "https://www.diariolibre.com/economia/finanzas/2026/08/10/suben-las-tasas-de-los-prestamos-a-julio-en-rd/3624053",
-      "title": "Suben las tasas de los préstamos a julio en RD, una tendencia que podría seguir al final del año",
-      "summary": "Las tasas de interés de los préstamos en República Dominicana experimentaron un alza hasta julio, anticipando una posible continuación de esta tendencia hacia fin de año. Este incremento podría afectar el acceso al crédito y la dinámica económica del país.",
-      "body": "Las tasas de interés para préstamos en República Dominicana mostraron un incremento durante el mes de julio. Este comportamiento financiero sugiere una posible persistencia de esta tendencia alcista en los próximos meses, lo que podría tener implicaciones significativas para el sector financiero y los consumidores.",
-      "category": "Financiero",
       "relevance": 9,
       "señales": [
         "regulador",
         "politica_monetaria",
         "banca",
-        "hecho"
+        "macro"
       ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-10T00:01:00-04:00",
-      "fetched_at": "2026-08-10T11:31:17.001042+00:00",
-      "status": "pending"
+      "detalle": "Misma noticia que: Precio del dólar hoy lunes 10 de agosto de 2026 en RD",
+      "fetched_at": "2026-08-12T11:31:02.449790+00:00"
     },
     {
-      "id": "n_c58ee3a3e70f8e26",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero · Finanzas",
-      "url": "https://eldinero.com.do/375557/nobel-de-economia-kremer-propone-ajustar-politicas-publicas-para-impulsar-el-desarrollo-dominicano",
-      "title": "Nobel de economía Kremer propone ajustar políticas públicas para impulsar el desarrollo dominicano",
-      "summary": "El economista Michael Kremer sugiere que República Dominicana adopte políticas públicas basadas en evidencia y evaluación continua para acelerar su desarrollo. Propone que estas iniciativas, probadas rigurosamente, sean la base para mejorar programas y alcanzar metas como las planteadas en Meta RD 2036.",
-      "body": "El Premio Nobel de Economía Michael Kremer enfatizó la necesidad de que República Dominicana implemente políticas públicas fundamentadas en evidencia y evaluación constante para potenciar su desarrollo. Durante el Foro Nacional para el Pleno Desarrollo Meta RD 2036, Kremer destacó la importancia de probar, monitorear y ajustar iniciativas antes de su aplicación a gran escala, buscando la mejora continua de los programas públicos.",
-      "category": "Economia",
-      "relevance": 7,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-07T20:37:14+00:00",
-      "fetched_at": "2026-08-10T11:30:40.682641+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_95ac17364be6e97a",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero · Finanzas",
-      "url": "https://eldinero.com.do/375492/oficiales-de-cumplimiento-enfrentan-mayor-riesgo-de-responsabilidad-personal",
-      "title": "Oficiales de cumplimiento enfrentan mayor riesgo de responsabilidad personal",
-      "summary": "La creciente judicialización de delitos financieros aumenta el riesgo de responsabilidad personal para los oficiales de cumplimiento en República Dominicana. La documentación de alertas y desacuerdos se presenta como la principal defensa ante posibles investigaciones.",
-      "body": "Eliecer Alberto Castillo, oficial de Cumplimiento de Banco de Occidente, advirtió que la judicialización de casos de lavado de activos y delitos financieros está incrementando la responsabilidad personal de los supervisores. Señaló que la documentación formal de advertencias y desacuerdos es crucial para protegerse ante investigaciones, evitando que sean utilizados como \"chivos expiatorios\".",
-      "category": "Regulatorio",
+      "id": "n_5d5f058a11283885",
+      "motivo": "duplicada",
+      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
+      "title": "El petróleo de Texas sube un 5 % en medio de tensiones entre EE.UU. e Irán",
+      "url": "https://hoy.com.do/economia/petroleo-texas-sube-5-medio-tensiones-ee-uu-e-iran_1098267.html",
+      "source_name": "Hoy Digital · Economía",
       "relevance": 9,
       "señales": [
-        "regulador",
+        "politica_monetaria",
         "hecho"
       ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-08T11:00:30+00:00",
-      "fetched_at": "2026-08-10T11:30:34.286555+00:00",
-      "status": "pending"
+      "detalle": "Misma noticia que: El petróleo de Texas sube a US$83.2 barril",
+      "fetched_at": "2026-08-12T11:31:02.450553+00:00"
     },
     {
-      "id": "n_df2453e5895ddde3",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero · Finanzas",
-      "url": "https://eldinero.com.do/375515/la-sostenibilidad-ya-influye-en-el-acceso-a-financiamiento-y-costo-de-la-deuda",
-      "title": "La sostenibilidad ya influye en el acceso a financiamiento y costo de la deuda",
-      "summary": "La sostenibilidad se ha convertido en un factor determinante para el acceso a financiamiento y el costo de la deuda en República Dominicana, impactando la evaluación de riesgos empresariales. La emisión del primer bono verde soberano dominicano ejemplifica cómo las prácticas sostenibles pueden traducirse en mejores condiciones de capital.",
-      "body": "La sostenibilidad ha trascendido la mera divulgación para influir directamente en el acceso a financiamiento y el costo de la deuda de las empresas. Alejandro Wilches destacó que la información ambiental, social y de gobernanza (ESG) es crucial para inversionistas y entidades financieras en la evaluación de riesgos y oportunidades. La tendencia global impulsa la integración de datos financieros y de sostenibilidad para una visión holística del desempeño corporativo.",
-      "category": "Financiero",
-      "relevance": 7,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-08T11:20:42+00:00",
-      "fetched_at": "2026-08-10T11:30:16.437482+00:00",
-      "status": "pending"
-    }
-  ],
-  "discarded_count": 1,
-  "discarded": [
-    {
       "id": "n_8268a17eca5e180f",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
+      "motivo": "relevancia_baja",
+      "motivo_texto": "El modelo le puso poca relevancia financiera",
       "title": "Sánchez Ramírez ejecuta el 84.5% de su presupuesto de inversión pública",
       "url": "https://eldinero.com.do/375845/sanchez-ramirez-ejecuta-el-84-5-de-su-presupuesto-de-inversion-publica",
       "source_name": "El Dinero · Finanzas",
+      "relevance": 5,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-12T11:21:15.066481+00:00"
+    },
+    {
+      "id": "n_1194c77ab9a941e3",
+      "motivo": "relevancia_baja",
+      "motivo_texto": "El modelo le puso poca relevancia financiera",
+      "title": "Gobierno pagará más de RD$75 millones a atletas; Liranyi y Brenda serán las más beneficiadas",
+      "url": "https://www.diariolibre.com/deportes/olimpismo/2026/08/11/gobierno-pagara-mas-de-rd75-mm-liranyi-y-brenda-mas-beneficiadas/3624893",
+      "source_name": "Diario Libre · Economía",
+      "relevance": 5,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-12T11:21:38.104242+00:00"
+    },
+    {
+      "id": "n_2ec3c6d6b11c59ad",
+      "motivo": "relevancia_baja",
+      "motivo_texto": "El modelo le puso poca relevancia financiera",
+      "title": "Decomisan televisores y cigarrillos que buscaban evadir RD$42.2 millones en pago de impuestos",
+      "url": "https://hoy.com.do/economia/decomisan-televisores-cigarrillos-buscaban-evadir-rd-42-2-millones-pago-impuestos_1098391.html",
+      "source_name": "Hoy Digital · Economía",
+      "relevance": 5,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-12T11:26:22.616746+00:00"
+    },
+    {
+      "id": "n_f3b91aca7c4d24a1",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "¿Por qué interesa a RD intervención del yen?",
+      "url": "https://hoy.com.do/economia/interesa-rd-intervencion-yen_1098428.html",
+      "source_name": "Hoy Digital · Economía",
       "relevance": null,
       "señales": [],
       "detalle": "",
-      "fetched_at": "2026-08-11T17:32:00.621958+00:00"
+      "fetched_at": "2026-08-12T11:30:00.740931+00:00"
+    },
+    {
+      "id": "n_bb337981e189b35b",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "REFIDOMSA logra récord histórico en ventas de combustibles en julio 2026",
+      "url": "https://hoy.com.do/economia/refidomsa-logra-record-historico-ventas-combustibles-julio-2026_1098365.html",
+      "source_name": "Hoy Digital · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-12T11:30:00.788619+00:00"
+    },
+    {
+      "id": "n_b155e0b6c8ed6672",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Este es el precio del dólar del 11 de agosto del 2026",
+      "url": "https://hoy.com.do/economia/precio-dolar-11-agosto-2026_1098354.html",
+      "source_name": "Hoy Digital · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-12T11:31:00.942639+00:00"
     }
   ]
 }
