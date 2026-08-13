@@ -1,12 +1,32 @@
 {
-  "generated_at": "2026-08-13T11:27:02.542961+00:00",
+  "generated_at": "2026-08-13T17:35:02.122168+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
   "count": 30,
   "errors": 0,
   "sources": 37,
-  "elapsed_s": 384.6,
+  "elapsed_s": 329.8,
   "candidates": [
+    {
+      "id": "n_b40ed6948f182b87",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/376327/ifc-y-bhd-firman-acuerdo-para-fortalecer-financiamiento-sostenible-y-promover-comercio-exterior-en-rd",
+      "title": "IFC y BHD firman acuerdo para fortalecer financiamiento sostenible y promover comercio exterior en RD",
+      "summary": "La Corporación Financiera Internacional (IFC) y el Banco BHD han sellado una alianza estratégica para impulsar el financiamiento sostenible y el comercio exterior en República Dominicana. Este acuerdo, que incluye hasta US$155 millones, busca fomentar sectores clave como las energías renovables y la construcción sostenible, además de apoyar las operaciones de importación y exportación de empresas locales.",
+      "body": "El Banco BHD y la Corporación Financiera Internacional (IFC) han formalizado un acuerdo para potenciar el financiamiento sostenible y el comercio exterior en República Dominicana. La alianza contempla hasta US$155 millones para impulsar sectores como energías renovables, construcción sostenible y finanzas azules, además de una línea de crédito para operaciones de importación y exportación, apoyando así a pymes y empresas locales.",
+      "category": "Financiero",
+      "relevance": 9,
+      "señales": [
+        "banca",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-13T15:39:28+00:00",
+      "fetched_at": "2026-08-13T17:31:02.325233+00:00",
+      "status": "pending"
+    },
     {
       "id": "n_5c2fc262bcc3b6e4",
       "source_key": "news_eldinero_rss",
@@ -564,97 +584,21 @@
       "published_at": "2026-08-11T13:20:05+00:00",
       "fetched_at": "2026-08-11T17:28:57.353690+00:00",
       "status": "pending"
-    },
-    {
-      "id": "n_00223b15392b28b7",
-      "source_key": "news_hoy",
-      "source_name": "Hoy Digital · Economía",
-      "url": "https://hoy.com.do/economia/dolar-rd-tasas-compra-venta-actualizadas-10-agosto-2026_1098188.html",
-      "title": "Dólar en RD: tasas de compra y venta actualizadas para este 10 de agosto de 2026",
-      "summary": "El Banco Central de la República Dominicana ha publicado las tasas de cambio actualizadas para el dólar estadounidense, fijando la compra en RD$58.1219 y la venta en RD$58.4906. Estas cifras, promedio ponderado del mercado spot, son relevantes para la revaluación de activos y pasivos en moneda extranjera.",
-      "body": "El Banco Central de la República Dominicana ha informado las tasas de cambio del dólar para el 10 de agosto de 2026. La tasa de compra se sitúa en RD$58.1219 por dólar, mientras que la de venta es de RD$58.4906. Estas cifras representan el promedio ponderado de las transacciones del mercado spot y son cruciales para la revaluación diaria de activos y pasivos en moneda extranjera según la normativa vigente.",
-      "category": "Monetario",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-10T08:56:26-04:00",
-      "fetched_at": "2026-08-11T11:15:30.596073+00:00",
-      "status": "pending"
     }
   ],
-  "discarded_count": 5,
+  "discarded_count": 1,
   "discarded": [
     {
-      "id": "n_3ffd1bc941f9a04f",
-      "motivo": "duplicada",
-      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
-      "title": "Apreciación del peso dominicano",
-      "url": "https://hoy.com.do/economia/apreciacion-peso-dominicano_1098293.html",
-      "source_name": "Hoy Digital · Economía",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "macro"
-      ],
-      "detalle": "Misma noticia que: Banco Central explica apreciación del peso dominicano y resalta esquema de metas de inflación",
-      "fetched_at": "2026-08-13T11:27:02.519515+00:00"
-    },
-    {
-      "id": "n_9394ee98c31c3558",
-      "motivo": "duplicada",
-      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
-      "title": "Precio del dólar hoy miércoles 12 de agosto de 2026 en RD",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-12-agosto-2026",
-      "source_name": "El Caribe · Dinero",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "politica_monetaria",
-        "banca",
-        "macro"
-      ],
-      "detalle": "Misma noticia que: Precio del dólar hoy lunes 10 de agosto de 2026 en RD",
-      "fetched_at": "2026-08-13T11:27:02.523322+00:00"
-    },
-    {
-      "id": "n_f8a1510172e19e7a",
-      "motivo": "relevancia_baja",
-      "motivo_texto": "El modelo le puso poca relevancia financiera",
-      "title": "Agricultura ejecutó un presupuesto siete veces superior al de su plan de contrataciones",
-      "url": "https://www.diariolibre.com/economia/finanzas/2026/08/13/agricultura-ejecuto-7-veces-mas-presupuesto-que-plan-contrataciones/3627375",
-      "source_name": "Diario Libre · Economía",
-      "relevance": 5,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-13T11:21:40.570311+00:00"
-    },
-    {
-      "id": "n_2746cafca2373cbe",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Las mujeres son cada vez más en lo laboral y lo económico",
-      "url": "https://eldinero.com.do/376210/las-mujeres-son-cada-vez-mas-en-lo-laboral-y-lo-economico",
-      "source_name": "El Dinero · RSS",
+      "id": "n_b4bf443bb90b6e5a",
+      "motivo": "sin_cuerpo",
+      "motivo_texto": "No se pudo leer el cuerpo del articulo",
+      "title": "ExpoHogar Banreservas 2026 cierra con financiamientos por más de RD$11,247 millones",
+      "url": "https://eldinero.com.do/376334/expohogar-banreservas-2026-cierra-con-financiamientos-por-mas-de-rd11247-millones",
+      "source_name": "El Dinero · Finanzas",
       "relevance": null,
       "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-13T11:27:00.109196+00:00"
-    },
-    {
-      "id": "n_b30b82190022f5bc",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Economía de República Dominicana a junio 2026: remontada confirmada",
-      "url": "https://eldinero.com.do/376202/economia-de-republica-dominicana-a-junio-2026-remontada-confirmada",
-      "source_name": "El Dinero · RSS",
-      "relevance": null,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-13T11:27:01.013901+00:00"
+      "detalle": "Ni la URL original ni una cobertura alterna se pudieron leer",
+      "fetched_at": "2026-08-13T17:30:00.846789+00:00"
     }
   ]
 }
