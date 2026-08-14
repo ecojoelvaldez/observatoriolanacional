@@ -1,12 +1,29 @@
 {
-  "generated_at": "2026-08-14T11:21:01.954884+00:00",
+  "generated_at": "2026-08-14T17:35:02.411079+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
   "count": 30,
   "errors": 0,
   "sources": 37,
-  "elapsed_s": 489.0,
+  "elapsed_s": 330.3,
   "candidates": [
+    {
+      "id": "n_8f0df9075e03c1ce",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/376379/hay-23-proyectos-en-monsenor-nouel-sin-ejecucion-financiera",
+      "title": "Hay 23 proyectos en Monseñor Nouel sin ejecución financiera",
+      "summary": "La provincia Monseñor Nouel presenta 23 proyectos de inversión pública sin ejecución financiera, acumulando RD$593.4 millones devengados de una cartera total de RD$669.4 millones. Esta situación, detallada por la Dirección General de Presupuesto, resalta la necesidad de agilizar la asignación y uso de fondos para el desarrollo provincial.",
+      "body": "Un análisis de la inversión pública en Monseñor Nouel revela que 23 de 39 proyectos no han registrado ejecución financiera hasta el 7 de agosto de 2026. Aunque la provincia ha devengado RD$593.4 millones de un total de RD$669.4 millones, la falta de avance en una parte significativa de los proyectos, incluyendo obras viales y de infraestructura, genera preocupación sobre la eficiencia en la asignación de recursos públicos.",
+      "category": "Economia",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-13T20:09:30+00:00",
+      "fetched_at": "2026-08-14T17:29:41.767767+00:00",
+      "status": "pending"
+    },
     {
       "id": "n_250a110fd0c2ab47",
       "source_key": "news_hoy",
@@ -559,81 +576,8 @@
       "published_at": "2026-08-12T12:31:14+00:00",
       "fetched_at": "2026-08-12T17:30:29.246321+00:00",
       "status": "pending"
-    },
-    {
-      "id": "n_a3352e9451c6283f",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero · Finanzas",
-      "url": "https://eldinero.com.do/376097/dinamismo-del-credito-y-solvencia-bancaria-fortalecen-la-resiliencia-de-la-economia-dominicana-afirma-la-aba",
-      "title": "Dinamismo del crédito y solvencia bancaria fortalecen la resiliencia de la economía dominicana, afirma la ABA",
-      "summary": "La Asociación de Bancos Múltiples (ABA) destaca que el crédito al sector privado creció 9.1% interanual en junio, impulsando la economía dominicana. La solvencia bancaria, con un coeficiente de activos líquidos superior al 40%, junto a la aceleración de depósitos, refuerza la estabilidad financiera del país ante la incertidumbre global.",
-      "body": "La Asociación de Bancos Múltiples (ABA) informó que el crédito al sector privado dominicano experimentó un crecimiento interanual del 9.1% al cierre de junio, superando el 7.4% de diciembre de 2025. Este dinamismo, concentrado en los sectores comercial e hipotecario, junto a una aceleración en los depósitos del público, fortalece la resiliencia económica del país.",
-      "category": "Financiero",
-      "relevance": 9,
-      "señales": [
-        "banca",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-12T16:01:38+00:00",
-      "fetched_at": "2026-08-12T17:30:11.348183+00:00",
-      "status": "pending"
     }
   ],
-  "discarded_count": 4,
-  "discarded": [
-    {
-      "id": "n_f0ba9a771f6c9638",
-      "motivo": "duplicada",
-      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
-      "title": "Precio del dólar hoy jueves 13 de agosto de 2026 en RD",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-13-agosto-2026",
-      "source_name": "El Caribe · Dinero",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "politica_monetaria",
-        "macro"
-      ],
-      "detalle": "Misma noticia que: Precio del dólar hoy miércoles 12 de agosto de 2026 en RD",
-      "fetched_at": "2026-08-14T11:21:01.934223+00:00"
-    },
-    {
-      "id": "n_1194c77ab9a941e3",
-      "motivo": "relevancia_baja",
-      "motivo_texto": "El modelo le puso poca relevancia financiera",
-      "title": "Gobierno pagará más de RD$75 millones a atletas; Liranyi y Brenda serán las más beneficiadas",
-      "url": "https://www.diariolibre.com/deportes/olimpismo/2026/08/11/gobierno-pagara-mas-de-rd75-mm-liranyi-y-brenda-mas-beneficiadas/3624893",
-      "source_name": "Diario Libre · Finanzas",
-      "relevance": 5,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-14T11:13:48.196405+00:00"
-    },
-    {
-      "id": "n_83a5422e87bd8a53",
-      "motivo": "relevancia_baja",
-      "motivo_texto": "El modelo le puso poca relevancia financiera",
-      "title": "Demanda de coco en el país crece 10% anual, y la producción solo 2%",
-      "url": "https://eldinero.com.do/376405/demanda-de-coco-en-el-pais-crece-10-anual-y-la-produccion-solo-2",
-      "source_name": "El Dinero · RSS",
-      "relevance": 5,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-14T11:14:29.747857+00:00"
-    },
-    {
-      "id": "n_8f0df9075e03c1ce",
-      "motivo": "relevancia_baja",
-      "motivo_texto": "El modelo le puso poca relevancia financiera",
-      "title": "Hay 23 proyectos en Monseñor Nouel sin ejecución financiera",
-      "url": "https://eldinero.com.do/376379/hay-23-proyectos-en-monsenor-nouel-sin-ejecucion-financiera",
-      "source_name": "El Dinero · RSS",
-      "relevance": 5,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-14T11:14:47.509059+00:00"
-    }
-  ]
+  "discarded_count": 0,
+  "discarded": []
 }
