@@ -15275,5 +15275,383 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
 })();
 </script>
 
+<style id="ln-candidates-bar-style">
+  .ln-cand-bar {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    margin: 0 0 12px; padding: 9px 12px;
+    border: 1px solid var(--line, #E4E4E4); border-radius: 8px;
+    background: var(--white, #fff);
+    font-family: 'Inter', sans-serif; font-size: 12px; color: var(--ink-soft, #5a5a5a);
+  }
+  .ln-cand-bar strong { color: var(--ink, #1a1a1a); font-weight: 700; }
+  .ln-cand-bar .ln-cand-days { display: flex; gap: 6px; flex-wrap: wrap; }
+  .ln-cand-bar .ln-cand-day {
+    border: 1px solid var(--line, #E4E4E4); border-radius: 999px;
+    padding: 2px 8px; white-space: nowrap;
+  }
+  .ln-cand-bar .ln-cand-day.is-today { border-color: var(--yellow, #E6BE00); background: rgba(230,190,0,.12); color: var(--ink, #1a1a1a); font-weight: 700; }
+  .ln-cand-bar .ln-cand-spacer { flex: 1; }
+  .ln-cand-bar button {
+    background: var(--white, #fff); border: 1px solid var(--line, #E4E4E4); border-radius: 6px;
+    padding: 5px 11px; font-size: 12px; font-weight: 600; color: var(--ink-soft, #5a5a5a);
+    cursor: pointer; transition: border-color .15s ease, color .15s ease;
+  }
+  .ln-cand-bar button:hover { border-color: var(--cyan-deep, #16769c); color: var(--cyan-deep, #16769c); }
+  .ln-cand-bar.is-error { border-color: #d8a3a3; background: #fdf6f6; color: #a93226; }
+</style>
+
+<script id="ln-news-candidates-loader-v8">
+/* ========================================================================
+   La Nacional · Carga de candidatos v8  (bloque final, gana a v5/v6/v7)
+
+   Tres fallas reales que este bloque cierra:
+
+   1. La cola no se cargaba al iniciar sesión. El login que se usa de verdad
+      es lnHardcodedAnalystLogin -> openPanel(), y openPanel solo llama a
+      renderProposals(): pinta lo que hubiera en localStorage, sin ir nunca a
+      buscar /news_candidates.json. La única carga automática era un
+      setTimeout de 800 ms tras DOMContentLoaded que se rendía si el body
+      todavía no tenía .analyst-logged. O sea: recargando la página con la
+      sesión ya abierta funcionaba (openPanel corre a los 80 ms), y entrando
+      con usuario y contraseña no funcionaba nunca — el clic ocurre mucho
+      después de los 800 ms. De ahí que "a veces salen y a veces no", y que
+      lo que salía fuera la lista vieja guardada en el navegador.
+
+   2. El gate institucional devuelve un 302 a /acceso cuando la cookie de
+      sesión vence. fetch sigue el redirect, recibe el HTML de /acceso con
+      status 200 y JSON.parse revienta; el código viejo lo trataba como
+      "sin conexión" y seguía mostrando la caché local en silencio. Ahora se
+      detecta y se dice que la sesión venció.
+
+   3. Las notas ya publicadas volvían a entrar a la cola en cada carga.
+
+   Este bloque NO redibuja: delega en window.renderProposals (v7). Solo se
+   encarga de que el arreglo `proposals` tenga SIEMPRE lo que dice el JSON
+   —todos los días vigentes, no solo lo de hoy— más lo local del analista.
+   ======================================================================== */
+(function(){
+  'use strict';
+
+  const CANDIDATES_URL = '/news_candidates.json';
+  const LOCAL_KEY   = 'ln-news-proposals';
+  const STATUS_KEY  = 'ln-news-proposals-local-status-v1';
+  const EDITS_KEY   = 'ln-news-proposals-local-edits-v1';
+  const SHOW_PUB_KEY = 'ln-news-show-published-v1';
+  const MIN_RELOAD_MS = 30 * 1000;   // no repetir el fetch por cada evento
+
+  let lastLoadAt = 0;
+  let inFlight = null;
+  let lastMeta = null;
+
+  function txt(v){ return String(v ?? ''); }
+  function readJson(key, fallback){
+    try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+    catch { return fallback; }
+  }
+  function writeJson(key, value){ try { localStorage.setItem(key, JSON.stringify(value)); } catch {} }
+  function esc(v){
+    if (typeof window.escapeHtml === 'function') return window.escapeHtml(txt(v));
+    return txt(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function toastSafe(msg, kind){
+    try { if (typeof window.toast === 'function') return window.toast(msg, kind || 'success'); } catch {}
+    console.log('[LN-NEWS v8]', msg);
+  }
+  function ensureHttp(url){
+    const s = txt(url).trim();
+    if (!s) return '';
+    return /^https?:\/\//i.test(s) ? s : 'https://' + s;
+  }
+  function host(url){
+    try { return new URL(ensureHttp(url)).hostname.replace(/^www\./,''); } catch { return ''; }
+  }
+  function normUrl(url){
+    try {
+      const u = new URL(ensureHttp(url));
+      return (u.origin + u.pathname).replace(/\/$/, '').toLowerCase();
+    } catch { return txt(url).replace(/\/$/, '').toLowerCase(); }
+  }
+  function stableId(row){
+    return txt(row?.id || row?.dedupe_key || row?.proposal_id || row?.url || row?.link || row?.title).trim();
+  }
+  function categoryVisual(value){
+    const raw = txt(value).trim();
+    const k = raw.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+    if (k.includes('global')) return { cat:'glo', tag:'Global' };
+    if (k.includes('monetario')) return { cat:'mac', tag:'Política monetaria' };
+    if (k.includes('regulatorio')) return { cat:'fin', tag:'Regulatorio' };
+    if (k.includes('financiero')) return { cat:'fin', tag:'Sistema financiero' };
+    if (k.includes('macro') || k.includes('econom')) return { cat:'mac', tag: raw || 'Economía' };
+    return { cat:'dom', tag: raw || 'Economía' };
+  }
+  function formatDate(value, fallback){
+    const raw = value || fallback;
+    if (!raw) return '';
+    try { return new Date(raw).toLocaleString('es-DO', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }); }
+    catch { return ''; }
+  }
+  function dayKey(value){
+    const d = value ? new Date(value) : null;
+    if (!d || isNaN(d)) return '';
+    return d.toLocaleDateString('en-CA'); // YYYY-MM-DD en hora local
+  }
+  function statusMap(){ return readJson(STATUS_KEY, {}); }
+  function editMap(){ return readJson(EDITS_KEY, {}); }
+
+  function getArray(){
+    let arr = Array.isArray(window.proposals) ? window.proposals : [];
+    if (!arr.length) arr = readJson(LOCAL_KEY, []);
+    return Array.isArray(arr) ? arr : [];
+  }
+  function setArray(next){
+    const arr = Array.isArray(next) ? next : [];
+    window.proposals = arr;
+    try { proposals = arr; } catch {}
+    writeJson(LOCAL_KEY, arr);
+    return arr;
+  }
+
+  /* Fila del JSON -> propuesta del panel, respetando estado y ediciones
+     locales del analista (que viven solo en este navegador).             */
+  function toProposal(row){
+    const id = stableId(row);
+    const edits = editMap()[id] || {};
+    const visual = categoryVisual(edits.category || row.category);
+    const summary = edits.summary ?? edits.dek ?? row.summary ?? '';
+    return {
+      ...row,
+      ...edits,
+      id,
+      url: edits.url ?? row.url ?? '',
+      title: edits.title ?? row.title ?? '',
+      summary,
+      dek: edits.dek ?? summary,
+      body: edits.body ?? row.body ?? summary,
+      source: edits.source ?? row.source_name ?? row.source_key ?? host(row.url),
+      source_name: row.source_name || '',
+      category: edits.category ?? row.category ?? visual.tag,
+      cat: edits.cat ?? visual.cat,
+      tag: edits.tag ?? visual.tag,
+      status: statusMap()[id] || row.status || 'pending',
+      extracted: true,
+      publishedAt: edits.publishedAt ?? row.published_at ?? '',
+      published_at: edits.published_at ?? row.published_at ?? '',
+      fetched_at: row.fetched_at || '',
+      time: edits.time ?? formatDate(row.published_at, row.fetched_at),
+      stamp: formatDate(row.fetched_at, row.published_at)
+    };
+  }
+
+  /* ── Barra de estado sobre la cola ───────────────────────────────────── */
+  function ensureBar(){
+    const list = document.getElementById('proposals-list');
+    if (!list || !list.parentNode) return null;
+    let bar = document.getElementById('ln-cand-bar');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'ln-cand-bar';
+      bar.className = 'ln-cand-bar';
+      list.parentNode.insertBefore(bar, list);
+      bar.addEventListener('click', ev => {
+        const act = ev.target?.closest?.('[data-cand-action]')?.dataset?.candAction;
+        if (!act) return;
+        ev.preventDefault();
+        if (act === 'reload') load({ force:true, manual:true });
+        if (act === 'toggle-published') {
+          const on = !readJson(SHOW_PUB_KEY, false);
+          writeJson(SHOW_PUB_KEY, on);
+          load({ force:true, manual:true });
+        }
+      });
+    }
+    return bar;
+  }
+
+  function paintBar(){
+    const bar = ensureBar();
+    if (!bar) return;
+
+    if (lastMeta && lastMeta.error) {
+      bar.classList.add('is-error');
+      bar.innerHTML = `<span><strong>No se pudo leer /news_candidates.json.</strong> ${esc(lastMeta.error)}</span>
+        <span class="ln-cand-spacer"></span>
+        <button type="button" data-cand-action="reload">Reintentar</button>`;
+      return;
+    }
+    bar.classList.remove('is-error');
+
+    const arr = getArray();
+    const hoy = dayKey(new Date().toISOString());
+    const porDia = {};
+    arr.forEach(p => {
+      const k = dayKey(p.fetched_at || p.published_at) || 'sin fecha';
+      porDia[k] = (porDia[k] || 0) + 1;
+    });
+    const dias = Object.keys(porDia).sort().reverse().slice(0, 7);
+    const publicadas = lastMeta?.published || 0;
+    const verPublicadas = readJson(SHOW_PUB_KEY, false);
+
+    bar.innerHTML = `
+      <span><strong>${arr.length}</strong> candidatas en cola</span>
+      <span class="ln-cand-days">${
+        dias.map(d => {
+          const etiqueta = d === hoy ? 'hoy' : d.slice(5).split('-').reverse().join('/');
+          return `<span class="ln-cand-day${d === hoy ? ' is-today' : ''}">${esc(etiqueta)}: ${porDia[d]}</span>`;
+        }).join('')
+      }</span>
+      ${publicadas ? `<span>· ${publicadas} ya publicada${publicadas === 1 ? '' : 's'}</span>` : ''}
+      <span class="ln-cand-spacer"></span>
+      ${lastMeta?.at ? `<span>actualizado ${esc(lastMeta.at)}</span>` : ''}
+      ${publicadas || verPublicadas ? `<button type="button" data-cand-action="toggle-published">${verPublicadas ? 'Ocultar publicadas' : 'Ver publicadas'}</button>` : ''}
+      <button type="button" data-cand-action="reload">Recargar candidatas</button>`;
+  }
+
+  /* ── Carga ───────────────────────────────────────────────────────────── */
+  async function load(opts = {}){
+    const force = !!opts.force;
+    if (!force && Date.now() - lastLoadAt < MIN_RELOAD_MS) return getArray();
+    if (inFlight) return inFlight;
+
+    inFlight = (async () => {
+      try {
+        const res = await fetch(CANDIDATES_URL + '?t=' + Date.now(), {
+          cache: 'no-store',
+          credentials: 'same-origin',
+          headers: { 'Accept': 'application/json' }
+        });
+
+        // El gate de /acceso responde 302 y fetch lo sigue: llega el HTML del
+        // login con status 200. Sin esto, se veía como "sin conexión".
+        const tipo = txt(res.headers.get('content-type')).toLowerCase();
+        if (res.redirected || /text\/html/.test(tipo)) {
+          throw new Error('La sesión institucional venció. Recarga la página para volver a entrar.');
+        }
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+
+        const data = await res.json();
+        const rows = Array.isArray(data.candidates) ? data.candidates
+                   : Array.isArray(data) ? data : [];
+
+        const verPublicadas = readJson(SHOW_PUB_KEY, false);
+        const estados = statusMap();
+        const yaPublicadas = new Set();
+        const remotas = [];
+        rows.forEach(row => {
+          const p = toProposal(row);
+          if (!p.url) return;
+          if (estados[p.id] === 'published') {
+            yaPublicadas.add(p.id);
+            if (!verPublicadas) return;   // ya cumplió su ciclo editorial
+          }
+          remotas.push(p);
+        });
+
+        // Lo que el analista agregó a mano o recuperó de descartes no se pisa.
+        // Lo ya publicado tampoco vuelve por la puerta de atrás: si quedó en
+        // el arreglo local de una sesión anterior, se descuenta igual.
+        const idsRemotos = new Set(remotas.map(p => txt(p.id)));
+        const urlsRemotas = new Set(remotas.map(p => normUrl(p.url)));
+        const locales = getArray().filter(p => {
+          const id = txt(stableId(p));
+          if (idsRemotos.has(id) || urlsRemotas.has(normUrl(p.url))) return false;
+          if (!verPublicadas && (estados[id] === 'published' || p.status === 'published')) {
+            yaPublicadas.add(id);
+            return false;
+          }
+          return true;
+        });
+
+        setArray([...remotas, ...locales]);
+        lastLoadAt = Date.now();
+        lastMeta = {
+          at: new Date().toLocaleTimeString('es-DO', { hour:'2-digit', minute:'2-digit' }),
+          published: yaPublicadas.size,
+          generated_at: data.generated_at || '',
+          total: rows.length,
+          error: null
+        };
+
+        try { window.renderProposals?.(); } catch(e){ console.warn('[LN-NEWS v8] renderProposals:', e); }
+        try { window.updateCounts?.(); } catch {}
+        paintBar();
+
+        console.info(`[LN-NEWS v8] ${remotas.length} candidatas en cola de ${rows.length} en el JSON ` +
+                     `(${yaPublicadas.size} ya publicadas${verPublicadas ? ', mostradas' : ', ocultas'}), ` +
+                     `+${locales.length} locales. JSON generado ${data.generated_at || 's/f'}.`);
+        if (opts.manual) toastSafe(`${remotas.length} candidatas cargadas`, 'success');
+        return remotas;
+
+      } catch (err) {
+        // Nunca se borra lo que ya había: se avisa y se conserva la caché.
+        lastMeta = { ...(lastMeta || {}), error: err.message || String(err) };
+        console.warn('[LN-NEWS v8] No se pudieron cargar candidatas:', err);
+        const cache = readJson(LOCAL_KEY, []);
+        if (cache.length && !getArray().length) setArray(cache);
+        try { window.renderProposals?.(); } catch {}
+        paintBar();
+        if (opts.manual) toastSafe(err.message || 'No se pudieron cargar las candidatas', 'warn');
+        return getArray();
+      } finally {
+        inFlight = null;
+      }
+    })();
+
+    return inFlight;
+  }
+
+  // Este bloque es el último: sus nombres ganan a los de v5/v6/v7.
+  window.LN_loadNewsCandidates    = load;
+  window.loadNewsCandidatesLocal  = load;
+  window.loadProposalsFromSupabase = load;
+  try { loadProposalsFromSupabase = load; } catch {}
+  window.LN_refreshCandidatesBar  = paintBar;
+
+  /* ── Disparadores ────────────────────────────────────────────────────── */
+  // 1) Cualquier camino de login termina poniendo .analyst-logged en el body.
+  //    Observarlo cubre openAnalystSession, openPanel del bypass y el restore
+  //    por sessionStorage, sin depender del orden de los parches.
+  let eraLogueado = document.body.classList.contains('analyst-logged');
+  new MutationObserver(() => {
+    const ahora = document.body.classList.contains('analyst-logged');
+    // Sin force: si el arranque ya trajo el JSON hace segundos, no se repite
+    // la descarga; si la pestaña llevaba rato abierta, sí se refresca.
+    if (ahora && !eraLogueado) load();
+    eraLogueado = ahora;
+  }).observe(document.body, { attributes:true, attributeFilter:['class'] });
+
+  // 2) Al arrancar, solo si la sesión de analista ya venía abierta. El resto
+  //    de los casos los cubre el observador de arriba, así que no hay carrera
+  //    contra ningún timeout y tampoco se descarga el JSON para quien entra
+  //    al sitio sin ser analista.
+  function boot(){
+    if (document.body.classList.contains('analyst-logged')) load({ force:true });
+    else paintBar();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once:true });
+  else boot();
+
+  // 3) Al volver a la pestaña con el panel abierto, por si el pipeline corrió
+  //    mientras tanto (throttle de 30 s: no genera tráfico extra real).
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' &&
+        document.body.classList.contains('analyst-logged')) load();
+  });
+
+  window.LN_candidatesDebug = function(){
+    const arr = getArray();
+    const porDia = {};
+    const porEstado = {};
+    arr.forEach(p => {
+      const d = dayKey(p.fetched_at || p.published_at) || 'sin fecha';
+      porDia[d] = (porDia[d] || 0) + 1;
+      porEstado[p.status || 'pending'] = (porEstado[p.status || 'pending'] || 0) + 1;
+    });
+    console.table(arr.map(p => ({ id:p.id, dia:dayKey(p.fetched_at), estado:p.status, fuente:p.source, titulo:p.title })));
+    console.log('[LN-NEWS v8]', { total: arr.length, porDia, porEstado, meta: lastMeta });
+    return { total: arr.length, porDia, porEstado, meta: lastMeta };
+  };
+})();
+</script>
+
 </body>
 </html>
