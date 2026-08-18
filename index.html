@@ -4190,6 +4190,90 @@ const workflowLabels = {
   news: 'Noticias'
 };
 
+/* ── Fuentes de noticias: saneo e identidad estable ──────────────────────────
+   La rejilla de fuentes se duplicaba en cada carga y en cada login hasta dejar
+   el navegador sin responder. El mecanismo: quien restauraba las fuentes hacia
+
+     let input = document.getElementById(id);
+     if (!input && value) { addNewsSourceField(value, ...); input = document.getElementById(id); }
+
+   pero addNewsSourceField NUNCA usaba el id pedido — se inventaba el suyo
+   (news-extra-<n>). Asi que la segunda linea seguia devolviendo null, el id
+   guardado jamas coincidia con un campo del DOM y CADA llamada volvia a
+   anadir la lista entera. Como "Guardar fuentes" recoge todos los inputs que
+   haya en pantalla, lo duplicado se guardaba, y en la carga siguiente se
+   duplicaba lo ya duplicado: crecimiento exponencial, en localStorage y en el
+   estado en vivo de Supabase (por eso seguia pasando hasta en incognito).
+
+   Tres candados, para que ningun camino pueda repetir esto:
+     1. identidad — addNewsSourceField acepta el id pedido y lo respeta;
+     2. unicidad por URL — no se anade un campo cuya URL ya esta en la rejilla,
+        aunque el id no cuadre;
+     3. tope duro — ni la rejilla ni el mapa guardado pasan de LN_MAX_SOURCES.
+   Ademas se sanea al leer y al escribir, para curar lo que ya esta inflado.  */
+const LN_MAX_SOURCES = 60;
+
+function lnNormalizeSourceUrl(value) {
+  const raw = String(value ?? '').trim();
+  if (!raw) return '';
+  const conEsquema = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+  try {
+    const u = new URL(conEsquema);
+    return (u.hostname.replace(/^www\./i, '') + u.pathname.replace(/\/+$/, '') + u.search).toLowerCase();
+  } catch (_) {
+    return raw.replace(/^https?:\/\//i, '').replace(/^www\./i, '').replace(/\/+$/, '').toLowerCase();
+  }
+}
+
+/* Deja un mapa {id: url} sin vacios, sin URLs repetidas y con tope. */
+function lnSanitizeSourcesMap(map) {
+  const limpio = {};
+  const vistas = new Set();
+  Object.entries(map && typeof map === 'object' ? map : {}).forEach(([id, url]) => {
+    const valor = String(url ?? '').trim();
+    if (!valor) return;
+    const clave = lnNormalizeSourceUrl(valor);
+    if (!clave || vistas.has(clave)) return;
+    if (vistas.size >= LN_MAX_SOURCES) return;
+    vistas.add(clave);
+    limpio[String(id || `news_source_${vistas.size}`)] = valor;
+  });
+  return limpio;
+}
+
+/* URLs que ya estan pintadas en la rejilla, normalizadas. */
+function lnSourceUrlsInGrid() {
+  const urls = new Set();
+  document.querySelectorAll('[data-news-source="1"]').forEach(input => {
+    const clave = lnNormalizeSourceUrl(input.value);
+    if (clave) urls.add(clave);
+  });
+  return urls;
+}
+
+/* Quita de la rejilla los campos repetidos que hayan quedado de antes. */
+function lnDedupeSourceGrid() {
+  const vistas = new Set();
+  let quitados = 0;
+  document.querySelectorAll('[data-news-source="1"]').forEach(input => {
+    const clave = lnNormalizeSourceUrl(input.value);
+    const sobra = !clave || vistas.has(clave) || vistas.size >= LN_MAX_SOURCES;
+    if (sobra) {
+      (input.closest('.news-source-field') || input).remove();
+      quitados += 1;
+      return;
+    }
+    vistas.add(clave);
+  });
+  return quitados;
+}
+
+window.LN_MAX_SOURCES = LN_MAX_SOURCES;
+window.lnNormalizeSourceUrl = lnNormalizeSourceUrl;
+window.lnSanitizeSourcesMap = lnSanitizeSourcesMap;
+window.lnSourceUrlsInGrid = lnSourceUrlsInGrid;
+window.lnDedupeSourceGrid = lnDedupeSourceGrid;
+
 function formatUpdateStamp(date = new Date()) {
   return date.toLocaleString('es-DO', {
     weekday: 'long', day: '2-digit', month: 'long', year: 'numeric',
@@ -4215,10 +4299,22 @@ function refreshStoredUpdateLabels() {
   const savedSources = localStorage.getItem('ln-news-sources');
   if (savedSources) {
     try {
-      const sources = JSON.parse(savedSources);
+      // Se sanea al leer y se reescribe: si el mapa venia inflado de sesiones
+      // anteriores, queda curado aqui mismo y deja de crecer.
+      const sources = lnSanitizeSourcesMap(JSON.parse(savedSources));
+      localStorage.setItem('ln-news-sources', JSON.stringify(sources));
+      lnDedupeSourceGrid();
+      const yaEnRejilla = lnSourceUrlsInGrid();
       Object.entries(sources).forEach(([id, value]) => {
         let input = document.getElementById(id);
-        if (!input && value) { addNewsSourceField(value, 'Fuente guardada'); input = document.getElementById(id); }
+        const clave = lnNormalizeSourceUrl(value);
+        // Se pasa el id: sin eso el campo nace con otro id, nunca se encuentra
+        // en la llamada siguiente y la lista entera se vuelve a anadir.
+        if (!input && value && !yaEnRejilla.has(clave)) {
+          addNewsSourceField(value, 'Fuente guardada', id);
+          yaEnRejilla.add(clave);
+          input = document.getElementById(id);
+        }
         if (input) input.value = value;
       });
     } catch(e) {}
@@ -4244,12 +4340,15 @@ function handleBcrdFiles(files) {
 }
 
 function saveNewsSources() {
+  // Se limpia la rejilla antes de leerla: guardar duplicados era lo que hacia
+  // que la lista creciera de una sesion a la siguiente.
+  lnDedupeSourceGrid();
   const sources = {};
   document.querySelectorAll('[data-news-source="1"]').forEach((input, idx) => {
     const id = input.id || `news-extra-${idx}`;
     sources[id] = input.value.trim();
   });
-  localStorage.setItem('ln-news-sources', JSON.stringify(sources));
+  localStorage.setItem('ln-news-sources', JSON.stringify(lnSanitizeSourcesMap(sources)));
   const count = Object.values(sources).filter(Boolean).length;
   const stamp = new Date().toLocaleTimeString('es-DO', { hour:'2-digit', minute:'2-digit' });
   const status = document.getElementById('news-reader-status');
@@ -4543,17 +4642,34 @@ function sourceLabelFromInput(input) {
   return input?.closest('.news-source-field')?.querySelector('label')?.textContent?.trim() || getDomain(input?.value || '');
 }
 function collectNewsSourceInputs() {
-  return Array.from(document.querySelectorAll('[data-news-source="1"]')).filter(input => input.value.trim());
+  // Una sola entrada por URL: si la rejilla trae repetidos, ni se leen las
+  // fuentes dos veces ni se suben duplicadas a Supabase.
+  const vistas = new Set();
+  return Array.from(document.querySelectorAll('[data-news-source="1"]')).filter(input => {
+    const valor = input.value.trim();
+    if (!valor) return false;
+    const clave = lnNormalizeSourceUrl(valor);
+    if (!clave || vistas.has(clave) || vistas.size >= LN_MAX_SOURCES) return false;
+    vistas.add(clave);
+    return true;
+  });
 }
-function addNewsSourceField(value = '', label = 'Nueva fuente') {
+function addNewsSourceField(value = '', label = 'Nueva fuente', forcedId = '') {
   const grid = document.getElementById('news-source-grid');
   if (!grid) return;
-  const idx = document.querySelectorAll('[data-news-source="1"]').length + 1;
+  const campos = document.querySelectorAll('[data-news-source="1"]');
+  if (campos.length >= LN_MAX_SOURCES) return;
+  // Una URL, un campo: aunque el id no cuadre, no se repite la fuente.
+  const clave = lnNormalizeSourceUrl(value);
+  if (clave && lnSourceUrlsInGrid().has(clave)) return;
+  const id = forcedId && !document.getElementById(forcedId)
+    ? forcedId
+    : `news-extra-${campos.length + 1}-${Math.random().toString(36).slice(2, 8)}`;
   const field = document.createElement('div');
   field.className = 'news-source-field';
-  field.innerHTML = `<label>${escapeHtml(label)}</label><input data-news-source="1" id="news-extra-${idx}" value="${escapeHtml(value)}" placeholder="https://...">`;
+  field.innerHTML = `<label>${escapeHtml(label)}</label><input data-news-source="1" id="${escapeHtml(id)}" value="${escapeHtml(value)}" placeholder="https://...">`;
   grid.appendChild(field);
-  field.querySelector('input').focus();
+  if (!value) field.querySelector('input').focus();
   addNewsLog('Nueva fuente añadida al panel.', 'info');
 }
 function toggleSingleNewsPanel(force) {
@@ -7974,10 +8090,23 @@ window.applyLiveState = function(state, origin = 'remote') {
     if (Array.isArray(state.news?.proposals)) { window.proposals = state.news.proposals; localStorage.setItem('ln-news-proposals', JSON.stringify(state.news.proposals)); }
     if (Array.isArray(state.news?.log)) { window.newsLog = state.news.log; localStorage.setItem('ln-news-log', JSON.stringify(state.news.log)); }
     if (state.news?.sources) {
-      localStorage.setItem('ln-news-sources', JSON.stringify(state.news.sources));
-      Object.entries(state.news.sources).forEach(([id, value]) => {
+      // El estado en vivo viaja en Supabase, asi que una lista inflada seguia
+      // a la persona a cualquier navegador (incluido incognito). Se sanea
+      // antes de guardarla y de pintarla.
+      const fuentes = typeof window.lnSanitizeSourcesMap === 'function'
+        ? window.lnSanitizeSourcesMap(state.news.sources)
+        : state.news.sources;
+      localStorage.setItem('ln-news-sources', JSON.stringify(fuentes));
+      if (typeof window.lnDedupeSourceGrid === 'function') window.lnDedupeSourceGrid();
+      const yaEnRejilla = typeof window.lnSourceUrlsInGrid === 'function' ? window.lnSourceUrlsInGrid() : new Set();
+      Object.entries(fuentes).forEach(([id, value]) => {
         let input = document.getElementById(id);
-        if (!input && value && typeof window.addNewsSourceField === 'function') { window.addNewsSourceField(value, 'Fuente en vivo'); input = document.getElementById(id); }
+        const clave = typeof window.lnNormalizeSourceUrl === 'function' ? window.lnNormalizeSourceUrl(value) : value;
+        if (!input && value && !yaEnRejilla.has(clave) && typeof window.addNewsSourceField === 'function') {
+          window.addNewsSourceField(value, 'Fuente en vivo', id);
+          yaEnRejilla.add(clave);
+          input = document.getElementById(id);
+        }
         if (input) input.value = value;
       });
     }
@@ -14688,13 +14817,23 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
 
   /* Toda fuente añadida a mano nace con badge y botón de quitar, igual que
      las recomendadas: si no, la rejilla queda con dos formatos distintos. */
-  window.addNewsSourceField = function(value = '', label = 'Nueva fuente'){
+  window.addNewsSourceField = function(value = '', label = 'Nueva fuente', forcedId = ''){
     const grid = document.getElementById('news-source-grid');
     if (!grid) return;
-    const id = `news-extra-${Date.now().toString(36)}`;
+    const max = window.LN_MAX_SOURCES || 60;
+    const campos = document.querySelectorAll('[data-news-source="1"]');
+    if (campos.length >= max) return;
+    // Mismos candados que la version base: id respetado, una URL un campo.
+    // Sin esto, quien restaura fuentes por id nunca encontraba el campo y
+    // volvia a anadir la lista completa en cada carga y en cada login.
+    const clave = typeof window.lnNormalizeSourceUrl === 'function' ? window.lnNormalizeSourceUrl(value) : '';
+    if (clave && typeof window.lnSourceUrlsInGrid === 'function' && window.lnSourceUrlsInGrid().has(clave)) return;
+    const id = forcedId && !document.getElementById(forcedId)
+      ? forcedId
+      : `news-extra-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
     grid.insertAdjacentHTML('beforeend', fieldMarkup(id, label, value));
     const input = document.getElementById(id);
-    if (input) input.focus();
+    if (input && !value) input.focus();
     logSafe('Nueva fuente añadida al panel.', 'info');
   };
 
