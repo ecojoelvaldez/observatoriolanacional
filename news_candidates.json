@@ -1,20 +1,40 @@
 {
-  "generated_at": "2026-08-17T17:00:04.969776+00:00",
+  "generated_at": "2026-08-18T11:01:01.956285+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
-  "count": 17,
+  "count": 27,
   "errors": 0,
   "sources": 37,
-  "elapsed_s": 236.4,
+  "elapsed_s": 364.9,
   "candidates": [
     {
-      "id": "n_9b24e531a0fa5ff4",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero · Finanzas",
-      "url": "https://eldinero.com.do/376742/dgii-informa-que-ha-emitido-mas-de-2000-millones-de-comprobantes-fiscales-electronicos",
-      "title": "DGII informa que ha emitido más de 2,000 millones de Comprobantes Fiscales Electrónicos",
-      "summary": "La Dirección General de Impuestos Internos (DGII) ha superado los 2,000 millones de comprobantes fiscales electrónicos emitidos, con un 72% del total de facturas recibidas en el primer semestre de 2026 siendo electrónicas. Más de 80,000 contribuyentes están autorizados como emisores, evidenciando la creciente adopción de esta modalidad.",
-      "body": "La Dirección General de Impuestos Internos (DGII) ha alcanzado un hito significativo al emitir más de 2,000 millones de comprobantes fiscales electrónicos (e-CF). La institución reporta que el 72% de los comprobantes recibidos en la primera mitad de 2026 fueron electrónicos, y más de 80,000 contribuyentes ya están autorizados como emisores. Un 64% de estos utiliza el Facturador Gratuito de la DGII.",
+      "id": "n_c1bfb72cef5fc32c",
+      "source_key": "news_hoy",
+      "source_name": "Hoy Digital · Economía",
+      "url": "https://hoy.com.do/economia/google-destaca-beneficios-rd-nuevas-rutas-cables_1099140.html",
+      "title": "Google destaca los beneficios para RD de nuevas rutas de cables",
+      "summary": "Google anunció la llegada de cuatro nuevas rutas de cables submarinos a República Dominicana, lo que potenciará la conectividad y el desarrollo de la economía digital. Se proyecta un impacto significativo en el PIB y la creación de empleos, además de programas de capacitación en habilidades digitales.",
+      "body": "La inversión de Google en infraestructura de conectividad a través de nuevas rutas de cables submarinos promete transformar la economía dominicana. Estos avances no solo abaratarán el acceso a internet y elevarán la productividad empresarial, sino que también impulsarán la adopción de servicios digitales y la economía nacional, complementados con programas de capacitación en IA y nube.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "macro",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-18T00:00:00-04:00",
+      "fetched_at": "2026-08-18T10:57:38.320751+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_2dd733465a8170a5",
+      "source_key": "news_hoy",
+      "source_name": "Hoy Digital · Economía",
+      "url": "https://hoy.com.do/economia/dgii-logra-recepcion-2-000-millones-comprobantes-fiscales-electronicos_1099105.html",
+      "title": "DGII logra la recepción de más de 2,000 millones de Comprobantes Fiscales Electrónicos",
+      "summary": "La Dirección General de Impuestos Internos (DGII) ha superado la meta de 2,000 millones de Comprobantes Fiscales Electrónicos (e-CF) recibidos, evidenciando una significativa adopción de la facturación digital. Este avance fortalece la administración tributaria y la modernización del país.",
+      "body": "La Dirección General de Impuestos Internos (DGII) ha alcanzado un hito al recibir más de 2,000 millones de Comprobantes Fiscales Electrónicos (e-CF), con un 72% del total de comprobantes de los primeros seis meses de 2026 siendo digitales. Más de 80 mil contribuyentes están autorizados como emisores electrónicos, y el 64% utiliza el facturador gratuito, demostrando el éxito de la transformación digital tributaria.",
       "category": "Regulatorio",
       "relevance": 9,
       "señales": [
@@ -22,8 +42,244 @@
       ],
       "rescatado_por_regla": false,
       "cuerpo_recuperado": false,
-      "published_at": "2026-08-17T15:27:55+00:00",
-      "fetched_at": "2026-08-17T16:59:14.260231+00:00",
+      "published_at": "2026-08-17T15:38:37-04:00",
+      "fetched_at": "2026-08-18T10:57:20.360492+00:00",
+      "status": "pending",
+      "tambien_en": [
+        {
+          "source_name": "El Dinero · Finanzas",
+          "url": "https://eldinero.com.do/376742/dgii-informa-que-ha-emitido-mas-de-2000-millones-de-comprobantes-fiscales-electronicos",
+          "title": "DGII informa que ha emitido más de 2,000 millones de Comprobantes Fiscales Electrónicos"
+        }
+      ]
+    },
+    {
+      "id": "n_2a2c88bcbdbf2be6",
+      "source_key": "news_eldinero_rss",
+      "source_name": "El Dinero · RSS",
+      "url": "https://eldinero.com.do/376790/exportaciones-de-cacao-dominicano-alcanzan-us669-millones-en-2025",
+      "title": "Exportaciones de cacao dominicano alcanzan US$669 millones en 2025",
+      "summary": "Las exportaciones de cacao dominicano experimentaron un notable crecimiento del 55% en 2025, alcanzando los US$669 millones. Este auge, impulsado por la mayor valorización del producto en mercados internacionales, se verá reflejado en la próxima edición del Festival del Chocolate Dominicano.",
+      "body": "El valor de las exportaciones de cacao de la República Dominicana ascendió a US$669 millones en 2025, lo que representa un incremento del 55% respecto al año anterior. Este crecimiento se atribuye a la mayor cotización del producto en el mercado global, con un precio promedio de US$7,798 por tonelada. El sector se prepara para la sexta edición del Festival del Chocolate Dominicano, evento que destacará la cadena de valor del cacao y la producción de chocolate.",
+      "category": "Economia",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-17T18:15:33+00:00",
+      "fetched_at": "2026-08-18T10:56:49.126154+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_e30fe2f40e4c7ff9",
+      "source_key": "news_eldinero_rss",
+      "source_name": "El Dinero · RSS",
+      "url": "https://eldinero.com.do/376822/bono-del-tesoro-de-estados-unidos-a-30-anos-alcanza-maximo-en-19-anos",
+      "title": "Bono del Tesoro de Estados Unidos a 30 años alcanza máximo en 19 años",
+      "summary": "La rentabilidad del bono del Tesoro de EE.UU. a 30 años alcanzó su nivel más alto en 19 años, situándose en 5.31%, ante el temor de los inversores a un aumento de la inflación. Este movimiento en los bonos del Tesoro estadounidense podría influir en las tasas de interés y la percepción de riesgo en mercados emergentes como el dominicano.",
+      "body": "El rendimiento del bono del Tesoro de Estados Unidos a treinta años ha escalado hasta el 5.31%, su punto más alto en casi dos décadas. Este incremento se atribuye a la creciente preocupación de los inversores por una posible subida de la inflación, exacerbada por el conflicto entre Estados Unidos e Irán y su impacto en los precios del petróleo.",
+      "category": "Global",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "politica_monetaria"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-17T20:20:01+00:00",
+      "fetched_at": "2026-08-18T10:56:43.157758+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_d0cad796f5e25443",
+      "source_key": "news_elcaribe",
+      "source_name": "El Caribe · Dinero",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/feller-rate-ratifica-calificacion-a-de-alaver-por-su-solidez-financiera-y-perspectivas-de-crecimiento",
+      "title": "Feller Rate ratifica calificación A- de Alaver por su solidez financiera y perspectivas de crecimiento",
+      "summary": "La calificadora Feller Rate reafirmó la calificación A- de la Asociación La Vega Real (ALAVER), destacando su sólida generación de resultados y fortaleza patrimonial. La perspectiva estable se mantiene debido a la mejora en la calidad de su cartera y su estrategia de transformación digital.",
+      "body": "La firma Feller Rate ha ratificado la calificación de solvencia A- de la Asociación La Vega Real de Ahorros y Préstamos (ALAVER), manteniendo una perspectiva estable. La entidad financiera exhibe una adecuada capacidad de generación de resultados, un sólido respaldo patrimonial y una gestión de riesgos consistente, además de una mejora en la calidad de sus activos y un impulso en su transformación digital.",
+      "category": "Financiero",
+      "relevance": 9,
+      "señales": [
+        "banca",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-17T15:45:46+00:00",
+      "fetched_at": "2026-08-18T10:56:30.629962+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_d7b9c93a6920a5f1",
+      "source_key": "news_elcaribe",
+      "source_name": "El Caribe · Dinero",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-18-de-agosto-2026",
+      "title": "Precio del dólar hoy martes 18 de agosto de 2026 en RD",
+      "summary": "El Banco Central de la República Dominicana reporta que el dólar se cotiza a RD$58,59 para la compra y RD$59,17 para la venta, reflejando variaciones alineadas con el comportamiento internacional y la demanda local. Las tasas varían entre entidades bancarias y plataformas de envío de remesas.",
+      "body": "El tipo de cambio del dólar en República Dominicana se mantiene con fluctuaciones moderadas este martes 18 de agosto de 2026. El Banco Central establece las tasas oficiales, mientras que entidades como Banreservas y Banco Popular presentan sus propias cotizaciones. Plataformas de envío de remesas como Western Union y Caribe Express también muestran sus tasas, evidenciando la dinámica del mercado cambiario.",
+      "category": "Financiero",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "politica_monetaria",
+        "banca",
+        "macro",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-18T10:31:39+00:00",
+      "fetched_at": "2026-08-18T10:56:24.943104+00:00",
+      "status": "pending",
+      "tambien_en": [
+        {
+          "source_name": "El Caribe · Dinero",
+          "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-15-agosto-2026",
+          "title": "Precio del dólar hoy sábado 15 de agosto de 2026 en RD"
+        }
+      ]
+    },
+    {
+      "id": "n_09ea85a991ccc39c",
+      "source_key": "news_elcaribe",
+      "source_name": "El Caribe · Dinero",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/itbis-e-isr-sostienen-el-crecimiento-de-los-recaudos-de-la-dgii",
+      "title": "ITBIS e ISR sostienen el crecimiento de los recaudos de la DGII",
+      "summary": "Las recaudaciones de la DGII en el primer semestre de 2026 superaron las metas, impulsadas principalmente por el ITBIS y el Impuesto sobre la Renta. Este crecimiento refleja una combinación de mayor consumo, ingresos laborales y actividad empresarial, lo que indica una base tributaria robusta para la economía dominicana.",
+      "body": "La Dirección General de Impuestos Internos (DGII) reportó un crecimiento del 9.1% en sus recaudaciones durante el primer semestre de 2026, superando la meta establecida. Este avance se sustenta en el buen desempeño del Impuesto a la Transferencia de Bienes Industrializados y Servicios (ITBIS) y el Impuesto sobre la Renta (ISR), tanto para personas físicas como jurídicas. El aumento en el consumo y las retenciones laborales son factores clave detrás de estos resultados positivos.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "regulador"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-18T04:00:00+00:00",
+      "fetched_at": "2026-08-18T10:56:18.991336+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_600f607891d6f807",
+      "source_key": "news_elcaribe",
+      "source_name": "El Caribe · Dinero",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/indice-confianza-industrial-sube-y-supera-los-56-puntos-dice-aird",
+      "title": "Índice Confianza Industrial sube y supera los 56 puntos, dice AIRD",
+      "summary": "El Índice de Confianza Industrial (ICI) y el Índice de Clima Empresarial (ICE) de la AIRD superaron los 56 puntos en el segundo trimestre de 2026, indicando una percepción favorable en el sector. A pesar del aumento en producción y ventas, se observa una ligera disminución en la proporción de empresas que exportan y un incremento en inventarios insuficientes.",
+      "body": "La Asociación de Industrias de la República Dominicana (AIRD) reportó que el Índice de Confianza Industrial (ICI) alcanzó 56.4 puntos y el Índice de Clima Empresarial (ICE) 55.9 puntos en el segundo trimestre de 2026. Ambos indicadores superan el umbral de 50, señalando condiciones favorables para los negocios, con un crecimiento sostenido en ventas y producción, aunque con una menor dedicación a exportaciones y un aumento en inventarios insuficientes.",
+      "category": "Economia",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-18T04:00:00+00:00",
+      "fetched_at": "2026-08-18T10:56:12.297710+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_a23a016782f1094a",
+      "source_key": "news_elcaribe",
+      "source_name": "El Caribe · Dinero",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/banreservas-desembolso-rd282430-mm-en-un-ano",
+      "title": "Banreservas desembolsó RD$282,430 MM en un año",
+      "summary": "Banreservas reportó un desembolso de RD$282,430.2 millones en préstamos durante su primer año de gestión bajo Leonardo Aguilera, con un enfoque significativo en el financiamiento de sectores productivos. Estos fondos apoyaron a mipymes, agropecuaria, comercio y vivienda, alineándose con la política económica del gobierno para impulsar el crecimiento y el empleo en la República Dominicana.",
+      "body": "El Banco de Reservas (Banreservas) ha canalizado RD$282,430.2 millones en préstamos entre agosto de 2025 y julio de 2026, beneficiando a miles de clientes y sectores clave para la economía dominicana. Una parte sustancial, RD$135,349.7 millones, se destinó al financiamiento de mipymes, agropecuaria, comercio y vivienda, fortaleciendo la política de apoyo al crecimiento y la generación de empleo impulsada por la administración.",
+      "category": "Financiero",
+      "relevance": 8,
+      "señales": [
+        "banca"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-18T04:00:00+00:00",
+      "fetched_at": "2026-08-18T10:56:06.336378+00:00",
+      "status": "pending",
+      "tambien_en": [
+        {
+          "source_name": "Hoy Digital · Economía",
+          "url": "https://hoy.com.do/economia/banreservas-presta-ano-rd-282-430-millones_1099137.html",
+          "title": "Banreservas presta en un año más RD$282,430 millones"
+        }
+      ]
+    },
+    {
+      "id": "n_7dc0d3c521f55a0e",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/376747/banco-bhd-anuncia-la-iv-feria-inmobiliaria-new-york-city",
+      "title": "Banco BHD anuncia la IV Feria Inmobiliaria Ciudad de Nueva York",
+      "summary": "El Banco BHD organiza su IV Feria Inmobiliaria en Nueva York, reuniendo a más de 25 empresas dominicanas para ofrecer oportunidades de inversión en propiedades. La iniciativa busca facilitar el acceso de la diáspora dominicana a bienes raíces en el país, con asesoría financiera especializada.",
+      "body": "El Banco BHD ha anunciado la cuarta edición de su Feria Inmobiliaria en Nueva York, que se llevará a cabo del 11 al 13 de septiembre de 2026. El evento contará con la participación de más de 25 empresas constructoras e inmobiliarias dominicanas, ofreciendo a los dominicanos en el exterior la oportunidad de conocer y adquirir propiedades en República Dominicana, con acompañamiento financiero.",
+      "category": "Financiero",
+      "relevance": 9,
+      "señales": [
+        "banca",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-17T15:20:51+00:00",
+      "fetched_at": "2026-08-18T10:55:34.161492+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_d0cfdeb1000f9205",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/376807/leonardo-aguilera-destaca-logros-del-primer-ano-de-gestion-al-frente-de-banreservas",
+      "title": "Leonardo Aguilera destaca logros del primer año de gestión al frente de Banreservas",
+      "summary": "Leonardo Aguilera, presidente ejecutivo de Banreservas, resaltó los logros de su primer año de gestión, enfocados en el financiamiento a sectores productivos y el apoyo a mipymes, construcción y agropecuaria. La entidad desembolsó más de RD$282,430.2 millones en préstamos, reafirmando su rol en el crecimiento económico dominicano.",
+      "body": "Leonardo Aguilera, presidente ejecutivo de Banreservas, celebró su primer año al frente de la institución destacando un fuerte enfoque en el financiamiento a sectores clave como mipymes, construcción, vivienda y agropecuaria. Durante este período, el banco canalizó más de RD$282,430.2 millones en préstamos, reafirmando su compromiso con el desarrollo económico y la generación de empleo en la República Dominicana.",
+      "category": "Financiero",
+      "relevance": 9,
+      "señales": [
+        "banca",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-17T19:00:50+00:00",
+      "fetched_at": "2026-08-18T10:55:28.317659+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_3f58d5ad5ab25519",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/376837/presidente-de-scotiabank-recibe-al-director-de-eldinero-para-analizar-economia",
+      "title": "Presidente de Scotiabank recibe al director de elDinero para analizar economía",
+      "summary": "El presidente de Scotiabank para República Dominicana y el Caribe se reunió con el director de elDinero para discutir la economía dominicana y las oportunidades de inversión. El encuentro resalta la importancia de la colaboración entre el sector financiero y los medios económicos para analizar el panorama local.",
+      "body": "Jabar Singh, nuevo líder de Scotiabank en la región, sostuvo un encuentro con Jairon Severino, director de elDinero, para fortalecer la relación con el principal medio económico del país. La conversación se centró en las perspectivas económicas de República Dominicana y las oportunidades de inversión, destacando la resiliencia del mercado local ante desafíos globales.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "banca",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-17T22:19:03+00:00",
+      "fetched_at": "2026-08-18T10:55:22.277968+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_15e47c8a5fe8311b",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/376752/sb-emite-guia-de-buenas-practicas-para-fortalecer-la-gestion-de-riesgos-ambientales-y-sociales-en-la-banca",
+      "title": "SB emite guía de buenas prácticas para fortalecer la gestión de riesgos ambientales y sociales en la banca",
+      "summary": "La Superintendencia de Bancos ha lanzado una guía de buenas prácticas para que las entidades financieras gestionen mejor los riesgos ambientales y sociales. Este documento busca integrar criterios ASG en la supervisión bancaria, promoviendo una banca más resiliente y sostenible en República Dominicana.",
+      "body": "La Superintendencia de Bancos (SB) ha publicado una guía de buenas prácticas para que las entidades financieras fortalezcan la gestión de riesgos ambientales y sociales. El documento, que incluye herramientas para implementar Sistemas de Administración de Riesgos Ambientales y Sociales (Saras), busca integrar criterios ASG en la supervisión bancaria y promover una banca más resiliente y sostenible.",
+      "category": "Regulatorio",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-17T15:36:53Z",
+      "fetched_at": "2026-08-18T10:55:16.290083+00:00",
       "status": "pending"
     },
     {
@@ -134,7 +390,14 @@
       "cuerpo_recuperado": false,
       "published_at": "2026-08-14T19:39:56+00:00",
       "fetched_at": "2026-08-17T10:58:15.599096+00:00",
-      "status": "pending"
+      "status": "pending",
+      "tambien_en": [
+        {
+          "source_name": "El Dinero · RSS",
+          "url": "https://eldinero.com.do/376820/el-petroleo-de-texas-sube-2-55-con-las-negociaciones-entre-ee-uu-e-iran-estancadas",
+          "title": "El petróleo de Texas sube 2.55%, con las negociaciones entre EE.UU. e Irán estancadas"
+        }
+      ]
     },
     {
       "id": "n_efa87289ef90bbb7",
@@ -169,41 +432,6 @@
       "published_at": "2026-08-15T04:00:00+00:00",
       "fetched_at": "2026-08-17T10:57:57.710714+00:00",
       "status": "pending"
-    },
-    {
-      "id": "n_5e46ae076d7506eb",
-      "source_key": "news_elcaribe",
-      "source_name": "El Caribe · Dinero",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-15-agosto-2026",
-      "title": "Precio del dólar hoy sábado 15 de agosto de 2026 en RD",
-      "summary": "El Banco Central de la República Dominicana reporta una tasa de compra de RD$58,55 y venta de RD$58.81 para el dólar estadounidense, reflejando variaciones alineadas con el comportamiento internacional y la demanda local. Las tasas varían entre entidades financieras y plataformas de envío de remesas.",
-      "body": "El tipo de cambio del dólar en República Dominicana se mantiene en niveles cercanos a los reportados por el Banco Central, con tasas de compra de RD$58,55 y venta de RD$58.81. Entidades como Banreservas y Banco Popular presentan cotizaciones ligeramente superiores, mientras que Western Union y Caribe Express ofrecen tasas específicas para envíos. El euro también muestra estabilidad en el mercado cambiario.",
-      "category": "Financiero",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "politica_monetaria",
-        "banca",
-        "macro",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-15T12:43:40+00:00",
-      "fetched_at": "2026-08-17T10:57:51.472774+00:00",
-      "status": "pending",
-      "tambien_en": [
-        {
-          "source_name": "El Caribe · Dinero",
-          "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-17-agosto-2026",
-          "title": "Precio del dólar hoy lunes 17 de agosto de 2026 en RD"
-        },
-        {
-          "source_name": "El Caribe · Dinero",
-          "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-12-agosto-2026",
-          "title": "Precio del dólar hoy miércoles 12 de agosto de 2026 en RD"
-        }
-      ]
     },
     {
       "id": "n_ab2fd7e98dbccebb",
@@ -325,74 +553,103 @@
       "published_at": "2026-08-14T18:03:13+00:00",
       "fetched_at": "2026-08-17T10:56:37.621718+00:00",
       "status": "pending"
-    },
-    {
-      "id": "n_8f0df9075e03c1ce",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero · Finanzas",
-      "url": "https://eldinero.com.do/376379/hay-23-proyectos-en-monsenor-nouel-sin-ejecucion-financiera",
-      "title": "Hay 23 proyectos en Monseñor Nouel sin ejecución financiera",
-      "summary": "La provincia Monseñor Nouel presenta 23 proyectos de inversión pública sin ejecución financiera, acumulando RD$593.4 millones devengados de una cartera total de RD$669.4 millones. Esta situación, detallada por la Dirección General de Presupuesto, resalta la necesidad de agilizar la asignación y uso de fondos para el desarrollo provincial.",
-      "body": "Un análisis de la inversión pública en Monseñor Nouel revela que 23 de 39 proyectos no han registrado ejecución financiera hasta el 7 de agosto de 2026. Aunque la provincia ha devengado RD$593.4 millones de un total de RD$669.4 millones, la falta de avance en una parte significativa de los proyectos, incluyendo obras viales y de infraestructura, genera preocupación sobre la eficiencia en la asignación de recursos públicos.",
-      "category": "Economia",
-      "relevance": 7,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-13T20:09:30+00:00",
-      "fetched_at": "2026-08-14T17:29:41.767767+00:00",
-      "status": "pending"
     }
   ],
-  "discarded_count": 4,
+  "discarded_count": 7,
   "discarded": [
     {
-      "id": "n_15e47c8a5fe8311b",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "SB emite guía de buenas prácticas para fortalecer la gestión de riesgos ambientales y sociales en la banca",
-      "url": "https://eldinero.com.do/376752/sb-emite-guia-de-buenas-practicas-para-fortalecer-la-gestion-de-riesgos-ambientales-y-sociales-en-la-banca",
-      "source_name": "El Dinero · Finanzas",
-      "relevance": null,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-17T17:00:00.865881+00:00"
+      "id": "n_5e46ae076d7506eb",
+      "motivo": "duplicada",
+      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
+      "title": "Precio del dólar hoy sábado 15 de agosto de 2026 en RD",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-15-agosto-2026",
+      "source_name": "El Caribe · Dinero",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "politica_monetaria",
+        "banca",
+        "macro",
+        "hecho"
+      ],
+      "detalle": "Misma noticia que: Precio del dólar hoy martes 18 de agosto de 2026 en RD",
+      "fetched_at": "2026-08-18T11:01:01.945497+00:00"
     },
     {
-      "id": "n_7dc0d3c521f55a0e",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Banco BHD anuncia la IV Feria Inmobiliaria New York City",
-      "url": "https://eldinero.com.do/376747/banco-bhd-anuncia-la-iv-feria-inmobiliaria-new-york-city",
+      "id": "n_9b24e531a0fa5ff4",
+      "motivo": "duplicada",
+      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
+      "title": "DGII informa que ha emitido más de 2,000 millones de Comprobantes Fiscales Electrónicos",
+      "url": "https://eldinero.com.do/376742/dgii-informa-que-ha-emitido-mas-de-2000-millones-de-comprobantes-fiscales-electronicos",
       "source_name": "El Dinero · Finanzas",
-      "relevance": null,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-17T17:00:00.866654+00:00"
+      "relevance": 9,
+      "señales": [
+        "regulador"
+      ],
+      "detalle": "Misma noticia que: DGII logra la recepción de más de 2,000 millones de Comprobantes Fiscales Electrónicos",
+      "fetched_at": "2026-08-18T11:01:01.946028+00:00"
     },
     {
-      "id": "n_3072238c418abedc",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Inversión pública en Monte Plata se concentra más en rehabilitación de carreteras",
-      "url": "https://eldinero.com.do/376686/inversion-publica-en-monte-plata-se-concentra-mas-en-rehabilitacion-de-carreteras",
-      "source_name": "El Dinero · Finanzas",
-      "relevance": null,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-17T17:00:00.875818+00:00"
+      "id": "n_6d3ed4a27e929317",
+      "motivo": "duplicada",
+      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
+      "title": "Banreservas presta en un año más RD$282,430 millones",
+      "url": "https://hoy.com.do/economia/banreservas-presta-ano-rd-282-430-millones_1099137.html",
+      "source_name": "Hoy Digital · Economía",
+      "relevance": 8,
+      "señales": [
+        "banca"
+      ],
+      "detalle": "Misma noticia que: Banreservas desembolsó RD$282,430 MM en un año",
+      "fetched_at": "2026-08-18T11:01:01.950934+00:00"
     },
     {
-      "id": "n_445d4704b36e608d",
+      "id": "n_aa46953472c86a67",
+      "motivo": "duplicada",
+      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
+      "title": "El petróleo de Texas sube 2.55%, con las negociaciones entre EE.UU. e Irán estancadas",
+      "url": "https://eldinero.com.do/376820/el-petroleo-de-texas-sube-2-55-con-las-negociaciones-entre-ee-uu-e-iran-estancadas",
+      "source_name": "El Dinero · RSS",
+      "relevance": 7,
+      "señales": [],
+      "detalle": "Misma noticia que: El petróleo de Texas sube 1.4%, hasta US$82.40 el barril",
+      "fetched_at": "2026-08-18T11:01:01.952309+00:00"
+    },
+    {
+      "id": "n_ae88eb0ae5a0de65",
+      "motivo": "relevancia_baja",
+      "motivo_texto": "El modelo le puso poca relevancia financiera",
+      "title": "Alpha Puesto de Bolsa celebra cuarta edición del bootcamp de verano \"Inversiones Inteligentes\"",
+      "url": "https://hoy.com.do/economia/alpha-puesto-bolsa-celebra-cuarta-edicion-bootcamp-verano-inversiones-inteligentes_1099100.html",
+      "source_name": "Hoy Digital · Economía",
+      "relevance": 5,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-18T10:57:14.113745+00:00"
+    },
+    {
+      "id": "n_24f5f7cc6e3ff91a",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Un buen manual de “compliance” debe explicar la forma de cumplirlo",
-      "url": "https://eldinero.com.do/376520/un-buen-manual-de-compliance-debe-explicar-la-forma-de-cumplirlo",
-      "source_name": "El Dinero · Finanzas",
+      "title": "El precio del dólar de este lunes 17 de agosto del 2026",
+      "url": "https://hoy.com.do/economia/precio-dolar-lunes-17-agosto-2026_1099066.html",
+      "source_name": "Hoy Digital · Economía",
       "relevance": null,
       "señales": [],
       "detalle": "",
-      "fetched_at": "2026-08-17T17:00:03.464015+00:00"
+      "fetched_at": "2026-08-18T11:01:00.440712+00:00"
+    },
+    {
+      "id": "n_4502da05557b4ccb",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Punta Catalina sube aportes MHE, pero baja facturación",
+      "url": "https://hoy.com.do/economia/punta-catalina-sube-aportes-mhe-baja-facturacion_1099135.html",
+      "source_name": "Hoy Digital · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-18T11:01:00.441424+00:00"
     }
   ]
 }
