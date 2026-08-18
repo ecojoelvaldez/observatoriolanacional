@@ -23,6 +23,714 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script id="ln-chart-studio-core">
+/* =====================================================================
+   ESTUDIO DE GRÁFICAS · núcleo
+   ---------------------------------------------------------------------
+   Va inmediatamente después de Chart.js y ANTES de todo el código que
+   dibuja. Envuelve el constructor `Chart` en un Proxy, así que TODA
+   gráfica del sitio —la dibuje el controlador que la dibuje, y en este
+   archivo hay cinco que se pisan entre sí— pasa por aquí antes de
+   existir. Ese es el punto: no hay que tocar ningún controlador para
+   que lo editado por el analista mande.
+
+   Qué hace en cada construcción:
+     1. Guarda la "receta" original de la gráfica (LN_CHART_STUDIO.raw).
+        Con ella se puede redibujar al instante y se puede restablecer
+        el dato del pipeline cuando el analista deshace su edición.
+     2. Si hay edición guardada para ese canvas en la pestaña activa,
+        reescribe datos, tipo, colores, ejes y formato antes de dibujar.
+
+   La edición se guarda en Supabase (tabla chart_overrides) para que la
+   vea todo el que entre, con copia en localStorage para que la primera
+   pintada no espere a la red. El resto —modal, hoja tipo Excel,
+   controles de forma— vive en el bloque `ln-chart-studio-ui`, al final
+   del documento.
+   ===================================================================== */
+(function () {
+  'use strict';
+
+  if (!window.Chart || window.LN_CHART_STUDIO) return;
+
+  var NS = window.LN_CHART_STUDIO = {
+    version: 1,
+    overrides: {},      // chartKey -> config editada
+    raw: {},            // canvasId -> receta original (para restablecer)
+    instances: {},      // canvasId -> instancia viva de Chart
+    ready: false        // true cuando ya se leyó lo publicado en Supabase
+  };
+
+  var CACHE_KEY = 'ln-chart-overrides-cache-v1';
+
+  var PALETTE = ['#0070C0', '#E6BE00', '#1F4E79', '#15803D', '#C0392B',
+                 '#8A8A8A', '#7C3AED', '#EA580C', '#0EA5E9', '#6B7280'];
+  NS.PALETTE = PALETTE;
+
+  var ROUND_TYPES = ['doughnut', 'pie', 'polarArea'];
+  NS.isRoundType = function (t) { return ROUND_TYPES.indexOf(String(t)) >= 0; };
+
+  /* ── Utilidades ──────────────────────────────────────────────────── */
+
+  function num(v, fallback) {
+    var n = Number(v);
+    return Number.isFinite(n) ? n : fallback;
+  }
+
+  function clampInt(v, lo, hi, fallback) {
+    var n = Math.round(Number(v));
+    if (!Number.isFinite(n)) return fallback;
+    return Math.min(hi, Math.max(lo, n));
+  }
+
+  function hexToRgba(hex, alpha) {
+    var h = String(hex || '#8A8A8A').trim();
+    if (h.charAt(0) !== '#') return h;
+    h = h.replace('#', '');
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    var r = parseInt(h.substring(0, 2), 16) || 0;
+    var g = parseInt(h.substring(2, 4), 16) || 0;
+    var b = parseInt(h.substring(4, 6), 16) || 0;
+    return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+  }
+  NS.hexToRgba = hexToRgba;
+
+  // Primer color usable de un dataset (puede venir como array o función).
+  function firstColor(value) {
+    if (typeof value === 'string' && value.charAt(0) === '#') return value;
+    if (Array.isArray(value)) {
+      for (var i = 0; i < value.length; i++) {
+        if (typeof value[i] === 'string' && value[i].charAt(0) === '#') return value[i];
+      }
+    }
+    return null;
+  }
+
+  /* Clon que preserva funciones por referencia: los formateadores y
+     callbacks de Chart.js tienen que sobrevivir intactos. Los objetos de
+     plugin (ChartDataLabels) se copian por referencia, no se clonan. */
+  function safeClone(value, depth) {
+    depth = depth || 0;
+    if (depth > 12) return value;
+    if (Array.isArray(value)) {
+      return value.map(function (item) { return safeClone(item, depth + 1); });
+    }
+    if (value && typeof value === 'object') {
+      if (value instanceof Date) return new Date(value.getTime());
+      if (value.nodeType) return value;
+      var out = {};
+      for (var k in value) {
+        if (Object.prototype.hasOwnProperty.call(value, k)) out[k] = safeClone(value[k], depth + 1);
+      }
+      return out;
+    }
+    return value; // primitivos y funciones
+  }
+  NS.safeClone = safeClone;
+
+  function cloneConfig(config) {
+    if (!config || typeof config !== 'object') return config;
+    var out = {};
+    if (config.type !== undefined) out.type = config.type;
+    out.data = safeClone(config.data || {});
+    out.options = safeClone(config.options || {});
+    if (Array.isArray(config.plugins)) out.plugins = config.plugins.slice();
+    return out;
+  }
+  NS.cloneConfig = cloneConfig;
+
+  /* ── Contexto: qué pestaña está activa ───────────────────────────── */
+
+  /* El controlador de segmentos dibuja PRIMERO y recién después mueve la
+     clase `.active` de la pestaña (render() = baseDraw + syncUi, en ese
+     orden). Leer el DOM en el momento de construir devolvería la pestaña
+     anterior y se aplicaría la edición equivocada. Por eso se anota a dónde
+     va el clic antes de que nadie dibuje: este oyente está en el <head>, así
+     que corre antes que los controladores —que además cortan la propagación
+     con stopImmediatePropagation— y la anotación se descarta sola en cuanto
+     el DOM se pone al día. */
+  var pendingCredit = null;
+  var pendingCapta = null;
+  var PENDING_TTL = 6000;
+
+  document.addEventListener('click', function (e) {
+    if (!e.target || !e.target.closest) return;
+    var now = Date.now();
+    var hit = e.target.closest('#cartera-tipo-product-tabs [data-cartera-product]');
+    if (hit) { pendingCredit = { parent: hit.dataset.carteraProduct || 'total', slice: null, at: now }; return; }
+    hit = e.target.closest('#consumo-subfilter [data-consumo-slice]');
+    if (hit) { pendingCredit = { parent: 'consumo', slice: hit.dataset.consumoSlice || 'consumo_general', at: now }; return; }
+    hit = e.target.closest('#comercial-subfilter [data-comercial-slice]');
+    if (hit) { pendingCredit = { parent: 'comercial', slice: hit.dataset.comercialSlice || 'comercial', at: now }; return; }
+    hit = e.target.closest('#captacion-product-tabs [data-captacion-product]');
+    if (hit) { pendingCapta = { parent: hit.dataset.captacionProduct || 'total', at: now }; }
+  }, true);
+
+  function creditContextFrom(parent, slice) {
+    if (parent === 'consumo') {
+      if (!slice) {
+        var cs = document.querySelector('#consumo-subfilter .consumo-subfilter-btn.active');
+        slice = (cs && cs.dataset && cs.dataset.consumoSlice) || 'consumo_general';
+      }
+      return 'creditos:consumo:' + slice;
+    }
+    if (parent === 'comercial') {
+      if (!slice) {
+        var ms = document.querySelector('#comercial-subfilter .consumo-subfilter-btn.active');
+        slice = (ms && ms.dataset && ms.dataset.comercialSlice) || 'comercial';
+      }
+      return 'creditos:comercial:' + slice;
+    }
+    return 'creditos:' + (parent || 'total');
+  }
+
+  function activeCreditContext() {
+    var tab = document.querySelector('#cartera-tipo-product-tabs .capta-product-tab.active');
+    var domParent = (tab && tab.dataset && tab.dataset.carteraProduct) || 'total';
+
+    if (pendingCredit) {
+      if (Date.now() - pendingCredit.at > PENDING_TTL) pendingCredit = null;
+      else if (pendingCredit.parent !== domParent) return creditContextFrom(pendingCredit.parent, pendingCredit.slice);
+      else if (pendingCredit.slice) {
+        var domCtx = creditContextFrom(domParent, null);
+        var wanted = creditContextFrom(pendingCredit.parent, pendingCredit.slice);
+        if (domCtx !== wanted) return wanted;
+        pendingCredit = null;
+      } else {
+        pendingCredit = null;
+      }
+    }
+    return creditContextFrom(domParent, null);
+  }
+
+  function activeCaptaContext() {
+    var tab = document.querySelector('#captacion-product-tabs .capta-product-tab.active');
+    var domParent = (tab && tab.dataset && tab.dataset.captacionProduct) || 'total';
+    if (pendingCapta) {
+      if (Date.now() - pendingCapta.at > PENDING_TTL) pendingCapta = null;
+      else if (pendingCapta.parent !== domParent) return 'captacion:' + pendingCapta.parent;
+      else pendingCapta = null;
+    }
+    return 'captacion:' + domParent;
+  }
+
+  NS.contextFor = function (canvasId) {
+    var id = String(canvasId || '');
+    try {
+      if (id.indexOf('car-chart-') === 0) return activeCreditContext();
+      if (id.indexOf('cap-chart-') === 0) return activeCaptaContext();
+    } catch (_) {}
+    return 'base';
+  };
+
+  NS.keyFor = function (canvasId, context) {
+    return String(canvasId) + '@' + (context || NS.contextFor(canvasId));
+  };
+
+  NS.get = function (canvasId, context) {
+    var entry = NS.overrides[NS.keyFor(canvasId, context)];
+    return (entry && entry.enabled !== false && entry.config) ? entry.config : null;
+  };
+
+  NS.hasOverride = function (canvasId, context) { return !!NS.get(canvasId, context); };
+
+  /* ── Lectura del estado actual de una gráfica (snapshot) ─────────── */
+
+  /* El editor no parte de cero: lee la gráfica tal como está dibujada y
+     rellena todos los campos con eso. Así, guardar sin tocar nada
+     reproduce exactamente lo que ya se veía, y lo que el analista cambie
+     es lo único que cambia. */
+
+  function sniffFormat(config) {
+    var out = { prefix: '', suffix: '', decimals: 0 };
+    var datasets = (config.data && config.data.datasets) || [];
+    var probes = [];
+
+    datasets.forEach(function (ds) {
+      if (ds && ds.datalabels && typeof ds.datalabels.formatter === 'function') {
+        probes.push(ds.datalabels.formatter);
+      }
+    });
+    // El tooltip suele ser el único que lleva el formato completo
+    // ("RD$1,235 MM"): las etiquetas del eje van sin prefijo para no
+    // ensuciar la escala. Se le pasa un nombre de serie centinela para
+    // poder recortarlo después y quedarse solo con el número formateado.
+    var SENTINEL = '\u0001';
+    try {
+      var tooltip = config.options && config.options.plugins && config.options.plugins.tooltip;
+      var labelCb = tooltip && tooltip.callbacks && tooltip.callbacks.label;
+      if (typeof labelCb === 'function') {
+        probes.push(function (v) {
+          var text = labelCb({
+            dataset: { label: SENTINEL, data: [v] },
+            parsed: { x: v, y: v },
+            raw: v, label: SENTINEL, dataIndex: 0, datasetIndex: 0,
+            chart: { data: config.data || {} }
+          });
+          if (typeof text !== 'string') return text;
+          var cut = text.lastIndexOf(SENTINEL);
+          if (cut >= 0) text = text.slice(cut + 1);
+          return text.replace(/^[\s:·\-–]+/, '');
+        });
+      }
+    } catch (_) {}
+
+    try {
+      var scales = (config.options && config.options.scales) || {};
+      ['y', 'x'].forEach(function (axis) {
+        var cb = scales[axis] && scales[axis].ticks && scales[axis].ticks.callback;
+        if (typeof cb === 'function') probes.push(cb);
+      });
+    } catch (_) {}
+
+    for (var i = 0; i < probes.length; i++) {
+      var text;
+      try { text = probes[i](1234.5, 0, []); } catch (_) { continue; }
+      if (typeof text !== 'string' || !/\d/.test(text)) continue;
+      var first = text.search(/[\d-]/);
+      var last = text.length - 1;
+      while (last >= 0 && !/\d/.test(text.charAt(last))) last--;
+      out.prefix = text.slice(0, first);
+      out.suffix = text.slice(last + 1);
+      // es-DO: la coma agrupa millares y el punto separa decimales, así que
+      // solo cuenta como decimal lo que va tras el último punto.
+      var decPart = text.slice(first, last + 1).match(/\.(\d{1,4})$/);
+      out.decimals = decPart ? decPart[1].length : 0;
+      return out;
+    }
+    return out;
+  }
+
+  /* Lee los datasets tal como están y los devuelve en el modelo simple que
+     maneja el editor. Lo usan tanto el snapshot (para rellenar el modal)
+     como la aplicación de una edición que solo cambió la forma. */
+  function readSeries(config, baseType, round) {
+    var data = config.data || {};
+    var datasets = Array.isArray(data.datasets) ? data.datasets : [];
+    return datasets.map(function (ds, i) {
+      var dsType = ds.type || baseType;
+      var color = firstColor(ds.borderColor) || firstColor(ds.backgroundColor) || PALETTE[i % PALETTE.length];
+      var filled = !!(ds.fill && ds.fill !== 'false');
+      return {
+        label: ds.label != null ? String(ds.label) : ('Serie ' + (i + 1)),
+        // Los promedios del pipeline llegan con toda la cola binaria
+        // (32769.50399999999). En una hoja de cálculo eso es ilegible y en
+        // millones de pesos la cuarta decimal no cambia ninguna lectura.
+        data: (ds.data || []).map(function (v) {
+          var n = Number(v);
+          return Number.isFinite(n) ? Math.round(n * 1e4) / 1e4 : null;
+        }),
+        type: dsType === 'line' ? (filled ? 'area' : 'line') : (round ? 'slice' : 'bar'),
+        color: color,
+        colors: round
+          ? (data.labels || []).map(function (_, j) {
+              var bg = ds.backgroundColor;
+              if (Array.isArray(bg) && typeof bg[j] === 'string') return bg[j];
+              return PALETTE[j % PALETTE.length];
+            })
+          : null,
+        axis: ds.yAxisID === 'y1' ? 'y1' : 'y',
+        dash: Array.isArray(ds.borderDash) && ds.borderDash.length > 0,
+        hidden: !!ds.hidden
+      };
+    });
+  }
+  NS.readSeries = readSeries;
+
+  NS.snapshot = function (canvasId) {
+    var recipe = NS.raw[canvasId];
+    if (!recipe) return null;
+    var config = cloneConfig(recipe);
+    var data = config.data || {};
+    var datasets = Array.isArray(data.datasets) ? data.datasets : [];
+    var options = config.options || {};
+    var baseType = config.type || (datasets[0] && datasets[0].type) || 'bar';
+    var round = NS.isRoundType(baseType);
+    var horizontal = options.indexAxis === 'y';
+    var fmt = sniffFormat(config);
+
+    var valueScale = horizontal ? 'x' : 'y';
+    var scales = options.scales || {};
+    var vScale = scales[valueScale] || {};
+    var gridOn = !(vScale.grid && vScale.grid.display === false);
+    var stacked = !!(vScale.stacked || (scales[horizontal ? 'y' : 'x'] || {}).stacked);
+
+    var legend = (options.plugins && options.plugins.legend) || {};
+    var legendPos = legend.display === false ? 'none' : (legend.position || 'bottom');
+
+    var anyLabels = datasets.some(function (ds) {
+      return ds && ds.datalabels && ds.datalabels.display !== false;
+    });
+
+    var series = readSeries(config, baseType, round);
+    var allLines = datasets.length > 0 && datasets.every(function (ds) { return (ds.type || baseType) === 'line'; });
+    var family = round ? baseType : (horizontal ? 'horizontal' : (stacked ? 'stacked' : (allLines ? 'line' : 'grouped')));
+
+    return {
+      v: 1,
+      labels: (data.labels || []).map(function (l) { return String(l); }),
+      series: series,
+      chart: {
+        type: round ? baseType : (allLines ? 'line' : 'bar'),
+        family: family,
+        horizontal: horizontal,
+        stacked: stacked,
+        legend: legendPos,
+        datalabels: anyLabels,
+        grid: gridOn,
+        beginAtZero: vScale.beginAtZero !== false,
+        tension: num(datasets[0] && datasets[0].tension, 0.35),
+        borderRadius: num(datasets[0] && datasets[0].borderRadius, 6),
+        cutout: options.cutout || '62%',
+        decimals: fmt.decimals,
+        prefix: fmt.prefix,
+        suffix: fmt.suffix,
+        yTitle: '',
+        xTitle: ''
+      },
+      text: {}
+    };
+  };
+
+  /* ── Aplicación de la edición sobre la receta original ───────────── */
+
+  function makeFormatter(chart) {
+    var decimals = clampInt(chart.decimals, 0, 4, 0);
+    var prefix = chart.prefix || '';
+    var suffix = chart.suffix || '';
+    return function (value) {
+      var n = Number(value);
+      if (!Number.isFinite(n)) return 'N/D';
+      return prefix + n.toLocaleString('es-DO', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+      }) + suffix;
+    };
+  }
+  NS.makeFormatter = makeFormatter;
+
+  function axisTitle(text) {
+    if (!text) return { display: false };
+    return {
+      display: true,
+      text: String(text),
+      color: '#8A8A8A',
+      font: { family: 'Inter', size: 10, weight: '600' }
+    };
+  }
+
+  NS.applyTo = function (config, ov) {
+    var chart = ov.chart || {};
+    config.data = config.data || {};
+    config.options = config.options || {};
+
+    var data = config.data;
+    var options = config.options;
+    var baseDatasets = Array.isArray(data.datasets) ? data.datasets : [];
+    var family = chart.family || (chart.horizontal ? 'horizontal' : (chart.stacked ? 'stacked' : 'grouped'));
+    var round = NS.isRoundType(family);
+    var horizontal = family === 'horizontal' || !!chart.horizontal;
+    var stacked = family === 'stacked' || !!chart.stacked;
+    var fmt = makeFormatter(chart);
+    var showLabels = chart.datalabels !== false;
+
+    if (Array.isArray(ov.labels)) data.labels = ov.labels.slice();
+
+    // Una edición puede traer solo la forma (es lo que copia "aplicar a todas
+    // las pestañas"): en ese caso las series salen de lo que ya está dibujado,
+    // para que el cambio de tipo o de colores también las alcance.
+    var baseType = config.type || (baseDatasets[0] && baseDatasets[0].type) || 'bar';
+    var series;
+    if (Array.isArray(ov.series) && ov.series.length) {
+      series = ov.series;
+    } else {
+      // Edición de solo forma: las series salen de lo dibujado, pero su tipo
+      // lo manda la familia elegida. Si no, "aplicar esta forma a todas las
+      // pestañas" dejaría las otras con el trazo viejo pese al cambio.
+      var uniform = round ? 'slice' : (family === 'line' ? 'line' : 'bar');
+      series = NS.readSeries(config, baseType, round).map(function (s) {
+        return Object.assign({}, s, { type: uniform });
+      });
+    }
+    // Dona, pastel y área polar dibujan una sola serie: un segundo dataset
+    // saldría como un anillo extra que nadie pidió.
+    if (round) series = series.slice(0, 1);
+
+    if (series.length) {
+      data.datasets = series.map(function (s, i) {
+        var base = Object.assign({}, baseDatasets[i] || baseDatasets[0] || {});
+        base.label = s.label != null ? String(s.label) : base.label;
+        base.data = Array.isArray(s.data) ? s.data.slice() : base.data;
+        base.hidden = !!s.hidden;
+
+        if (round) {
+          var slices = Array.isArray(s.colors) && s.colors.length
+            ? s.colors.slice()
+            : (data.labels || []).map(function (_, j) { return PALETTE[j % PALETTE.length]; });
+          base.backgroundColor = slices;
+          base.borderColor = '#FFFFFF';
+          base.borderWidth = 3;
+          delete base.type;
+          delete base.fill;
+          delete base.yAxisID;
+        } else {
+          var kind = s.type === 'area' ? 'line' : (s.type === 'slice' ? 'bar' : (s.type || (family === 'line' ? 'line' : 'bar')));
+          base.type = kind;
+          var color = s.color || firstColor(base.borderColor) || firstColor(base.backgroundColor) || PALETTE[i % PALETTE.length];
+          base.borderColor = color;
+          if (kind === 'line') {
+            var fill = s.type === 'area';
+            base.fill = fill;
+            base.backgroundColor = fill ? hexToRgba(color, 0.16) : 'transparent';
+            base.tension = num(chart.tension, 0.35);
+            base.pointRadius = chart.points === false ? 0 : 3;
+            base.pointHoverRadius = 5;
+            base.borderWidth = num(s.width, 3);
+            base.borderDash = s.dash ? [6, 4] : [];
+            delete base.borderRadius;
+            delete base.maxBarThickness;
+          } else {
+            base.backgroundColor = color;
+            base.borderWidth = 0;
+            base.borderRadius = clampInt(chart.borderRadius, 0, 24, 6);
+            base.maxBarThickness = 64;
+            delete base.fill;
+            delete base.borderDash;
+          }
+          base.yAxisID = s.axis === 'y1' ? 'y1' : 'y';
+        }
+
+        // Etiquetas de datos: se respeta la colocación fina que ya traía
+        // la gráfica original y solo se cambia el formateador y el
+        // encendido/apagado, que es lo que controla el analista.
+        var dl = (base.datalabels && typeof base.datalabels === 'object') ? Object.assign({}, base.datalabels) : {};
+        if (!showLabels) {
+          dl.display = false;
+        } else {
+          // `display` viene de los ayudantes dl* y suele decir "solo el último
+          // punto de la línea", regla pensada para series de 24 meses. Si la
+          // serie dejó de ser línea, esa regla ya no aplica.
+          var stillLine = !round && (s.type === 'line' || s.type === 'area');
+          if (typeof dl.display === 'function' && !stillLine) delete dl.display;
+          if (dl.display === false) delete dl.display;
+          dl.formatter = function (value) {
+            return Number.isFinite(Number(value)) ? fmt(value) : null;
+          };
+          if (dl.anchor === undefined) {
+            dl.anchor = round ? 'center' : 'end';
+            dl.align = round ? 'center' : (horizontal ? 'right' : 'top');
+            dl.offset = round ? 0 : 6;
+          }
+          if (dl.color === undefined) dl.color = '#0D2742';
+          if (dl.font === undefined) dl.font = { family: 'JetBrains Mono', size: 10, weight: '600' };
+          if (dl.backgroundColor === undefined) dl.backgroundColor = 'rgba(255,255,255,0.92)';
+          if (dl.borderColor === undefined) dl.borderColor = 'rgba(0,0,0,0.08)';
+          if (dl.borderWidth === undefined) dl.borderWidth = 1;
+          if (dl.borderRadius === undefined) dl.borderRadius = 4;
+          if (dl.padding === undefined) dl.padding = { top: 2, bottom: 2, left: 5, right: 5 };
+          dl.clip = false;
+        }
+        base.datalabels = dl;
+        return base;
+      });
+
+    }
+
+    // Tipo raíz de la gráfica. Los datasets llevan su propio `type`, así que
+    // las combinaciones barra + línea funcionan con cualquiera de las dos.
+    config.type = round ? family : (family === 'line' ? 'line' : 'bar');
+
+    // Opciones generales.
+    options.responsive = true;
+    options.maintainAspectRatio = false;
+    options.plugins = options.plugins || {};
+
+    var legendPos = chart.legend || 'bottom';
+    options.plugins.legend = legendPos === 'none'
+      ? { display: false }
+      : {
+          display: true,
+          position: legendPos,
+          labels: { boxWidth: 12, boxHeight: 12, usePointStyle: true, pointStyle: 'rectRounded',
+                    color: '#5a5a5a', font: { family: 'Inter', size: 11 } }
+        };
+
+    options.plugins.tooltip = Object.assign({}, options.plugins.tooltip, {
+      backgroundColor: '#1F4E79',
+      padding: 10,
+      titleFont: { family: 'Inter', size: 11 },
+      bodyFont: { family: 'JetBrains Mono', size: 11 },
+      callbacks: {
+        label: function (ctx) {
+          var value = round ? ctx.parsed : (horizontal ? ctx.parsed.x : ctx.parsed.y);
+          var name = round ? ctx.label : (ctx.dataset.label || '');
+          return (name ? name + ': ' : '') + fmt(value);
+        }
+      }
+    });
+
+    if (round) {
+      options.scales = { x: { display: false }, y: { display: false } };
+      options.indexAxis = 'x';
+      if (family === 'doughnut') options.cutout = chart.cutout || '62%';
+      else delete options.cutout;
+      options.layout = { padding: { top: 8, bottom: 4 } };
+    } else {
+      options.indexAxis = horizontal ? 'y' : 'x';
+      var valueAxis = horizontal ? 'x' : 'y';
+      var catAxis = horizontal ? 'y' : 'x';
+      var scales = options.scales = Object.assign({}, options.scales);
+
+      scales[catAxis] = Object.assign({}, scales[catAxis], {
+        stacked: stacked,
+        grid: { display: false },
+        ticks: {
+          color: '#8A8A8A',
+          font: { family: 'Inter', size: 10 },
+          maxRotation: horizontal ? 0 : 45,
+          autoSkip: true
+        },
+        title: axisTitle(horizontal ? chart.yTitle : chart.xTitle)
+      });
+
+      scales[valueAxis] = Object.assign({}, scales[valueAxis], {
+        position: horizontal ? 'bottom' : 'left',
+        stacked: stacked,
+        beginAtZero: chart.beginAtZero !== false,
+        grid: { display: chart.grid !== false, color: '#EEEEEE' },
+        ticks: Object.assign({}, (scales[valueAxis] || {}).ticks, {
+          color: '#8A8A8A',
+          font: { family: 'JetBrains Mono', size: 10 },
+          callback: function (v) {
+            return Number(v).toLocaleString('es-DO', {
+              minimumFractionDigits: clampInt(chart.decimals, 0, 4, 0),
+              maximumFractionDigits: clampInt(chart.decimals, 0, 4, 0)
+            });
+          }
+        }),
+        title: axisTitle(horizontal ? chart.xTitle : chart.yTitle)
+      });
+
+      var needsRight = series.some(function (s) { return s.axis === 'y1'; });
+      if (needsRight && !horizontal) {
+        scales.y1 = {
+          position: 'right',
+          beginAtZero: chart.beginAtZero !== false,
+          grid: { drawOnChartArea: false },
+          ticks: {
+            color: '#8A8A8A',
+            font: { family: 'JetBrains Mono', size: 10 },
+            callback: function (v) { return Number(v).toLocaleString('es-DO', { maximumFractionDigits: clampInt(chart.decimals, 0, 4, 0) }); }
+          }
+        };
+      } else if (scales.y1) {
+        delete scales.y1;
+      }
+
+      options.layout = { padding: { top: 22, right: horizontal ? 60 : 12 } };
+    }
+
+    // El plugin de etiquetas tiene que estar registrado en esta gráfica.
+    if (showLabels && window.ChartDataLabels) {
+      config.plugins = Array.isArray(config.plugins) ? config.plugins.slice() : [];
+      if (config.plugins.indexOf(window.ChartDataLabels) < 0) config.plugins.push(window.ChartDataLabels);
+    }
+
+    return config;
+  };
+
+  /* ── Intercepción del constructor ────────────────────────────────── */
+
+  function canvasIdOf(ctx) {
+    try {
+      if (!ctx) return null;
+      if (typeof ctx === 'string') return ctx;
+      if (ctx.id) return ctx.id;
+      if (ctx.canvas && ctx.canvas.id) return ctx.canvas.id;
+    } catch (_) {}
+    return null;
+  }
+
+  var RealChart = window.Chart;
+
+  window.Chart = new Proxy(RealChart, {
+    construct: function (target, args) {
+      var ctx = args[0];
+      var config = args[1];
+      var id = canvasIdOf(ctx);
+
+      // Chart.js se niega a reutilizar un lienzo ocupado, y en esta página hay
+      // varios controladores que redibujan la misma gráfica sin saber unos de
+      // otros. Se suelta el lienzo antes de construir: es justo lo que Chart.js
+      // pide y evita que una excepción corte el redibujado a la mitad.
+      try {
+        var canvasEl = (typeof ctx === 'string') ? document.getElementById(ctx) : (ctx && ctx.canvas ? ctx.canvas : ctx);
+        if (canvasEl && canvasEl.tagName === 'CANVAS' && typeof target.getChart === 'function') {
+          var busy = target.getChart(canvasEl);
+          if (busy) busy.destroy();
+        }
+      } catch (_) {}
+
+      if (id && config) {
+        try {
+          NS.raw[id] = cloneConfig(config);
+          var ov = NS.get(id, NS.contextFor(id));
+          if (ov) config = NS.applyTo(cloneConfig(config), ov);
+        } catch (err) {
+          console.warn('[estudio-graficas] no se pudo aplicar la edición de', id, err);
+          config = args[1];
+        }
+      }
+
+      var instance = new target(ctx, config);
+      if (id) {
+        NS.instances[id] = instance;
+        try {
+          document.dispatchEvent(new CustomEvent('ln:chart-drawn', { detail: { canvasId: id } }));
+        } catch (_) {}
+      }
+      return instance;
+    }
+  });
+
+  /* ── Redibujado ──────────────────────────────────────────────────── */
+
+  /* Redibuja desde la receta original: vuelve a pasar por el Proxy, así
+     que recoge la edición vigente en ese momento (o su ausencia). No
+     depende de qué controlador dibujó la gráfica la primera vez. */
+  NS.rebuild = function (canvasId) {
+    var recipe = NS.raw[canvasId];
+    var canvas = document.getElementById(canvasId);
+    if (!recipe || !canvas) return false;
+    try {
+      var existing = RealChart.getChart ? RealChart.getChart(canvas) : NS.instances[canvasId];
+      if (existing) existing.destroy();
+    } catch (_) {}
+    try {
+      new window.Chart(canvas, cloneConfig(recipe));
+      return true;
+    } catch (err) {
+      console.warn('[estudio-graficas] no se pudo redibujar', canvasId, err);
+      return false;
+    }
+  };
+
+  NS.rebuildAll = function () {
+    Object.keys(NS.raw).forEach(function (id) {
+      var canvas = document.getElementById(id);
+      if (canvas && canvas.offsetParent !== null) NS.rebuild(id);
+    });
+  };
+
+  /* Carga instantánea desde la copia local: la primera pintada ya sale
+     editada, sin esperar a Supabase. */
+  try {
+    var cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+    if (cached && cached.overrides) NS.overrides = cached.overrides;
+  } catch (_) {}
+
+  NS.CACHE_KEY = CACHE_KEY;
+})();
+</script>
 <style>
 :root {
   --cyan:        #00B5E2;
@@ -3647,7 +4355,7 @@ footer .mark{
     </div>
 
     <div class="cartera-panel active" data-cartera-panel-view="tipo">
-      <div class="capta-command cartera-command">
+      <div class="capta-command cartera-command" id="cartera-command">
         <div>
           <div class="eyebrow">Crédito · moneda nacional</div>
           <h3>Mapa de créditos</h3>
@@ -3681,7 +4389,7 @@ footer .mark{
         <p>Corte ejecutivo en moneda nacional. El módulo prioriza escala, cuota, crecimiento y concentración regional de La Nacional.</p>
       </div>
 
-      <div class="capta-kpi-grid">
+      <div class="capta-kpi-grid" id="cartera-kpi-grid">
         <div class="capta-kpi"><span>La Nacional 2026</span><strong id="cartera-kpi-ln">—</strong><em id="cartera-kpi-ln-note">Balance de créditos</em></div>
         <div class="capta-kpi"><span>Market share LN</span><strong id="cartera-kpi-share">—</strong><em id="cartera-kpi-share-note">Participación en sistema</em></div>
         <div class="capta-kpi"><span>Crec. anual LN</span><strong id="cartera-kpi-yoy">—</strong><em>Variación vs. 2025</em></div>
@@ -3756,7 +4464,7 @@ footer .mark{
     </div>
 
     <div class="cartera-panel" data-cartera-panel-view="captacion">
-      <div class="capta-command">
+      <div class="capta-command" id="capta-command-block">
         <div>
           <div class="eyebrow">Captaciones · moneda nacional</div>
           <h3>Mapa de captación</h3>
@@ -3777,7 +4485,7 @@ footer .mark{
         <p>Corte ejecutivo en moneda nacional. El módulo prioriza balance captado, cuota de La Nacional y composición competitiva por entidad.</p>
       </div>
 
-      <div class="capta-kpi-grid">
+      <div class="capta-kpi-grid" id="capta-kpi-grid">
         <div class="capta-kpi"><span>La Nacional 2026</span><strong id="capta-kpi-ln">—</strong><em id="capta-kpi-ln-note">Balance captado</em></div>
         <div class="capta-kpi"><span>Market share LN</span><strong id="capta-kpi-share">—</strong><em id="capta-kpi-share-note">Participación en sistema</em></div>
         <div class="capta-kpi"><span>Crec. anual LN</span><strong id="capta-kpi-yoy">—</strong><em>Variación vs. 2025</em></div>
@@ -15411,6 +16119,1555 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
   else boot();
+})();
+</script>
+
+<style id="ln-chart-studio-style">
+  /* ===================================================================
+     ESTUDIO DE GRÁFICAS · estilos
+     Todo lo de este bloque es exclusivo del analista: sin la clase
+     `analyst-logged` en el <body> no se pinta ni un pixel de más para
+     quien solo viene a leer el observatorio.
+     =================================================================== */
+
+  .ln-chart-edit-btn { display: none; }
+
+  body.analyst-logged .chart-block-head { position: relative; padding-right: 104px; }
+
+  body.analyst-logged .ln-chart-edit-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    position: absolute; top: -2px; right: 0;
+    border: 1px solid rgba(0,112,192,.22); background: rgba(0,112,192,.06);
+    color: var(--ln-navy, #1F4E79); border-radius: 999px;
+    padding: 5px 11px 5px 9px; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-size: 10.5px; font-weight: 800;
+    letter-spacing: .06em; text-transform: uppercase; line-height: 1;
+    -webkit-tap-highlight-color: transparent;
+    transition: background .15s ease, border-color .15s ease, transform .15s ease;
+  }
+  body.analyst-logged .ln-chart-edit-btn:hover {
+    background: rgba(230,190,0,.16); border-color: rgba(230,190,0,.55); transform: translateY(-1px);
+  }
+  body.analyst-logged .ln-chart-edit-btn.is-edited {
+    background: rgba(230,190,0,.18); border-color: rgba(230,190,0,.6); color: #6b5600;
+  }
+  .ln-chart-edit-btn svg { flex: 0 0 auto; }
+
+  /* Sello visible cuando una gráfica muestra números editados a mano. */
+  .ln-edited-flag {
+    display: none; align-items: center; gap: 5px; margin-top: 8px;
+    font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 800;
+    letter-spacing: .1em; text-transform: uppercase; color: #8a6d00;
+  }
+  .ln-edited-flag.is-on { display: inline-flex; }
+  .ln-edited-flag::before {
+    content: ''; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--yellow-dark, #E6BE00); flex: 0 0 auto;
+  }
+
+  /* ── Modal ────────────────────────────────────────────────────────── */
+  .ln-studio-overlay {
+    position: fixed; inset: 0; z-index: 400; display: none;
+    align-items: center; justify-content: center; padding: 22px;
+    background: rgba(8,26,42,.58); backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+  .ln-studio-overlay.is-open { display: flex; }
+
+  .ln-studio {
+    width: min(1120px, 96vw); max-height: 92vh; display: flex; flex-direction: column;
+    background: var(--white, #fff); border-radius: 16px; overflow: hidden;
+    box-shadow: 0 30px 90px rgba(6,25,45,.34);
+    font-family: 'Inter', sans-serif; color: var(--ink, #2A2A2A);
+    animation: lnStudioIn .24s cubic-bezier(.16,1,.3,1) both;
+  }
+  @keyframes lnStudioIn { from { opacity: 0; transform: translateY(14px) scale(.985); } to { opacity: 1; transform: none; } }
+
+  .ln-studio-head {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    padding: 20px 24px 16px; border-bottom: 1px solid var(--line, #E4E4E4);
+    background: linear-gradient(180deg, #FFFFFF, #FAFCFD);
+  }
+  .ln-studio-head .eyebrow {
+    font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase;
+    font-weight: 900; color: var(--ln-blue, #0070C0); margin-bottom: 6px;
+  }
+  .ln-studio-head h3 {
+    font-family: 'Fraunces', serif; font-size: 21px; font-weight: 700;
+    color: var(--ln-deep-navy, #002060); margin: 0 0 6px; letter-spacing: -.3px;
+  }
+  .ln-studio-ctx {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10.5px; font-weight: 700; color: #61778C;
+    background: rgba(0,112,192,.07); border: 1px solid rgba(0,112,192,.14);
+    border-radius: 999px; padding: 4px 10px;
+  }
+  .ln-studio-close {
+    border: 1px solid var(--line, #E4E4E4); background: #fff; cursor: pointer;
+    width: 34px; height: 34px; border-radius: 9px; font-size: 18px; line-height: 1;
+    color: var(--ink-soft, #555); flex: 0 0 auto; transition: all .15s ease;
+  }
+  .ln-studio-close:hover { border-color: var(--red, #C0392B); color: var(--red, #C0392B); }
+
+  .ln-studio-tabs {
+    display: flex; gap: 2px; padding: 0 24px; border-bottom: 1px solid var(--line, #E4E4E4);
+    background: #fff; overflow-x: auto; -webkit-overflow-scrolling: touch;
+  }
+  .ln-studio-tab {
+    border: 0; background: transparent; cursor: pointer; white-space: nowrap;
+    padding: 13px 15px; font-size: 12px; font-weight: 700; color: #7A8A99;
+    border-bottom: 2.5px solid transparent; letter-spacing: .02em;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .ln-studio-tab:hover { color: var(--ln-navy, #1F4E79); }
+  .ln-studio-tab.active { color: var(--ln-deep-navy, #002060); border-bottom-color: var(--yellow-dark, #E6BE00); }
+
+  .ln-studio-body { padding: 20px 24px 24px; overflow-y: auto; flex: 1; background: #FCFDFE; }
+  .ln-studio-pane { display: none; }
+  .ln-studio-pane.active { display: block; }
+
+  .ln-studio-hint {
+    font-size: 12px; line-height: 1.55; color: #61778C; margin: 0 0 14px;
+    background: rgba(0,112,192,.05); border-left: 3px solid var(--ln-blue, #0070C0);
+    padding: 9px 12px; border-radius: 0 7px 7px 0;
+  }
+  .ln-studio-hint b { color: var(--ln-deep-navy, #002060); }
+
+  /* ── Barra de herramientas de la hoja ─────────────────────────────── */
+  .ln-sheet-tools { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+  .ln-tool {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid var(--line, #E4E4E4); background: #fff; cursor: pointer;
+    border-radius: 8px; padding: 7px 12px; font-size: 11.5px; font-weight: 700;
+    color: var(--ink, #2A2A2A); font-family: 'Inter', sans-serif; line-height: 1;
+    transition: all .14s ease; -webkit-tap-highlight-color: transparent;
+  }
+  .ln-tool:hover { border-color: var(--ln-blue, #0070C0); background: rgba(0,112,192,.05); }
+  .ln-tool.accent { border-color: rgba(230,190,0,.5); background: rgba(230,190,0,.1); }
+  .ln-tool.accent:hover { background: rgba(230,190,0,.2); }
+  .ln-tool.danger:hover { border-color: var(--red, #C0392B); background: rgba(192,57,43,.06); color: var(--red, #C0392B); }
+
+  /* ── Hoja tipo Excel ──────────────────────────────────────────────── */
+  .ln-sheet-wrap {
+    border: 1px solid #D8E1E8; border-radius: 10px; overflow: auto;
+    max-height: 46vh; background: #fff; -webkit-overflow-scrolling: touch;
+  }
+  table.ln-sheet { border-collapse: separate; border-spacing: 0; width: max-content; min-width: 100%; }
+  table.ln-sheet th, table.ln-sheet td { border-right: 1px solid #E7EDF2; border-bottom: 1px solid #E7EDF2; padding: 0; }
+  table.ln-sheet thead th {
+    position: sticky; top: 0; z-index: 3; background: #F1F5F8; padding: 7px 8px;
+    font-size: 11px; font-weight: 700; color: var(--ln-navy, #1F4E79); text-align: left;
+    box-shadow: inset 0 -1px 0 #D8E1E8;
+  }
+  table.ln-sheet thead th.ln-corner { z-index: 4; left: 0; min-width: 168px; }
+  table.ln-sheet tbody th {
+    position: sticky; left: 0; z-index: 2; background: #F7FAFC; min-width: 168px;
+  }
+  table.ln-sheet tbody tr:hover td { background: rgba(0,112,192,.035); }
+
+  .ln-sheet input {
+    border: 0; outline: 0; background: transparent; width: 100%;
+    padding: 8px 9px; font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--ink, #2A2A2A); box-sizing: border-box;
+  }
+  .ln-sheet td input { text-align: right; }
+  .ln-sheet tbody th input { font-family: 'Inter', sans-serif; font-weight: 600; text-align: left; }
+  .ln-sheet input:focus {
+    background: #fff; box-shadow: inset 0 0 0 2px var(--ln-blue, #0070C0); border-radius: 2px;
+  }
+  .ln-sheet td { min-width: 118px; }
+
+  .ln-sheet-serie { display: flex; align-items: center; gap: 6px; }
+  .ln-sheet-serie input.ln-serie-name {
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 11.5px;
+    padding: 5px 6px; border-radius: 5px; min-width: 96px;
+  }
+  .ln-sheet-serie input.ln-serie-name:focus { box-shadow: inset 0 0 0 2px var(--ln-blue, #0070C0); }
+  input.ln-swatch {
+    -webkit-appearance: none; appearance: none; border: 1px solid #C9D6E0;
+    width: 22px; height: 22px; border-radius: 6px; padding: 0; cursor: pointer;
+    background: transparent; flex: 0 0 auto;
+  }
+  input.ln-swatch::-webkit-color-swatch-wrapper { padding: 2px; }
+  input.ln-swatch::-webkit-color-swatch { border: 0; border-radius: 4px; }
+  input.ln-swatch::-moz-color-swatch { border: 0; border-radius: 4px; }
+
+  .ln-mini-x {
+    border: 0; background: transparent; cursor: pointer; color: #9AACBA;
+    font-size: 15px; line-height: 1; padding: 2px 4px; border-radius: 4px; flex: 0 0 auto;
+  }
+  .ln-mini-x:hover { color: var(--red, #C0392B); background: rgba(192,57,43,.08); }
+
+  /* ── Controles de forma y formato ─────────────────────────────────── */
+  .ln-field-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(212px, 1fr)); gap: 14px; }
+  .ln-field { display: flex; flex-direction: column; gap: 6px; }
+  .ln-field > label {
+    font-size: 9.5px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; color: #7A8A99;
+  }
+  .ln-field select, .ln-field input[type="text"], .ln-field input[type="number"], .ln-field textarea {
+    border: 1px solid var(--line, #E4E4E4); border-radius: 8px; padding: 9px 10px;
+    font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink, #2A2A2A);
+    background: #fff; width: 100%; box-sizing: border-box; outline: 0;
+  }
+  .ln-field select:focus, .ln-field input:focus, .ln-field textarea:focus {
+    border-color: var(--ln-blue, #0070C0); box-shadow: 0 0 0 3px rgba(0,112,192,.12);
+  }
+  .ln-field textarea { min-height: 74px; resize: vertical; line-height: 1.5; }
+
+  .ln-switch-row { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
+  .ln-switch {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    border: 1px solid var(--line, #E4E4E4); border-radius: 9px; padding: 9px 13px;
+    font-size: 12px; font-weight: 600; color: var(--ink-soft, #555); background: #fff;
+    user-select: none; transition: all .14s ease;
+  }
+  .ln-switch:hover { border-color: var(--ln-blue, #0070C0); }
+  .ln-switch input { width: 16px; height: 16px; accent-color: var(--ln-blue, #0070C0); margin: 0; cursor: pointer; }
+  .ln-switch.on { border-color: rgba(230,190,0,.6); background: rgba(230,190,0,.09); color: var(--ink, #2A2A2A); }
+
+  .ln-section-title {
+    font-size: 9.5px; font-weight: 900; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--ln-blue, #0070C0); margin: 22px 0 11px; padding-bottom: 7px;
+    border-bottom: 1px solid var(--line-soft, #EEE);
+  }
+  .ln-section-title:first-child { margin-top: 0; }
+
+  table.ln-series-table { width: 100%; border-collapse: collapse; }
+  table.ln-series-table th {
+    text-align: left; font-size: 9.5px; font-weight: 900; letter-spacing: .12em;
+    text-transform: uppercase; color: #7A8A99; padding: 0 8px 8px; white-space: nowrap;
+  }
+  table.ln-series-table td { padding: 5px 8px 5px 0; border-top: 1px solid var(--line-soft, #EEE); }
+  table.ln-series-table td:first-child { font-size: 12.5px; font-weight: 600; padding-left: 0; }
+  table.ln-series-table select { border: 1px solid var(--line, #E4E4E4); border-radius: 7px; padding: 6px 8px; font-size: 12px; background: #fff; font-family: 'Inter', sans-serif; }
+  table.ln-series-table input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--ln-blue, #0070C0); cursor: pointer; }
+
+  /* ── Pie del modal ────────────────────────────────────────────────── */
+  .ln-studio-foot {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    padding: 14px 24px; border-top: 1px solid var(--line, #E4E4E4); background: #fff;
+  }
+  .ln-studio-status { font-size: 11.5px; color: #61778C; flex: 1 1 200px; min-width: 0; }
+  .ln-studio-status.ok { color: var(--green, #1E8449); font-weight: 600; }
+  .ln-studio-status.err { color: var(--red, #C0392B); font-weight: 600; }
+  .ln-foot-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .ln-btn {
+    border: 1px solid var(--line, #E4E4E4); background: #fff; cursor: pointer;
+    border-radius: 9px; padding: 10px 16px; font-size: 12.5px; font-weight: 700;
+    font-family: 'Inter', sans-serif; color: var(--ink, #2A2A2A); line-height: 1;
+    transition: all .14s ease; -webkit-tap-highlight-color: transparent;
+  }
+  .ln-btn:hover { border-color: var(--ln-blue, #0070C0); }
+  .ln-btn.primary {
+    background: var(--ln-deep-navy, #002060); border-color: var(--ln-deep-navy, #002060); color: #fff;
+  }
+  .ln-btn.primary:hover { background: var(--ln-navy, #1F4E79); border-color: var(--ln-navy, #1F4E79); }
+  .ln-btn.ghost-danger { color: var(--red, #C0392B); }
+  .ln-btn.ghost-danger:hover { border-color: var(--red, #C0392B); background: rgba(192,57,43,.06); }
+  .ln-btn[disabled] { opacity: .5; cursor: not-allowed; }
+
+  /* ── Modo edición de números en tarjetas KPI y textos ─────────────── */
+  .ln-text-editing [data-ln-editable="on"] {
+    outline: 2px dashed rgba(0,112,192,.5); outline-offset: 3px;
+    border-radius: 4px; cursor: text; background: rgba(0,112,192,.045);
+  }
+  .ln-text-editing [data-ln-editable="on"]:focus {
+    outline: 2px solid var(--ln-blue, #0070C0); background: rgba(0,112,192,.08);
+  }
+  .ln-text-bar {
+    position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%);
+    z-index: 380; display: none; align-items: center; gap: 10px; flex-wrap: wrap;
+    background: var(--ln-deep-navy, #002060); color: #fff;
+    border-radius: 12px; padding: 11px 15px; box-shadow: 0 18px 44px rgba(6,25,45,.34);
+    font-family: 'Inter', sans-serif; font-size: 12.5px; max-width: 94vw;
+  }
+  .ln-text-bar.is-on { display: flex; }
+  .ln-text-bar b { font-weight: 700; }
+  .ln-text-bar button {
+    border: 1px solid rgba(255,255,255,.28); background: rgba(255,255,255,.08); color: #fff;
+    border-radius: 8px; padding: 7px 13px; font-size: 12px; font-weight: 700; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all .14s ease;
+  }
+  .ln-text-bar button:hover { background: rgba(255,255,255,.2); }
+  .ln-text-bar button.go { background: var(--yellow-dark, #E6BE00); border-color: var(--yellow-dark, #E6BE00); color: #3d3100; }
+  .ln-text-bar button.go:hover { background: var(--yellow, #FFD500); }
+
+  .ln-numbers-toggle { display: none; }
+  body.analyst-logged .ln-numbers-toggle {
+    display: inline-flex; align-items: center; gap: 6px; margin-left: auto;
+    border: 1px solid rgba(0,112,192,.22); background: rgba(0,112,192,.06);
+    color: var(--ln-navy, #1F4E79); border-radius: 999px; padding: 7px 14px;
+    cursor: pointer; font-family: 'Inter', sans-serif; font-size: 10.5px;
+    font-weight: 800; letter-spacing: .06em; text-transform: uppercase; line-height: 1;
+    transition: all .15s ease;
+  }
+  body.analyst-logged .ln-numbers-toggle:hover { background: rgba(230,190,0,.16); border-color: rgba(230,190,0,.55); }
+  body.analyst-logged .ln-numbers-toggle.is-on { background: var(--yellow-dark, #E6BE00); border-color: var(--yellow-dark, #E6BE00); color: #3d3100; }
+
+  @media (max-width: 760px) {
+    .ln-studio-overlay { padding: 0; }
+    .ln-studio { width: 100vw; max-height: 100vh; height: 100vh; border-radius: 0; }
+    .ln-studio-head { padding: 16px 16px 12px; }
+    .ln-studio-body { padding: 16px; }
+    .ln-studio-foot { padding: 12px 16px; }
+    .ln-foot-actions { width: 100%; }
+    .ln-foot-actions .ln-btn { flex: 1; }
+    .ln-sheet-wrap { max-height: 40vh; }
+    body.analyst-logged .chart-block-head { padding-right: 0; padding-top: 34px; }
+    body.analyst-logged .ln-chart-edit-btn { top: 0; }
+  }
+</style>
+
+<script id="ln-chart-studio-ui">
+(function () {
+  'use strict';
+
+  var NS = window.LN_CHART_STUDIO;
+  if (!NS) { console.warn('[estudio-graficas] el núcleo no cargó; la edición queda deshabilitada.'); return; }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     1. Persistencia
+     ───────────────────────────────────────────────────────────────────
+     Supabase por REST directo con la anon key de los <meta> del <head>:
+     es la misma vía que ya usa el resto del panel y no depende del
+     módulo ESM, que carga aparte y puede no estar listo. La copia en
+     localStorage sirve para que la próxima visita pinte lo editado sin
+     esperar a la red.
+     ═══════════════════════════════════════════════════════════════════ */
+
+  var TABLE = 'chart_overrides';
+
+  function sbConfig() {
+    var override = window.__OBSERVATORIO_SUPABASE__ || {};
+    var meta = function (name) {
+      var el = document.querySelector('meta[name="' + name + '"]');
+      return (el && el.content ? el.content : '').trim();
+    };
+    var url = (override.url || meta('supabase-url') || '').replace(/\/+$/, '');
+    var key = override.anonKey || meta('supabase-anon-key') || '';
+    return (url && key) ? { url: url, key: key } : null;
+  }
+
+  function sbHeaders(cfg, extra) {
+    return Object.assign({
+      apikey: cfg.key,
+      Authorization: 'Bearer ' + cfg.key,
+      'Content-Type': 'application/json'
+    }, extra || {});
+  }
+
+  function cacheLocally() {
+    try {
+      localStorage.setItem(NS.CACHE_KEY, JSON.stringify({
+        savedAt: new Date().toISOString(),
+        overrides: NS.overrides
+      }));
+    } catch (_) {}
+  }
+
+  function loadOverrides() {
+    var cfg = sbConfig();
+    if (!cfg) return Promise.resolve(false);
+    return fetch(cfg.url + '/rest/v1/' + TABLE + '?select=chart_key,config,enabled,titulo&order=updated_at.asc', {
+      headers: sbHeaders(cfg)
+    })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)); })
+      .then(function (rows) {
+        var next = {};
+        (rows || []).forEach(function (row) {
+          if (!row || !row.chart_key) return;
+          next[row.chart_key] = { config: row.config || {}, enabled: row.enabled !== false, titulo: row.titulo || '' };
+        });
+        NS.overrides = next;
+        NS.ready = true;
+        cacheLocally();
+        return true;
+      })
+      .catch(function (err) {
+        console.warn('[estudio-graficas] no se pudo leer la edición publicada:', err.message);
+        return false;
+      });
+  }
+
+  function persist(chartKey, canvasId, contextKey, config, enabled, titulo) {
+    NS.overrides[chartKey] = { config: config, enabled: enabled, titulo: titulo || '' };
+    cacheLocally();
+    var cfg = sbConfig();
+    if (!cfg) return Promise.reject(new Error('Supabase no está configurado en esta página.'));
+    return fetch(cfg.url + '/rest/v1/' + TABLE, {
+      method: 'POST',
+      headers: sbHeaders(cfg, { Prefer: 'resolution=merge-duplicates,return=minimal' }),
+      body: JSON.stringify([{
+        chart_key: chartKey,
+        canvas_id: canvasId,
+        context_key: contextKey,
+        seccion: contextKey.split(':')[0],
+        titulo: titulo || '',
+        config: config,
+        enabled: enabled,
+        updated_at: new Date().toISOString(),
+        updated_by: 'panel-analista'
+      }])
+    }).then(function (r) {
+      if (!r.ok) return r.text().then(function (t) { throw new Error('HTTP ' + r.status + ' · ' + t.slice(0, 160)); });
+      return true;
+    });
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     2. Utilidades
+     ═══════════════════════════════════════════════════════════════════ */
+
+  function esc(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  /* Acepta lo que salga de Excel: 1,234.56 · 1.234,56 · RD$ 1 234 · vacío. */
+  function parseNumber(value) {
+    if (value === null || value === undefined) return null;
+    var s = String(value).trim();
+    if (!s) return null;
+    s = s.replace(/\s|RD\$|DOP|%/gi, '');
+    var hasComma = s.indexOf(',') >= 0;
+    var hasDot = s.indexOf('.') >= 0;
+    if (hasComma && hasDot) {
+      if (s.lastIndexOf(',') > s.lastIndexOf('.')) s = s.replace(/\./g, '').replace(',', '.');
+      else s = s.replace(/,/g, '');
+    } else if (hasComma) {
+      var parts = s.split(',');
+      s = (parts.length === 2 && parts[1].length <= 2 && parts[1].length > 0)
+        ? parts[0] + '.' + parts[1]
+        : s.replace(/,/g, '');
+    }
+    var n = Number(s);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function cellText(value) {
+    if (value === null || value === undefined || value === '') return '';
+    var n = Number(value);
+    return Number.isFinite(n) ? String(n) : String(value);
+  }
+
+  function say(message, kind) {
+    try { if (typeof window.toast === 'function') return window.toast(message, kind || ''); } catch (_) {}
+    console.log('[estudio-graficas]', message);
+  }
+
+  var CONTEXT_LABELS = {
+    'creditos:total': 'Créditos · Total',
+    'creditos:hipotecario': 'Créditos · Hipotecario',
+    'creditos:consumo:consumo_general': 'Créditos · Consumo general',
+    'creditos:consumo:tarjetas_credito': 'Créditos · Tarjetas de crédito',
+    'creditos:comercial:comercial': 'Créditos · Comercial general',
+    'creditos:comercial:pymes': 'Créditos · Pymes',
+    'creditos:comercial:mayores_deudores': 'Créditos · Mayores deudores',
+    'captacion:total': 'Captación · Total',
+    'captacion:ahorros': 'Captación · Ahorros',
+    'captacion:corrientes': 'Captación · Corrientes',
+    'captacion:depositos': 'Captación · Depósitos',
+    'base': 'Vista general'
+  };
+
+  var CREDIT_CONTEXTS = ['creditos:total', 'creditos:hipotecario', 'creditos:consumo:consumo_general',
+    'creditos:consumo:tarjetas_credito', 'creditos:comercial:comercial', 'creditos:comercial:pymes',
+    'creditos:comercial:mayores_deudores'];
+  var CAPTA_CONTEXTS = ['captacion:total', 'captacion:ahorros', 'captacion:corrientes', 'captacion:depositos'];
+
+  function siblingContexts(context) {
+    if (CREDIT_CONTEXTS.indexOf(context) >= 0) return CREDIT_CONTEXTS;
+    if (CAPTA_CONTEXTS.indexOf(context) >= 0) return CAPTA_CONTEXTS;
+    return [context];
+  }
+
+  function contextLabel(context) { return CONTEXT_LABELS[context] || context; }
+
+  function blockOf(canvasId) {
+    var canvas = document.getElementById(canvasId);
+    return canvas ? canvas.closest('.chart-block') : null;
+  }
+
+  function blockTitle(canvasId) {
+    var block = blockOf(canvasId);
+    var h3 = block && block.querySelector('.chart-block-head h3');
+    return h3 ? h3.textContent.trim() : canvasId;
+  }
+
+  var FAMILIES = [
+    ['grouped', 'Barras agrupadas'],
+    ['stacked', 'Barras apiladas'],
+    ['horizontal', 'Barras horizontales'],
+    ['line', 'Líneas'],
+    ['doughnut', 'Dona'],
+    ['pie', 'Pastel'],
+    ['polarArea', 'Área polar']
+  ];
+
+  /* ═══════════════════════════════════════════════════════════════════
+     3. Estado del editor
+     ═══════════════════════════════════════════════════════════════════ */
+
+  var draft = null;          // copia de trabajo, no se publica hasta guardar
+  var currentCanvas = null;
+  var currentContext = null;
+  var overlay = null;
+
+  function isRound(family) { return NS.isRoundType(family); }
+
+  function draftIsRound() { return draft && isRound(draft.chart.family); }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     4. Modal
+     ═══════════════════════════════════════════════════════════════════ */
+
+  function buildModal() {
+    overlay = document.createElement('div');
+    overlay.className = 'ln-studio-overlay';
+    overlay.id = 'ln-studio-overlay';
+    overlay.innerHTML = [
+      '<div class="ln-studio" role="dialog" aria-modal="true" aria-label="Estudio de gráficas">',
+      '  <div class="ln-studio-head">',
+      '    <div>',
+      '      <div class="eyebrow">Estudio de gráficas · solo analista</div>',
+      '      <h3 id="ln-studio-title">Gráfica</h3>',
+      '      <span class="ln-studio-ctx" id="ln-studio-ctx"></span>',
+      '    </div>',
+      '    <button class="ln-studio-close" type="button" id="ln-studio-close" aria-label="Cerrar">&times;</button>',
+      '  </div>',
+      '  <div class="ln-studio-tabs">',
+      '    <button class="ln-studio-tab active" type="button" data-pane="datos">Datos</button>',
+      '    <button class="ln-studio-tab" type="button" data-pane="forma">Tipo y forma</button>',
+      '    <button class="ln-studio-tab" type="button" data-pane="formato">Formato</button>',
+      '    <button class="ln-studio-tab" type="button" data-pane="textos">Textos</button>',
+      '  </div>',
+      '  <div class="ln-studio-body">',
+      '    <div class="ln-studio-pane active" data-pane="datos" id="ln-pane-datos"></div>',
+      '    <div class="ln-studio-pane" data-pane="forma" id="ln-pane-forma"></div>',
+      '    <div class="ln-studio-pane" data-pane="formato" id="ln-pane-formato"></div>',
+      '    <div class="ln-studio-pane" data-pane="textos" id="ln-pane-textos"></div>',
+      '  </div>',
+      '  <div class="ln-studio-foot">',
+      '    <div class="ln-studio-status" id="ln-studio-status"></div>',
+      '    <div class="ln-foot-actions">',
+      '      <button class="ln-btn ghost-danger" type="button" id="ln-studio-reset">Restablecer al original</button>',
+      '      <button class="ln-btn" type="button" id="ln-studio-preview">Vista previa</button>',
+      '      <button class="ln-btn primary" type="button" id="ln-studio-save">Guardar y publicar</button>',
+      '    </div>',
+      '  </div>',
+      '</div>',
+      '<input type="file" id="ln-studio-file" accept=".xlsx,.xls,.csv" hidden>'
+    ].join('');
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) closeStudio(); });
+    overlay.querySelector('#ln-studio-close').addEventListener('click', closeStudio);
+    overlay.querySelectorAll('.ln-studio-tab').forEach(function (tab) {
+      tab.addEventListener('click', function () { switchPane(tab.dataset.pane); });
+    });
+    overlay.querySelector('#ln-studio-preview').addEventListener('click', preview);
+    overlay.querySelector('#ln-studio-save').addEventListener('click', save);
+    overlay.querySelector('#ln-studio-reset').addEventListener('click', resetToOriginal);
+    overlay.querySelector('#ln-studio-file').addEventListener('change', importWorkbook);
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeStudio();
+    });
+    return overlay;
+  }
+
+  function switchPane(name) {
+    overlay.querySelectorAll('.ln-studio-tab').forEach(function (t) {
+      t.classList.toggle('active', t.dataset.pane === name);
+    });
+    overlay.querySelectorAll('.ln-studio-pane').forEach(function (p) {
+      p.classList.toggle('active', p.dataset.pane === name);
+    });
+  }
+
+  function status(message, kind) {
+    var el = overlay && overlay.querySelector('#ln-studio-status');
+    if (!el) return;
+    el.textContent = message || '';
+    el.className = 'ln-studio-status' + (kind ? ' ' + kind : '');
+  }
+
+  function openStudio(canvasId) {
+    if (!overlay) buildModal();
+    currentCanvas = canvasId;
+    currentContext = NS.contextFor(canvasId);
+
+    var saved = NS.overrides[NS.keyFor(canvasId, currentContext)];
+    var base = NS.snapshot(canvasId);
+    if (!base) { say('Esa gráfica todavía no se ha dibujado. Abre su pestaña y vuelve a intentar.', 'warn'); return; }
+
+    if (saved && saved.enabled !== false && saved.config && Array.isArray(saved.config.series)) {
+      draft = JSON.parse(JSON.stringify(saved.config));
+      draft.chart = Object.assign({}, base.chart, draft.chart);
+      if (!Array.isArray(draft.labels)) draft.labels = base.labels;
+      draft.text = draft.text || {};
+    } else {
+      draft = base;
+      if (saved && saved.config && saved.config.chart) draft.chart = Object.assign({}, base.chart, saved.config.chart);
+      if (saved && saved.config && saved.config.text) draft.text = Object.assign({}, saved.config.text);
+    }
+
+    overlay.querySelector('#ln-studio-title').textContent = blockTitle(canvasId);
+    overlay.querySelector('#ln-studio-ctx').textContent = contextLabel(currentContext);
+    status(saved && saved.enabled !== false
+      ? 'Esta gráfica ya tiene una edición publicada.'
+      : 'Mostrando el dato del pipeline SIB. Lo que guardes aquí lo verá todo el mundo.');
+
+    switchPane('datos');
+    renderAll();
+    overlay.classList.add('is-open');
+  }
+
+  function closeStudio() {
+    if (!overlay) return;
+    overlay.classList.remove('is-open');
+    // Deshace cualquier vista previa no guardada.
+    if (currentCanvas) NS.rebuild(currentCanvas);
+    draft = null;
+    currentCanvas = null;
+  }
+
+  function renderAll() {
+    renderData();
+    renderShape();
+    renderFormat();
+    renderText();
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     5. Pestaña Datos · hoja tipo Excel
+     ═══════════════════════════════════════════════════════════════════ */
+
+  function renderData() {
+    var pane = overlay.querySelector('#ln-pane-datos');
+    var round = draftIsRound();
+    var html = [];
+
+    html.push('<p class="ln-studio-hint">Cada columna es una serie y cada fila una etiqueta del eje. ' +
+      'Escribe encima para cambiar un número, <b>pega directo desde Excel</b> (Ctrl+V sobre cualquier celda) ' +
+      'o sube el archivo con <b>Importar Excel</b>. ' +
+      (round ? 'En dona y pastel el color se elige por fila.' : 'El color de cada serie se elige en su encabezado.') + '</p>');
+
+    html.push('<div class="ln-sheet-tools">');
+    html.push('<button class="ln-tool" type="button" data-act="add-row">+ Fila</button>');
+    if (!round) html.push('<button class="ln-tool" type="button" data-act="add-serie">+ Serie</button>');
+    html.push('<button class="ln-tool" type="button" data-act="import">Importar Excel</button>');
+    html.push('<button class="ln-tool" type="button" data-act="export">Exportar Excel</button>');
+    html.push('<button class="ln-tool danger" type="button" data-act="restore-data">Recargar números del pipeline</button>');
+    html.push('</div>');
+
+    html.push('<div class="ln-sheet-wrap"><table class="ln-sheet"><thead><tr>');
+    html.push('<th class="ln-corner">Etiqueta</th>');
+    draft.series.forEach(function (s, i) {
+      html.push('<th data-si="' + i + '"><div class="ln-sheet-serie">');
+      html.push('<input class="ln-serie-name" data-si="' + i + '" value="' + esc(s.label) + '" aria-label="Nombre de la serie">');
+      if (!round) html.push('<input type="color" class="ln-swatch ln-serie-color" data-si="' + i + '" value="' + esc(normalizeHex(s.color)) + '" aria-label="Color de la serie">');
+      if (draft.series.length > 1) html.push('<button class="ln-mini-x" type="button" data-act="del-serie" data-si="' + i + '" title="Eliminar serie">&times;</button>');
+      html.push('</div></th>');
+    });
+    html.push('<th style="min-width:34px"></th>');
+    html.push('</tr></thead><tbody>');
+
+    draft.labels.forEach(function (label, ri) {
+      html.push('<tr data-ri="' + ri + '"><th><div class="ln-sheet-serie">');
+      if (round) {
+        var colors = draft.series[0] && draft.series[0].colors ? draft.series[0].colors : [];
+        html.push('<input type="color" class="ln-swatch ln-slice-color" data-ri="' + ri + '" value="' + esc(normalizeHex(colors[ri] || NS.PALETTE[ri % NS.PALETTE.length])) + '" aria-label="Color de la porción">');
+      }
+      html.push('<input class="ln-row-label" data-ri="' + ri + '" value="' + esc(label) + '" aria-label="Etiqueta de la fila">');
+      html.push('</div></th>');
+      draft.series.forEach(function (s, si) {
+        html.push('<td><input class="ln-cell" data-ri="' + ri + '" data-si="' + si + '" value="' + esc(cellText(s.data[ri])) + '" inputmode="decimal"></td>');
+      });
+      html.push('<td style="text-align:center"><button class="ln-mini-x" type="button" data-act="del-row" data-ri="' + ri + '" title="Eliminar fila">&times;</button></td>');
+      html.push('</tr>');
+    });
+
+    html.push('</tbody></table></div>');
+    pane.innerHTML = html.join('');
+    bindSheet(pane);
+  }
+
+  /* Los paneles se repintan enteros en cada cambio. Los oyentes se cuelgan
+     del contenedor una sola vez y trabajan por delegación: si se volvieran a
+     enganchar en cada repintado, un clic acabaría contando por varios. */
+  function bindOnce(pane, tag, events, handler) {
+    pane.__lnBound = pane.__lnBound || {};
+    if (pane.__lnBound[tag]) return;
+    pane.__lnBound[tag] = true;
+    events.forEach(function (name) { pane.addEventListener(name, handler); });
+  }
+
+  function normalizeHex(color) {
+    var c = String(color || '').trim();
+    if (/^#[0-9a-f]{6}$/i.test(c)) return c;
+    if (/^#[0-9a-f]{3}$/i.test(c)) return '#' + c[1] + c[1] + c[2] + c[2] + c[3] + c[3];
+    var m = c.match(/rgba?\((\d+)[,\s]+(\d+)[,\s]+(\d+)/i);
+    if (m) {
+      return '#' + [m[1], m[2], m[3]].map(function (x) {
+        return ('0' + Number(x).toString(16)).slice(-2);
+      }).join('');
+    }
+    return '#0070C0';
+  }
+
+  function syncRowCount() {
+    var n = draft.labels.length;
+    draft.series.forEach(function (s) {
+      while (s.data.length < n) s.data.push(null);
+      s.data.length = n;
+      if (Array.isArray(s.colors)) {
+        while (s.colors.length < n) s.colors.push(NS.PALETTE[s.colors.length % NS.PALETTE.length]);
+        s.colors.length = n;
+      }
+    });
+  }
+
+  function bindSheet(pane) {
+    if (pane.__lnSheetBound) return;
+    pane.__lnSheetBound = true;
+
+    pane.addEventListener('input', function (e) {
+      var el = e.target;
+      if (el.classList.contains('ln-cell')) {
+        draft.series[+el.dataset.si].data[+el.dataset.ri] = parseNumber(el.value);
+      } else if (el.classList.contains('ln-row-label')) {
+        draft.labels[+el.dataset.ri] = el.value;
+      } else if (el.classList.contains('ln-serie-name')) {
+        draft.series[+el.dataset.si].label = el.value;
+      } else if (el.classList.contains('ln-serie-color')) {
+        draft.series[+el.dataset.si].color = el.value;
+      } else if (el.classList.contains('ln-slice-color')) {
+        var s0 = draft.series[0];
+        if (!Array.isArray(s0.colors)) s0.colors = draft.labels.map(function (_, i) { return NS.PALETTE[i % NS.PALETTE.length]; });
+        s0.colors[+el.dataset.ri] = el.value;
+      }
+    });
+
+    pane.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-act]');
+      if (!btn) return;
+      var act = btn.dataset.act;
+      if (act === 'add-row') {
+        draft.labels.push('Nueva ' + (draft.labels.length + 1));
+        syncRowCount();
+        renderData();
+      } else if (act === 'add-serie') {
+        var len = draft.labels.length;
+        draft.series.push({
+          label: 'Serie ' + (draft.series.length + 1),
+          data: new Array(len).fill(null),
+          type: draft.chart.family === 'line' ? 'line' : 'bar',
+          color: NS.PALETTE[draft.series.length % NS.PALETTE.length],
+          axis: 'y', dash: false, hidden: false, colors: null
+        });
+        renderData();
+        renderShape();
+      } else if (act === 'del-serie') {
+        draft.series.splice(+btn.dataset.si, 1);
+        renderData();
+        renderShape();
+      } else if (act === 'del-row') {
+        draft.labels.splice(+btn.dataset.ri, 1);
+        draft.series.forEach(function (s) {
+          s.data.splice(+btn.dataset.ri, 1);
+          if (Array.isArray(s.colors)) s.colors.splice(+btn.dataset.ri, 1);
+        });
+        renderData();
+      } else if (act === 'import') {
+        overlay.querySelector('#ln-studio-file').click();
+      } else if (act === 'export') {
+        exportWorkbook();
+      } else if (act === 'restore-data') {
+        var fresh = NS.snapshot(currentCanvas);
+        if (!fresh) { status('No pude leer el dato original; abre la pestaña de la gráfica.', 'err'); return; }
+        draft.labels = fresh.labels;
+        draft.series = fresh.series.map(function (s, i) {
+          var keep = draft.series[i] || {};
+          return Object.assign({}, s, {
+            label: keep.label != null ? keep.label : s.label,
+            color: keep.color || s.color,
+            type: keep.type || s.type,
+            axis: keep.axis || s.axis
+          });
+        });
+        syncRowCount();
+        renderData();
+        status('Números recargados del pipeline SIB. El formato que elegiste se mantiene.', 'ok');
+      }
+    });
+
+    // Pegar desde Excel: se expande la hoja para que quepa lo pegado.
+    pane.addEventListener('paste', function (e) {
+      var el = e.target;
+      var isCell = el.classList && (el.classList.contains('ln-cell') || el.classList.contains('ln-row-label'));
+      if (!isCell) return;
+      var text = (e.clipboardData || window.clipboardData).getData('text/plain') || '';
+      if (text.indexOf('\t') < 0 && text.indexOf('\n') < 0) return; // un solo valor: comportamiento normal
+      e.preventDefault();
+
+      var matrix = text.replace(/\r/g, '').split('\n')
+        .filter(function (line) { return line.trim() !== ''; })
+        .map(function (line) { return line.split('\t'); });
+
+      var startRow = +el.dataset.ri;
+      var labelColumn = el.classList.contains('ln-row-label');
+      var startSerie = labelColumn ? -1 : +el.dataset.si;
+
+      matrix.forEach(function (row, r) {
+        var ri = startRow + r;
+        while (draft.labels.length <= ri) { draft.labels.push('Fila ' + (draft.labels.length + 1)); }
+        row.forEach(function (raw, c) {
+          var si = startSerie + c;
+          if (si < 0) { draft.labels[ri] = String(raw).trim(); return; }
+          while (draft.series.length <= si) {
+            draft.series.push({
+              label: 'Serie ' + (draft.series.length + 1),
+              data: [], type: 'bar', color: NS.PALETTE[draft.series.length % NS.PALETTE.length],
+              axis: 'y', dash: false, hidden: false, colors: null
+            });
+          }
+          syncRowCount();
+          draft.series[si].data[ri] = parseNumber(raw);
+        });
+      });
+      syncRowCount();
+      renderData();
+      renderShape();
+      status('Pegadas ' + matrix.length + ' filas desde el portapapeles.', 'ok');
+    });
+
+    // Enter baja una fila, como en una hoja de cálculo.
+    pane.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter') return;
+      var el = e.target;
+      if (!el.classList || !el.classList.contains('ln-cell')) return;
+      e.preventDefault();
+      var next = pane.querySelector('.ln-cell[data-ri="' + (+el.dataset.ri + 1) + '"][data-si="' + el.dataset.si + '"]');
+      if (next) { next.focus(); next.select(); }
+    });
+  }
+
+  /* ── Excel de ida y vuelta ─────────────────────────────────────────── */
+
+  function exportWorkbook() {
+    if (!window.XLSX) { status('La librería de Excel no cargó en esta página.', 'err'); return; }
+    var aoa = [['Etiqueta'].concat(draft.series.map(function (s) { return s.label; }))];
+    draft.labels.forEach(function (label, ri) {
+      aoa.push([label].concat(draft.series.map(function (s) {
+        var v = s.data[ri];
+        return (v === null || v === undefined) ? '' : v;
+      })));
+    });
+    var wb = window.XLSX.utils.book_new();
+    window.XLSX.utils.book_append_sheet(wb, window.XLSX.utils.aoa_to_sheet(aoa), 'Datos');
+    var name = (blockTitle(currentCanvas) || 'grafica')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
+    window.XLSX.writeFile(wb, name + '-' + currentContext.replace(/:/g, '-') + '.xlsx');
+    status('Archivo exportado. Edítalo en Excel y vuélvelo a subir con Importar.', 'ok');
+  }
+
+  function importWorkbook(e) {
+    var file = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    if (!window.XLSX) { status('La librería de Excel no cargó en esta página.', 'err'); return; }
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var wb = window.XLSX.read(new Uint8Array(reader.result), { type: 'array' });
+        var ws = wb.Sheets[wb.SheetNames[0]];
+        var aoa = window.XLSX.utils.sheet_to_json(ws, { header: 1, blankrows: false });
+        if (!aoa.length) throw new Error('La hoja está vacía.');
+
+        var header = aoa[0].map(function (h) { return String(h == null ? '' : h).trim(); });
+        var rows = aoa.slice(1).filter(function (r) { return r && r.some(function (c) { return String(c == null ? '' : c).trim() !== ''; }); });
+        if (header.length < 2) throw new Error('Se esperaba una columna de etiquetas y al menos una de datos.');
+
+        draft.labels = rows.map(function (r) { return String(r[0] == null ? '' : r[0]).trim(); });
+        draft.series = header.slice(1).map(function (name, i) {
+          var previous = draft.series[i] || {};
+          return {
+            label: name || ('Serie ' + (i + 1)),
+            data: rows.map(function (r) { return parseNumber(r[i + 1]); }),
+            type: previous.type || (draft.chart.family === 'line' ? 'line' : 'bar'),
+            color: previous.color || NS.PALETTE[i % NS.PALETTE.length],
+            axis: previous.axis || 'y',
+            dash: !!previous.dash,
+            hidden: false,
+            colors: previous.colors || null
+          };
+        });
+        syncRowCount();
+        renderData();
+        renderShape();
+        status('Importadas ' + draft.labels.length + ' filas y ' + draft.series.length + ' series desde ' + file.name + '.', 'ok');
+      } catch (err) {
+        status('No pude leer el archivo: ' + err.message, 'err');
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     6. Pestaña Tipo y forma
+     ═══════════════════════════════════════════════════════════════════ */
+
+  function renderShape() {
+    var pane = overlay.querySelector('#ln-pane-forma');
+    var chart = draft.chart;
+    var round = draftIsRound();
+    var html = [];
+
+    html.push('<p class="ln-studio-hint">Cambia cómo se ve la gráfica sin tocar los números. ' +
+      'Si eliges <b>Barras agrupadas</b> o <b>Líneas</b> puedes además definir el tipo de cada serie por separado, ' +
+      'como en un gráfico combinado de Excel.</p>');
+
+    html.push('<div class="ln-field-grid">');
+    html.push('<div class="ln-field"><label>Tipo de gráfica</label><select data-chart="family">');
+    FAMILIES.forEach(function (f) {
+      html.push('<option value="' + f[0] + '"' + (chart.family === f[0] ? ' selected' : '') + '>' + f[1] + '</option>');
+    });
+    html.push('</select></div>');
+
+    if (!round) {
+      html.push('<div class="ln-field"><label>Redondeo de barras (px)</label>' +
+        '<input type="number" min="0" max="24" step="1" data-chart="borderRadius" value="' + Number(chart.borderRadius || 0) + '"></div>');
+      html.push('<div class="ln-field"><label>Curvatura de líneas</label>' +
+        '<input type="number" min="0" max="0.6" step="0.05" data-chart="tension" value="' + Number(chart.tension != null ? chart.tension : 0.35) + '"></div>');
+    } else if (chart.family === 'doughnut') {
+      html.push('<div class="ln-field"><label>Hueco central</label>' +
+        '<select data-chart="cutout">' +
+        ['0%', '35%', '50%', '62%', '72%'].map(function (v) {
+          return '<option value="' + v + '"' + (String(chart.cutout) === v ? ' selected' : '') + '>' + v + '</option>';
+        }).join('') + '</select></div>');
+    }
+    html.push('</div>');
+
+    if (!round) {
+      html.push('<div class="ln-section-title">Cada serie por separado</div>');
+      html.push('<table class="ln-series-table"><thead><tr>' +
+        '<th>Serie</th><th>Se dibuja como</th><th>Eje vertical</th><th>Punteada</th><th>Color</th><th>Ocultar</th>' +
+        '</tr></thead><tbody>');
+      draft.series.forEach(function (s, i) {
+        html.push('<tr>');
+        html.push('<td>' + esc(s.label) + '</td>');
+        html.push('<td><select data-serie="type" data-si="' + i + '">' +
+          [['bar', 'Barra'], ['line', 'Línea'], ['area', 'Área']].map(function (o) {
+            return '<option value="' + o[0] + '"' + (s.type === o[0] ? ' selected' : '') + '>' + o[1] + '</option>';
+          }).join('') + '</select></td>');
+        html.push('<td><select data-serie="axis" data-si="' + i + '">' +
+          [['y', 'Izquierdo'], ['y1', 'Derecho']].map(function (o) {
+            return '<option value="' + o[0] + '"' + (s.axis === o[0] ? ' selected' : '') + '>' + o[1] + '</option>';
+          }).join('') + '</select></td>');
+        html.push('<td><input type="checkbox" data-serie="dash" data-si="' + i + '"' + (s.dash ? ' checked' : '') + '></td>');
+        html.push('<td><input type="color" class="ln-swatch" data-serie="color" data-si="' + i + '" value="' + esc(normalizeHex(s.color)) + '"></td>');
+        html.push('<td><input type="checkbox" data-serie="hidden" data-si="' + i + '"' + (s.hidden ? ' checked' : '') + '></td>');
+        html.push('</tr>');
+      });
+      html.push('</tbody></table>');
+      html.push('<p class="ln-studio-hint" style="margin-top:14px">El <b>eje derecho</b> sirve cuando una serie es mucho más grande que otra ' +
+        '—por ejemplo el sistema financiero completo frente a La Nacional— y en un solo eje la pequeña quedaría aplastada contra el piso.</p>');
+    }
+
+    pane.innerHTML = html.join('');
+    bindShape(pane);
+  }
+
+  function bindShape(pane) {
+    bindOnce(pane, 'forma', ['change', 'input'], onShapeChange);
+  }
+
+  function onShapeChange(e) {
+    var el = e.target;
+    if (el.dataset.chart) {
+      var key = el.dataset.chart;
+      var value = el.type === 'number' ? Number(el.value) : el.value;
+      draft.chart[key] = value;
+      if (key === 'family') {
+        draft.chart.horizontal = value === 'horizontal';
+        draft.chart.stacked = value === 'stacked';
+        draft.chart.type = isRound(value) ? value : (value === 'line' ? 'line' : 'bar');
+        if (isRound(value)) {
+          // En circulares solo manda la primera serie y el color va por porción.
+          var s0 = draft.series[0];
+          if (s0 && !Array.isArray(s0.colors)) {
+            s0.colors = draft.labels.map(function (_, i) { return NS.PALETTE[i % NS.PALETTE.length]; });
+          }
+        } else {
+          var cartesian = value === 'grouped' || value === 'stacked' || value === 'horizontal';
+          draft.series.forEach(function (s) {
+            if (s.type === 'slice') s.type = cartesian ? 'bar' : 'line';
+            else if (value === 'line' && s.type === 'bar') s.type = 'line';
+            else if (cartesian && (s.type === 'line' || s.type === 'area')) s.type = 'bar';
+          });
+        }
+        renderData();
+        renderShape();
+        renderFormat();
+        return;
+      }
+    } else if (el.dataset.serie) {
+      var si = +el.dataset.si;
+      var field = el.dataset.serie;
+      draft.series[si][field] = (el.type === 'checkbox') ? el.checked : el.value;
+      if (field === 'color') renderData();
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     7. Pestaña Formato
+     ═══════════════════════════════════════════════════════════════════ */
+
+  function renderFormat() {
+    var pane = overlay.querySelector('#ln-pane-formato');
+    var chart = draft.chart;
+    var round = draftIsRound();
+    var html = [];
+
+    html.push('<p class="ln-studio-hint">El <b>prefijo</b> y el <b>sufijo</b> se pegan al número en la etiqueta y en el tooltip: ' +
+      'con prefijo <b>RD$</b> y sufijo <b> MM</b>, 39082 se lee <b>RD$39,082 MM</b>.</p>');
+
+    html.push('<div class="ln-field-grid">');
+    html.push('<div class="ln-field"><label>Leyenda</label><select data-chart="legend">' +
+      [['bottom', 'Abajo'], ['top', 'Arriba'], ['right', 'Derecha'], ['left', 'Izquierda'], ['none', 'Sin leyenda']]
+        .map(function (o) { return '<option value="' + o[0] + '"' + (chart.legend === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') +
+      '</select></div>');
+    html.push('<div class="ln-field"><label>Decimales</label>' +
+      '<input type="number" min="0" max="4" step="1" data-chart="decimals" value="' + Number(chart.decimals || 0) + '"></div>');
+    html.push('<div class="ln-field"><label>Prefijo</label>' +
+      '<input type="text" data-chart="prefix" value="' + esc(chart.prefix || '') + '" placeholder="RD$"></div>');
+    html.push('<div class="ln-field"><label>Sufijo</label>' +
+      '<input type="text" data-chart="suffix" value="' + esc(chart.suffix || '') + '" placeholder=" MM"></div>');
+    if (!round) {
+      html.push('<div class="ln-field"><label>Título del eje vertical</label>' +
+        '<input type="text" data-chart="yTitle" value="' + esc(chart.yTitle || '') + '" placeholder="Opcional"></div>');
+      html.push('<div class="ln-field"><label>Título del eje horizontal</label>' +
+        '<input type="text" data-chart="xTitle" value="' + esc(chart.xTitle || '') + '" placeholder="Opcional"></div>');
+    }
+    html.push('</div>');
+
+    html.push('<div class="ln-switch-row">');
+    html.push(switchHtml('datalabels', 'Mostrar el valor sobre cada dato', chart.datalabels !== false));
+    if (!round) {
+      html.push(switchHtml('grid', 'Cuadrícula de fondo', chart.grid !== false));
+      html.push(switchHtml('beginAtZero', 'El eje empieza en cero', chart.beginAtZero !== false));
+      html.push(switchHtml('points', 'Puntos visibles en las líneas', chart.points !== false));
+    }
+    html.push('</div>');
+
+    html.push('<div class="ln-section-title">Aplicar a otras pestañas</div>');
+    html.push('<p class="ln-studio-hint" style="margin-bottom:10px">Publica esta pestaña y copia además <b>la forma</b> ' +
+      '—tipo, colores, leyenda, formato— a las demás de esta sección (' +
+      esc(siblingContexts(currentContext).map(contextLabel).join(', ')) + '). ' +
+      'Los números de cada pestaña no se tocan: cada una sigue con los suyos.</p>');
+    html.push('<button class="ln-tool accent" type="button" id="ln-apply-siblings">Guardar y aplicar esta forma a todas las pestañas</button>');
+
+    pane.innerHTML = html.join('');
+
+    bindOnce(pane, 'formato', ['change', 'input'], onFormatChange);
+    bindOnce(pane, 'formato-click', ['click'], function (e) {
+      if (e.target.closest('#ln-apply-siblings')) applyShapeToSiblings();
+    });
+  }
+
+  function switchHtml(key, label, on) {
+    return '<label class="ln-switch' + (on ? ' on' : '') + '">' +
+      '<input type="checkbox" data-chart="' + key + '"' + (on ? ' checked' : '') + '>' + esc(label) + '</label>';
+  }
+
+  function onFormatChange(e) {
+    var el = e.target;
+    if (!el.dataset.chart) return;
+    var key = el.dataset.chart;
+    if (el.type === 'checkbox') {
+      draft.chart[key] = el.checked;
+      var wrap = el.closest('.ln-switch');
+      if (wrap) wrap.classList.toggle('on', el.checked);
+    } else if (el.type === 'number') {
+      draft.chart[key] = Number(el.value);
+    } else {
+      draft.chart[key] = el.value;
+    }
+  }
+
+  function applyShapeToSiblings() {
+    var full = normalizedDraft();
+    var shape = { v: 1, chart: JSON.parse(JSON.stringify(full.chart)), text: {} };
+    var canvasId = currentCanvas;
+    var others = siblingContexts(currentContext).filter(function (c) { return c !== currentContext; });
+
+    // La pestaña abierta también cuenta como "todas": se publica entera
+    // —números incluidos— y a las demás solo les viaja la forma.
+    var writes = [persist(NS.keyFor(canvasId, currentContext), canvasId, currentContext, full, true, blockTitle(canvasId))];
+
+    others.forEach(function (context) {
+      var key = NS.keyFor(canvasId, context);
+      var existing = NS.overrides[key];
+      var config = (existing && existing.config && Array.isArray(existing.config.series))
+        ? Object.assign({}, existing.config, { chart: Object.assign({}, existing.config.chart, shape.chart) })
+        : shape;
+      writes.push(persist(key, canvasId, context, config, true, blockTitle(canvasId)));
+    });
+
+    status('Publicando en ' + writes.length + ' pestañas…');
+    Promise.all(writes)
+      .then(function () {
+        NS.rebuild(canvasId);
+        applyBlockText(canvasId, full.text);
+        refreshEditButtons();
+        status('Publicado en ' + writes.length + ' pestañas. Los números de cada una siguen siendo los suyos.', 'ok');
+        say('Forma aplicada a todas las pestañas.', 'success');
+      })
+      .catch(function (err) {
+        NS.rebuild(canvasId);
+        refreshEditButtons();
+        status('Se guardó en este navegador, pero no se pudo publicar: ' + err.message, 'err');
+      });
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     8. Pestaña Textos
+     ═══════════════════════════════════════════════════════════════════ */
+
+  function renderText() {
+    var pane = overlay.querySelector('#ln-pane-textos');
+    var text = draft.text || (draft.text = {});
+    var block = blockOf(currentCanvas);
+    var current = {
+      title: (block && block.querySelector('.chart-block-head h3')) ? block.querySelector('.chart-block-head h3').textContent.trim() : '',
+      sub: (block && block.querySelector('.chart-block-head .sub')) ? block.querySelector('.chart-block-head .sub').textContent.trim() : '',
+      source: sourceTextOf(block)
+    };
+
+    pane.innerHTML = [
+      '<p class="ln-studio-hint">Estos textos se vuelven a escribir cada vez que la gráfica se redibuja, ' +
+      'así que lo que pongas aquí manda sobre lo que calcula el pipeline. Deja un campo vacío para dejar el texto automático.</p>',
+      '<div class="ln-field-grid">',
+      '  <div class="ln-field"><label>Título del bloque</label>',
+      '    <input type="text" data-text="title" value="' + esc(text.title || '') + '" placeholder="' + esc(current.title) + '"></div>',
+      '  <div class="ln-field"><label>Subtítulo</label>',
+      '    <input type="text" data-text="sub" value="' + esc(text.sub || '') + '" placeholder="' + esc(current.sub) + '"></div>',
+      '  <div class="ln-field"><label>Nota de fuente</label>',
+      '    <input type="text" data-text="source" value="' + esc(text.source || '') + '" placeholder="' + esc(current.source) + '"></div>',
+      '</div>',
+      '<div class="ln-section-title">Nota interna</div>',
+      '<div class="ln-field"><label>Por qué se editó (no se muestra en el sitio)</label>',
+      '  <textarea data-text="note" placeholder="Ej.: la SIB corrigió el dato de abril el 12/05.">' + esc(text.note || '') + '</textarea></div>'
+    ].join('');
+
+    bindOnce(pane, 'textos', ['input'], function (e) {
+      if (e.target.dataset.text) draft.text[e.target.dataset.text] = e.target.value;
+    });
+  }
+
+  function sourceTextOf(block) {
+    var source = block && block.querySelector('.chart-block-head .source');
+    if (!source) return '';
+    var span = source.querySelector('span');
+    return (span ? span.textContent : source.textContent).trim();
+  }
+
+  function applyBlockText(canvasId, text) {
+    if (!text) return;
+    var block = blockOf(canvasId);
+    if (!block) return;
+    var head = block.querySelector('.chart-block-head');
+    if (!head) return;
+    if (text.title) {
+      var h3 = head.querySelector('h3');
+      if (h3 && h3.textContent !== text.title) h3.textContent = text.title;
+    }
+    if (text.sub) {
+      var sub = head.querySelector('.sub');
+      if (sub && sub.textContent !== text.sub) sub.textContent = text.sub;
+    }
+    if (text.source) {
+      var source = head.querySelector('.source');
+      if (source) {
+        // En las barras con selector de entidades el texto vive en el <span>;
+        // escribir sobre el contenedor borraría el selector.
+        var target = source.querySelector('span') || (source.children.length === 0 ? source : null);
+        if (target && target.textContent !== text.source) target.textContent = text.source;
+      }
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     9. Vista previa, guardar y restablecer
+     ═══════════════════════════════════════════════════════════════════ */
+
+  function normalizedDraft() {
+    syncRowCount();
+    var out = JSON.parse(JSON.stringify(draft));
+    out.v = 1;
+    out.chart.type = isRound(out.chart.family) ? out.chart.family : (out.chart.family === 'line' ? 'line' : 'bar');
+    out.chart.horizontal = out.chart.family === 'horizontal';
+    out.chart.stacked = out.chart.family === 'stacked';
+    if (isRound(out.chart.family)) out.series = out.series.slice(0, 1);
+    return out;
+  }
+
+  function preview() {
+    var key = NS.keyFor(currentCanvas, currentContext);
+    var backup = NS.overrides[key];
+    NS.overrides[key] = { config: normalizedDraft(), enabled: true, titulo: blockTitle(currentCanvas) };
+    var ok = NS.rebuild(currentCanvas);
+    // La vista previa no se publica: se restaura el estado guardado en memoria.
+    if (backup) NS.overrides[key] = backup; else delete NS.overrides[key];
+    status(ok ? 'Vista previa aplicada. Todavía no está publicada — usa Guardar para que la vean los demás.'
+              : 'No pude redibujar; revisa que la pestaña de la gráfica esté abierta.', ok ? 'ok' : 'err');
+  }
+
+  function save() {
+    var config = normalizedDraft();
+    var key = NS.keyFor(currentCanvas, currentContext);
+    var canvasId = currentCanvas;
+    var context = currentContext;
+    status('Publicando…');
+    persist(key, canvasId, context, config, true, blockTitle(canvasId))
+      .then(function () {
+        NS.rebuild(canvasId);
+        applyBlockText(canvasId, config.text);
+        refreshEditButtons();
+        status('Publicado. Cualquiera que entre al sitio verá esta versión.', 'ok');
+        say('Gráfica publicada', 'success');
+        setTimeout(function () { if (overlay.classList.contains('is-open')) closeStudio(); }, 900);
+      })
+      .catch(function (err) {
+        NS.rebuild(canvasId);
+        refreshEditButtons();
+        status('Guardado en este navegador, pero no se pudo publicar: ' + err.message, 'err');
+      });
+  }
+
+  function resetToOriginal() {
+    var key = NS.keyFor(currentCanvas, currentContext);
+    var canvasId = currentCanvas;
+    var context = currentContext;
+    var existing = NS.overrides[key];
+    if (!existing) {
+      status('Esta gráfica ya muestra el dato original del pipeline.', 'ok');
+      return;
+    }
+    status('Restableciendo…');
+    persist(key, canvasId, context, existing.config || {}, false, blockTitle(canvasId))
+      .then(function () {
+        NS.rebuild(canvasId);
+        refreshEditButtons();
+        status('Restablecida al dato del pipeline SIB. Lo editado queda guardado por si quieres volver.', 'ok');
+        say('Gráfica restablecida', 'success');
+        draft = NS.snapshot(canvasId) || draft;
+        renderAll();
+      })
+      .catch(function (err) {
+        NS.rebuild(canvasId);
+        status('Restablecida en este navegador, pero no se pudo publicar: ' + err.message, 'err');
+      });
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     10. Botón de edición en cada bloque de gráfica
+     ═══════════════════════════════════════════════════════════════════ */
+
+  var PENCIL = '<svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">' +
+    '<path d="M9.6 1.9l2.5 2.5-7 7-3.1.6.6-3.1 7-7z" stroke="currentColor" stroke-width="1.5" ' +
+    'stroke-linejoin="round" stroke-linecap="round"/></svg>';
+
+  function injectEditButtons() {
+    document.querySelectorAll('.chart-block').forEach(function (block) {
+      var canvas = block.querySelector('canvas[id]');
+      var head = block.querySelector('.chart-block-head');
+      if (!canvas || !head || head.querySelector('.ln-chart-edit-btn')) return;
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'ln-chart-edit-btn';
+      btn.dataset.canvas = canvas.id;
+      btn.innerHTML = PENCIL + '<span>Editar</span>';
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        openStudio(canvas.id);
+      });
+      head.appendChild(btn);
+
+      var flag = document.createElement('div');
+      flag.className = 'ln-edited-flag';
+      flag.dataset.canvas = canvas.id;
+      flag.textContent = 'Números editados por el analista';
+      var container = block.querySelector('.chart-container');
+      if (container && container.parentNode) container.parentNode.insertBefore(flag, container.nextSibling);
+      else block.appendChild(flag);
+    });
+    refreshEditButtons();
+  }
+
+  function refreshEditButtons() {
+    document.querySelectorAll('.ln-chart-edit-btn').forEach(function (btn) {
+      var edited = NS.hasOverride(btn.dataset.canvas);
+      btn.classList.toggle('is-edited', edited);
+      var label = btn.querySelector('span');
+      if (label) label.textContent = edited ? 'Editada' : 'Editar';
+    });
+    document.querySelectorAll('.ln-edited-flag').forEach(function (flag) {
+      var ov = NS.get(flag.dataset.canvas);
+      flag.classList.toggle('is-on', !!(ov && Array.isArray(ov.series) && ov.series.length));
+    });
+  }
+  NS.refreshEditButtons = refreshEditButtons;
+
+  /* Los textos guardados se vuelven a poner cada vez que una gráfica se
+     dibuja: los controladores del pipeline reescriben títulos y notas en
+     cada redibujado y, sin esto, pisarían lo que puso el analista. */
+  document.addEventListener('ln:chart-drawn', function (e) {
+    var canvasId = e.detail && e.detail.canvasId;
+    if (!canvasId) return;
+    var ov = NS.get(canvasId);
+    if (ov && ov.text) setTimeout(function () { applyBlockText(canvasId, ov.text); }, 0);
+  });
+
+  /* ═══════════════════════════════════════════════════════════════════
+     11. Números y textos fuera de las gráficas
+     ───────────────────────────────────────────────────────────────────
+     Las tarjetas KPI, las notas de corte y los párrafos de contexto los
+     recalculan los controladores en cada cambio de pestaña. Aquí se
+     dejan escribir a mano y se vuelven a poner después de cada
+     recálculo, para que la corrección del analista no se pierda.
+     ═══════════════════════════════════════════════════════════════════ */
+
+  var TEXT_SELECTORS = [
+    '#cartera-kpi-grid .capta-kpi span', '#cartera-kpi-grid .capta-kpi strong', '#cartera-kpi-grid .capta-kpi em',
+    '#capta-kpi-grid .capta-kpi span', '#capta-kpi-grid .capta-kpi strong', '#capta-kpi-grid .capta-kpi em',
+    '#cartera-insight p', '#capta-insight p',
+    '#cartera-source-note', '#capta-source-note',
+    '#cartera-command .eyebrow', '#cartera-command h3', '#cartera-command p',
+    '#capta-command-block .eyebrow', '#capta-command-block h3', '#capta-command-block p'
+  ];
+
+  var textEditing = false;
+  var textBaseline = new Map();
+
+  function editableElements() {
+    var out = [];
+    TEXT_SELECTORS.forEach(function (selector) {
+      document.querySelectorAll(selector).forEach(function (el) { if (out.indexOf(el) < 0) out.push(el); });
+    });
+    return out;
+  }
+
+  /* Ruta estable hasta el elemento, anclada al ancestro con id más
+     cercano. Sobrevive a que el pipeline reescriba el contenido. */
+  function stableKey(el) {
+    var parts = [];
+    var node = el;
+    while (node && node !== document.body) {
+      if (node.id) { parts.unshift('#' + node.id); return parts.join('>'); }
+      var parent = node.parentElement;
+      if (!parent) break;
+      var same = Array.prototype.filter.call(parent.children, function (c) { return c.tagName === node.tagName; });
+      parts.unshift(node.tagName.toLowerCase() + '(' + (same.indexOf(node) + 1) + ')');
+      node = parent;
+    }
+    return null;
+  }
+
+  function resolveKey(path) {
+    var parts = String(path || '').split('>');
+    if (!parts.length || parts[0].charAt(0) !== '#') return null;
+    var node = document.getElementById(parts[0].slice(1));
+    for (var i = 1; i < parts.length && node; i++) {
+      var m = parts[i].match(/^([a-z0-9-]+)\((\d+)\)$/i);
+      if (!m) return null;
+      var tag = m[1].toUpperCase();
+      var same = Array.prototype.filter.call(node.children, function (c) { return c.tagName === tag; });
+      node = same[Number(m[2]) - 1] || null;
+    }
+    return node;
+  }
+
+  function textContextFor(el) {
+    return el.closest('[data-cartera-panel-view="captacion"]') ? NS.contextFor('cap-chart-x') : NS.contextFor('car-chart-x');
+  }
+
+  function textKey(el) {
+    var path = stableKey(el);
+    return path ? 'texto:' + path + '@' + textContextFor(el) : null;
+  }
+
+  function applyTextOverrides() {
+    if (textEditing) return;
+    Object.keys(NS.overrides).forEach(function (key) {
+      if (key.indexOf('texto:') !== 0) return;
+      var entry = NS.overrides[key];
+      if (!entry || entry.enabled === false || !entry.config || typeof entry.config.text !== 'string') return;
+      var at = key.lastIndexOf('@');
+      if (at < 0) return;
+      var path = key.slice('texto:'.length, at);
+      var context = key.slice(at + 1);
+      var el = resolveKey(path);
+      if (!el) return;
+      if (textContextFor(el) !== context) return;
+      if (el.textContent !== entry.config.text) el.textContent = entry.config.text;
+    });
+  }
+  NS.applyTextOverrides = applyTextOverrides;
+
+  function textBar() {
+    var bar = document.getElementById('ln-text-bar');
+    if (bar) return bar;
+    bar = document.createElement('div');
+    bar.className = 'ln-text-bar';
+    bar.id = 'ln-text-bar';
+    bar.innerHTML = '<b>Editando números y textos</b>' +
+      '<span style="opacity:.75">Haz clic sobre cualquier valor resaltado y escribe encima.</span>' +
+      '<button type="button" data-act="save" class="go">Guardar y publicar</button>' +
+      '<button type="button" data-act="cancel">Cancelar</button>' +
+      '<button type="button" data-act="reset">Restablecer todo</button>';
+    document.body.appendChild(bar);
+    bar.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-act]');
+      if (!btn) return;
+      if (btn.dataset.act === 'save') saveTextEdits();
+      else if (btn.dataset.act === 'cancel') stopTextEditing(true);
+      else if (btn.dataset.act === 'reset') resetTextEdits();
+    });
+    return bar;
+  }
+
+  function startTextEditing() {
+    textEditing = true;
+    textBaseline.clear();
+    document.body.classList.add('ln-text-editing');
+    editableElements().forEach(function (el) {
+      textBaseline.set(el, el.textContent);
+      el.setAttribute('data-ln-editable', 'on');
+      el.setAttribute('contenteditable', 'true');
+      el.setAttribute('spellcheck', 'false');
+    });
+    textBar().classList.add('is-on');
+    document.querySelectorAll('.ln-numbers-toggle').forEach(function (b) {
+      b.classList.add('is-on');
+      b.querySelector('span').textContent = 'Terminar edición';
+    });
+  }
+
+  function stopTextEditing(restore) {
+    textEditing = false;
+    editableElements().forEach(function (el) {
+      if (restore && textBaseline.has(el)) el.textContent = textBaseline.get(el);
+      el.removeAttribute('contenteditable');
+      el.removeAttribute('data-ln-editable');
+    });
+    document.body.classList.remove('ln-text-editing');
+    textBar().classList.remove('is-on');
+    document.querySelectorAll('.ln-numbers-toggle').forEach(function (b) {
+      b.classList.remove('is-on');
+      b.querySelector('span').textContent = 'Editar números';
+    });
+    applyTextOverrides();
+  }
+
+  function saveTextEdits() {
+    var pending = [];
+    editableElements().forEach(function (el) {
+      var before = textBaseline.has(el) ? textBaseline.get(el) : '';
+      var now = el.textContent;
+      if (now === before) return;
+      var key = textKey(el);
+      if (!key) return;
+      pending.push({ key: key, context: textContextFor(el), text: now });
+    });
+
+    if (!pending.length) { say('No hubo cambios que guardar.', 'warn'); stopTextEditing(false); return; }
+
+    say('Publicando ' + pending.length + ' cambio(s)…', 'success');
+    Promise.all(pending.map(function (item) {
+      return persist(item.key, '__texto__', item.context, { v: 1, text: item.text }, true, 'Texto editado');
+    }))
+      .then(function () { say('Publicado: ' + pending.length + ' valor(es) actualizado(s).', 'success'); })
+      .catch(function (err) { say('Guardado en este navegador, pero no se publicó: ' + err.message, 'warn'); })
+      .then(function () { stopTextEditing(false); });
+  }
+
+  function resetTextEdits() {
+    var keys = Object.keys(NS.overrides).filter(function (key) { return key.indexOf('texto:') === 0; });
+    if (!keys.length) { say('No hay textos editados que restablecer.', 'warn'); return; }
+    Promise.all(keys.map(function (key) {
+      var at = key.lastIndexOf('@');
+      var entry = NS.overrides[key] || {};
+      return persist(key, '__texto__', key.slice(at + 1), entry.config || {}, false, 'Texto restablecido');
+    }))
+      .then(function () { say('Textos restablecidos a lo que calcula el pipeline.', 'success'); })
+      .catch(function (err) { say('Restablecido aquí, pero no se publicó: ' + err.message, 'warn'); })
+      .then(function () {
+        stopTextEditing(false);
+        try { if (typeof window.drawCarteraTipoDashboard === 'function') window.drawCarteraTipoDashboard(); } catch (_) {}
+      });
+  }
+
+  function injectNumbersToggle() {
+    var host = document.getElementById('cartera-mode-tabs');
+    if (!host || host.querySelector('.ln-numbers-toggle')) return;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'ln-numbers-toggle';
+    btn.innerHTML = PENCIL + '<span>Editar números</span>';
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (textEditing) stopTextEditing(true); else startTextEditing();
+    });
+    host.appendChild(btn);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     12. Arranque
+     ═══════════════════════════════════════════════════════════════════ */
+
+  function boot() {
+    injectEditButtons();
+    injectNumbersToggle();
+    applyTextOverrides();
+
+    loadOverrides().then(function (loaded) {
+      if (loaded) NS.rebuildAll();
+      refreshEditButtons();
+      applyTextOverrides();
+    });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
+  else boot();
+
+  // Los controladores del pipeline instalan sus gráficas con temporizadores,
+  // así que se reintenta hasta que todos los bloques existen.
+  [400, 900, 1600, 2600, 3600].forEach(function (delay) {
+    setTimeout(function () { injectEditButtons(); injectNumbersToggle(); applyTextOverrides(); }, delay);
+  });
+
+  // Cambiar de pestaña cambia el contexto: hay que releer qué está editado.
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest) return;
+    var hit = e.target.closest('#cartera-mode-tabs [data-cartera-panel], #cartera-tipo-product-tabs [data-cartera-product], ' +
+      '#captacion-product-tabs [data-captacion-product], #consumo-subfilter [data-consumo-slice], ' +
+      '#comercial-subfilter [data-comercial-slice], #sib-subtabs .macro-tab');
+    if (!hit) return;
+    [180, 500, 1000].forEach(function (delay) {
+      setTimeout(function () { refreshEditButtons(); applyTextOverrides(); }, delay);
+    });
+  }, true);
+
+  // Red de seguridad barata: los textos vuelven a su sitio aunque un
+  // controlador los reescriba fuera de los eventos que escuchamos.
+  setInterval(applyTextOverrides, 900);
+
+  NS.open = openStudio;
 })();
 </script>
 
