@@ -141,14 +141,51 @@ no se pierde al cambiar de pestaña y volver.
 
 ---
 
-## 7. Dónde vive todo esto
+## 7. Editar las tarjetas de mercado (USD, EUR, WTI y TPM)
+
+Las cuatro tarjetas de la parte de arriba de **Hoy** solo se movían cargando
+un Excel. Cuando el dato del día llega por otra vía —una llamada, el cierre
+publicado antes que el archivo— ahora se puede escribir a mano.
+
+Con sesión de analista, debajo de las tarjetas aparece **✎ Editar tarjetas**.
+Pulsa, escribe el valor encima del número y pulsa **Guardar y publicar**
+(o Enter; Esc cancela).
+
+Lo importante es lo que pasa con la mini-gráfica de 7 días que hay detrás de
+cada tarjeta. El número visible **es el último punto de esa serie**, así que al
+guardar:
+
+1. el valor que escribiste entra como **último dato**;
+2. el que estaba pasa a ser el **penúltimo**;
+3. la serie corre una posición y suelta el más viejo, para seguir siendo de 7;
+4. la variación «vs ayer» se recalcula contra ese penúltimo;
+5. la mini-gráfica se redibuja y el ticker de arriba toma el valor nuevo.
+
+Ejemplo. WTI viene en `63.40 · 63.05 · 62.88 · 62.70 · 62.55 · 62.40 · 62.18`
+y escribes **64.75**. La serie queda
+`63.05 · 62.88 · 62.70 · 62.55 · 62.40 · 62.18 · 64.75`, y la tarjeta muestra
+«▲ +2.57 (+4.13%) vs ayer», calculado contra 62.18. Es exactamente la misma
+operación que hace el pipeline cuando llega un cierre nuevo; aquí la hace el
+analista.
+
+La TPM no tiene serie: ahí solo cambia el número.
+
+La tarjeta editada lleva debajo el sello **«Editado por el analista»**, por lo
+mismo que las gráficas: quien lea el observatorio tiene que poder distinguir el
+dato del pipeline del corregido a mano. **Restablecer** devuelve las cuatro al
+dato del pipeline sin borrar lo editado.
+
+---
+
+## 8. Dónde vive todo esto
 
 - **Tabla:** `public.chart_overrides` en Supabase (migración
   `supabase/migrations/20260818000001_chart_overrides.sql`).
 - **Una fila = una gráfica en una pestaña.** La llave `chart_key` es el id
   del lienzo más el contexto, por ejemplo
   `car-chart-evolucion@creditos:total`. Los textos usan el prefijo
-  `texto:`.
+  `texto:` y las tarjetas de mercado el prefijo `tarjeta:`
+  (`tarjeta:wti@hoy:mercado`), con su serie de 7 días dentro del `config`.
 - **Restablecer no borra:** pone `enabled = false` y conserva el `config`.
 - **Copia local:** lo publicado se guarda además en `localStorage`
   (`ln-chart-overrides-cache-v1`) para que la página no espere a la red
