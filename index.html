@@ -1851,7 +1851,9 @@ table.sib th.metric-fresh, table.sib td.metric-fresh { animation: metricFresh 0.
 .proposal:hover { border-color: var(--cyan-line); box-shadow: 0 4px 14px rgba(0,112,192,0.07); }
 .proposal.approved { border-left: 4px solid var(--green); background: #F4FBF6; }
 .proposal.rejected { border-left: 4px solid var(--red); background: #FCF4F3; opacity: 0.65; }
-.proposal-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; margin-bottom: 10px; }
+/* flex-wrap para que en pantallas estrechas los botones bajen debajo del
+   texto en vez de salirse de la tarjeta y quedar recortados. */
+.proposal-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; margin-bottom: 10px; flex-wrap: wrap; }
 .proposal-tags { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
 .tag { font-size: 10px; padding: 4px 9px; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; border-radius: 3px; }
 .tag-dom { background: var(--cyan-soft); color: var(--cyan-deep); }
@@ -1861,16 +1863,27 @@ table.sib th.metric-fresh, table.sib td.metric-fresh { animation: metricFresh 0.
 .proposal h4 { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 500; line-height: 1.3; color: var(--ink); margin-bottom: 8px; letter-spacing: -0.2px; }
 .proposal .dek { font-size: 13px; color: var(--ink-soft); line-height: 1.5; margin-bottom: 12px; }
 .proposal .url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--cyan-dark); border-bottom: 1px dotted var(--cyan); padding-bottom: 1px; }
-.proposal-actions { display: flex; flex-direction: column; gap: 6px; min-width: 140px; }
-.btn-approve, .btn-reject, .btn-edit { background: var(--white); border: 1px solid var(--line); padding: 8px 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s var(--ease-out); text-transform: uppercase; border-radius: 4px; }
+/* flex-shrink:0 — la columna de acciones nunca cede espacio al titular, que
+   es lo que la dejaba estrujada contra el borde. */
+.proposal-actions { display: flex; flex-direction: column; gap: 6px; min-width: 140px; flex: 0 0 auto; }
+/* Fondo tintado: en blanco sobre blanco, con un borde de 1px, los botones se
+   perdian contra la tarjeta. Ahora se leen como botones a primera vista. */
+.btn-approve, .btn-reject, .btn-edit { background: var(--white); border: 1px solid var(--line); padding: 9px 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s var(--ease-out); text-transform: uppercase; border-radius: 4px; cursor: pointer; }
 .btn-approve, .btn-reject, .btn-edit { will-change: transform; }
 .btn-approve:active, .btn-reject:active, .btn-edit:active { transform: scale(0.96); }
-.btn-approve { color: var(--green); border-color: #B8DCC4; }
+.btn-approve { color: var(--green); border-color: #9CCFAE; background: #EDF8F1; }
 .btn-approve:hover { background: var(--green); color: var(--white); border-color: var(--green); }
-.btn-reject { color: var(--red); border-color: #E8C0BC; }
+.btn-reject { color: var(--red); border-color: #E3ADA8; background: #FDF1F0; }
 .btn-reject:hover { background: var(--red); color: var(--white); border-color: var(--red); }
-.btn-edit { color: var(--ink-soft); }
-.btn-edit:hover { border-color: var(--cyan); color: var(--cyan-dark); }
+.btn-edit { color: var(--ink-soft); border-color: #CBD3D9; background: #F4F6F8; }
+.btn-edit:hover { border-color: var(--cyan); color: var(--cyan-dark); background: var(--cyan-soft); }
+
+/* Tarjeta angosta: las acciones pasan a una fila completa bajo el texto, para
+   que sigan visibles en vez de desbordar la tarjeta. */
+@media (max-width: 760px) {
+  .proposal-actions { flex-direction: row; width: 100%; min-width: 0; }
+  .proposal-actions > * { flex: 1 1 0; }
+}
 .proposal.approved .btn-approve { background: var(--green); color: var(--white); border-color: var(--green); }
 .proposal.rejected .btn-reject { background: var(--red); color: var(--white); border-color: var(--red); }
 
@@ -5213,7 +5226,11 @@ let newsComposerDraft = [];
 // Portada: 4 noticias en grande (rejilla 2x2) + hasta 5 notas en "Otras Noticias".
 // Si se publican menos, la rejilla se ajusta sola al número real (ver data-count en CSS).
 const NEWS_FEATURE_LIMIT = 4;
-const NEWS_SIDE_LIMIT = 5;
+// "Otras Noticias" estaba topado en 5: con 4 en grande el maximo publicable
+// eran 9, y si el analista marcaba menos de 4 en grande las sobrantes
+// desaparecian de la portada aunque si se hubieran guardado. Con 8, el resumen
+// admite hasta 12 y nunca menos de 8 sea cual sea el reparto.
+const NEWS_SIDE_LIMIT = 8;
 const NEWS_TARGET_COUNT = NEWS_FEATURE_LIMIT + NEWS_SIDE_LIMIT;
 const NEWS_MAX_AGE_DAYS = 2;
 const NEWS_MAX_AGE_MS = NEWS_MAX_AGE_DAYS * 24 * 60 * 60 * 1000;
@@ -6022,7 +6039,7 @@ function renderNewsComposerPreview() {
   const preview = document.getElementById('news-composer-preview');
   if (!preview) return;
   const featured = newsComposerDraft.filter(x => x.feature).slice(0, NEWS_FEATURE_LIMIT);
-  const small = newsComposerDraft.filter(x => !featured.some(f => f.id === x.id)).slice(0, NEWS_SIDE_LIMIT);
+  const small = newsComposerDraft.filter(x => !featured.some(f => f.id === x.id)).slice(0, NEWS_TARGET_COUNT - featured.length);
   preview.innerHTML = `
     <div class="preview-browser">
       <div class="preview-chrome"><span class="preview-dot"></span><span class="preview-dot"></span><span class="preview-dot"></span></div>
@@ -6056,7 +6073,7 @@ function applyNewsSummaryToFront(items) {
   const layout = document.querySelector('#view-hoy .news-layout');
   if (!layout || !items?.length) return;
   const featured = items.filter(x => x.feature).slice(0, NEWS_FEATURE_LIMIT);
-  const small = items.filter(x => !featured.some(f => f.id === x.id)).slice(0, NEWS_SIDE_LIMIT);
+  const small = items.filter(x => !featured.some(f => f.id === x.id)).slice(0, NEWS_TARGET_COUNT - featured.length);
   layout.innerHTML = `
     <div class="news-feature-grid" data-count="${featured.length}">
       ${featured.map(item => `
@@ -10290,15 +10307,39 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     }
     if (!sb()) return [];
     try {
+      // Se pide por updated_at descendente y se recorta despues, en el cliente.
+      //
+      // Antes esta consulta ordenaba por sort_order y cortaba en el limite, sin
+      // filtrar por dia: como sort_order va 1..N en CADA publicacion, el orden
+      // juntaba todos los "1" (uno por dia publicado), luego todos los "2"...
+      // La portada terminaba mezclando dias — el 19 de agosto salian en primera
+      // plana notas del 7 de agosto y del 31 de julio, y las de hoy quedaban
+      // fuera del limite.
       const { data, error } = await sb()
         .from('news_items')
         .select('source_name,url,title,summary,body,category,published_at,display_date,sort_order,is_featured,updated_at')
         .eq('status','published')
-        .order('sort_order', { ascending:true })
         .order('updated_at', { ascending:false })
-        .limit(NEWS_TARGET_COUNT);
+        .limit(80);
       if (error) throw error;
-      const items = (data || []).map((row, idx) => {
+
+      // Una publicacion sella todas sus filas con el mismo instante (varian
+      // milisegundos). Quedarse con las que caen dentro de esa ventana aisla la
+      // ULTIMA publicacion, aunque ese dia se haya publicado dos veces.
+      const filas = data || [];
+      const masReciente = filas.length ? Date.parse(filas[0].updated_at || '') : NaN;
+      const VENTANA_PUBLICACION_MS = 10 * 60 * 1000;
+      const ultimaTanda = Number.isFinite(masReciente)
+        ? filas.filter(row => {
+            const t = Date.parse(row.updated_at || '');
+            return Number.isFinite(t) && masReciente - t <= VENTANA_PUBLICACION_MS;
+          })
+        : filas;
+
+      const items = ultimaTanda
+        .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
+        .slice(0, NEWS_TARGET_COUNT)
+        .map((row, idx) => {
         const visual = categoryVisual(row.category);
         return {
           id: row.url || idx,
@@ -10315,6 +10356,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
           order: row.sort_order || idx + 1
         };
       });
+      console.info(`[LN-NEWS] Portada: ${items.length} nota(s) de la ultima publicacion (${filas.length} publicadas en total).`);
       if (items.length) {
         localStorage.setItem(PUBLISHED_CACHE_KEY, JSON.stringify(items));
         localStorage.setItem(PUBLISHED_CACHE_AT, String(Date.now()));
@@ -10722,7 +10764,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   const PUBLISHED_CACHE_KEY = 'ln-news-published-cache-v1';
   const PUBLISHED_CACHE_AT = 'ln-news-published-cache-at-v1';
   const MAX_FEATURED = 4;   // noticias en grande (rejilla 2x2)
-  const MAX_SIDE     = 5;   // "Otras Noticias"
+  const MAX_SIDE     = 8;   // "Otras Noticias"
   const MAX_ITEMS    = MAX_FEATURED + MAX_SIDE;
 
   let composerDraftV7 = [];
@@ -10997,7 +11039,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
         <div>
           <div class="eyebrow">Mesa editorial · vista previa</div>
           <h2>Publicar Resumen</h2>
-          <p>Ordena las noticias, elige hasta 2 principales y edita fuente, fecha, enlace, título, bajada y cuerpo antes de publicar.</p>
+          <p>Ordena las noticias, elige hasta ${MAX_FEATURED} principales y edita fuente, fecha, enlace, título, bajada y cuerpo antes de publicar. Puedes publicar hasta ${MAX_ITEMS}.</p>
         </div>
         <div class="composer-actions">
           <button type="button" onclick="closeNewsComposer()">Cerrar</button>
@@ -11153,7 +11195,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     if (!preview) return;
     const d = getDraft();
     const featured = d.filter(x => x.feature).slice(0, MAX_FEATURED);
-    const small = d.filter(x => !featured.some(f => f.id === x.id)).slice(0, MAX_SIDE);
+    const small = d.filter(x => !featured.some(f => f.id === x.id)).slice(0, MAX_ITEMS - featured.length);
     preview.innerHTML = `
       <div class="preview-browser">
         <div class="preview-chrome"><span class="preview-dot"></span><span class="preview-dot"></span><span class="preview-dot"></span></div>
@@ -11189,7 +11231,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     const layout = document.querySelector('#view-hoy .news-layout');
     if (!layout || !items?.length) return;
     const featured = items.filter(x => x.feature).slice(0, MAX_FEATURED);
-    const small = items.filter(x => !featured.some(f => f.id === x.id)).slice(0, MAX_SIDE);
+    const small = items.filter(x => !featured.some(f => f.id === x.id)).slice(0, MAX_ITEMS - featured.length);
     // data-count deja que el CSS adapte la rejilla al número real de notas publicadas.
     layout.innerHTML = `
       <div class="news-feature-grid" data-count="${featured.length}">
@@ -14496,7 +14538,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   const PUBLISHED_KEY = 'ln-published-news-summary';
   const TABLE         = 'news_summary_snapshots';
   const MAX_FEATURED  = 4;
-  const MAX_SIDE      = 5;
+  const MAX_SIDE      = 8;
   const DOW           = ['Do','Lu','Ma','Mi','Ju','Vi','Sá'];
 
   /* ---------- Resúmenes en documento (los días anteriores al sitio) ----------
@@ -15024,7 +15066,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     }
     const items = snapshot.items.slice().sort((a, b) => a.order - b.order);
     const featured = items.filter(x => x.feature).slice(0, MAX_FEATURED);
-    const rest = items.filter(x => !featured.some(f => f.id === x.id)).slice(0, MAX_SIDE);
+    const rest = items.filter(x => !featured.some(f => f.id === x.id)).slice(0, MAX_FEATURED + MAX_SIDE - featured.length);
     let stamp = '';
     try {
       stamp = new Intl.DateTimeFormat('es-DO', { hour:'2-digit', minute:'2-digit' }).format(new Date(snapshot.published_at));
@@ -18172,14 +18214,6 @@ body.mkt-editing .market-cell .value {
   border-radius: 3px; cursor: text; background: rgba(230,190,0,.07);
 }
 body.mkt-editing .market-cell { cursor: default; }
-
-/* Sello: quien lee el observatorio tiene que poder distinguir el dato del
-   pipeline del corregido a mano. Misma regla que las gráficas editadas. */
-.mkt-edited-flag {
-  display: none; margin-top: 6px; font-size: 9px; font-weight: 700;
-  letter-spacing: .08em; text-transform: uppercase; color: #8a6400;
-}
-.market-cell.is-hand-edited .mkt-edited-flag { display: block; }
 </style>
 
 <script id="ln-market-card-editor">
@@ -18370,15 +18404,9 @@ body.mkt-editing .market-cell { cursor: default; }
       }
     }
 
-    if (c) {
-      c.classList.add('is-hand-edited');
-      if (!c.querySelector('.mkt-edited-flag')) {
-        var flag = document.createElement('div');
-        flag.className = 'mkt-edited-flag';
-        flag.textContent = 'Editado por el analista';
-        c.appendChild(flag);
-      }
-    }
+    // La tarjeta editada no lleva sello: en portada el dato es el dato, y el
+    // rastro de quien lo puso queda en chart_overrides.
+    if (c) c.classList.add('is-hand-edited');
     // Redibujar solo cuando algo se movió: el repaso periódico no puede estar
     // destruyendo y reconstruyendo la gráfica abierta cada segundo y medio.
     if (cambio) redibujar(fx);
