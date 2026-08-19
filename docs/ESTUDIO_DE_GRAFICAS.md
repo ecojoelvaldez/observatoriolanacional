@@ -170,10 +170,9 @@ analista.
 
 La TPM no tiene serie: ahí solo cambia el número.
 
-La tarjeta editada lleva debajo el sello **«Editado por el analista»**, por lo
-mismo que las gráficas: quien lea el observatorio tiene que poder distinguir el
-dato del pipeline del corregido a mano. **Restablecer** devuelve las cuatro al
-dato del pipeline sin borrar lo editado.
+La tarjeta editada no lleva sello a la vista: en portada el dato es el dato. El
+rastro de quién lo puso queda en `chart_overrides`, y **Restablecer** devuelve
+las cuatro al dato del pipeline sin borrar lo editado.
 
 ---
 
