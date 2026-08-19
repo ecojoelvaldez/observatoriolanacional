@@ -1,19 +1,274 @@
 {
-  "generated_at": "2026-08-18T17:02:02.174222+00:00",
+  "generated_at": "2026-08-19T11:02:01.990408+00:00",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
-  "count": 23,
+  "count": 35,
   "count_by_day": {
-    "2026-08-18": 9,
+    "2026-08-19": 13,
+    "2026-08-18": 8,
     "2026-08-17": 14
   },
-  "new_this_run": 2,
-  "already_published": 6,
+  "new_this_run": 14,
+  "already_published": 0,
   "ttl_days": 7,
   "errors": 0,
   "sources": 37,
-  "elapsed_s": 229.0,
+  "elapsed_s": 472.8,
   "candidates": [
+    {
+      "id": "n_8b7c8624c3f153a7",
+      "source_key": "news_hoy",
+      "source_name": "Hoy Digital · Economía",
+      "url": "https://hoy.com.do/economia/afiliados-sistema-pensiones-4-8-millones_1099271.html",
+      "title": "Afiliados al sistema pensiones es 4.8 millones",
+      "summary": "El Sistema Dominicano de Pensiones (SDP) reporta 4,895,292 afiliados, con una actualización metodológica que eleva la densidad de cotización al 49.8%. El patrimonio total de los fondos de pensiones supera los RD$1.6 billones, con un rendimiento del 7.89%.",
+      "body": "La Superintendencia de Pensiones (Sipen) actualizó sus indicadores, elevando el número de afiliados al sistema de pensiones a casi 4.9 millones. Esta revisión metodológica también incrementó la densidad de cotización al 49.8%, mostrando una mejora en la consistencia y precisión de las mediciones. El patrimonio de los fondos de pensiones supera los RD$1.6 billones, con un rendimiento del 7.89%.",
+      "category": "Financiero",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-19T00:00:00-04:00",
+      "fetched_at": "2026-08-19T10:58:02.288822+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_3a91a42eb1a31420",
+      "source_key": "news_eldinero_rss",
+      "source_name": "El Dinero · RSS",
+      "url": "https://eldinero.com.do/376895/republica-dominicana-recorta-su-brecha-financiera-con-america-latina-gracias-a-los-medios-digitales",
+      "title": "República Dominicana recorta su brecha financiera con América Latina, gracias a los medios digitales",
+      "summary": "La República Dominicana ha reducido significativamente su brecha de inclusión financiera con América Latina, al aumentar la proporción de adultos con cuentas financieras o móviles del 51.3% al 64.8% entre 2021 y 2024. Este avance, impulsado por el uso de medios digitales y pagos electrónicos, plantea nuevos desafíos y oportunidades para la banca dominicana en la gestión de la experiencia del cliente.",
+      "body": "La brecha financiera de República Dominicana con América Latina se ha reducido notablemente, pasando de casi 16 puntos porcentuales en 2021 a menos de 5 en 2024, según el Global Findex 2025 del Banco Mundial. Este crecimiento en la tenencia de cuentas financieras o móviles, impulsado por el uso de medios digitales, está transformando la relación de los clientes con la banca, quienes ahora priorizan pagos y transacciones inmediatas.",
+      "category": "Financiero",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-18T17:42:38+00:00",
+      "fetched_at": "2026-08-19T10:56:34.406973+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_58fad84043490e2c",
+      "source_key": "news_eldinero_rss",
+      "source_name": "El Dinero · RSS",
+      "url": "https://eldinero.com.do/376922/la-economia-colombiana-crece-un-3-5-en-el-segundo-trimestre-de-2026",
+      "title": "La economía colombiana crece un 3.5% en el segundo trimestre de 2026",
+      "summary": "La economía colombiana experimentó un crecimiento del 3.5% en el segundo trimestre de 2026, impulsada principalmente por el gasto público y los sectores de educación y salud. Este desempeño macroeconómico, aunque positivo, debe ser analizado en el contexto de las tendencias globales y su potencial impacto indirecto en el sector financiero dominicano.",
+      "body": "La economía de Colombia registró un crecimiento del 3.5% durante el segundo trimestre de 2026, superando el desempeño del periodo anterior. Este avance fue impulsado por el gasto público y sectores clave como educación y salud, aunque la agricultura y las comunicaciones mostraron retrocesos. El consumo final y la formación bruta de capital también contribuyeron positivamente al Producto Interno Bruto (PIB).",
+      "category": "Economia",
+      "relevance": 8,
+      "señales": [
+        "macro"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-18T19:56:38+00:00",
+      "fetched_at": "2026-08-19T10:56:28.124178+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_a11c21a01f9de013",
+      "source_key": "news_eldinero_rss",
+      "source_name": "El Dinero · RSS",
+      "url": "https://eldinero.com.do/376931/terminal-del-norte-proyecta-inversion-de-us520-millones-en-puerto-plata",
+      "title": "Terminal del Norte proyecta inversión de US$520 millones en Puerto Plata",
+      "summary": "Un nuevo proyecto logístico en Puerto Plata, Terminal del Norte, planea una inversión de US$520 millones para fortalecer la capacidad de carga y reducir la dependencia de terminales del sur. Esta iniciativa busca impulsar el desarrollo económico y la generación de empleo en la región Norte de República Dominicana.",
+      "body": "La iniciativa Terminal del Norte, impulsada por Pragma Capital, proyecta una inversión inicial superior a los US$520 millones en Puerto Plata. El proyecto busca optimizar la logística regional, manejar diversos tipos de carga y reducir la dependencia de las terminales del sur, al tiempo que se busca fortalecer la competitividad y el desarrollo económico de la zona Norte.",
+      "category": "Economia",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-18T20:27:50+00:00",
+      "fetched_at": "2026-08-19T10:56:21.900558+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_945f4b59d22d943d",
+      "source_key": "news_elcaribe",
+      "source_name": "El Caribe · Dinero",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/aparece-una-deuda-que-no-reconoces-en-tu-historial-crediticio",
+      "title": "¿Aparece una deuda que no reconoces en tu historial crediticio? Así puedes reclamar en RD",
+      "summary": "La Ley 172-13 en República Dominicana establece el procedimiento para que los ciudadanos reclamen deudas incorrectas en su historial crediticio ante las Sociedades de Información Crediticia. Es crucial revisar el reporte, identificar la fuente del dato y presentar una reclamación formal con la documentación de respaldo para corregir o eliminar registros erróneos.",
+      "body": "En República Dominicana, la Ley 172-13 protege los datos personales y permite a los ciudadanos impugnar deudas que no reconocen en su historial crediticio. Ante un registro erróneo o posible suplantación de identidad, es fundamental revisar el reporte, identificar la entidad que reportó la obligación y presentar una reclamación formal ante la Sociedad de Información Crediticia (SIC) con la documentación pertinente.",
+      "category": "Financiero",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-18T23:13:59+00:00",
+      "fetched_at": "2026-08-19T10:56:04.362985+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_8ba76312352a22d4",
+      "source_key": "news_elcaribe",
+      "source_name": "El Caribe · Dinero",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/varios-canales-impulsan-las-divisas-al-pais-en-este-2026",
+      "title": "Varios canales impulsan las divisas al país en este 2026",
+      "summary": "La República Dominicana experimenta un aumento significativo en la entrada de divisas durante el primer semestre de 2026, impulsado por exportaciones, turismo, inversión extranjera directa y remesas. Este flujo diversificado contribuye a la estabilidad del tipo de cambio y a la acumulación de reservas internacionales.",
+      "body": "La economía dominicana ha visto un incremento notable en la recepción de moneda extranjera, superando los US$26,500 millones entre enero y junio de 2026. Este crecimiento se debe a la fortaleza combinada del turismo, las remesas, la inversión extranjera directa y, de manera destacada, las exportaciones, con el oro emergiendo como un motor clave.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "politica_monetaria",
+        "macro"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-19T04:00:00+00:00",
+      "fetched_at": "2026-08-19T10:55:58.429455+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_3ae0322056e2c0b7",
+      "source_key": "news_elcaribe",
+      "source_name": "El Caribe · Dinero",
+      "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-19-de-agosto-2026",
+      "title": "Precio del dólar hoy miércoles 19 de agosto de 2026 en RD",
+      "summary": "El Banco Central de la República Dominicana reporta que el dólar se cotiza a RD$58,74 para la compra y RD$59,09 para la venta. Las tasas de cambio, influenciadas por factores internacionales y la demanda local, presentan variaciones entre entidades bancarias y plataformas de envío de remesas.",
+      "body": "El tipo de cambio del dólar estadounidense en República Dominicana se mantiene en niveles cercanos a los reportados por el Banco Central, con cotizaciones de RD$58,74 para la compra y RD$59,09 para la venta. Entidades como Banreservas y Banco Popular muestran tasas ligeramente superiores, mientras que servicios de remesas como Western Union y Caribe Express operan con variaciones que impactan el monto final recibido.",
+      "category": "Financiero",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "politica_monetaria",
+        "banca",
+        "macro",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-19T09:18:37+00:00",
+      "fetched_at": "2026-08-19T10:55:52.192527+00:00",
+      "status": "pending",
+      "tambien_en": [
+        {
+          "source_name": "El Caribe · Dinero",
+          "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-18-de-agosto-2026",
+          "title": "Precio del dólar hoy martes 18 de agosto de 2026 en RD"
+        }
+      ]
+    },
+    {
+      "id": "n_27051eab016b4277",
+      "source_key": "news_diariolibre_finanzas",
+      "source_name": "Diario Libre · Finanzas",
+      "url": "https://www.diariolibre.com/actualidad/justicia/2026/08/19/juicio-a-donald-guerrero-y-otros-exfuncionarios-empieza-este-miercoles/3632529",
+      "title": "Juicio a Donald Guerrero y otros exfuncionarios es hoy; apelación contra Gonzalo y Peralta sin fecha",
+      "summary": "El inicio del juicio contra Donald Guerrero y otros exfuncionarios marca un hito en la lucha contra la corrupción en la República Dominicana. La falta de fecha para la apelación de Gonzalo y Peralta genera incertidumbre sobre el avance de otros casos relevantes.",
+      "body": "Este miércoles comienza el juicio contra Donald Guerrero y otros exfuncionarios, un evento judicial de gran relevancia para el país. Paralelamente, la apelación relacionada con los casos de Gonzalo y Peralta aún no tiene fecha definida, lo que mantiene en vilo la resolución de otros procesos importantes.",
+      "category": "Regulatorio",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-19T00:01:00-04:00",
+      "fetched_at": "2026-08-19T10:55:28.204489+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_5f152ce411dc38dc",
+      "source_key": "news_diariolibre",
+      "source_name": "Diario Libre · Economía",
+      "url": "https://www.diariolibre.com/economia/negocios/2026/08/19/que-pasara-con-la-mina-de-poner-fin-a-contratos-con-falcondo/3632607",
+      "title": "¿Qué pasará con la mina de ferroníquel de poner fin a los contratos con Falcondo?",
+      "summary": "La potencial terminación de contratos con Falcondo para la mina de ferroníquel en la República Dominicana genera incertidumbre sobre el futuro de la operación y su impacto económico. La decisión podría afectar la inversión y el empleo en el sector minero del país.",
+      "body": "La posible finalización de los acuerdos contractuales con Falcondo para la explotación de la mina de ferroníquel en la República Dominicana plantea interrogantes sobre su continuidad. Este escenario podría tener repercusiones significativas en la economía local, la inversión extranjera y el empleo, dada la importancia de este sector para el país.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "macro",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-19T00:01:00-04:00",
+      "fetched_at": "2026-08-19T10:55:03.341517+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_37c2f7e05279a18c",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/376875/visa-designa-a-william-dawson-como-director-senior-de-aceptacion-para-el-caribe-y-centro-america",
+      "title": "Visa designa a William Dawson como director senior de aceptación para el Caribe y Centro América",
+      "summary": "Visa ha nombrado a William Dawson como director senior de aceptación para el Caribe y Centroamérica, una designación clave para la estrategia de pagos de la compañía en la región. Este movimiento busca fortalecer la oferta de soluciones y la expansión de la red de aceptación en mercados financieros emergentes.",
+      "body": "Visa ha anunciado el nombramiento de William Dawson como su nuevo director senior de aceptación para el Caribe y Centroamérica (CarCam). En este rol, Dawson será responsable de liderar la estrategia de expansión y adopción de los servicios de Visa en la región, integrándose al equipo de liderazgo de CarCam para impulsar el crecimiento y la innovación en el ecosistema de pagos.",
+      "category": "Financiero",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-18T15:04:22+00:00",
+      "fetched_at": "2026-08-19T10:54:46.022350+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_f467d470c0da2f20",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/376881/voluntariado-del-banco-central-realiza-nueva-jornada-de-venta-de-utiles-escolares",
+      "title": "Voluntariado del Banco Central realiza nueva jornada de venta de útiles escolares",
+      "summary": "El Voluntariado Bancentraliano organizó una jornada de venta de útiles escolares para empleados y pensionados, registrando un aumento del 19% en la demanda. Esta iniciativa busca apoyar la economía familiar y promover la educación de calidad, alineándose con los Objetivos de Desarrollo Sostenible.",
+      "body": "El Voluntariado Bancentraliano, iniciativa social del Banco Central de la República Dominicana, ha llevado a cabo una jornada de venta de útiles escolares. La actividad, que busca apoyar la economía familiar y fomentar la educación, registró 500 pedidos, un 19% más que el año anterior, y se realizó sin el uso de plásticos.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "regulador"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-18T15:19:22+00:00",
+      "fetched_at": "2026-08-19T10:54:39.692311+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_86592e94c389f08c",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/376907/banesco-nombra-a-frank-amador-selles-como-director-del-consejo-de-administracion",
+      "title": "Banesco nombra a Frank Amador Selles como director del Consejo de Administración",
+      "summary": "Banesco Banco Múltiple ha designado a Frank Amador Selles como nuevo director externo independiente de su Consejo de Administración. Esta incorporación busca fortalecer la gobernanza y la estrategia del banco, aprovechando la amplia experiencia de Amador Selles en banca comercial, inversión y gobierno corporativo.",
+      "body": "Banesco Banco Múltiple anunció la incorporación de Frank Amador Selles a su Consejo de Administración como director externo independiente. La entidad financiera destacó la vasta experiencia de Amador Selles en áreas clave como banca comercial, banca de inversión, gobierno corporativo y fusiones y adquisiciones. Su nombramiento se considera un paso para fortalecer la estrategia y la gestión del banco.",
+      "category": "Financiero",
+      "relevance": 9,
+      "señales": [
+        "banca",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-18T19:18:46+00:00",
+      "fetched_at": "2026-08-19T10:54:33.850449+00:00",
+      "status": "pending"
+    },
+    {
+      "id": "n_c3f50f083bb0b236",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/376904/dgcp-lanza-eficompras-primera-tienda-virtual-del-gobierno-para-compras-por-debajo-del-umbral",
+      "title": "DGCP lanza Eficompras, primera tienda virtual del Gobierno para compras por debajo del umbral",
+      "summary": "La Dirección General de Contrataciones Públicas (DGCP) ha lanzado Eficompras, una plataforma virtual para compras gubernamentales menores a RD$268,111.38, buscando agilizar procesos y fomentar la participación de mipymes. Esta iniciativa, desarrollada internamente, promete mayor transparencia y equidad en las adquisiciones del Estado.",
+      "body": "La Dirección General de Contrataciones Públicas (DGCP) ha puesto en marcha Eficompras, una innovadora tienda virtual integrada al Sistema Electrónico de Contrataciones Públicas (SECP). Esta plataforma está diseñada para simplificar y agilizar las adquisiciones de bienes de uso común por debajo de un umbral específico, promoviendo activamente la inclusión de las mipymes y la producción nacional.",
+      "category": "Regulatorio",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "published_at": "2026-08-18T18:24:46+00:00",
+      "fetched_at": "2026-08-19T10:54:27.920751+00:00",
+      "status": "pending"
+    },
     {
       "id": "n_e0232023b976fe18",
       "source_key": "news_eldinero",
@@ -117,36 +372,6 @@
       "published_at": "2026-08-17T18:15:33+00:00",
       "fetched_at": "2026-08-18T10:56:49.126154+00:00",
       "status": "pending"
-    },
-    {
-      "id": "n_d7b9c93a6920a5f1",
-      "source_key": "news_elcaribe",
-      "source_name": "El Caribe · Dinero",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-18-de-agosto-2026",
-      "title": "Precio del dólar hoy martes 18 de agosto de 2026 en RD",
-      "summary": "El Banco Central de la República Dominicana reporta que el dólar se cotiza a RD$58,59 para la compra y RD$59,17 para la venta, reflejando variaciones alineadas con el comportamiento internacional y la demanda local. Las tasas varían entre entidades bancarias y plataformas de envío de remesas.",
-      "body": "El tipo de cambio del dólar en República Dominicana se mantiene con fluctuaciones moderadas este martes 18 de agosto de 2026. El Banco Central establece las tasas oficiales, mientras que entidades como Banreservas y Banco Popular presentan sus propias cotizaciones. Plataformas de envío de remesas como Western Union y Caribe Express también muestran sus tasas, evidenciando la dinámica del mercado cambiario.",
-      "category": "Financiero",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "politica_monetaria",
-        "banca",
-        "macro",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-18T10:31:39+00:00",
-      "fetched_at": "2026-08-18T10:56:24.943104+00:00",
-      "status": "pending",
-      "tambien_en": [
-        {
-          "source_name": "El Caribe · Dinero",
-          "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-15-agosto-2026",
-          "title": "Precio del dólar hoy sábado 15 de agosto de 2026 en RD"
-        }
-      ]
     },
     {
       "id": "n_09ea85a991ccc39c",
@@ -318,6 +543,11 @@
           "source_name": "El Dinero · RSS",
           "url": "https://eldinero.com.do/376820/el-petroleo-de-texas-sube-2-55-con-las-negociaciones-entre-ee-uu-e-iran-estancadas",
           "title": "El petróleo de Texas sube 2.55%, con las negociaciones entre EE.UU. e Irán estancadas"
+        },
+        {
+          "source_name": "Hoy Digital · Economía",
+          "url": "https://hoy.com.do/economia/petroleo-texas-sube-us-84-94_1099308.html",
+          "title": "Petróleo de Texas sube a US $84.94"
         }
       ]
     },
@@ -477,7 +707,7 @@
       "status": "pending"
     }
   ],
-  "discarded_count": 8,
+  "discarded_count": 13,
   "discarded": [
     {
       "id": "n_5e46ae076d7506eb",
@@ -538,6 +768,42 @@
       "fetched_at": "2026-08-18T11:01:01.952309+00:00"
     },
     {
+      "id": "n_796693abcbc43058",
+      "motivo": "relevancia_baja",
+      "motivo_texto": "El modelo le puso poca relevancia financiera",
+      "title": "El Estado pagará RD$2,693 millones por terrenos tras negligencia de abogados de Bienes Nacionales",
+      "url": "https://www.diariolibre.com/actualidad/justicia/2026/08/19/estado-debera-pagar-rd2693-mm-por-litigio-en-la-jose-contreras/3632337",
+      "source_name": "Diario Libre · Finanzas",
+      "relevance": 5,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-19T10:55:22.183113+00:00"
+    },
+    {
+      "id": "n_097433e2a1597f2b",
+      "motivo": "relevancia_baja",
+      "motivo_texto": "El modelo le puso poca relevancia financiera",
+      "title": "Obras viales concentran la inversión pública en Hato Mayor",
+      "url": "https://eldinero.com.do/376918/obras-viales-concentran-la-inversion-publica-en-hato-mayor",
+      "source_name": "El Dinero · RSS",
+      "relevance": 5,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-19T10:56:16.420931+00:00"
+    },
+    {
+      "id": "n_04849dea6a9c334e",
+      "motivo": "relevancia_baja",
+      "motivo_texto": "El modelo le puso poca relevancia financiera",
+      "title": "Falsificación de ron amenaza la salud e inversiones",
+      "url": "https://hoy.com.do/economia/falsificacion-ron-amenaza-salud-e-inversiones_1099272.html",
+      "source_name": "Hoy Digital · Economía",
+      "relevance": 5,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-19T10:57:12.408893+00:00"
+    },
+    {
       "id": "n_ae88eb0ae5a0de65",
       "motivo": "relevancia_baja",
       "motivo_texto": "El modelo le puso poca relevancia financiera",
@@ -550,16 +816,40 @@
       "fetched_at": "2026-08-18T10:57:14.113745+00:00"
     },
     {
-      "id": "n_f467d470c0da2f20",
+      "id": "n_df16fe6ea436934b",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Voluntariado del Banco Central realiza nueva jornada de venta de útiles escolares",
-      "url": "https://eldinero.com.do/376881/voluntariado-del-banco-central-realiza-nueva-jornada-de-venta-de-utiles-escolares",
-      "source_name": "El Dinero · Finanzas",
+      "title": "Confianza industrial y clima empresarial arriba umbral 50",
+      "url": "https://hoy.com.do/economia/confianza-industrial-clima-empresarial-umbral-50_1099273.html",
+      "source_name": "Hoy Digital · Economía",
       "relevance": null,
       "señales": [],
       "detalle": "",
-      "fetched_at": "2026-08-18T17:02:00.665006+00:00"
+      "fetched_at": "2026-08-19T11:01:00.321487+00:00"
+    },
+    {
+      "id": "n_0a58756d6d7be932",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "¿Recaudaciones del ITBIS subieron o bajaron en julio?",
+      "url": "https://hoy.com.do/economia/recaudaciones-itbis-subieron-bajaron-julio_1099270.html",
+      "source_name": "Hoy Digital · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-19T11:01:00.325217+00:00"
+    },
+    {
+      "id": "n_c26db83eaa8f42d0",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Inversión pública se concentró en cinco provincias en julio",
+      "url": "https://hoy.com.do/economia/inversion-publica-concentro-cinco-provincias-julio_1099267.html",
+      "source_name": "Hoy Digital · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-19T11:02:00.469521+00:00"
     },
     {
       "id": "n_24f5f7cc6e3ff91a",
