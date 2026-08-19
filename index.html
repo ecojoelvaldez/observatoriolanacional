@@ -4617,7 +4617,7 @@ footer .mark{
 <article class="ops-card full" id="ops-news">
             <div class="ops-kicker">
               <span class="ops-label">Noticias diarias</span>
-              <span class="ops-pill">URLs · 09:30 AM</span>
+              <span class="ops-pill">URLs · 9:00 AM y 12:30 PM</span>
             </div>
             <h3>Actualizar cola editorial desde fuentes autorizadas</h3>
             <p>Configura los URLs/RSS de la lista blanca. El botón consulta las fuentes, normaliza título, fecha, fuente, link y resumen, y carga candidatos al panel para aprobación del analista.</p>
@@ -17668,6 +17668,481 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   setInterval(applyTextOverrides, 900);
 
   NS.open = openStudio;
+})();
+</script>
+
+<style id="ln-news-day-css">
+.news-day-bar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px;
+  margin: 0 0 16px; padding: 12px 16px;
+  border: 1px solid var(--line); border-left: 3px solid var(--cyan-deep);
+  border-radius: 6px; background: var(--white);
+  font-size: 12px; color: var(--ink-soft);
+}
+.news-day-bar.is-stale { border-left-color: #b8860b; background: #fffdf5; }
+.news-day-bar.is-empty { border-left-color: #9aa3ab; }
+.news-day-bar .nd-day {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--cyan-deep);
+}
+.news-day-bar.is-stale .nd-day { color: #8a6400; }
+.news-day-bar .nd-msg { flex: 1 1 240px; line-height: 1.5; }
+.news-day-bar .nd-msg strong { color: var(--ink); }
+.news-day-bar .nd-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.news-day-bar button {
+  font-family: inherit; font-size: 11px; font-weight: 600; cursor: pointer;
+  background: var(--white); border: 1px solid var(--line); border-radius: 4px;
+  padding: 7px 13px; color: var(--ink-soft); transition: all .2s var(--ease-out);
+}
+.news-day-bar button:hover { border-color: var(--cyan-deep); color: var(--cyan-deep); }
+</style>
+
+<script id="ln-news-daily-refresh">
+/* ========================================================================
+   La Nacional · La cola de noticias es de UN DÍA
+   ------------------------------------------------------------------------
+   Problema que resuelve: el 19 de agosto seguían apareciendo propuestas del
+   14 y del 7. Venían de dos sitios a la vez —el JSON del pipeline guardaba
+   una semana de candidatas, y el navegador nunca soltaba las que ya tenía en
+   localStorage— así que arreglar solo el pipeline no bastaba: la cola vieja
+   revivía en cuanto el analista abría el panel.
+
+   Aquí se fija la regla del lado del navegador, con la misma ventana que usa
+   el pipeline: el día editorial de Santo Domingo (UTC-4) y el anterior. Todo
+   lo que caiga fuera sale de la cola, del log y de la memoria de duplicados,
+   venga del JSON o de una sesión anterior.
+
+   Este bloque va al final a propósito: envuelve al cargador y al lector de
+   fuentes que definieron los parches previos, sin tocarlos.
+   ======================================================================== */
+(function(){
+  'use strict';
+
+  const TZ             = 'America/Santo_Domingo';  // UTC-4 todo el año
+  const CANDIDATES_URL = '/news_candidates.json';
+  // Ventana por defecto: hoy y ayer. El JSON del pipeline trae la suya en
+  // max_age_days y manda, para que cambiar el workflow no deje al panel
+  // filtrando distinto que la corrida que le llena la cola.
+  let maxAgeDays = 1;
+
+  const LOCAL_KEY     = 'ln-news-proposals';
+  const STATUS_KEY    = 'ln-news-proposals-local-status-v1';
+  const EDITS_KEY     = 'ln-news-proposals-local-edits-v1';
+  const LOG_KEY       = 'ln-news-log';
+  const SEEN_KEY      = 'ln-news-seen-keys';
+  const RECOVERED_KEY = 'ln-news-recovered-v1';
+  const PUBLISHED_KEY = 'ln-published-news-summary';
+  const DAY_KEY       = 'ln-news-editorial-day-v1';
+
+  const txt = v => String(v ?? '');
+  function readJson(key, fallback){
+    try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+    catch { return fallback; }
+  }
+  function writeJson(key, value){ try { localStorage.setItem(key, JSON.stringify(value)); } catch {} }
+  function esc(v){
+    if (typeof window.escapeHtml === 'function') return window.escapeHtml(txt(v));
+    return txt(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function toastSafe(msg, kind){
+    try { if (typeof window.toast === 'function') return window.toast(msg, kind || 'success'); } catch {}
+    console.log('[LN-NEWS-DÍA]', msg);
+  }
+  function logSafe(msg, kind){
+    try { if (typeof window.addNewsLog === 'function') return window.addNewsLog(msg, kind || 'info'); } catch {}
+  }
+
+  /* ---- 1. EL DÍA EDITORIAL --------------------------------------------
+     Todo se mide en días calendario de Santo Domingo, no en horas rodantes.
+     Con horas, "hace 48h" a las 9:00 a.m. alcanzaba hasta antier por la
+     mañana; con días, ayer es ayer y anteayer ya no entra. */
+  const dayFormatter = (() => {
+    try { return new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year:'numeric', month:'2-digit', day:'2-digit' }); }
+    catch { return null; }
+  })();
+
+  function dayOfDate(date){
+    if (!(date instanceof Date) || Number.isNaN(date.getTime())) return '';
+    if (dayFormatter) return dayFormatter.format(date);           // ya viene YYYY-MM-DD
+    const local = new Date(date.getTime() - 4 * 60 * 60 * 1000);  // respaldo: UTC-4 a mano
+    return local.toISOString().slice(0, 10);
+  }
+  function today(){ return dayOfDate(new Date()); }
+  function shiftDay(iso, days){
+    const d = new Date(`${iso}T12:00:00Z`);
+    if (Number.isNaN(d.getTime())) return iso;
+    d.setUTCDate(d.getUTCDate() + days);
+    return d.toISOString().slice(0, 10);
+  }
+  // Fecha de publicación -> día editorial. Se apoya en parseArticleDate, que
+  // ya sabe leer "19 de agosto de 2026" y sacar la fecha de la URL.
+  function dayOfRaw(raw, url){
+    const s = txt(raw).trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+    let d = null;
+    if (typeof window.parseArticleDate === 'function') { try { d = window.parseArticleDate(s, url || ''); } catch {} }
+    if (!d && s) { const t = new Date(s); if (!Number.isNaN(t.getTime())) d = t; }
+    return d ? dayOfDate(d) : '';
+  }
+
+  function windowBounds(){
+    const hoy = today();
+    // El límite superior deja pasar "mañana": un medio que fecha en otro huso
+    // no puede quedar fuera por unas horas.
+    return { hoy, desde: shiftDay(hoy, -maxAgeDays), hasta: shiftDay(hoy, 1) };
+  }
+  function dayInWindow(dia){
+    if (!dia) return false;
+    const { desde, hasta } = windowBounds();
+    return dia >= desde && dia <= hasta;
+  }
+
+  function proposalDay(p){
+    return txt(p?.dia_editorial) || dayOfRaw(p?.published_at || p?.publishedAt || p?.time, p?.url);
+  }
+  function readDay(p){
+    return txt(p?.dia_lectura) || dayOfRaw(p?.fetched_at || p?.created_at, '');
+  }
+  // Una propuesta se queda si su fecha de publicación cae en la ventana, o si
+  // el analista la metió a mano hoy (recuperar una descartada es una decisión
+  // suya: no se la quitamos por debajo).
+  function isProposalOfToday(p){
+    if (!p) return false;
+    if (dayInWindow(proposalDay(p))) return true;
+    return !!(p.recuperada || p.manual) && readDay(p) === today();
+  }
+
+  window.lnNewsEditorialDay = today;
+  window.lnNewsDayWindow = windowBounds;
+  window.lnNewsIsOfToday = isProposalOfToday;
+
+  /* ---- 2. MISMA REGLA PARA EL LECTOR MANUAL ---------------------------
+     "Leer fuentes" y "Leer noticia específica" validaban con una ventana de
+     48 horas rodantes propia. Si el JSON y el botón no filtran igual, cada
+     uno deja entrar cosas distintas. */
+  const baseIsFresh = window.isFreshArticleDate;
+  window.isFreshArticleDate = function(raw, url = '', maxAgeMs){
+    // Una llamada con ventana explícita es de otro flujo: se respeta.
+    if (typeof maxAgeMs === 'number' && typeof baseIsFresh === 'function') {
+      return baseIsFresh(raw, url, maxAgeMs);
+    }
+    return dayInWindow(dayOfRaw(raw, url));
+  };
+
+  /* ---- 3. PURGA ------------------------------------------------------- */
+  function pruneMaps(idsVivos){
+    [STATUS_KEY, EDITS_KEY].forEach(key => {
+      const mapa = readJson(key, {});
+      let cambio = false;
+      Object.keys(mapa).forEach(id => {
+        if (!idsVivos.has(txt(id))) { delete mapa[id]; cambio = true; }
+      });
+      if (cambio) writeJson(key, mapa);
+    });
+  }
+
+  // La memoria de duplicados evita reproponer lo mismo dentro del día. Al
+  // cambiar el día se vacía, si no el lector manual no podría reconstruir la
+  // cola desde cero; se resiembra con lo ya publicado, que sí sigue vetado.
+  function resetSeenKeys(){
+    const publicados = readJson(PUBLISHED_KEY, []);
+    writeJson(SEEN_KEY, []);
+    if (typeof window.rememberNewsProposal === 'function') {
+      (Array.isArray(publicados) ? publicados : []).forEach(item => {
+        try { window.rememberNewsProposal(item); } catch {}
+      });
+    }
+  }
+
+  function rolloverIfNeeded(){
+    const hoy = today();
+    if (localStorage.getItem(DAY_KEY) === hoy) return false;
+    resetSeenKeys();
+    writeJson(LOG_KEY, []);
+    // newsLog se declaro con `let` en el script principal: no vive en window,
+    // asi que se vacia en el sitio para que todas las referencias lo vean.
+    try { if (Array.isArray(newsLog)) newsLog.length = 0; } catch {}
+    try { if (Array.isArray(window.newsLog)) window.newsLog.length = 0; } catch {}
+    try { window.renderNewsLog?.(); } catch {}
+    writeJson(RECOVERED_KEY, []);
+    try { localStorage.setItem(DAY_KEY, hoy); } catch {}
+    return true;
+  }
+
+  let ultimaPurga = 0;
+  function purge(){
+    const cambioDeDia = rolloverIfNeeded();
+
+    let arr = [];
+    try { if (Array.isArray(window.proposals)) arr = window.proposals; } catch {}
+    try { if (!arr.length && Array.isArray(proposals)) arr = proposals; } catch {}
+    if (!arr.length) arr = readJson(LOCAL_KEY, []);
+    if (!Array.isArray(arr)) arr = [];
+
+    const vivos = arr.filter(isProposalOfToday);
+    ultimaPurga = arr.length - vivos.length;
+
+    if (ultimaPurga > 0 || cambioDeDia) {
+      window.proposals = vivos;
+      try { proposals = vivos; } catch {}
+      writeJson(LOCAL_KEY, vivos);
+      pruneMaps(new Set(vivos.map(p => txt(p.id))));
+    }
+    if (ultimaPurga > 0) {
+      console.info(`[LN-NEWS-DÍA] ${ultimaPurga} propuesta(s) fuera del día ${today()} salieron de la cola.`);
+    }
+    return ultimaPurga;
+  }
+
+  window.lnPurgeStaleProposals = purge;
+
+  /* ---- 4. ESTADO DEL DÍA (una sola descarga del JSON) ------------------ */
+  const estado = { cargado: false, ok: false, dia: '', generado: '', porDia: {}, error: '' };
+
+  async function fetchPayload(){
+    const res = await fetch(CANDIDATES_URL + '?t=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    return { text, data: JSON.parse(text) };
+  }
+
+  // El cargador que dejaron los parches previos vuelve a pedir el mismo
+  // archivo. Se le presta la copia ya descargada en vez de pagar el egress
+  // dos veces por cada inicio de sesión.
+  function lendResponse(text){
+    const nativeFetch = window.fetch;
+    window.fetch = function(input, init){
+      const url = typeof input === 'string' ? input : (input && input.url) || '';
+      const path = url.split('?')[0];
+      if (path === CANDIDATES_URL || path.endsWith(CANDIDATES_URL)) {
+        return Promise.resolve(new Response(text, { status: 200, headers: { 'Content-Type': 'application/json' } }));
+      }
+      return nativeFetch.call(this, input, init);
+    };
+    return () => { window.fetch = nativeFetch; };
+  }
+
+  function describeRun(){
+    if (!estado.cargado) return '';
+    if (!estado.ok) return `No se pudo leer <code>news_candidates.json</code> (${esc(estado.error)}).`;
+    const hoy = today();
+    if (estado.dia && estado.dia !== hoy) {
+      return `La última corrida del pipeline quedó fechada <strong>${esc(estado.dia)}</strong>, no hoy. `
+           + `Lanza <strong>Resumen de noticias</strong> en Automatizaciones GitHub, o usa <strong>Leer fuentes</strong> como respaldo inmediato.`;
+    }
+    return '';
+  }
+
+  function renderBar(){
+    const anchor = document.getElementById('proposals-list');
+    if (!anchor || !anchor.parentNode) return;
+
+    let bar = document.getElementById('news-day-bar');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'news-day-bar';
+      bar.className = 'news-day-bar';
+      bar.setAttribute('aria-live', 'polite');
+      anchor.parentNode.insertBefore(bar, anchor);
+    }
+
+    const { hoy, desde } = windowBounds();
+    const arr = Array.isArray(window.proposals) ? window.proposals : [];
+    const pendientes = arr.filter(p => (p.status || 'pending') === 'pending').length;
+    const aviso = describeRun();
+
+    const partes = [];
+    partes.push(`<strong>${arr.length}</strong> propuesta(s) en cola · <strong>${pendientes}</strong> pendiente(s).`);
+    partes.push(`Solo entra lo publicado entre el ${esc(desde)} y hoy.`);
+    if (ultimaPurga > 0) partes.push(`${ultimaPurga} de días anteriores salieron de la cola.`);
+    if (aviso) partes.push(aviso);
+
+    bar.classList.toggle('is-stale', !!aviso);
+    bar.classList.toggle('is-empty', !aviso && !arr.length);
+
+    // Las descartadas salen del mismo JSON: si la corrida no es de hoy, esa
+    // lista tampoco lo es y no puede quedar abierta como si lo fuera.
+    const descartes = document.getElementById('news-discards');
+    if (descartes && estado.cargado && estado.ok && estado.dia && estado.dia !== hoy) {
+      descartes.hidden = true;
+      descartes.classList.remove('open');
+    }
+    bar.innerHTML = `
+      <span class="nd-day">Día editorial ${esc(hoy)}</span>
+      <span class="nd-msg">${partes.join(' ')}</span>
+      <span class="nd-actions">
+        <button type="button" onclick="lnRefrescarDiaNoticias()">Refrescar cola</button>
+        <button type="button" onclick="readNewsSources()">Leer fuentes</button>
+      </span>`;
+  }
+
+  window.lnRenderNewsDayBar = renderBar;
+
+  /* ---- 5. CARGA DEL JSON CON FILTRO DEL DÍA --------------------------- */
+  function wrapLoader(){
+    const original = window.LN_loadNewsCandidates || window.loadNewsCandidatesLocal || window.loadProposalsFromSupabase;
+    if (typeof original !== 'function' || original.__lnDayWrapped) return;
+
+    const wrapped = async function(force){
+      purge();
+
+      let restore = null;
+      try {
+        const { text, data } = await fetchPayload();
+        estado.cargado = true;
+        estado.ok = true;
+        estado.error = '';
+        estado.dia = txt(data.dia_editorial);
+        estado.generado = txt(data.generated_at);
+        estado.porDia = data.count_by_day || {};
+        const ventana = Number(data.max_age_days);
+        if (Number.isFinite(ventana) && ventana >= 0 && ventana <= 30) maxAgeDays = ventana;
+        restore = lendResponse(text);
+      } catch (err) {
+        estado.cargado = true;
+        estado.ok = false;
+        estado.error = err && err.message ? err.message : 'error desconocido';
+        console.warn('[LN-NEWS-DÍA] No se pudo leer el JSON de candidatas:', estado.error);
+      }
+
+      let out;
+      try {
+        out = await original.call(this, force);
+      } finally {
+        if (restore) restore();
+      }
+
+      // El cargador fusiona lo remoto con lo que ya había en el navegador:
+      // la purga va después, que es donde se cae lo arrastrado de otros días.
+      const fuera = purge();
+      if (fuera > 0) logSafe(`Cola del día: ${fuera} propuesta(s) de días anteriores salieron.`, 'info');
+
+      try { window.renderProposals?.(); } catch {}
+      try { window.updateCounts?.(); } catch {}
+      renderBar();
+
+      const aviso = describeRun();
+      if (aviso) toastSafe('La cola del pipeline no es de hoy; usa "Leer fuentes" para llenarla ahora', 'warn');
+
+      return Array.isArray(out) ? out.filter(isProposalOfToday) : out;
+    };
+
+    wrapped.__lnDayWrapped = true;
+    window.LN_loadNewsCandidates = wrapped;
+    window.loadNewsCandidatesLocal = wrapped;
+    window.loadProposalsFromSupabase = wrapped;
+    try { loadProposalsFromSupabase = wrapped; } catch {}
+  }
+
+  window.lnRefrescarDiaNoticias = async function(){
+    purge();
+    const cargar = window.LN_loadNewsCandidates || window.loadNewsCandidatesLocal;
+    if (typeof cargar === 'function') await cargar(true);
+    else { try { window.renderProposals?.(); } catch {} renderBar(); }
+    toastSafe(`Cola del día ${today()} refrescada`, 'success');
+  };
+
+  /* ---- 6. EL LECTOR MANUAL TAMBIÉN EMPIEZA EL DÍA LIMPIO --------------- */
+  function wrapReader(){
+    const original = window.readNewsSources;
+    if (typeof original !== 'function' || original.__lnDayWrapped) return;
+
+    const wrapped = async function(){
+      // Purgar ANTES importa: la memoria de duplicados se alimenta de la cola,
+      // así que con propuestas viejas dentro el lector descartaba como
+      // "repetida" una nota que ya no estaba visible en ningún lado.
+      purge();
+      try {
+        return await original.apply(this, arguments);
+      } finally {
+        const fuera = purge();
+        if (fuera > 0) logSafe(`Cola del día: ${fuera} propuesta(s) fuera de la ventana salieron tras la lectura.`, 'info');
+        try { window.renderProposals?.(); } catch {}
+        try { window.updateCounts?.(); } catch {}
+        renderBar();
+      }
+    };
+
+    wrapped.__lnDayWrapped = true;
+    window.readNewsSources = wrapped;
+    try { readNewsSources = wrapped; } catch {}
+  }
+
+  /* ---- 7. NADA VIEJO LLEGA A PINTARSE ---------------------------------
+     Los parches v5, v6 y v7 tienen cada uno su propio cargador y algunos se
+     llaman entre si por closure, fuera de window: envolverlos uno por uno
+     dejaba carreras. El unico paso por el que pasan todos es el pintado, asi
+     que la purga se ancla ahi. */
+  function wrapRender(){
+    const original = window.renderProposals;
+    if (typeof original !== 'function' || original.__lnDayWrapped) return;
+
+    const wrapped = function(){
+      purge();
+      const out = original.apply(this, arguments);
+      renderBar();
+      return out;
+    };
+    wrapped.__lnDayWrapped = true;
+    window.renderProposals = wrapped;
+    try { renderProposals = wrapped; } catch {}
+  }
+
+  function wrapLogin(){
+    const original = window.openAnalystSession;
+    if (typeof original !== 'function' || original.__lnDayWrapped) return;
+
+    const wrapped = function(){
+      const out = original.apply(this, arguments);
+      // Los cargadores viejos se disparan con setTimeout tras el login; se
+      // repasa la cola cuando ya terminaron de escribir.
+      [600, 1500, 3200].forEach(ms => setTimeout(() => {
+        purge();
+        try { window.renderProposals?.(); } catch {}
+        try { window.updateCounts?.(); } catch {}
+        renderBar();
+      }, ms));
+      return out;
+    };
+    wrapped.__lnDayWrapped = true;
+    window.openAnalystSession = wrapped;
+    try { openAnalystSession = wrapped; } catch {}
+  }
+
+  /* ---- 8. ARRANQUE ----------------------------------------------------- */
+  function boot(){
+    wrapLoader();
+    wrapReader();
+    wrapRender();
+    wrapLogin();
+    purge();
+    try { window.renderProposals?.(); } catch {}
+    try { window.updateCounts?.(); } catch {}
+    renderBar();
+  }
+
+  // Los parches previos se instalan en cascada al cargar y al iniciar sesión;
+  // se reenvuelve unas cuantas veces para quedar siempre por fuera del último.
+  function bootAndRewrap(){
+    boot();
+    [400, 1200, 3000].forEach(ms => setTimeout(() => {
+      wrapLoader(); wrapReader(); wrapRender(); wrapLogin(); purge(); renderBar();
+    }, ms));
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootAndRewrap, { once: true });
+  else bootAndRewrap();
+
+  // El panel se queda abierto todo el día: al cruzar la medianoche la cola se
+  // vacía sola, sin recargar la página.
+  setInterval(() => {
+    if (localStorage.getItem(DAY_KEY) === today()) return;
+    purge();
+    try { window.renderProposals?.(); } catch {}
+    try { window.updateCounts?.(); } catch {}
+    renderBar();
+    toastSafe(`Nuevo día editorial (${today()}): la cola de propuestas se vació`, 'warn');
+  }, 5 * 60 * 1000);
 })();
 </script>
 

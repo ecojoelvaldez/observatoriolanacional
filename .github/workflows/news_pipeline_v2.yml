@@ -2,8 +2,10 @@ name: Pipeline de Noticias v3 Static Candidates
 
 on:
   schedule:
-    # 6:30 AM Santo Domingo, lunes a viernes
-    - cron: "30 10 * * 1-5"
+    # Santo Domingo es UTC-4 todo el año (no mueve el reloj), asi que la hora
+    # local + 4 = UTC.
+    # 9:00 AM Santo Domingo, lunes a viernes
+    - cron: "0 13 * * 1-5"
     # 12:30 PM Santo Domingo, lunes a viernes
     - cron: "30 16 * * 1-5"
   workflow_dispatch:
@@ -50,11 +52,60 @@ jobs:
           NEWS_CANDIDATES_PATH: news_candidates.json
           # Cupo de candidatos NUEVOS por corrida.
           MAX_TOTAL_PROPOSALS: "30"
-          # Cupo y vida del archivo: la cola guarda varios días, no solo el
-          # cupo de una corrida. Sin esto lo de ayer se caía del JSON.
-          MAX_STORED_CANDIDATES: "90"
-          CANDIDATE_TTL_DAYS: "7"
-        run: python scripts/news_pipeline.py
+          # La cola es de UN día: cada corrida reconstruye el JSON para el día
+          # editorial en curso y bota lo que ya no cae en la ventana. Con TTL
+          # de 7 días, el 19 de agosto seguían saliendo propuestas del 14.
+          CANDIDATE_TTL_DAYS: "1"
+          # Solo entra lo publicado hoy o anoche: la corrida de las 9:00 a.m.
+          # necesita lo de ayer por la tarde, nada más atrás.
+          NEWS_MAX_AGE_DAYS: "1"
+          # Cupo del archivo: suficiente para las dos corridas del mismo día.
+          MAX_STORED_CANDIDATES: "45"
+          DISCARD_TTL_DAYS: "1"
+        run: |
+          # Un fallo de red no puede dejar la cola de ayer en pantalla: se
+          # reintenta una vez antes de dar la corrida por perdida.
+          python scripts/news_pipeline.py || {
+            echo "::warning::Primer intento fallido; reintentando en 60s."
+            sleep 60
+            python scripts/news_pipeline.py
+          }
+
+      # El JSON es lo unico que ve el panel: si la corrida lo dejo con fecha de
+      # ayer o con propuestas fuera de la ventana, el workflow tiene que fallar
+      # aqui y no descubrirse cuando el analista abra la cola.
+      - name: Verificar que la cola quedó fechada hoy
+        env:
+          NEWS_TZ_OFFSET_HOURS: "-4"
+        run: |
+          python - <<'PY'
+          import json, os, sys
+          from datetime import date, datetime, timedelta, timezone
+
+          tz = timezone(timedelta(hours=int(os.environ["NEWS_TZ_OFFSET_HOURS"])))
+          hoy = datetime.now(tz).date()
+
+          data = json.load(open("news_candidates.json", encoding="utf-8"))
+          dia = data.get("dia_editorial")
+          desde = hoy - timedelta(days=int(data.get("max_age_days", 1)))
+
+          print(f"dia_editorial={dia} esperado={hoy} candidatos={data.get('count')} "
+                f"ventana={data.get('ventana_frescura')} por_fecha={data.get('count_by_day')}")
+
+          if dia != hoy.isoformat():
+              sys.exit(f"La cola quedó fechada {dia} y hoy es {hoy}: la corrida no la refrescó.")
+
+          fuera = [c for c in data.get("candidates", [])
+                   if not c.get("dia_editorial") or date.fromisoformat(c["dia_editorial"]) < desde]
+          if fuera:
+              for c in fuera[:5]:
+                  print(f"  fuera de ventana: {c.get('dia_editorial')} · {c.get('title')}")
+              sys.exit(f"{len(fuera)} candidatos publicados antes de {desde} siguen en la cola.")
+
+          if not data.get("count"):
+              print("::warning::La corrida no dejó propuestas para hoy; "
+                    "revisa las descartadas en el panel.")
+          PY
 
       - name: Commit de candidatos si cambiaron
         run: |

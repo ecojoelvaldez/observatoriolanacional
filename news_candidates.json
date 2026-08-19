@@ -1,16 +1,20 @@
 {
   "generated_at": "2026-08-19T11:02:01.990408+00:00",
+  "dia_editorial": "2026-08-19",
+  "zona_horaria": "UTC-4 (Santo Domingo)",
+  "ventana_frescura": "2026-08-18 a 2026-08-19",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
-  "count": 35,
+  "count": 13,
   "count_by_day": {
-    "2026-08-19": 13,
-    "2026-08-18": 8,
-    "2026-08-17": 14
+    "2026-08-19": 5,
+    "2026-08-18": 8
   },
-  "new_this_run": 14,
+  "new_this_run": 0,
   "already_published": 0,
-  "ttl_days": 7,
+  "out_of_window": 22,
+  "ttl_days": 1,
+  "max_age_days": 1,
   "errors": 0,
   "sources": 37,
   "elapsed_s": 472.8,
@@ -33,7 +37,10 @@
       "cuerpo_recuperado": false,
       "published_at": "2026-08-19T00:00:00-04:00",
       "fetched_at": "2026-08-19T10:58:02.288822+00:00",
-      "status": "pending"
+      "status": "pending",
+      "dia_editorial": "2026-08-19",
+      "dia_lectura": "2026-08-19",
+      "fecha_inferida_de_url": false
     },
     {
       "id": "n_3a91a42eb1a31420",
@@ -50,7 +57,10 @@
       "cuerpo_recuperado": false,
       "published_at": "2026-08-18T17:42:38+00:00",
       "fetched_at": "2026-08-19T10:56:34.406973+00:00",
-      "status": "pending"
+      "status": "pending",
+      "dia_editorial": "2026-08-18",
+      "dia_lectura": "2026-08-19",
+      "fecha_inferida_de_url": false
     },
     {
       "id": "n_58fad84043490e2c",
@@ -69,7 +79,10 @@
       "cuerpo_recuperado": false,
       "published_at": "2026-08-18T19:56:38+00:00",
       "fetched_at": "2026-08-19T10:56:28.124178+00:00",
-      "status": "pending"
+      "status": "pending",
+      "dia_editorial": "2026-08-18",
+      "dia_lectura": "2026-08-19",
+      "fecha_inferida_de_url": false
     },
     {
       "id": "n_a11c21a01f9de013",
@@ -86,7 +99,10 @@
       "cuerpo_recuperado": false,
       "published_at": "2026-08-18T20:27:50+00:00",
       "fetched_at": "2026-08-19T10:56:21.900558+00:00",
-      "status": "pending"
+      "status": "pending",
+      "dia_editorial": "2026-08-18",
+      "dia_lectura": "2026-08-19",
+      "fecha_inferida_de_url": false
     },
     {
       "id": "n_945f4b59d22d943d",
@@ -106,7 +122,10 @@
       "cuerpo_recuperado": false,
       "published_at": "2026-08-18T23:13:59+00:00",
       "fetched_at": "2026-08-19T10:56:04.362985+00:00",
-      "status": "pending"
+      "status": "pending",
+      "dia_editorial": "2026-08-18",
+      "dia_lectura": "2026-08-19",
+      "fecha_inferida_de_url": false
     },
     {
       "id": "n_8ba76312352a22d4",
@@ -126,7 +145,10 @@
       "cuerpo_recuperado": false,
       "published_at": "2026-08-19T04:00:00+00:00",
       "fetched_at": "2026-08-19T10:55:58.429455+00:00",
-      "status": "pending"
+      "status": "pending",
+      "dia_editorial": "2026-08-19",
+      "dia_lectura": "2026-08-19",
+      "fecha_inferida_de_url": false
     },
     {
       "id": "n_3ae0322056e2c0b7",
@@ -156,7 +178,10 @@
           "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-18-de-agosto-2026",
           "title": "Precio del dólar hoy martes 18 de agosto de 2026 en RD"
         }
-      ]
+      ],
+      "dia_editorial": "2026-08-19",
+      "dia_lectura": "2026-08-19",
+      "fecha_inferida_de_url": false
     },
     {
       "id": "n_27051eab016b4277",
@@ -173,7 +198,10 @@
       "cuerpo_recuperado": false,
       "published_at": "2026-08-19T00:01:00-04:00",
       "fetched_at": "2026-08-19T10:55:28.204489+00:00",
-      "status": "pending"
+      "status": "pending",
+      "dia_editorial": "2026-08-19",
+      "dia_lectura": "2026-08-19",
+      "fecha_inferida_de_url": false
     },
     {
       "id": "n_5f152ce411dc38dc",
@@ -194,7 +222,10 @@
       "cuerpo_recuperado": false,
       "published_at": "2026-08-19T00:01:00-04:00",
       "fetched_at": "2026-08-19T10:55:03.341517+00:00",
-      "status": "pending"
+      "status": "pending",
+      "dia_editorial": "2026-08-19",
+      "dia_lectura": "2026-08-19",
+      "fecha_inferida_de_url": false
     },
     {
       "id": "n_37c2f7e05279a18c",
@@ -211,7 +242,10 @@
       "cuerpo_recuperado": false,
       "published_at": "2026-08-18T15:04:22+00:00",
       "fetched_at": "2026-08-19T10:54:46.022350+00:00",
-      "status": "pending"
+      "status": "pending",
+      "dia_editorial": "2026-08-18",
+      "dia_lectura": "2026-08-19",
+      "fecha_inferida_de_url": false
     },
     {
       "id": "n_f467d470c0da2f20",
@@ -230,7 +264,10 @@
       "cuerpo_recuperado": false,
       "published_at": "2026-08-18T15:19:22+00:00",
       "fetched_at": "2026-08-19T10:54:39.692311+00:00",
-      "status": "pending"
+      "status": "pending",
+      "dia_editorial": "2026-08-18",
+      "dia_lectura": "2026-08-19",
+      "fecha_inferida_de_url": false
     },
     {
       "id": "n_86592e94c389f08c",
@@ -250,7 +287,10 @@
       "cuerpo_recuperado": false,
       "published_at": "2026-08-18T19:18:46+00:00",
       "fetched_at": "2026-08-19T10:54:33.850449+00:00",
-      "status": "pending"
+      "status": "pending",
+      "dia_editorial": "2026-08-18",
+      "dia_lectura": "2026-08-19",
+      "fecha_inferida_de_url": false
     },
     {
       "id": "n_c3f50f083bb0b236",
@@ -267,506 +307,14 @@
       "cuerpo_recuperado": false,
       "published_at": "2026-08-18T18:24:46+00:00",
       "fetched_at": "2026-08-19T10:54:27.920751+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_e0232023b976fe18",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero · Finanzas",
-      "url": "https://eldinero.com.do/376861/sipen-actualiza-metodologia-de-indicadores-estadisticos-del-sistema-dominicano-de-pensiones",
-      "title": "Sipen actualiza metodología de indicadores estadísticos del Sistema Dominicano de Pensiones",
-      "summary": "La Superintendencia de Pensiones (Sipen) ha actualizado su metodología para calcular indicadores estadísticos del Sistema Dominicano de Pensiones, buscando mayor precisión y oportunidad en la información. Estos cambios ajustan a la baja el número de afiliados pero al alza el de cotizantes, mejorando la medición del sistema.",
-      "body": "La Superintendencia de Pensiones (Sipen) ha implementado una actualización metodológica integral para los indicadores estadísticos del Sistema Dominicano de Pensiones. Este proceso busca mejorar la calidad y precisión de los datos, reestructurando la gestión de información y automatizando procesos. Los ajustes resultan en una corrección a la baja en el número total de afiliados, pero un incremento en los cotizantes y la densidad de cotizaciones.",
-      "category": "Financiero",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-18T14:45:20+00:00",
-      "fetched_at": "2026-08-18T16:59:07.501204+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_a07b25d748665c78",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero · Finanzas",
-      "url": "https://eldinero.com.do/376843/inflacion-en-centroamerica-y-republica-dominicana-toma-rumbos-distintos-en-2026",
-      "title": "Inflación en Centroamérica y República Dominicana toma rumbos distintos en 2026",
-      "summary": "La inflación en República Dominicana y Honduras muestra tendencias divergentes respecto a otras economías centroamericanas en julio de 2026. El Banco Central de la República Dominicana reporta una desaceleración en el aumento de precios, acercándose a su meta, mientras Honduras presenta presiones inflacionarias más elevadas.",
-      "body": "La República Dominicana y Honduras registran las tasas de inflación más altas en Centroamérica durante julio de 2026, según datos de organismos regionales y bancos centrales. Mientras RD muestra una desaceleración en el aumento de precios, acercándose a su meta, Honduras enfrenta mayores presiones inflacionarias. Costa Rica, por otro lado, mantiene una inflación negativa, evidenciando comportamientos económicos distintos en la región.",
-      "category": "Economia",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "politica_monetaria",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-18T12:42:13+00:00",
-      "fetched_at": "2026-08-18T16:58:22.619599+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_c1bfb72cef5fc32c",
-      "source_key": "news_hoy",
-      "source_name": "Hoy Digital · Economía",
-      "url": "https://hoy.com.do/economia/google-destaca-beneficios-rd-nuevas-rutas-cables_1099140.html",
-      "title": "Google destaca los beneficios para RD de nuevas rutas de cables",
-      "summary": "Google anunció la llegada de cuatro nuevas rutas de cables submarinos a República Dominicana, lo que potenciará la conectividad y el desarrollo de la economía digital. Se proyecta un impacto significativo en el PIB y la creación de empleos, además de programas de capacitación en habilidades digitales.",
-      "body": "La inversión de Google en infraestructura de conectividad a través de nuevas rutas de cables submarinos promete transformar la economía dominicana. Estos avances no solo abaratarán el acceso a internet y elevarán la productividad empresarial, sino que también impulsarán la adopción de servicios digitales y la economía nacional, complementados con programas de capacitación en IA y nube.",
-      "category": "Economia",
-      "relevance": 9,
-      "señales": [
-        "macro",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-18T00:00:00-04:00",
-      "fetched_at": "2026-08-18T10:57:38.320751+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_2dd733465a8170a5",
-      "source_key": "news_hoy",
-      "source_name": "Hoy Digital · Economía",
-      "url": "https://hoy.com.do/economia/dgii-logra-recepcion-2-000-millones-comprobantes-fiscales-electronicos_1099105.html",
-      "title": "DGII logra la recepción de más de 2,000 millones de Comprobantes Fiscales Electrónicos",
-      "summary": "La Dirección General de Impuestos Internos (DGII) ha superado la meta de 2,000 millones de Comprobantes Fiscales Electrónicos (e-CF) recibidos, evidenciando una significativa adopción de la facturación digital. Este avance fortalece la administración tributaria y la modernización del país.",
-      "body": "La Dirección General de Impuestos Internos (DGII) ha alcanzado un hito al recibir más de 2,000 millones de Comprobantes Fiscales Electrónicos (e-CF), con un 72% del total de comprobantes de los primeros seis meses de 2026 siendo digitales. Más de 80 mil contribuyentes están autorizados como emisores electrónicos, y el 64% utiliza el facturador gratuito, demostrando el éxito de la transformación digital tributaria.",
-      "category": "Regulatorio",
-      "relevance": 9,
-      "señales": [
-        "regulador"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-17T15:38:37-04:00",
-      "fetched_at": "2026-08-18T10:57:20.360492+00:00",
       "status": "pending",
-      "tambien_en": [
-        {
-          "source_name": "El Dinero · Finanzas",
-          "url": "https://eldinero.com.do/376742/dgii-informa-que-ha-emitido-mas-de-2000-millones-de-comprobantes-fiscales-electronicos",
-          "title": "DGII informa que ha emitido más de 2,000 millones de Comprobantes Fiscales Electrónicos"
-        }
-      ]
-    },
-    {
-      "id": "n_2a2c88bcbdbf2be6",
-      "source_key": "news_eldinero_rss",
-      "source_name": "El Dinero · RSS",
-      "url": "https://eldinero.com.do/376790/exportaciones-de-cacao-dominicano-alcanzan-us669-millones-en-2025",
-      "title": "Exportaciones de cacao dominicano alcanzan US$669 millones en 2025",
-      "summary": "Las exportaciones de cacao dominicano experimentaron un notable crecimiento del 55% en 2025, alcanzando los US$669 millones. Este auge, impulsado por la mayor valorización del producto en mercados internacionales, se verá reflejado en la próxima edición del Festival del Chocolate Dominicano.",
-      "body": "El valor de las exportaciones de cacao de la República Dominicana ascendió a US$669 millones en 2025, lo que representa un incremento del 55% respecto al año anterior. Este crecimiento se atribuye a la mayor cotización del producto en el mercado global, con un precio promedio de US$7,798 por tonelada. El sector se prepara para la sexta edición del Festival del Chocolate Dominicano, evento que destacará la cadena de valor del cacao y la producción de chocolate.",
-      "category": "Economia",
-      "relevance": 7,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-17T18:15:33+00:00",
-      "fetched_at": "2026-08-18T10:56:49.126154+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_09ea85a991ccc39c",
-      "source_key": "news_elcaribe",
-      "source_name": "El Caribe · Dinero",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/itbis-e-isr-sostienen-el-crecimiento-de-los-recaudos-de-la-dgii",
-      "title": "ITBIS e ISR sostienen el crecimiento de los recaudos de la DGII",
-      "summary": "Las recaudaciones de la DGII en el primer semestre de 2026 superaron las metas, impulsadas principalmente por el ITBIS y el Impuesto sobre la Renta. Este crecimiento refleja una combinación de mayor consumo, ingresos laborales y actividad empresarial, lo que indica una base tributaria robusta para la economía dominicana.",
-      "body": "La Dirección General de Impuestos Internos (DGII) reportó un crecimiento del 9.1% en sus recaudaciones durante el primer semestre de 2026, superando la meta establecida. Este avance se sustenta en el buen desempeño del Impuesto a la Transferencia de Bienes Industrializados y Servicios (ITBIS) y el Impuesto sobre la Renta (ISR), tanto para personas físicas como jurídicas. El aumento en el consumo y las retenciones laborales son factores clave detrás de estos resultados positivos.",
-      "category": "Economia",
-      "relevance": 9,
-      "señales": [
-        "regulador"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-18T04:00:00+00:00",
-      "fetched_at": "2026-08-18T10:56:18.991336+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_600f607891d6f807",
-      "source_key": "news_elcaribe",
-      "source_name": "El Caribe · Dinero",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/indice-confianza-industrial-sube-y-supera-los-56-puntos-dice-aird",
-      "title": "Índice Confianza Industrial sube y supera los 56 puntos, dice AIRD",
-      "summary": "El Índice de Confianza Industrial (ICI) y el Índice de Clima Empresarial (ICE) de la AIRD superaron los 56 puntos en el segundo trimestre de 2026, indicando una percepción favorable en el sector. A pesar del aumento en producción y ventas, se observa una ligera disminución en la proporción de empresas que exportan y un incremento en inventarios insuficientes.",
-      "body": "La Asociación de Industrias de la República Dominicana (AIRD) reportó que el Índice de Confianza Industrial (ICI) alcanzó 56.4 puntos y el Índice de Clima Empresarial (ICE) 55.9 puntos en el segundo trimestre de 2026. Ambos indicadores superan el umbral de 50, señalando condiciones favorables para los negocios, con un crecimiento sostenido en ventas y producción, aunque con una menor dedicación a exportaciones y un aumento en inventarios insuficientes.",
-      "category": "Economia",
-      "relevance": 7,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-18T04:00:00+00:00",
-      "fetched_at": "2026-08-18T10:56:12.297710+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_d0cfdeb1000f9205",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero · Finanzas",
-      "url": "https://eldinero.com.do/376807/leonardo-aguilera-destaca-logros-del-primer-ano-de-gestion-al-frente-de-banreservas",
-      "title": "Leonardo Aguilera destaca logros del primer año de gestión al frente de Banreservas",
-      "summary": "Leonardo Aguilera, presidente ejecutivo de Banreservas, resaltó los logros de su primer año de gestión, enfocados en el financiamiento a sectores productivos y el apoyo a mipymes, construcción y agropecuaria. La entidad desembolsó más de RD$282,430.2 millones en préstamos, reafirmando su rol en el crecimiento económico dominicano.",
-      "body": "Leonardo Aguilera, presidente ejecutivo de Banreservas, celebró su primer año al frente de la institución destacando un fuerte enfoque en el financiamiento a sectores clave como mipymes, construcción, vivienda y agropecuaria. Durante este período, el banco canalizó más de RD$282,430.2 millones en préstamos, reafirmando su compromiso con el desarrollo económico y la generación de empleo en la República Dominicana.",
-      "category": "Financiero",
-      "relevance": 9,
-      "señales": [
-        "banca",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-17T19:00:50+00:00",
-      "fetched_at": "2026-08-18T10:55:28.317659+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_de9589a5a8fbfa08",
-      "source_key": "news_hoy",
-      "source_name": "Hoy Digital · Economía",
-      "url": "https://hoy.com.do/economia/afaper-reclama-agilicen-incentivo-itbis-exportar_1098997.html",
-      "title": "Afaper reclama que agilicen el incentivo del ITBIS a exportar",
-      "summary": "La Asociación Dominicana de la Industria Cosmética (Afaper) solicita agilizar la devolución del ITBIS a las empresas exportadoras, ya que el proceso actual es complejo y retrasa la disponibilidad de capital de trabajo. La falta de agilidad en este incentivo fiscal afecta principalmente a las pequeñas y medianas empresas del sector cosmético y de higiene personal.",
-      "body": "Directivos de la Asociación Dominicana de la Industria Cosmética, Cuidado e Higiene Personal y del Hogar (Afaper) han denunciado las dificultades para acceder al incentivo fiscal de recuperación del ITBIS pagado en sus operaciones de exportación. Consideran el proceso actual como tortuoso y largo, lo que impacta negativamente el capital de trabajo de las empresas, especialmente las pymes.",
-      "category": "Financiero",
-      "relevance": 7,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-17T00:00:00-04:00",
-      "fetched_at": "2026-08-17T11:00:07.612057+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_0e01e3e25842e640",
-      "source_key": "news_hoy",
-      "source_name": "Hoy Digital · Economía",
-      "url": "https://hoy.com.do/economia/significa-rd-tenga-regimen-cambiario-flotacion_1098864.html",
-      "title": "¿Qué significa que RD tenga un régimen cambiario de flotación?",
-      "summary": "La República Dominicana opera bajo un régimen de flotación administrada, donde el Banco Central interviene para estabilizar el peso ante las fluctuaciones del mercado. Este sistema permite que la oferta y la demanda determinen el tipo de cambio, pero con una supervisión activa para evitar movimientos bruscos.",
-      "body": "La economía dominicana utiliza un régimen de flotación administrada, donde el tipo de cambio del peso frente al dólar se define por la oferta y la demanda. Sin embargo, el Banco Central interviene activamente inyectando o retirando divisas de sus reservas para suavizar fluctuaciones y mantener la estabilidad económica.",
-      "category": "Monetario",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "politica_monetaria",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-14T21:45:00-04:00",
-      "fetched_at": "2026-08-17T10:59:16.264507+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_e30d583b24dd984c",
-      "source_key": "news_eldinero_rss",
-      "source_name": "El Dinero · RSS",
-      "url": "https://eldinero.com.do/376578/gobierno-destina-rd1087-9-millones-a-subsidios-de-combustibles",
-      "title": "Gobierno destina RD$1,087.9 millones a subsidios de combustibles",
-      "summary": "El Gobierno dominicano ha destinado RD$1,087.9 millones para subsidiar combustibles, buscando mitigar el impacto del alza en precios internacionales. Esta medida busca mantener la estabilidad de los derivados, aunque algunos como la gasolina y el gasoil regular experimentarán un ligero aumento.",
-      "body": "El Ministerio de Industria, Comercio y Mipymes anunció que el Gobierno continuará subsidiando los combustibles con una asignación de RD$1,087.9 millones. A pesar de los esfuerzos por contrarrestar las alzas internacionales, la gasolina regular y el gasoil regular verán un incremento de RD$3.00 por galón, manteniéndose por debajo de los precios de junio. El GLP y el gas natural permanecen sin cambios.",
-      "category": "Economia",
-      "relevance": 7,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-14T19:34:01+00:00",
-      "fetched_at": "2026-08-17T10:58:33.472248+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_8ee6a17a05abb171",
-      "source_key": "news_eldinero_rss",
-      "source_name": "El Dinero · RSS",
-      "url": "https://eldinero.com.do/376588/ministro-de-agricultura-detalla-avances-y-limitaciones-en-produccion-de-coco",
-      "title": "Ministro de Agricultura detalla avances y limitaciones en producción de coco",
-      "summary": "El sector de producción de coco en República Dominicana, con más de 396,000 tareas sembradas, enfrenta desafíos significativos en financiamiento, riego y relevo generacional. Solo el 16% de los productores tiene acceso a crédito agropecuario, y el 71% tiene 50 años o más, lo que limita su potencial de crecimiento e innovación.",
-      "body": "El ministro de Agricultura, Francisco Oliverio Espaillat, destacó que la producción de coco en República Dominicana, con más de 396,000 tareas sembradas, se concentra en Samaná y María Trinidad Sánchez. Sin embargo, solo el 49% de los productores recibe asistencia técnica y un escaso 16% accede a crédito agropecuario, mientras que el 71% supera los 50 años, planteando un reto de relevo generacional.",
-      "category": "Economia",
-      "relevance": 7,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-14T20:12:22+00:00",
-      "fetched_at": "2026-08-17T10:58:27.609576+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_742ebeaa4bbd63e6",
-      "source_key": "news_eldinero_rss",
-      "source_name": "El Dinero · RSS",
-      "url": "https://eldinero.com.do/376645/gobierno-lanza-pronamec-con-inversion-superior-a-rd200-millones",
-      "title": "Gobierno lanza Pronamec con inversión superior a RD$200 millones",
-      "summary": "El gobierno dominicano ha lanzado el Programa Nacional de Mecanización (Pronamec) con una inversión inicial de más de RD$200 millones, buscando transformar la agropecuaria mediante la mecanización y tecnología. Esta iniciativa pretende reducir costos, aumentar la productividad y disminuir la dependencia de mano de obra extranjera.",
-      "body": "El presidente Luis Abinader encabezó el lanzamiento del Programa Nacional de Mecanización (Pronamec) en San Juan, una iniciativa gubernamental con una inversión superior a los RD$200 millones. El programa busca modernizar la agropecuaria dominicana a través de la incorporación de maquinaria y tecnología, con el objetivo de optimizar los procesos productivos, reducir costos y mitigar la dependencia de mano de obra extranjera.",
-      "category": "Economia",
-      "relevance": 6,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-15T16:07:37+00:00",
-      "fetched_at": "2026-08-17T10:58:21.759646+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_94a6c6d26b140b4d",
-      "source_key": "news_eldinero_rss",
-      "source_name": "El Dinero · RSS",
-      "url": "https://eldinero.com.do/376580/el-petroleo-de-texas-sube-1-4-hasta-us82-40-el-barril",
-      "title": "El petróleo de Texas sube 1.4%, hasta US$82.40 el barril",
-      "summary": "El precio del petróleo de Texas (WTI) experimentó un alza del 1.4%, alcanzando los US$82.40 por barril, influenciado por la tensión geopolítica en el estrecho de Ormuz. Esta situación, junto con la previsión de una caída en la demanda mundial de petróleo, genera volatilidad en los mercados energéticos con posibles repercusiones en los costos de importación y la inflación dominicana.",
-      "body": "El barril de petróleo de Texas (WTI) cerró la semana con un incremento del 1.4%, situándose en US$82.40. La volatilidad del mercado se intensifica ante la falta de resolución del conflicto entre Estados Unidos e Irán y el impacto en el tráfico del estrecho de Ormuz. La Agencia Internacional de Energía (AIE) proyecta una disminución en la demanda global de crudo, lo que añade incertidumbre a las proyecciones económicas.",
-      "category": "Global",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "politica_monetaria",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-14T19:39:56+00:00",
-      "fetched_at": "2026-08-17T10:58:15.599096+00:00",
-      "status": "pending",
-      "tambien_en": [
-        {
-          "source_name": "El Dinero · RSS",
-          "url": "https://eldinero.com.do/376820/el-petroleo-de-texas-sube-2-55-con-las-negociaciones-entre-ee-uu-e-iran-estancadas",
-          "title": "El petróleo de Texas sube 2.55%, con las negociaciones entre EE.UU. e Irán estancadas"
-        },
-        {
-          "source_name": "Hoy Digital · Economía",
-          "url": "https://hoy.com.do/economia/petroleo-texas-sube-us-84-94_1099308.html",
-          "title": "Petróleo de Texas sube a US $84.94"
-        }
-      ]
-    },
-    {
-      "id": "n_efa87289ef90bbb7",
-      "source_key": "news_elcaribe",
-      "source_name": "El Caribe · Dinero",
-      "url": "https://www.elcaribe.com.do/panorama/pais/que-es-el-gasto-rigido-y-por-que-moodys-advierte-sobre-las-finanzas-de-republica-dominicana",
-      "title": "¿Qué es el “gasto rígido” y por qué Moody’s advierte sobre las finanzas de República Dominicana?",
-      "summary": "La agencia Moody's alerta sobre las finanzas dominicanas debido al aumento del \"gasto rígido\", que limita la flexibilidad presupuestaria y dificulta el saneamiento de las cuentas públicas. Este fenómeno, compuesto por obligaciones ineludibles como salarios y pago de deuda, ha crecido mientras la inversión pública ha disminuido.",
-      "body": "Moody's ha señalado que el \"gasto rígido\" en República Dominicana ha aumentado, comprometiendo la capacidad del Estado para ajustar sus finanzas. Este tipo de gasto, que incluye salarios públicos, pago de deuda y transferencias, representa una porción significativa del presupuesto, dificultando la reasignación de recursos ante imprevistos o la necesidad de reducir el déficit fiscal.",
-      "category": "Financiero",
-      "relevance": 8,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-14T16:17:03+00:00",
-      "fetched_at": "2026-08-17T10:58:03.171872+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_b79a70cecea34ef9",
-      "source_key": "news_elcaribe",
-      "source_name": "El Caribe · Dinero",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/gobierno-sube-tres-pesos-a-la-gasolinay-el-gasoil-regular",
-      "title": "Gobierno sube tres pesos a la gasolina y el gasoil regular",
-      "summary": "El gobierno dominicano ajustará al alza en RD$3.00 los precios de la gasolina y el gasoil regular, a pesar de mantener subsidios significativos para mitigar el impacto de la volatilidad internacional. Esta medida busca equilibrar los costos de los combustibles ante el incremento de los derivados en el mercado global.",
-      "body": "El Ministerio de Industria, Comercio y Mipymes (MICM) anunció un incremento de RD$3.00 en la gasolina y el gasoil regular, aunque estos se mantendrán por debajo de los precios fijados en junio. El gobierno continúa aplicando subsidios considerables, destinando RD$1,087.9 millones esta semana y superando los RD$26 mil millones en lo que va de año para contrarrestar la subida de los precios internacionales del petróleo.",
-      "category": "Economia",
-      "relevance": 7,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-15T04:00:00+00:00",
-      "fetched_at": "2026-08-17T10:57:57.710714+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_ab2fd7e98dbccebb",
-      "source_key": "news_elcaribe",
-      "source_name": "El Caribe · Dinero",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/el-dolar-vuelve-a-subir-en-rd-que-refleja-el-movimiento-de-la-tasa",
-      "title": "El dólar vuelve a subir en RD: ¿qué refleja el movimiento de la tasa?",
-      "summary": "El Banco Central de República Dominicana reportó un alza en la tasa de cambio del dólar, situando la compra en RD$58.5539 y la venta en RD$58.8141. Este movimiento responde a la dinámica de oferta y demanda de divisas, influenciado por factores como importaciones, exportaciones, turismo, remesas e inversión extranjera.",
-      "body": "La tasa de cambio del dólar en República Dominicana ha experimentado un repunte, con el Banco Central fijando la compra en RD$58.5539 y la venta en RD$58.8141. Este comportamiento se atribuye a la interacción entre la oferta y la demanda de divisas, afectada por flujos de capital, transacciones comerciales y expectativas económicas.",
-      "category": "Monetario",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "macro"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-15T15:00:00+00:00",
-      "fetched_at": "2026-08-17T10:57:45.316195+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_b560ec3d71b29028",
-      "source_key": "news_elcaribe",
-      "source_name": "El Caribe · Dinero",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/exportaciones-de-tabaco-de-rd-aumentan-86-en-enero-junio",
-      "title": "Exportaciones de tabaco de RD aumentan 86% en enero-junio",
-      "summary": "Las exportaciones de tabaco dominicano experimentaron un notable crecimiento del 86% entre enero y junio de 2026, superando los 802 millones de dólares. Este impulso se atribuye a la colaboración público-privada y a la fortaleza del sector en mercados clave como Estados Unidos.",
-      "body": "El Instituto del Tabaco de República Dominicana (Intabaco) reportó un incremento del 86% en las exportaciones de tabaco, cigarros y cigarrillos durante el primer semestre de 2026, alcanzando más de 802 millones de dólares. Este crecimiento se debe a esfuerzos conjuntos del sector público y privado, incluyendo promoción, capacitación y mejoras en la seguridad jurídica, consolidando a Estados Unidos como el principal destino.",
-      "category": "Economia",
-      "relevance": 7,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-17T04:00:00+00:00",
-      "fetched_at": "2026-08-17T10:57:33.413186+00:00",
-      "status": "pending",
-      "tambien_en": [
-        {
-          "source_name": "Hoy Digital · Economía",
-          "url": "https://hoy.com.do/economia/exportaciones-tabaco-rd-aumentan-86-enero-junio-2026-infoma-intabaco_1098954.html",
-          "title": "Exportaciones de tabaco de RD aumentan un 86% entre enero y junio del 2026, infoma el INTABACO"
-        }
-      ]
-    },
-    {
-      "id": "n_27e0bec90e131074",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero · Finanzas",
-      "url": "https://eldinero.com.do/376533/mella-cohn-advierte-brecha-en-supervision-de-sujetos-obligados-no-financieros",
-      "title": "Mella Cohn advierte brecha en supervisión de sujetos obligados no financieros",
-      "summary": "Roberto Mella Cohn alerta sobre una brecha significativa en la supervisión de sujetos obligados no financieros en República Dominicana, debido a la disparidad entre el gran número de entidades y la capacidad institucional limitada. Propone fortalecer la vigilancia y usar herramientas digitales para enfocar recursos en entidades de mayor riesgo.",
-      "body": "El experto en \"compliance\" Roberto Mella Cohn señala una brecha en la supervisión de sujetos obligados no financieros en República Dominicana, causada por la gran cantidad de entidades a vigilar frente a una capacidad institucional limitada. Propone fortalecer la estructura de supervisión y utilizar herramientas digitales para enfocar los recursos en las entidades y operaciones de mayor riesgo, optimizando así la prevención del lavado de activos.",
-      "category": "Regulatorio",
-      "relevance": 8,
-      "señales": [],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-14T17:43:07+00:00",
-      "fetched_at": "2026-08-17T10:56:55.947959+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_51a6b4542e6eb58a",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero · Finanzas",
-      "url": "https://eldinero.com.do/376563/banco-popular-obtiene-cinco-reconocimientos-en-los-stevie-awards-2026",
-      "title": "Banco Popular obtiene cinco reconocimientos en los Stevie Awards 2026",
-      "summary": "El Banco Popular Dominicano ha sido galardonado con cinco premios en los Stevie Awards 2026, incluyendo tres oros, una plata y un bronce. Estos reconocimientos destacan sus iniciativas en comunicación corporativa, producción audiovisual, marketing de influencia y eventos institucionales, reflejando su compromiso con la innovación y la excelencia.",
-      "body": "El Banco Popular Dominicano ha sido distinguido con cinco prestigiosos premios en los Stevie Awards 2026, consolidando su liderazgo en comunicación corporativa, producción audiovisual, marketing de influencia y eventos institucionales. La entidad obtuvo tres oros, una plata y un bronce, reconociendo la calidad e impacto de sus programas y campañas.",
-      "category": "Financiero",
-      "relevance": 8,
-      "señales": [
-        "banca"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-14T18:12:09+00:00",
-      "fetched_at": "2026-08-17T10:56:49.598023+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_bcff55f862291e99",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero · Finanzas",
-      "url": "https://eldinero.com.do/376598/luis-abinader-ratifica-a-aileen-guzman-coste-como-directora-general-de-la-uaf",
-      "title": "Luis Abinader ratifica a Aileen Guzmán Coste como directora general de la UAF",
-      "summary": "El presidente Luis Abinader ha ratificado a Aileen Guzmán Coste como directora general de la Unidad de Análisis Financiero (UAF) por un periodo adicional de cuatro años. Esta decisión, formalizada mediante el Decreto 516-26, asegura la continuidad en una entidad clave para el análisis y manejo de información financiera en el país.",
-      "body": "El mandatario dominicano, Luis Abinader, ha extendido el nombramiento de Aileen Guzmán Coste al frente de la Unidad de Análisis Financiero (UAF). Guzmán Coste, quien ya ocupaba el cargo desde septiembre de 2022, continuará liderando esta entidad autónoma adscrita al Ministerio de Hacienda y Economía por un nuevo periodo de cuatro años, según lo establecido en el Decreto 516-26.",
-      "category": "Regulatorio",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-14T20:58:49+00:00",
-      "fetched_at": "2026-08-17T10:56:44.290053+00:00",
-      "status": "pending"
-    },
-    {
-      "id": "n_5116102a5b8c2fe2",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero · Finanzas",
-      "url": "https://eldinero.com.do/376565/sis-y-unibe-acuerdan-fortalecer-formacion-del-sector-asegurador",
-      "title": "SIS y Unibe acuerdan fortalecer formación del sector asegurador",
-      "summary": "La Superintendencia de Seguros (SIS) y la Universidad Iberoamericana (Unibe) firmaron un acuerdo para mejorar la capacitación y el conocimiento especializado dentro del sector asegurador dominicano. Esta alianza busca fortalecer la cultura de cumplimiento y la profesionalización, incluyendo la prevención del lavado de activos.",
-      "body": "La Superintendencia de Seguros (SIS) y la Universidad Iberoamericana (Unibe) han formalizado una alianza estratégica para potenciar la formación especializada y el intercambio de conocimientos en el sector asegurador dominicano. El acuerdo, firmado por representantes de ambas instituciones, se enfocará en áreas clave como la prevención del lavado de activos y la función actuarial, buscando mejorar la cultura de cumplimiento y la solvencia del sector.",
-      "category": "Financiero",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "banca",
-        "hecho"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "published_at": "2026-08-14T18:03:13+00:00",
-      "fetched_at": "2026-08-17T10:56:37.621718+00:00",
-      "status": "pending"
+      "dia_editorial": "2026-08-18",
+      "dia_lectura": "2026-08-19",
+      "fecha_inferida_de_url": false
     }
   ],
-  "discarded_count": 13,
+  "discarded_count": 6,
   "discarded": [
-    {
-      "id": "n_5e46ae076d7506eb",
-      "motivo": "duplicada",
-      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
-      "title": "Precio del dólar hoy sábado 15 de agosto de 2026 en RD",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-15-agosto-2026",
-      "source_name": "El Caribe · Dinero",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "politica_monetaria",
-        "banca",
-        "macro",
-        "hecho"
-      ],
-      "detalle": "Misma noticia que: Precio del dólar hoy martes 18 de agosto de 2026 en RD",
-      "fetched_at": "2026-08-18T11:01:01.945497+00:00"
-    },
-    {
-      "id": "n_9b24e531a0fa5ff4",
-      "motivo": "duplicada",
-      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
-      "title": "DGII informa que ha emitido más de 2,000 millones de Comprobantes Fiscales Electrónicos",
-      "url": "https://eldinero.com.do/376742/dgii-informa-que-ha-emitido-mas-de-2000-millones-de-comprobantes-fiscales-electronicos",
-      "source_name": "El Dinero · Finanzas",
-      "relevance": 9,
-      "señales": [
-        "regulador"
-      ],
-      "detalle": "Misma noticia que: DGII logra la recepción de más de 2,000 millones de Comprobantes Fiscales Electrónicos",
-      "fetched_at": "2026-08-18T11:01:01.946028+00:00"
-    },
-    {
-      "id": "n_6d3ed4a27e929317",
-      "motivo": "duplicada",
-      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
-      "title": "Banreservas presta en un año más RD$282,430 millones",
-      "url": "https://hoy.com.do/economia/banreservas-presta-ano-rd-282-430-millones_1099137.html",
-      "source_name": "Hoy Digital · Economía",
-      "relevance": 8,
-      "señales": [
-        "banca"
-      ],
-      "detalle": "Misma noticia que: Banreservas desembolsó RD$282,430 MM en un año",
-      "fetched_at": "2026-08-18T11:01:01.950934+00:00"
-    },
-    {
-      "id": "n_aa46953472c86a67",
-      "motivo": "duplicada",
-      "motivo_texto": "Ya cubierta por otra nota del mismo tema",
-      "title": "El petróleo de Texas sube 2.55%, con las negociaciones entre EE.UU. e Irán estancadas",
-      "url": "https://eldinero.com.do/376820/el-petroleo-de-texas-sube-2-55-con-las-negociaciones-entre-ee-uu-e-iran-estancadas",
-      "source_name": "El Dinero · RSS",
-      "relevance": 7,
-      "señales": [],
-      "detalle": "Misma noticia que: El petróleo de Texas sube 1.4%, hasta US$82.40 el barril",
-      "fetched_at": "2026-08-18T11:01:01.952309+00:00"
-    },
     {
       "id": "n_796693abcbc43058",
       "motivo": "relevancia_baja",
@@ -804,18 +352,6 @@
       "fetched_at": "2026-08-19T10:57:12.408893+00:00"
     },
     {
-      "id": "n_ae88eb0ae5a0de65",
-      "motivo": "relevancia_baja",
-      "motivo_texto": "El modelo le puso poca relevancia financiera",
-      "title": "Alpha Puesto de Bolsa celebra cuarta edición del bootcamp de verano \"Inversiones Inteligentes\"",
-      "url": "https://hoy.com.do/economia/alpha-puesto-bolsa-celebra-cuarta-edicion-bootcamp-verano-inversiones-inteligentes_1099100.html",
-      "source_name": "Hoy Digital · Economía",
-      "relevance": 5,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-18T10:57:14.113745+00:00"
-    },
-    {
       "id": "n_df16fe6ea436934b",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
@@ -850,30 +386,6 @@
       "señales": [],
       "detalle": "",
       "fetched_at": "2026-08-19T11:02:00.469521+00:00"
-    },
-    {
-      "id": "n_24f5f7cc6e3ff91a",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "El precio del dólar de este lunes 17 de agosto del 2026",
-      "url": "https://hoy.com.do/economia/precio-dolar-lunes-17-agosto-2026_1099066.html",
-      "source_name": "Hoy Digital · Economía",
-      "relevance": null,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-18T11:01:00.440712+00:00"
-    },
-    {
-      "id": "n_4502da05557b4ccb",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Punta Catalina sube aportes MHE, pero baja facturación",
-      "url": "https://hoy.com.do/economia/punta-catalina-sube-aportes-mhe-baja-facturacion_1099135.html",
-      "source_name": "Hoy Digital · Economía",
-      "relevance": null,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-18T11:01:00.441424+00:00"
     }
   ]
 }

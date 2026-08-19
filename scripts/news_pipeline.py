@@ -18,6 +18,13 @@ Flujo:
      los candidatos Y todo lo descartado junto con su motivo, para que el panel
      lo muestre y el analista pueda recuperarlo.
 
+La cola es de UN DÍA. Cada corrida reconstruye news_candidates.json para el día
+editorial de Santo Domingo (UTC-4) y bota lo que ya no cae en la ventana, tanto
+lo que trae esta corrida como lo arrastrado de la anterior. La ventana se mide
+en días calendario locales (NEWS_MAX_AGE_DAYS), no en horas rodantes: con horas,
+una nota de anteayer seguía contando como "de hace 71 horas" y el 19 de agosto
+todavía salían propuestas del 14.
+
 Redes de seguridad, todas por la misma razón: que ninguna noticia importante
 obligue a buscarla a mano.
   * Piso de relevancia por señal institucional — el juicio del modelo no es el
@@ -28,6 +35,11 @@ obligue a buscarla a mano.
   * Búsqueda general — no depender de que la nota salga en un índice concreto.
   * Deduplicación por tema — la misma noticia desde dos medios es una sola.
   * Filtro de páginas inválidas — errores 404 y muros de pago no son noticia.
+  * Fecha desde la URL — antes de descartar por falta de fecha se lee la ruta
+    del artículo (/2026/08/19/...), que es donde el CMS casi siempre la deja.
+  * Purga aunque no haya nada nuevo — si no hay fuentes o ninguna nota pasa el
+    filtro, el JSON se reescribe igual: el panel muestra "hoy sin propuestas",
+    nunca la cola de ayer.
   * Corta-circuito de cuota — si Gemini se agota, terminar limpio y rápido.
 
 El analista carga ese JSON desde el panel, lo guarda en localStorage y aprueba/rechaza localmente.
@@ -42,6 +54,10 @@ Variables opcionales:
   GEMINI_MODEL=gemini-2.5-flash-lite
   NEWS_CANDIDATES_PATH=news_candidates.json
   MAX_TOTAL_PROPOSALS=30
+  NEWS_TZ_OFFSET_HOURS=-4     # Santo Domingo, sin horario de verano
+  NEWS_MAX_AGE_DAYS=1         # dias calendario locales: 0=hoy, 1=hoy y ayer
+  NEWS_ALLOW_UNDATED=false    # dejar pasar notas sin fecha verificable
+  CANDIDATE_TTL_DAYS=1        # dias editoriales que sobrevive la cola
   NEWS_MIN_RELEVANCE=6        # umbral 0-10 de relevancia financiera
   ARTICLE_WORKERS=3           # hilos por fuente para leer articulos
   NEWS_SEARCH_ENABLED=true    # barrido propio en la web ademas de las fuentes
@@ -62,7 +78,7 @@ import logging
 import threading
 import unicodedata
 from pathlib import Path
-from datetime import datetime, timezone, timedelta
+from datetime import date, datetime, timezone, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urlparse, urljoin, parse_qsl, urlencode, urlunparse
 
@@ -93,18 +109,32 @@ MIN_CONTENT_CHARS = 250
 DELAY_BETWEEN_SOURCES = 1.5
 MAX_HEADLINES_PER_SOURCE = 6
 MAX_TOTAL_PROPOSALS = int(os.getenv("MAX_TOTAL_PROPOSALS", "30"))
-NEWS_MAX_AGE_HOURS = int(os.getenv("NEWS_MAX_AGE_HOURS", "72"))
-# Cuanto vive un candidato en el JSON antes de caducar. Con 3 dias, lo generado
-# un viernes ya no existia el lunes: el analista perdia la cola del fin de
-# semana sin haberla visto. Una semana cubre el ciclo real de revision.
-CANDIDATE_TTL_DAYS = int(os.getenv("CANDIDATE_TTL_DAYS", "7"))
-# Cuantos candidatos se conservan en el JSON en total (varios dias). Antes se
-# reusaba MAX_TOTAL_PROPOSALS (30) para las dos cosas, asi que cada corrida
-# nueva empujaba fuera del archivo a los pendientes del dia anterior.
-MAX_STORED_CANDIDATES = int(os.getenv("MAX_STORED_CANDIDATES", "90"))
-# Los descartes tambien se acumulan entre corridas: antes cada corrida
-# sobrescribia la lista y un falso negativo desaparecia en la siguiente.
-DISCARD_TTL_DAYS = int(os.getenv("DISCARD_TTL_DAYS", "3"))
+
+# --- El dia editorial manda -------------------------------------------------
+# El observatorio es dominicano: el "hoy" del analista es el de Santo Domingo,
+# UTC-4 todo el año (el pais no mueve el reloj). Medir la frescura en horas
+# rodantes sobre UTC hacia que el corte del dia cayera a las 8:00 p.m. locales
+# y que una nota de anteayer siguiera contando como "de hace 71 horas".
+NEWS_TZ = timezone(timedelta(hours=int(os.getenv("NEWS_TZ_OFFSET_HOURS", "-4"))))
+# Ventana de frescura en DIAS CALENDARIO locales, no en horas.
+#   0 -> solo lo publicado hoy
+#   1 -> hoy y ayer (default: la corrida de las 9:00 a.m. tiene que traer lo
+#        que los medios publicaron anoche)
+NEWS_MAX_AGE_DAYS = int(os.getenv("NEWS_MAX_AGE_DAYS", "1"))
+# Un articulo sin fecha legible no se puede garantizar fresco. Se descarta
+# (queda visible y recuperable en el panel de descartadas) en vez de colarse
+# en la cola con fecha desconocida.
+NEWS_ALLOW_UNDATED = os.getenv("NEWS_ALLOW_UNDATED", "false").lower() == "true"
+# Cuantos dias editoriales sobrevive la cola dentro del JSON.
+#   1 -> la cola se vacia sola cada dia (default)
+# Estuvo en 7 y por eso el 19 de agosto seguian saliendo propuestas del 14:
+# un candidato leido el 17 se quedaba una semana en el archivo.
+CANDIDATE_TTL_DAYS = max(1, int(os.getenv("CANDIDATE_TTL_DAYS", "1")))
+# Cuantos candidatos se conservan en el JSON. Con la cola de un solo dia
+# alcanza para las dos corridas diarias sin desalojar nada del mismo dia.
+MAX_STORED_CANDIDATES = int(os.getenv("MAX_STORED_CANDIDATES", "45"))
+# Los descartes viven lo mismo que la cola: son el reverso del mismo dia.
+DISCARD_TTL_DAYS = max(1, int(os.getenv("DISCARD_TTL_DAYS", "1")))
 MAX_STORED_DISCARDS = int(os.getenv("MAX_STORED_DISCARDS", "60"))
 NEWS_MIN_RELEVANCE = int(os.getenv("NEWS_MIN_RELEVANCE", "6"))
 ARTICLE_WORKERS = max(1, int(os.getenv("ARTICLE_WORKERS", "3")))
@@ -325,7 +355,8 @@ MOTIVO_TEXTO = {
     "modelo_irrelevante": "El modelo la marco como no noticiosa",
     "sin_cuerpo": "No se pudo leer el cuerpo del articulo",
     "sin_detalle": "El articulo no devolvio datos utiles",
-    "vieja": "Publicada fuera de la ventana de frescura",
+    "vieja": "Publicada fuera del dia editorial en curso",
+    "sin_fecha": "No se pudo verificar la fecha de publicacion",
     "duplicada": "Ya cubierta por otra nota del mismo tema",
 }
 
@@ -718,11 +749,57 @@ def parse_iso_date(value: str | None) -> datetime | None:
         return None
 
 
+# ---------------------------------------------------------------------------
+# Dia editorial: todo el flujo se mide en dias calendario de Santo Domingo.
+# ---------------------------------------------------------------------------
+def hoy_editorial() -> "date":
+    return datetime.now(NEWS_TZ).date()
+
+
+def dia_editorial(value) -> "date | None":
+    """Fecha local (Santo Domingo) de un instante ISO, o None si no se lee."""
+    if isinstance(value, datetime):
+        return value.astimezone(NEWS_TZ).date()
+    dt = parse_iso_date(value)
+    return dt.astimezone(NEWS_TZ).date() if dt else None
+
+
+def fecha_desde_url(url: str | None) -> str | None:
+    """Fecha embebida en la ruta (/2026/08/19/...), tipica de los medios locales.
+
+    Es la ultima red antes de descartar por falta de fecha: el CMS la pone en
+    la URL aunque el articulo no la muestre en el cuerpo.
+    """
+    m = re.search(r"/(20\d{2})[/-](0[1-9]|1[0-2])[/-](0[1-9]|[12]\d|3[01])(?:[/-]|$)", str(url or ""))
+    if not m:
+        return None
+    try:
+        año, mes, dia = int(m.group(1)), int(m.group(2)), int(m.group(3))
+        return datetime(año, mes, dia, 12, 0, tzinfo=NEWS_TZ).isoformat()
+    except ValueError:
+        return None
+
+
+def ventana_frescura_texto() -> str:
+    hoy = hoy_editorial()
+    desde = hoy - timedelta(days=NEWS_MAX_AGE_DAYS)
+    return f"{desde} a {hoy}" if desde != hoy else str(hoy)
+
+
 def is_stale(published_at: str | None) -> bool:
-    dt = parse_iso_date(published_at)
-    if not dt:
-        return False
-    return (datetime.now(timezone.utc) - dt).total_seconds() / 3600 > NEWS_MAX_AGE_HOURS
+    """True si la nota cae fuera de la ventana de dias editoriales.
+
+    Sin fecha legible no hay frescura demostrable: se trata como vieja salvo
+    que NEWS_ALLOW_UNDATED lo permita explicitamente.
+    """
+    dia = dia_editorial(published_at)
+    if not dia:
+        return not NEWS_ALLOW_UNDATED
+    hoy = hoy_editorial()
+    if dia > hoy + timedelta(days=1):
+        # Fecha futura absurda: el parser leyo mal, no es garantia de frescura.
+        return True
+    return dia < hoy - timedelta(days=NEWS_MAX_AGE_DAYS)
 
 
 def normalize_category(value: str | None) -> str:
@@ -798,12 +875,29 @@ def build_candidate(source: dict, headline: dict, base_url: str) -> dict | None:
         log.info("  -> articulo sin detalle util: %s", headline_title[:70])
         return None
 
+    # La fecha decide si la nota entra: sin fecha no hay frescura demostrable.
+    # Antes de rendirse se busca en la ruta del articulo (/2026/08/19/...).
     published_at = details.get("published_at")
-    if is_stale(published_at):
-        log.info("  -> articulo viejo, se omite: %s", headline_title[:70])
+    fecha_inferida = False
+    if not parse_iso_date(published_at):
+        desde_url = fecha_desde_url(link)
+        if desde_url:
+            published_at = desde_url
+            fecha_inferida = True
+
+    if not parse_iso_date(published_at):
+        if not NEWS_ALLOW_UNDATED:
+            log.info("  -> articulo sin fecha verificable, se omite: %s", headline_title[:70])
+            registrar_descarte("sin_fecha", details.get("title") or headline_title, link, fuente_nombre,
+                               details.get("relevance"), details.get("señales"),
+                               detalle="Ni el cuerpo ni la URL traen fecha; recupérala a mano si es de hoy")
+            return None
+    elif is_stale(published_at):
+        log.info("  -> fuera del dia editorial, se omite: %s", headline_title[:70])
         registrar_descarte("vieja", details.get("title") or headline_title, link, fuente_nombre,
                            details.get("relevance"), details.get("señales"),
-                           detalle=f"published_at={published_at}")
+                           detalle=f"publicada {(dia_editorial(published_at) or '?')}, "
+                                   f"ventana {ventana_frescura_texto()}")
         return None
 
     title = limpiar_texto(details.get("title") or headline_title)
@@ -821,7 +915,10 @@ def build_candidate(source: dict, headline: dict, base_url: str) -> dict | None:
         "rescatado_por_regla": bool(details.get("rescatado_por_regla")),
         "cuerpo_recuperado": recuperado,
         "published_at": published_at,
+        "fecha_inferida_de_url": fecha_inferida,
+        "dia_editorial": str(dia_editorial(published_at) or hoy_editorial()),
         "fetched_at": now_iso(),
+        "dia_lectura": str(hoy_editorial()),
         "status": "pending",
     }
 
@@ -961,6 +1058,13 @@ def procesar_busqueda_general(existing_urls: set[str], cupo: int) -> list[dict]:
 
 
 def load_previous_candidates() -> list[dict]:
+    """Candidatos de corridas anteriores que siguen siendo de hoy.
+
+    Dos cortes, no uno: cuando se leyeron (dia editorial de la lectura) y
+    cuando se publicaron. El segundo importa porque un candidato arrastrado
+    envejece mientras espera en la cola: sin el, la nota leida ayer a las
+    11:59 p.m. seguia viva hoy aunque ya estuviera fuera de la ventana.
+    """
     try:
         if not NEWS_CANDIDATES_PATH.exists():
             return []
@@ -968,13 +1072,20 @@ def load_previous_candidates() -> list[dict]:
         arr = data.get("candidates", [])
         if not isinstance(arr, list):
             return []
-        cutoff = datetime.now(timezone.utc) - timedelta(days=CANDIDATE_TTL_DAYS)
-        kept = []
+        corte_lectura = hoy_editorial() - timedelta(days=CANDIDATE_TTL_DAYS - 1)
+        kept, caducados = [], 0
         for x in arr:
-            dt = parse_iso_date(x.get("fetched_at"))
-            if dt and dt < cutoff:
+            leido = dia_editorial(x.get("fetched_at"))
+            # Sin marca de lectura no se sabe de que dia es: fuera.
+            if not leido or leido < corte_lectura:
+                caducados += 1
+                continue
+            if is_stale(x.get("published_at")):
+                caducados += 1
                 continue
             kept.append(x)
+        if caducados:
+            log.info("Cola: %d candidatos de dias anteriores salieron del JSON.", caducados)
         return kept
     except Exception as exc:
         log.info("No se pudieron cargar candidatos previos: %s", exc)
@@ -990,11 +1101,11 @@ def load_previous_discards() -> list[dict]:
         arr = data.get("discarded", [])
         if not isinstance(arr, list):
             return []
-        cutoff = datetime.now(timezone.utc) - timedelta(days=DISCARD_TTL_DAYS)
+        corte = hoy_editorial() - timedelta(days=DISCARD_TTL_DAYS - 1)
         kept = []
         for x in arr:
-            dt = parse_iso_date(x.get("fetched_at"))
-            if dt and dt < cutoff:
+            leido = dia_editorial(x.get("fetched_at"))
+            if not leido or leido < corte:
                 continue
             kept.append(x)
         return kept
@@ -1011,6 +1122,7 @@ def write_candidates(candidates: list[dict], errors: int, sources_count: int, el
     merged = []
     seen = set()
     ya_publicados = 0
+    fuera_de_dia = 0
     for item in candidates + load_previous_candidates():
         url = canonicalize_url(item.get("url") or "")
         if not url or url in seen:
@@ -1019,9 +1131,16 @@ def write_candidates(candidates: list[dict], errors: int, sources_count: int, el
         if url in publicados:
             ya_publicados += 1
             continue
+        # Ultima verificacion antes de escribir: nada fuera de la ventana
+        # llega al JSON, venga de esta corrida o arrastrado de la anterior.
+        if is_stale(item.get("published_at")):
+            fuera_de_dia += 1
+            continue
         item["url"] = url
         item["id"] = item.get("id") or stable_id(url)
         item["status"] = "pending"
+        item["dia_editorial"] = str(dia_editorial(item.get("published_at")) or hoy_editorial())
+        item.setdefault("dia_lectura", str(dia_editorial(item.get("fetched_at")) or hoy_editorial()))
         merged.append(item)
         seen.add(url)
 
@@ -1051,21 +1170,31 @@ def write_candidates(candidates: list[dict], errors: int, sources_count: int, el
         descartes.append(d)
     descartes = sorted(descartes, key=lambda d: (d.get("relevance") or 0), reverse=True)[:MAX_STORED_DISCARDS]
 
+    # Conteo por fecha de publicacion: es la que el analista ve en la ficha y
+    # la que hace evidente si se coló algo viejo.
     por_dia: dict[str, int] = {}
     for item in merged:
-        dia = (item.get("fetched_at") or "")[:10]
+        dia = item.get("dia_editorial") or (item.get("published_at") or "")[:10]
         if dia:
             por_dia[dia] = por_dia.get(dia, 0) + 1
 
+    hoy = hoy_editorial()
     payload = {
         "generated_at": now_iso(),
+        # El panel usa estos tres campos para saber si lo que tiene delante es
+        # de hoy o el sobrante de una corrida vieja.
+        "dia_editorial": str(hoy),
+        "zona_horaria": f"UTC{NEWS_TZ.utcoffset(None).total_seconds() / 3600:+.0f} (Santo Domingo)",
+        "ventana_frescura": ventana_frescura_texto(),
         "gemini_model": GEMINI_MODEL,
         "min_relevance": NEWS_MIN_RELEVANCE,
         "count": len(merged),
         "count_by_day": dict(sorted(por_dia.items(), reverse=True)),
         "new_this_run": len(candidates),
         "already_published": ya_publicados,
+        "out_of_window": fuera_de_dia,
         "ttl_days": CANDIDATE_TTL_DAYS,
+        "max_age_days": NEWS_MAX_AGE_DAYS,
         "errors": errors,
         "sources": sources_count,
         "elapsed_s": elapsed,
@@ -1074,16 +1203,25 @@ def write_candidates(candidates: list[dict], errors: int, sources_count: int, el
         "discarded": descartes,
     }
     NEWS_CANDIDATES_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-    log.info("JSON escrito: %s (%d candidatos; nuevos %d, ya publicados fuera %d, por dia %s)",
-             NEWS_CANDIDATES_PATH, len(merged), len(candidates), ya_publicados, payload["count_by_day"])
+    log.info("JSON escrito: %s (dia %s; %d candidatos; nuevos %d, publicados fuera %d, "
+             "fuera de ventana %d, por fecha %s)",
+             NEWS_CANDIDATES_PATH, hoy, len(merged), len(candidates), ya_publicados,
+             fuera_de_dia, payload["count_by_day"])
 
 
 def run() -> None:
     log.info("=== Pipeline de noticias static/local iniciado ===")
+    log.info("Dia editorial %s (%s). Solo entra lo publicado entre %s.",
+             hoy_editorial(), f"UTC{NEWS_TZ.utcoffset(None).total_seconds() / 3600:+.0f}",
+             ventana_frescura_texto())
     start = time.time()
     sources = load_sources()
     if not sources:
-        log.warning("No hay fuentes activas en Supabase.")
+        # Sin fuentes no hay nada nuevo, pero la cola del dia anterior tampoco
+        # puede quedarse: se reescribe el JSON con la purga aplicada para que
+        # el panel muestre "hoy sin propuestas" y no lo de la semana pasada.
+        log.warning("No hay fuentes activas en Supabase; se purga la cola del dia anterior.")
+        write_candidates([], 1, 0, round(time.time() - start, 1), load_published_urls())
         return
 
     publicados = load_published_urls()
@@ -1125,11 +1263,16 @@ def run() -> None:
         "section": "Pipeline candidatos",
         "status": "success" if errors == 0 else "warning",
         "rows_processed": len(all_candidates),
-        "message": (f"Pipeline JSON: {len(all_candidates)} candidatos nuevos, "
+        "message": (f"Pipeline JSON {hoy_editorial()}: {len(all_candidates)} candidatos nuevos, "
                     f"{len(_descartes)} descartados, {errors} errores, {elapsed}s"),
-        "metadata": {"mode": "static_json", "path": str(NEWS_CANDIDATES_PATH), "gemini_model": GEMINI_MODEL},
+        "metadata": {"mode": "static_json", "path": str(NEWS_CANDIDATES_PATH),
+                     "gemini_model": GEMINI_MODEL, "dia_editorial": str(hoy_editorial()),
+                     "ventana_frescura": ventana_frescura_texto()},
         "updated_at": now_iso(),
     })
+    if not all_candidates:
+        log.warning("Ninguna nota nueva paso el filtro. Revisa la lista de descartadas "
+                    "en el panel: ahi queda el motivo de cada una.")
     log.info("=== Finalizado: %d candidatos nuevos en %.1fs ===", len(all_candidates), elapsed)
 
 
