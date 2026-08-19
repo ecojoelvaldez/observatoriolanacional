@@ -2131,7 +2131,6 @@ footer .copy .ln { color: var(--yellow); font-weight: 700; }
 footer .right { font-size: 11px; color: rgba(255,255,255,0.7); letter-spacing: 1px; text-transform: uppercase; }
 footer .right .dot { color: var(--yellow); }
 .footer-actions { display:flex; align-items:center; justify-content:flex-end; gap:12px; flex-wrap:wrap; }
-.footer-period { color:rgba(255,255,255,0.66); }
 .footer-analyst-btn.nav-tab {
   position:relative; margin:0; border:1px solid rgba(230,190,0,.38); border-radius:999px;
   background:rgba(255,255,255,.06); color:var(--white); padding:10px 15px;
@@ -3894,11 +3893,11 @@ footer .mark{
       <div class="source" id="fx-wti-source">Bloomberg · última actualización pendiente</div>
       <span class="mkt-hint">7 días <span class="chev">▾</span></span>
     </div>
-    <div class="market-cell">
+    <div class="market-cell" data-fx="tpm">
       <div class="label">TPM · BCRD</div>
-      <div class="value">5.25%</div>
-      <div class="row"><span class="delta" style="color:var(--ink-mute)">— sin cambios</span></div>
-      <div class="source">Reunión 15 julio</div>
+      <div class="value" id="fx-tpm-value">5.25%</div>
+      <div class="row"><span class="delta" id="fx-tpm-delta" style="color:var(--ink-mute)">— sin cambios</span></div>
+      <div class="source" id="fx-tpm-source">Reunión 15 julio</div>
     </div>
   </div>
 
@@ -4628,6 +4627,8 @@ footer .mark{
               <div class="news-source-field"><label>Hoy Digital · RSS</label><input data-news-source="1" id="news-hoy-rss" value="https://hoy.com.do/feed/"><div class="news-source-meta"><span class="news-source-badge" data-source-badge>sin verificar</span><button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button></div></div>
               <div class="news-source-field"><label>Diario Libre · Economía</label><input data-news-source="1" id="news-diariolibre" value="https://www.diariolibre.com/economia"><div class="news-source-meta"><span class="news-source-badge" data-source-badge>sin verificar</span><button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button></div></div>
               <div class="news-source-field"><label>Diario Libre · Finanzas</label><input data-news-source="1" id="news-diariolibre-finanzas" value="https://www.diariolibre.com/economia/finanzas"><div class="news-source-meta"><span class="news-source-badge" data-source-badge>sin verificar</span><button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button></div></div>
+              <div class="news-source-field"><label>El Día · Económicas</label><input data-news-source="1" id="news-eldia" value="https://eldia.com.do/secciones/economicas/"><div class="news-source-meta"><span class="news-source-badge" data-source-badge>sin verificar</span><button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button></div></div>
+              <div class="news-source-field"><label>El Día · RSS</label><input data-news-source="1" id="news-eldia-rss" value="https://eldia.com.do/feed/"><div class="news-source-meta"><span class="news-source-badge" data-source-badge>sin verificar</span><button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button></div></div>
               <div class="news-source-field"><label>El Caribe · Dinero</label><input data-news-source="1" id="news-elcaribe" value="https://www.elcaribe.com.do/seccion/panorama/dinero/"><div class="news-source-meta"><span class="news-source-badge" data-source-badge>sin verificar</span><button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button></div></div>
               <div class="news-source-field"><label>El Caribe · RSS</label><input data-news-source="1" id="news-elcaribe-rss" value="https://www.elcaribe.com.do/feed/"><div class="news-source-meta"><span class="news-source-badge" data-source-badge>sin verificar</span><button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button></div></div>
               <div class="news-source-field"><label>Google News · BCRD y política monetaria</label><input data-news-source="1" id="news-gnews-bcrd" value="https://news.google.com/rss/search?q=%22Banco+Central%22+Rep%C3%BAblica+Dominicana+inflaci%C3%B3n+OR+tasa+OR+remesas&hl=es-419&gl=DO&ceid=DO:es-419"><div class="news-source-meta"><span class="news-source-badge" data-source-badge>sin verificar</span><button class="news-source-remove" type="button" onclick="lnRemoveNewsSource(this)">Quitar</button></div></div>
@@ -4732,7 +4733,6 @@ footer .mark{
     </div>
     <div class="right footer-actions">
       <button class="footer-analyst-btn nav-tab" id="nav-admin-tab" data-view="admin" type="button" aria-label="Abrir acceso del analista">Acceso analista</button>
-      <span class="footer-period">Mayo 2026</span>
     </div>
   </div>
 </footer>
@@ -15462,6 +15462,8 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     { id:'news-hoy-rss',              label:'Hoy Digital · RSS',                 url:'https://hoy.com.do/feed/' },
     { id:'news-diariolibre',          label:'Diario Libre · Economía',           url:'https://www.diariolibre.com/economia' },
     { id:'news-diariolibre-finanzas', label:'Diario Libre · Finanzas',           url:'https://www.diariolibre.com/economia/finanzas' },
+    { id:'news-eldia',                label:'El Día · Económicas',               url:'https://eldia.com.do/secciones/economicas/' },
+    { id:'news-eldia-rss',            label:'El Día · RSS',                      url:'https://eldia.com.do/feed/' },
     { id:'news-elcaribe',             label:'El Caribe · Dinero',                url:'https://www.elcaribe.com.do/seccion/panorama/dinero/' },
     { id:'news-elcaribe-rss',         label:'El Caribe · RSS',                   url:'https://www.elcaribe.com.do/feed/' },
     { id:'news-gnews-bcrd',           label:'Google News · BCRD y política monetaria', url:'https://news.google.com/rss/search?q=%22Banco+Central%22+Rep%C3%BAblica+Dominicana+inflaci%C3%B3n+OR+tasa+OR+remesas&hl=es-419&gl=DO&ceid=DO:es-419' },
@@ -18143,6 +18145,486 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     renderBar();
     toastSafe(`Nuevo día editorial (${today()}): la cola de propuestas se vació`, 'warn');
   }, 5 * 60 * 1000);
+})();
+</script>
+
+<style id="ln-market-card-editor-css">
+/* Igual que el resto del estudio: sin `analyst-logged` en el <body>, ni un
+   pixel de más para el visitante. */
+.mkt-edit-bar { display: none; }
+body.analyst-logged .mkt-edit-bar {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
+  margin: -6px 0 18px; font-size: 11px; color: var(--ink-mute);
+}
+body.analyst-logged .mkt-edit-bar .mkt-edit-hint { flex: 1 1 200px; line-height: 1.5; }
+body.analyst-logged .mkt-edit-btn {
+  font-family: inherit; font-size: 10px; font-weight: 800; letter-spacing: .12em;
+  text-transform: uppercase; cursor: pointer; border-radius: 999px; padding: 8px 14px;
+  background: rgba(230,190,0,.10); border: 1px solid rgba(230,190,0,.42);
+  color: var(--ink-soft); transition: all .18s var(--ease-out);
+}
+body.analyst-logged .mkt-edit-btn:hover { background: rgba(230,190,0,.18); border-color: rgba(230,190,0,.6); }
+body.analyst-logged .mkt-edit-btn.is-on { background: var(--yellow-dark, #E6BE00); border-color: var(--yellow-dark, #E6BE00); color: #3d3100; }
+body.analyst-logged .mkt-edit-btn.ghost { background: transparent; border-color: var(--line); }
+
+body.mkt-editing .market-cell .value {
+  outline: 1px dashed rgba(230,190,0,.85); outline-offset: 3px;
+  border-radius: 3px; cursor: text; background: rgba(230,190,0,.07);
+}
+body.mkt-editing .market-cell { cursor: default; }
+
+/* Sello: quien lee el observatorio tiene que poder distinguir el dato del
+   pipeline del corregido a mano. Misma regla que las gráficas editadas. */
+.mkt-edited-flag {
+  display: none; margin-top: 6px; font-size: 9px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: #8a6400;
+}
+.market-cell.is-hand-edited .mkt-edited-flag { display: block; }
+</style>
+
+<script id="ln-market-card-editor">
+/* ========================================================================
+   La Nacional · Tarjetas de mercado editables a mano
+   ------------------------------------------------------------------------
+   El estudio de gráficas ya dejaba editar los números de las tarjetas KPI de
+   Cartera y Captación, pero las cuatro tarjetas de la vista Hoy —USD, EUR,
+   WTI y TPM— solo se movían cargando un Excel. Cuando el dato del día llega
+   por otra vía (una llamada, el cierre publicado antes que el archivo), no
+   había forma de ponerlo.
+
+   Editar el número no es solo escribirlo: la tarjeta tiene detrás una serie
+   de 7 días, y el número visible es el último punto. Así que al guardar, el
+   valor nuevo entra como último dato y el que estaba pasa a ser el
+   penúltimo —la serie corre una posición y suelta el más viejo—, se
+   recalcula la variación "vs ayer" contra ese penúltimo y se redibuja la
+   mini-gráfica. Es la misma operación que hace el pipeline cuando llega un
+   cierre nuevo; aquí la hace el analista.
+
+   Se guarda en la misma tabla que el resto del estudio (chart_overrides),
+   así que lo ve todo el que entre, con copia en localStorage.
+   ======================================================================== */
+(function(){
+  'use strict';
+
+  var NS = window.LN_CHART_STUDIO || null;
+  var TABLE = 'chart_overrides';
+  var CONTEXT = 'hoy:mercado';
+  var CANVAS = 'mkt-spark-canvas';
+  var CACHE_KEY = 'ln-mkt-cards-cache-v1';
+  var PENCIL = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg> ';
+
+  // dec: decimales del valor; sufijo: lo que va pegado al número (TPM va en %).
+  var CARDS = {
+    usd: { label: 'USD / DOP', dec: 2, sufijo: '',  serie: true  },
+    eur: { label: 'EUR / DOP', dec: 2, sufijo: '',  serie: true  },
+    wti: { label: 'WTI Crudo', dec: 2, sufijo: '',  serie: true  },
+    tpm: { label: 'TPM · BCRD', dec: 2, sufijo: '%', serie: false }
+  };
+  var ORDEN = ['usd', 'eur', 'wti', 'tpm'];
+
+  var editando = false;
+  var baseline = {};      // estado del pipeline, para poder restablecer
+  var previo = {};        // texto al abrir la edición, para saber qué cambió
+
+  function keyOf(fx){ return 'tarjeta:' + fx + '@' + CONTEXT; }
+  function cell(fx){ return document.querySelector('.market-cell[data-fx="' + fx + '"]'); }
+  function valueEl(fx){ var c = cell(fx); return c ? c.querySelector('.value') : null; }
+  function deltaEl(fx){ var c = cell(fx); return c ? c.querySelector('.delta') : null; }
+  function tickerEl(fx){ return document.querySelector('.tick-val[data-ticker="' + fx + '"]'); }
+  function logged(){ return document.body.classList.contains('analyst-logged'); }
+  function say(msg, kind){
+    try { if (typeof window.toast === 'function') return window.toast(msg, kind || 'success'); } catch (_) {}
+    console.log('[tarjetas-mercado]', msg);
+  }
+
+  /* La serie vive en FX_SERIES, declarado con `const` en el script principal:
+     es una ligadura léxica global, no una propiedad de window. */
+  function series(fx){
+    try { return (typeof FX_SERIES !== 'undefined' && FX_SERIES[fx]) ? FX_SERIES[fx] : null; }
+    catch (_) { return null; }
+  }
+  function sparkAbierta(fx){
+    try { return typeof mktActiveKey !== 'undefined' && mktActiveKey === fx; } catch (_) { return false; }
+  }
+  function redibujar(fx){
+    if (!sparkAbierta(fx)) return;
+    try { if (typeof window.drawMktSpark === 'function') window.drawMktSpark(fx); } catch (_) {}
+  }
+
+  /* Acepta lo que escriba el analista: 62,40 · RD$ 59.42 · 5.25% · 1,234.56 */
+  function parseNumero(texto){
+    var s = String(texto == null ? '' : texto).trim();
+    if (!s) return null;
+    s = s.replace(/\s|RD\$|US\$|DOP|USD|%|−/gi, function (m) { return m === '−' ? '-' : ''; });
+    var coma = s.indexOf(',') >= 0, punto = s.indexOf('.') >= 0;
+    if (coma && punto) {
+      if (s.lastIndexOf(',') > s.lastIndexOf('.')) s = s.replace(/\./g, '').replace(',', '.');
+      else s = s.replace(/,/g, '');
+    } else if (coma) {
+      var partes = s.split(',');
+      s = (partes.length === 2 && partes[1].length > 0 && partes[1].length <= 2)
+        ? partes[0] + '.' + partes[1]
+        : s.replace(/,/g, '');
+    }
+    var n = Number(s);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function fmt(valor, fx){
+    var meta = CARDS[fx] || { dec: 2, sufijo: '' };
+    return valor.toFixed(meta.dec) + meta.sufijo;
+  }
+
+  function textoDelta(diff, pct){
+    var arriba = diff >= 0;
+    return (arriba ? '▲ +' : '▼ −') + Math.abs(diff).toFixed(2) +
+           ' (' + (arriba ? '+' : '−') + Math.abs(pct).toFixed(2) + '%) vs ayer';
+  }
+
+  /* ---- 1. LÍNEA BASE DEL PIPELINE -------------------------------------- */
+  function capturar(){
+    ORDEN.forEach(function (fx){
+      if (baseline[fx]) return;
+      var v = valueEl(fx), d = deltaEl(fx), s = series(fx), t = tickerEl(fx);
+      if (!v) return;
+      baseline[fx] = {
+        raw: v.textContent,
+        delta: d ? d.textContent : '',
+        deltaUp: !!(d && d.classList.contains('up')),
+        deltaDown: !!(d && d.classList.contains('down')),
+        tick: t ? t.textContent : '',
+        serie: s && Array.isArray(s.series) ? s.series.slice() : null,
+        labels: s && Array.isArray(s.labels) ? s.labels.slice() : null,
+        periodos: s && Array.isArray(s.periodos) ? s.periodos.slice() : null
+      };
+    });
+  }
+
+  /* ---- 2. DESPLAZAR LA SERIE ------------------------------------------
+     El corazón del pedido: el número nuevo entra al final y el que estaba
+     pasa a penúltimo. La serie mantiene su largo, así que suelta el más
+     viejo — igual que cuando llega un cierre nuevo por Excel. */
+  function desplazar(fx, valor){
+    var s = series(fx);
+    if (!s || !Array.isArray(s.series) || !s.series.length) return null;
+
+    var largo = s.series.length;
+    var anterior = s.series[largo - 1];
+    var serie = s.series.concat([valor]);
+    if (serie.length > largo) serie = serie.slice(serie.length - largo);
+
+    var labels = Array.isArray(s.labels) && s.labels.length === largo ? s.labels.slice() : null;
+    var periodos = Array.isArray(s.periodos) && s.periodos.length === largo ? s.periodos.slice() : null;
+    var hoy = new Date();
+    if (labels) {
+      var dia = ['D','L','M','M','J','V','S'][hoy.getDay()];
+      labels = labels.concat([dia]).slice(-largo);
+    }
+    if (periodos) {
+      periodos = periodos.concat([hoy.toISOString().slice(0, 10)]).slice(-largo);
+    }
+
+    var diff = valor - anterior;
+    var pct = anterior ? (diff / Math.abs(anterior)) * 100 : 0;
+    return { serie: serie, labels: labels, periodos: periodos, anterior: anterior, diff: diff, pct: pct };
+  }
+
+  /* ---- 3. PINTAR ------------------------------------------------------- */
+  function pintar(fx, cfg){
+    var v = valueEl(fx);
+    if (!v || !cfg) return false;
+    var c = cell(fx);
+    var cambio = false;
+
+    if (typeof cfg.raw === 'string' && v.textContent !== cfg.raw) { v.textContent = cfg.raw; cambio = true; }
+
+    if (cfg.delta) {
+      var d = deltaEl(fx);
+      if (d && d.textContent !== cfg.delta.texto) {
+        d.textContent = cfg.delta.texto;
+        d.classList.toggle('up', !!cfg.delta.up);
+        d.classList.toggle('down', !cfg.delta.up);
+        d.style.color = '';
+        cambio = true;
+      }
+    }
+
+    if (Array.isArray(cfg.serie) && cfg.serie.length) {
+      var s = series(fx);
+      if (s && String(s.series) !== String(cfg.serie)) {
+        s.series = cfg.serie.slice();
+        if (Array.isArray(cfg.labels)) s.labels = cfg.labels.slice();
+        if (Array.isArray(cfg.periodos)) s.periodos = cfg.periodos.slice();
+        if (cfg.delta) s.up = !!cfg.delta.up;
+        cambio = true;
+      }
+    }
+
+    if (typeof cfg.valor === 'number') {
+      var t = tickerEl(fx);
+      // `locked` es la señal que ya usa el pipeline para que la animación del
+      // ticker no siga moviendo un valor puesto a propósito.
+      var texto = fmt(cfg.valor, fx);
+      if (t && (t.textContent !== texto || t.dataset.locked !== '1')) {
+        t.textContent = texto; t.dataset.base = String(cfg.valor); t.dataset.locked = '1';
+      }
+    }
+
+    if (c) {
+      c.classList.add('is-hand-edited');
+      if (!c.querySelector('.mkt-edited-flag')) {
+        var flag = document.createElement('div');
+        flag.className = 'mkt-edited-flag';
+        flag.textContent = 'Editado por el analista';
+        c.appendChild(flag);
+      }
+    }
+    // Redibujar solo cuando algo se movió: el repaso periódico no puede estar
+    // destruyendo y reconstruyendo la gráfica abierta cada segundo y medio.
+    if (cambio) redibujar(fx);
+    return cambio;
+  }
+
+  function restaurar(fx){
+    var base = baseline[fx];
+    var v = valueEl(fx);
+    if (!base || !v) return;
+    v.textContent = base.raw;
+    var d = deltaEl(fx);
+    if (d) {
+      d.textContent = base.delta;
+      d.classList.toggle('up', base.deltaUp);
+      d.classList.toggle('down', base.deltaDown);
+    }
+    var s = series(fx);
+    if (s && base.serie) {
+      s.series = base.serie.slice();
+      if (base.labels) s.labels = base.labels.slice();
+      if (base.periodos) s.periodos = base.periodos.slice();
+    }
+    var t = tickerEl(fx);
+    if (t && base.tick) { t.textContent = base.tick; t.dataset.base = base.tick; delete t.dataset.locked; }
+    var c = cell(fx);
+    if (c) c.classList.remove('is-hand-edited');
+    redibujar(fx);
+  }
+
+  /* ---- 4. GUARDADO (misma tabla que el estudio de gráficas) ------------ */
+  function overrides(){
+    if (NS && NS.overrides) return NS.overrides;
+    try { return JSON.parse(localStorage.getItem(CACHE_KEY) || '{}'); } catch (_) { return {}; }
+  }
+  function cachePropio(){
+    try { return JSON.parse(localStorage.getItem(CACHE_KEY) || '{}'); } catch (_) { return {}; }
+  }
+  // El cache local guarda solo las tarjetas. NS.overrides trae además las
+  // recetas completas de todas las gráficas: volcarlo aquí llenaría el
+  // localStorage sin motivo.
+  function guardarLocal(fx, entry){
+    var mio = cachePropio();
+    mio[keyOf(fx)] = entry;
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify(mio)); } catch (_) {}
+  }
+  /* El estudio de gráficas lee lo publicado y REEMPLAZA NS.overrides entero.
+     Esto vuelve a meter lo que se editó en este navegador y Supabase todavía
+     no devuelve —por ejemplo si la red falló al publicar—, sin pisar nunca lo
+     que sí vino publicado. */
+  function sembrar(){
+    if (!NS || !NS.overrides) return;
+    var mio = cachePropio();
+    Object.keys(mio).forEach(function (k){
+      if (k.indexOf('tarjeta:') !== 0) return;
+      if (!NS.overrides[k]) NS.overrides[k] = mio[k];
+    });
+  }
+  function sbConfig(){
+    var extra = window.__OBSERVATORIO_SUPABASE__ || {};
+    var meta = function (name){
+      var el = document.querySelector('meta[name="' + name + '"]');
+      return (el && el.content ? el.content : '').trim();
+    };
+    var url = (extra.url || meta('supabase-url') || '').replace(/\/+$/, '');
+    var key = extra.anonKey || meta('supabase-anon-key') || '';
+    return (url && key) ? { url: url, key: key } : null;
+  }
+  function persistir(fx, config, enabled){
+    var entry = { config: config, enabled: enabled, titulo: 'Tarjeta ' + (CARDS[fx] || {}).label };
+    if (NS && NS.overrides) NS.overrides[keyOf(fx)] = entry;
+    guardarLocal(fx, entry);
+
+    var cfg = sbConfig();
+    if (!cfg) return Promise.reject(new Error('Supabase no está configurado en esta página.'));
+    return fetch(cfg.url + '/rest/v1/' + TABLE, {
+      method: 'POST',
+      headers: {
+        apikey: cfg.key, Authorization: 'Bearer ' + cfg.key,
+        'Content-Type': 'application/json',
+        Prefer: 'resolution=merge-duplicates,return=minimal'
+      },
+      body: JSON.stringify([{
+        chart_key: keyOf(fx), canvas_id: CANVAS, context_key: CONTEXT, seccion: 'hoy',
+        titulo: 'Tarjeta ' + (CARDS[fx] || {}).label,
+        config: config, enabled: enabled,
+        updated_at: new Date().toISOString(), updated_by: 'panel-analista'
+      }])
+    }).then(function (r){
+      if (!r.ok) return r.text().then(function (t){ throw new Error('HTTP ' + r.status + ' · ' + t.slice(0, 140)); });
+      return true;
+    });
+  }
+
+  function vigente(fx){
+    var entry = overrides()[keyOf(fx)];
+    return (entry && entry.enabled !== false && entry.config) ? entry.config : null;
+  }
+
+  function aplicarTodo(){
+    if (editando) return;
+    capturar();
+    sembrar();
+    ORDEN.forEach(function (fx){
+      var cfg = vigente(fx);
+      if (cfg) pintar(fx, cfg);
+    });
+  }
+  window.lnApplyMarketCardEdits = aplicarTodo;
+
+  /* ---- 5. MODO EDICIÓN -------------------------------------------------- */
+  function barra(){
+    var bar = document.getElementById('mkt-edit-bar');
+    if (bar) return bar;
+    var strip = document.querySelector('.market-strip');
+    if (!strip || !strip.parentNode) return null;
+    bar = document.createElement('div');
+    bar.className = 'mkt-edit-bar';
+    bar.id = 'mkt-edit-bar';
+    bar.innerHTML =
+      '<button type="button" class="mkt-edit-btn" data-act="toggle">' + PENCIL + '<span>Editar tarjetas</span></button>' +
+      '<button type="button" class="mkt-edit-btn ghost" data-act="reset">Restablecer</button>' +
+      '<span class="mkt-edit-hint">Escribe el valor del día sobre el número. Al guardar, ese valor entra como último dato de la mini-gráfica y el anterior pasa a penúltimo.</span>';
+    strip.parentNode.insertBefore(bar, strip.nextSibling);
+    bar.addEventListener('click', function (e){
+      var btn = e.target.closest('[data-act]');
+      if (!btn) return;
+      if (btn.dataset.act === 'toggle') editando ? guardar() : abrir();
+      else if (btn.dataset.act === 'reset') restablecer();
+    });
+    return bar;
+  }
+
+  function abrir(){
+    if (!logged()) return say('Inicia sesión como analista para editar las tarjetas', 'warn');
+    capturar();
+    editando = true;
+    previo = {};
+    document.body.classList.add('mkt-editing');
+    ORDEN.forEach(function (fx){
+      var v = valueEl(fx);
+      if (!v) return;
+      previo[fx] = v.textContent;
+      v.setAttribute('contenteditable', 'true');
+      v.setAttribute('spellcheck', 'false');
+      // Enter guarda: escribir un número y pulsar Enter es el gesto natural.
+      v.addEventListener('keydown', enterGuarda);
+    });
+    var btn = document.querySelector('#mkt-edit-bar [data-act="toggle"]');
+    if (btn) { btn.classList.add('is-on'); btn.querySelector('span').textContent = 'Guardar y publicar'; }
+  }
+
+  function enterGuarda(e){
+    if (e.key === 'Enter'){ e.preventDefault(); guardar(); }
+    else if (e.key === 'Escape'){ e.preventDefault(); cerrar(true); }
+  }
+
+  function cerrar(deshacer){
+    editando = false;
+    ORDEN.forEach(function (fx){
+      var v = valueEl(fx);
+      if (!v) return;
+      if (deshacer && previo[fx] != null) v.textContent = previo[fx];
+      v.removeAttribute('contenteditable');
+      v.removeEventListener('keydown', enterGuarda);
+    });
+    document.body.classList.remove('mkt-editing');
+    var btn = document.querySelector('#mkt-edit-bar [data-act="toggle"]');
+    if (btn) { btn.classList.remove('is-on'); btn.querySelector('span').textContent = 'Editar tarjetas'; }
+    if (deshacer) aplicarTodo();
+  }
+
+  function guardar(){
+    var pendientes = [];
+
+    ORDEN.forEach(function (fx){
+      var v = valueEl(fx);
+      if (!v) return;
+      var texto = (v.textContent || '').trim();
+      if (texto === (previo[fx] || '').trim()) return;
+
+      var valor = parseNumero(texto);
+      var config = { v: 1, tarjeta: fx, raw: texto, at: new Date().toISOString() };
+
+      if (valor !== null) {
+        config.valor = valor;
+        config.raw = fmt(valor, fx);
+        var mov = CARDS[fx] && CARDS[fx].serie ? desplazar(fx, valor) : null;
+        if (mov) {
+          config.serie = mov.serie;
+          config.labels = mov.labels;
+          config.periodos = mov.periodos;
+          config.anterior = mov.anterior;
+          config.delta = { texto: textoDelta(mov.diff, mov.pct), up: mov.diff >= 0 };
+        }
+      }
+      pendientes.push({ fx: fx, config: config });
+    });
+
+    if (!pendientes.length) { say('No cambiaste ningún número.', 'warn'); cerrar(false); return; }
+
+    pendientes.forEach(function (p){ pintar(p.fx, p.config); });
+    cerrar(false);
+
+    say('Publicando ' + pendientes.length + ' tarjeta(s)…', 'success');
+    Promise.all(pendientes.map(function (p){ return persistir(p.fx, p.config, true); }))
+      .then(function (){ say(pendientes.length + ' tarjeta(s) actualizadas para todos.', 'success'); })
+      .catch(function (err){ say('Guardado en este navegador, pero no se publicó: ' + err.message, 'warn'); });
+  }
+
+  function restablecer(){
+    var mapa = overrides();
+    var vivas = ORDEN.filter(function (fx){ return !!vigente(fx); });
+    if (!vivas.length) { say('Las tarjetas ya muestran el dato del pipeline.', 'warn'); return; }
+
+    vivas.forEach(restaurar);
+    Promise.all(vivas.map(function (fx){
+      var entry = mapa[keyOf(fx)] || {};
+      // Se conserva lo editado y solo se apaga, igual que el resto del estudio:
+      // restablecer nunca borra, así siempre se puede volver a encender.
+      var config = Object.assign({}, entry.config || {}, { off_at: new Date().toISOString() });
+      return persistir(fx, config, false);
+    }))
+      .then(function (){ say('Tarjetas restablecidas al dato del pipeline.', 'success'); })
+      .catch(function (err){ say('Restablecido aquí, pero no se publicó: ' + err.message, 'warn'); });
+  }
+
+  window.lnResetMarketCardEdits = restablecer;
+
+  /* ---- 6. ARRANQUE ------------------------------------------------------ */
+  function boot(){
+    capturar();
+    barra();
+    aplicarTodo();
+    // El estudio lee lo publicado en Supabase de forma asíncrona; cuando
+    // termina, NS.overrides ya trae también estas tarjetas.
+    [600, 1800, 4000].forEach(function (ms){ setTimeout(function (){ barra(); aplicarTodo(); }, ms); });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
+  else boot();
+
+  /* Red de seguridad barata, la misma que usa el estudio para los textos: los
+     controladores del pipeline reescriben estas tarjetas en cada carga de
+     Excel y sin esto pisarían lo que puso el analista. */
+  setInterval(function (){ if (!editando) aplicarTodo(); }, 1500);
 })();
 </script>
 

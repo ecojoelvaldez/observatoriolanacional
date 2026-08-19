@@ -30,6 +30,10 @@ obligue a buscarla a mano.
   * Piso de relevancia por señal institucional — el juicio del modelo no es el
     único filtro. Reguladores, política monetaria y bancos dominicanos entran
     aunque el modelo los haya puntuado bajo o marcado como no noticiosos.
+  * Mención de una entidad financiera dominicana = entra, punto. Basta que el
+    nombre aparezca (ENTIDADES_FINANCIERAS_RD), aunque la nota no sea de
+    economía: patrocinios, nombramientos, litigios o actos sociales de un banco
+    o una asociación también son seguimiento. Es el único piso que llega a 10.
   * Registro de descartes — nada desaparece en silencio.
   * Rescate por titular — que un medio bloquee al lector no borra la noticia.
   * Búsqueda general — no depender de que la nota salga en un índice concreto.
@@ -172,8 +176,70 @@ NEWS_RESCUE_ENABLED = os.getenv("NEWS_RESCUE_ENABLED", "true").strip().lower() n
 # Banreservas y Popular sobre el sistema financiero). El juicio del modelo no
 # puede ser el unico filtro: estas reglas fijan un piso de relevancia que el
 # modelo no puede bajar. Si el texto toca una de estas señales, la nota entra.
+# ---------------------------------------------------------------------------
+# Entidades financieras dominicanas.
+# Regla de negocio, dicha por Planeacion Estrategica: una nota que MENCIONE a
+# cualquiera de estas entra en la cola, aunque la mencion sea de pasada y la
+# nota no sea de economia (un patrocinio, un nombramiento, un litigio, una
+# donacion). Para una entidad supervisada, lo que se dice de sus pares es
+# seguimiento obligatorio, no color.
+#
+# Los terminos van sin acentos y en minuscula porque se comparan contra
+# norm_texto(); y se comparan por PALABRA COMPLETA (ver _menciona), no por
+# subcadena: con subcadena, "sib" hacia match dentro de "posible" y casi
+# cualquier nota en español disparaba el piso institucional.
+# ---------------------------------------------------------------------------
+ENTIDADES_FINANCIERAS_RD = [
+    # Asociaciones de ahorros y prestamos
+    "asociacion la nacional", "la nacional de ahorros y prestamos", "alnap",
+    "asociacion popular de ahorros y prestamos", "asociacion popular", "apap",
+    "asociacion cibao", "asociacion duarte", "asociacion peravia",
+    "asociacion mocana", "asociacion bonao", "asociacion romana",
+    "asociacion higuamo", "asociacion maguana", "asociacion barahona",
+    "asociacion noroestana", "asociacion la vega real",
+    "asociaciones de ahorros y prestamos", "liga dominicana de asociaciones",
+    "lidaapi",
+    # Bancos multiples
+    "banreservas", "banco de reservas", "banco popular dominicano",
+    "banco popular", "popular bank", "banco bhd", "bhd leon", "scotiabank",
+    "banesco", "banco santa cruz", "banco bdi", "banco caribe",
+    "banco promerica", "promerica", "banco lafise", "lafise", "banco vimenca",
+    "vimenca", "banco lopez de haro", "bancamerica", "citibank",
+    "banco ademi", "ademi", "qik banco digital", "qik",
+    "banco multiple", "bancos multiples", "banca multiple",
+    # Bancos de ahorro y credito, corporaciones y banca publica
+    "banco adopem", "adopem", "banfondesa", "fondesa", "bancotui",
+    "banco confisa", "confisa", "motor credito", "jmmb", "banco atlantico",
+    "banco agricola", "banco nacional de las exportaciones", "bandex",
+    "bancos de ahorro y credito", "corporaciones de credito",
+    # Cooperativas de mayor tamaño
+    "cooperativa vega real", "coopvegareal", "coopnama", "coopsano",
+    "cooperativa san jose", "cooperativa herrera", "cooperativa maimon",
+    "cooperativas de ahorro y credito",
+    # Pensiones
+    "afp popular", "afp reservas", "afp siembra", "afp crecer",
+    "afp romana", "afp atlantico", "administradoras de fondos de pensiones",
+    "fondos de pensiones", "sipen",
+    # Seguros y ARS
+    "seguros universal", "seguros reservas", "seguros banreservas",
+    "mapfre bhd", "mapfre", "humano seguros", "seguros humano", "ars humano",
+    "seguros la colonial", "la colonial de seguros", "seguros sura",
+    "seguros worldwide", "ars palic", "palic", "senasa",
+    # Mercado de valores
+    "bolsa y mercados de valores", "bolsa de valores", "bvrd", "cevaldom",
+    "puesto de bolsa", "puestos de bolsa", "alpha inversiones",
+    "parallax valores", "excel puesto de bolsa", "jmmb puesto de bolsa",
+    # Gremios del sistema financiero
+    "asociacion de bancos comerciales", "asociacion de bancos multiples",
+    "abancord", "adocoop", "adobanca",
+]
+
 SEÑALES_RELEVANCIA = [
     # (relevancia minima, etiqueta, terminos)
+    # Piso 10: mencion de una entidad financiera dominicana. Es el unico grupo
+    # que llega al tope, y a proposito: aqui la mencion basta, no hace falta
+    # que la nota trate de finanzas.
+    (10, "entidad_rd", ENTIDADES_FINANCIERAS_RD),
     (9, "regulador", [
         "superintendencia de bancos", "superintendente de bancos", "superintendente",
         "banco central", "gobernador del banco central", "junta monetaria",
@@ -277,6 +343,19 @@ def tokens_titular(titulo: str) -> set[str]:
     return {t for t in norm_texto(titulo).split() if len(t) > 2 and t not in STOPWORDS}
 
 
+def _menciona(blob_acolchado: str, termino: str) -> bool:
+    """True si el termino aparece como palabra completa dentro del texto.
+
+    Se compara contra un blob ya normalizado y rodeado de espacios, asi que
+    basta con buscar el termino tambien rodeado de espacios. La variante con
+    "s" final cubre el plural sin necesidad de listar las dos formas.
+
+    Antes esto era `term in blob`, una subcadena: "sib" hacia match dentro de
+    "posible" y el piso institucional de 9 se disparaba en casi cualquier nota.
+    """
+    return f" {termino} " in blob_acolchado or f" {termino}s " in blob_acolchado
+
+
 def señales_detectadas(*textos: str) -> tuple[int, list[str]]:
     """Piso de relevancia y etiquetas segun las señales institucionales.
 
@@ -285,12 +364,13 @@ def señales_detectadas(*textos: str) -> tuple[int, list[str]]:
     blob = norm_texto(" ".join(t for t in textos if t))
     if not blob:
         return 0, []
+    acolchado = f" {blob} "
     piso, etiquetas = 0, []
     for minimo, etiqueta, terminos in SEÑALES_RELEVANCIA:
-        if any(term in blob for term in terminos):
+        if any(_menciona(acolchado, term) for term in terminos):
             etiquetas.append(etiqueta)
             piso = max(piso, minimo)
-    if piso and any(v in blob for v in VERBOS_HECHO):
+    if piso and any(_menciona(acolchado, v) for v in VERBOS_HECHO):
         # Mencion institucional + hecho concreto: es justo el caso que se estaba
         # perdiendo (renuncia del superintendente, reunion entre bancos).
         etiquetas.append("hecho")
@@ -597,7 +677,15 @@ Prioriza (en este orden):
 4. Indicadores macroeconomicos de RD (PIB, IMAE, deuda, IED, empleo)
 5. Economia global SOLO si tiene canal claro hacia RD (Fed, petroleo, remesas, turismo)
 
-Descarta sin excepcion: navegacion, relleno, opinion sin dato economico, publirreportajes, tecnologia de consumo, deportes, entretenimiento, sucesos, politica sin componente economico, noticias militares o de seguridad sin impacto financiero cuantificable.
+REGLA QUE MANDA SOBRE TODO LO ANTERIOR: si el titular o su fragmento MENCIONA a una entidad
+financiera dominicana —Banreservas, Banco Popular, BHD, Scotiabank, Santa Cruz, Caribe, Promerica,
+Banesco, Ademi, Adopem, APAP, Asociacion Cibao, Asociacion La Nacional, cualquier otra asociacion de
+ahorros y prestamos, banco de ahorro y credito, cooperativa, AFP, aseguradora, ARS o puesto de bolsa
+del pais— INCLUYELO, aunque la nota no sea de economia: un patrocinio, un nombramiento, una donacion,
+un premio, un litigio o un acto social de una de esas entidades tambien cuenta. Esa mencion pesa mas
+que cualquier criterio de descarte.
+
+Descarta sin excepcion (siempre que no mencionen una entidad financiera dominicana): navegacion, relleno, opinion sin dato economico, publirreportajes, tecnologia de consumo, deportes, entretenimiento, sucesos, politica sin componente economico, noticias militares o de seguridad sin impacto financiero cuantificable.
 
 Devuelve SOLO JSON valido con esta estructura exacta:
 {"headlines":[{"title":"titular exacto","link":"URL del articulo individual","category":"Economia"}]}
@@ -629,6 +717,11 @@ Devuelve SOLO JSON valido con esta estructura exacta:
 Reglas:
 - category debe ser exactamente una de: Monetario, Financiero, Regulatorio, Economia, Global.
 - relevance es un entero 0-10 que mide el impacto para el SECTOR FINANCIERO dominicano:
+  * 10: la nota MENCIONA a una entidad financiera dominicana (banco, asociacion de ahorros y
+          prestamos, banco de ahorro y credito, cooperativa, AFP, aseguradora, ARS, puesto de bolsa
+          o gremio del sector), sin importar de que trate la nota. Basta la mencion: un patrocinio
+          deportivo de Banreservas, un nombramiento en Adopem o una demanda contra una AFP entran
+          con 10 y relevant=true.
   * 9-10: decision de politica monetaria/regulatoria, datos de banca o credito, tasas, tipo de cambio,
           Y TAMBIEN cualquier cambio en la conduccion de los organismos que regulan al sector
           (Superintendencia de Bancos, Banco Central, Junta Monetaria, Hacienda): renuncias,
@@ -648,6 +741,8 @@ IMPORTANTE — errores a no repetir. Estas SI son relevantes y se estaban descar
   * Declaraciones de autoridades monetarias sobre el rumbo de la economia.
 Ante la duda entre descartar y proponer una nota que menciona un regulador, un banco dominicano o
 la politica monetaria: PROPONLA. El analista filtra despues; lo que no se propone no se ve.
+Nunca devuelvas {"relevant": false} para una nota que nombre a una entidad financiera dominicana,
+por lateral que sea la mencion.
 
 - Si el articulo no tiene contenido noticioso util, devuelve {"relevant": false}.
 - Si no encuentras fecha, usa null; no inventes fechas.
