@@ -1,7 +1,7 @@
 {
   "fuente": "Superintendencia de Bancos de la Republica Dominicana (SIB) - API v2",
   "unidad": "RD$ (pesos dominicanos)",
-  "generado_en": "2026-08-05T15:47:59.666217+00:00",
+  "generado_en": "2026-08-20T14:29:48.583328+00:00",
   "nota_agregado": "La entidad 'TODOS' es el agregado que publica la SIB; se excluye del ranking y del sistema.",
   "nota_share": "share_pct = balance de la entidad / balance del sistema (suma de entidades) para el mismo producto, periodo y region.",
   "endpoint": "estadisticas/v2/carteras/creditos (granular)",
