@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-20T13:48:02.001286+00:00",
+  "generated_at": "2026-08-20T17:06:02.344380+00:00",
   "dia_editorial": "2026-08-20",
   "zona_horaria": "UTC-4 (Santo Domingo)",
   "ventana_frescura": "2026-08-19 a 2026-08-20",
@@ -10,14 +10,14 @@
     "2026-08-20": 5,
     "2026-08-19": 4
   },
-  "new_this_run": 9,
+  "new_this_run": 0,
   "already_published": 0,
   "out_of_window": 0,
   "ttl_days": 1,
   "max_age_days": 1,
   "errors": 0,
   "sources": 19,
-  "elapsed_s": 366.1,
+  "elapsed_s": 262.8,
   "candidates": [
     {
       "id": "n_32f0f1b2666fef65",
@@ -232,7 +232,7 @@
       "relevance": 5,
       "señales": [],
       "detalle": "",
-      "fetched_at": "2026-08-20T13:42:52.209690+00:00"
+      "fetched_at": "2026-08-20T17:02:04.402510+00:00"
     },
     {
       "id": "n_4b6975452dda7aae",
