@@ -1122,10 +1122,13 @@ a { color: inherit; text-decoration: none; }
 .split-row.open .split-kind { color: var(--cyan-deep); }
 /* El valor baja de 30px a 23px: dos cifras en el alto de una sin que la
    franja crezca de más frente a las tarjetas que no se parten. */
-.market-cell .split-row .value { font-size: 23px; letter-spacing: -0.6px; min-width: 0; }
+.market-cell .split-row .value {
+  font-size: 23px; letter-spacing: -0.6px;
+  min-width: 0; overflow: hidden; text-overflow: ellipsis;
+}
 .market-cell .split-row .delta {
-  font-size: 11px; white-space: nowrap; min-width: 0;
-  overflow: hidden; text-overflow: ellipsis;
+  font-size: 9.5px; letter-spacing: 0.2px; white-space: nowrap;
+  flex: 0 0 auto; opacity: .9;
 }
 .market-split .source { margin-top: 10px; }
 /* La mitad no se despega de la tarjeta al pasar el mouse: se ilumina. El
@@ -1135,9 +1138,9 @@ a { color: inherit; text-decoration: none; }
 .split-row.mkt-interactive::after { display: none; }
 .split-row.mkt-interactive.open { background: var(--cyan-soft); }
 .split-row.mkt-interactive:focus-visible { outline: 2px solid var(--yellow); outline-offset: -2px; }
-/* Entre 981 y 1200 px la franja sigue en cuatro columnas pero cada una se
-   queda corta para "COMPRA · valor · variación" en una sola línea, y la
-   variación salía recortada. Ahí el rótulo se sube a su propio renglón. */
+/* Entre 981 y 1200 px la franja sigue en cuatro columnas y cada una se queda
+   corta para rótulo, valor y variación en una línea: medido, ahí se recortan
+   los cuatro. El rótulo sube a su propio renglón. */
 @media (min-width: 981px) and (max-width: 1200px) {
   .split-row { grid-template-columns: 1fr auto; row-gap: 4px; }
   .split-kind { grid-column: 1 / -1; }
@@ -3946,12 +3949,12 @@ footer .mark{
         <div class="split-row mkt-interactive" data-fx="usd-compra" role="button" tabindex="0" aria-expanded="false" aria-label="Dólar compra, ver últimos 7 días">
           <span class="split-kind">Compra <i class="chev">▾</i></span>
           <span class="value" id="fx-usd-compra-value">58.90</span>
-          <span class="delta up" id="fx-usd-compra-delta">▲ +0.03 (+0.05%)</span>
+          <span class="delta down" id="fx-usd-compra-delta">▲ +0.03</span>
         </div>
         <div class="split-row mkt-interactive" data-fx="usd" role="button" tabindex="0" aria-expanded="false" aria-label="Dólar venta, ver últimos 7 días">
           <span class="split-kind">Venta <i class="chev">▾</i></span>
           <span class="value" id="fx-usd-value">59.42</span>
-          <span class="delta up" id="fx-usd-delta">▲ +0.04 (+0.07%)</span>
+          <span class="delta down" id="fx-usd-delta">▲ +0.04</span>
         </div>
       </div>
       <div class="source" id="fx-usd-source">Cierre BCRD · ayer</div>
@@ -3962,12 +3965,12 @@ footer .mark{
         <div class="split-row mkt-interactive" data-fx="eur-compra" role="button" tabindex="0" aria-expanded="false" aria-label="Euro compra, ver últimos 7 días">
           <span class="split-kind">Compra <i class="chev">▾</i></span>
           <span class="value" id="fx-eur-compra-value">65.90</span>
-          <span class="delta down" id="fx-eur-compra-delta">▼ −0.04 (−0.06%)</span>
+          <span class="delta up" id="fx-eur-compra-delta">▼ −0.04</span>
         </div>
         <div class="split-row mkt-interactive" data-fx="eur" role="button" tabindex="0" aria-expanded="false" aria-label="Euro venta, ver últimos 7 días">
           <span class="split-kind">Venta <i class="chev">▾</i></span>
           <span class="value" id="fx-eur-value">66.81</span>
-          <span class="delta down" id="fx-eur-delta">▼ −0.12 (−0.18%)</span>
+          <span class="delta up" id="fx-eur-delta">▼ −0.12</span>
         </div>
       </div>
       <div class="source" id="fx-eur-source">Cierre BCRD · ayer</div>
@@ -4881,6 +4884,16 @@ const FX_SERIES = {
 // Para una divisa, subir encarece: el verde va cuando baja. Aplica igual a la
 // compra que a la venta, de ahí que se mire el prefijo de la clave.
 function fxEsDivisa(key){ return /^(usd|eur)/.test(String(key || '')); }
+
+// Variación de una divisa: SOLO el cambio bruto. El porcentaje y el "vs ayer"
+// no caben en media tarjeta — el 21-ago se veían montados encima del número, y
+// el de venta salía cortado a "(-0.08%) vs a…". Con el peso al que se mueve el
+// peso frente al dólar, el bruto dice lo mismo y de un vistazo.
+function fxDeltaBruto(diff){
+  const n = Number(diff);
+  if (!Number.isFinite(n)) return '';
+  return `${n >= 0 ? '▲ +' : '▼ −'}${Math.abs(n).toFixed(2)}`;
+}
 
 function fmtFx(v, fx) {
   return fx.unit + v.toLocaleString('es-DO', { minimumFractionDigits: fx.dec, maximumFractionDigits: fx.dec });
@@ -7970,7 +7983,7 @@ function updateMarketFxCard(key, transformed) {
   if (valueEl) valueEl.textContent = latest.value.toFixed(2);
   if (deltaEl) {
     deltaEl.classList.toggle('up', favorable); deltaEl.classList.toggle('down', !favorable);
-    deltaEl.textContent = `${diff >= 0 ? '▲' : '▼'} ${diff >= 0 ? '+' : '−'}${Math.abs(diff).toFixed(2)} (${diff >= 0 ? '+' : '−'}${Math.abs(pct).toFixed(2)}%)`;
+    deltaEl.textContent = fxDeltaBruto(diff);
   }
   updateTopbarFxQuote(key, latest, diff);
   if (sourceEl) sourceEl.textContent = `BCRD · ${shortDay(latest.date)}`;
@@ -8016,7 +8029,7 @@ function updateFxCompraSide(key, observations) {
     const favorable = diff <= 0;
     deltaEl.classList.toggle('up', favorable);
     deltaEl.classList.toggle('down', !favorable);
-    deltaEl.textContent = `${diff >= 0 ? '▲' : '▼'} ${diff >= 0 ? '+' : '−'}${Math.abs(diff).toFixed(2)} (${diff >= 0 ? '+' : '−'}${Math.abs(pct).toFixed(2)}%)`;
+    deltaEl.textContent = fxDeltaBruto(diff);
   }
   return { latest, previous, rows: clean.length };
 }
@@ -18436,12 +18449,14 @@ body.mkt-editing .market-cell { cursor: default; }
   }
 
   function textoDelta(diff, pct, fx){
+    // En media tarjeta solo cabe el cambio bruto; la tarjeta entera (WTI) sigue
+    // llevando porcentaje y "vs ayer".
+    if (/^(usd|eur)/.test(String(fx || '')) && typeof window.fxDeltaBruto === 'function') {
+      return window.fxDeltaBruto(diff);
+    }
     var arriba = diff >= 0;
-    // En las divisas partidas la fila ya dice "Compra"/"Venta" y el ancho es
-    // la mitad: el sufijo " vs ayer" solo cabe en las tarjetas enteras.
-    var sufijo = /^(usd|eur)/.test(String(fx || '')) ? '' : ' vs ayer';
     return (arriba ? '▲ +' : '▼ −') + Math.abs(diff).toFixed(2) +
-           ' (' + (arriba ? '+' : '−') + Math.abs(pct).toFixed(2) + '%)' + sufijo;
+           ' (' + (arriba ? '+' : '−') + Math.abs(pct).toFixed(2) + '%) vs ayer';
   }
 
   /* ---- 1. LÍNEA BASE DEL PIPELINE -------------------------------------- */
@@ -18492,6 +18507,26 @@ body.mkt-editing .market-cell { cursor: default; }
     return { serie: serie, labels: labels, periodos: periodos, anterior: anterior, diff: diff, pct: pct };
   }
 
+  /* El texto se deriva de los números guardados, no se copia tal cual: así una
+     edición vieja no reimpone un formato que el sitio ya cambió. Solo se cae al
+     texto guardado cuando la edición no trae el valor anterior. */
+  function deltaDe(fx, cfg){
+    var actual = Number(cfg && cfg.valor);
+    var previo = Number(cfg && cfg.anterior);
+    var esDivisa = /^(usd|eur)/.test(String(fx));
+    if (Number.isFinite(actual) && Number.isFinite(previo)) {
+      var diff = actual - previo;
+      var pct = previo ? (diff / Math.abs(previo)) * 100 : 0;
+      return {
+        texto: textoDelta(diff, pct, fx),
+        // En una divisa subir encarece: el verde va cuando baja. En WTI, al
+        // revés. Es el mismo criterio que usa el pipeline.
+        favorable: esDivisa ? diff <= 0 : diff >= 0
+      };
+    }
+    return (cfg && cfg.delta) ? { texto: cfg.delta.texto, favorable: !!cfg.delta.up } : null;
+  }
+
   /* ---- 3. PINTAR ------------------------------------------------------- */
   function pintar(fx, cfg){
     var v = valueEl(fx);
@@ -18501,12 +18536,13 @@ body.mkt-editing .market-cell { cursor: default; }
 
     if (typeof cfg.raw === 'string' && v.textContent !== cfg.raw) { v.textContent = cfg.raw; cambio = true; }
 
-    if (cfg.delta) {
+    var variacion = deltaDe(fx, cfg);
+    if (variacion && variacion.texto) {
       var d = deltaEl(fx);
-      if (d && d.textContent !== cfg.delta.texto) {
-        d.textContent = cfg.delta.texto;
-        d.classList.toggle('up', !!cfg.delta.up);
-        d.classList.toggle('down', !cfg.delta.up);
+      if (d && d.textContent !== variacion.texto) {
+        d.textContent = variacion.texto;
+        d.classList.toggle('up', variacion.favorable);
+        d.classList.toggle('down', !variacion.favorable);
         d.style.color = '';
         cambio = true;
       }
@@ -18729,7 +18765,10 @@ body.mkt-editing .market-cell { cursor: default; }
           config.labels = mov.labels;
           config.periodos = mov.periodos;
           config.anterior = mov.anterior;
-          config.delta = { texto: textoDelta(mov.diff, mov.pct, fx), up: mov.diff >= 0 };
+          config.delta = {
+            texto: textoDelta(mov.diff, mov.pct, fx),
+            up: /^(usd|eur)/.test(fx) ? mov.diff <= 0 : mov.diff >= 0
+          };
         }
       }
       pendientes.push({ fx: fx, config: config });
