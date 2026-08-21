@@ -1095,6 +1095,58 @@ a { color: inherit; text-decoration: none; }
 .market-cell .source { font-size: 10px; color: var(--ink-mute); font-style: italic; margin-top: 8px; }
 .market-cell.featured .source { color: rgba(255,255,255,0.7); }
 
+/* ===== Divisas partidas: compra arriba, venta abajo, mismo hueco ===== */
+.market-split { display: flex; flex-direction: column; }
+.market-split .label { margin-bottom: 10px; }
+.split-rows {
+  display: flex; flex-direction: column;
+  border: 1px solid var(--line); border-radius: 5px; overflow: hidden;
+  background: var(--white);
+}
+.split-row {
+  position: relative;
+  display: grid; grid-template-columns: minmax(56px, auto) 1fr auto;
+  align-items: baseline; gap: 10px;
+  padding: 11px 13px;
+}
+.split-row + .split-row { border-top: 1px solid var(--line); }
+.split-kind {
+  font-size: 9.5px; letter-spacing: 1.4px; text-transform: uppercase;
+  font-weight: 700; color: var(--ink-mute); white-space: nowrap;
+}
+.split-kind .chev {
+  font-style: normal; display: inline-block; margin-left: 2px; opacity: .55;
+  transition: transform 0.35s var(--ease-out-quint);
+}
+.split-row.open .split-kind .chev { transform: rotate(180deg); opacity: 1; }
+.split-row.open .split-kind { color: var(--cyan-deep); }
+/* El valor baja de 30px a 23px: dos cifras en el alto de una sin que la
+   franja crezca de más frente a las tarjetas que no se parten. */
+.market-cell .split-row .value { font-size: 23px; letter-spacing: -0.6px; min-width: 0; }
+.market-cell .split-row .delta {
+  font-size: 11px; white-space: nowrap; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.market-split .source { margin-top: 10px; }
+/* La mitad no se despega de la tarjeta al pasar el mouse: se ilumina. El
+   levantamiento y el barrido de luz son para una tarjeta entera, no para
+   media fila dentro de otra. */
+.split-row.mkt-interactive:hover { transform: none; box-shadow: none; background: var(--cyan-soft); }
+.split-row.mkt-interactive::after { display: none; }
+.split-row.mkt-interactive.open { background: var(--cyan-soft); }
+.split-row.mkt-interactive:focus-visible { outline: 2px solid var(--yellow); outline-offset: -2px; }
+/* Entre 981 y 1200 px la franja sigue en cuatro columnas pero cada una se
+   queda corta para "COMPRA · valor · variación" en una sola línea, y la
+   variación salía recortada. Ahí el rótulo se sube a su propio renglón. */
+@media (min-width: 981px) and (max-width: 1200px) {
+  .split-row { grid-template-columns: 1fr auto; row-gap: 4px; }
+  .split-kind { grid-column: 1 / -1; }
+}
+@media (max-width: 620px) {
+  .split-row { grid-template-columns: 1fr auto; row-gap: 4px; }
+  .split-kind { grid-column: 1 / -1; }
+}
+
 /* ===== Tarjetas interactivas USD / EUR / WTI ===== */
 .mkt-interactive {
   cursor: pointer;
@@ -3885,19 +3937,40 @@ footer .mark{
   </div>
 
   <div class="market-strip">
-    <div class="market-cell mkt-interactive" data-fx="usd" role="button" tabindex="0" aria-expanded="false">
+    <!-- Divisas partidas en compra y venta: el BCRD publica las dos columnas y
+         la tarjeta solo enseñaba la de venta. Cada mitad es su propia tarjeta
+         clicable, con su serie de 7 días, dentro del mismo hueco de la rejilla. -->
+    <div class="market-cell market-split" data-fx-group="usd">
       <div class="label">USD / DOP</div>
-      <div class="value" id="fx-usd-value">59.42</div>
-      <div class="row"><span class="delta up" id="fx-usd-delta">▲ +0.04 (+0.07%) vs ayer</span></div>
+      <div class="split-rows">
+        <div class="split-row mkt-interactive" data-fx="usd-compra" role="button" tabindex="0" aria-expanded="false" aria-label="Dólar compra, ver últimos 7 días">
+          <span class="split-kind">Compra <i class="chev">▾</i></span>
+          <span class="value" id="fx-usd-compra-value">58.90</span>
+          <span class="delta up" id="fx-usd-compra-delta">▲ +0.03 (+0.05%)</span>
+        </div>
+        <div class="split-row mkt-interactive" data-fx="usd" role="button" tabindex="0" aria-expanded="false" aria-label="Dólar venta, ver últimos 7 días">
+          <span class="split-kind">Venta <i class="chev">▾</i></span>
+          <span class="value" id="fx-usd-value">59.42</span>
+          <span class="delta up" id="fx-usd-delta">▲ +0.04 (+0.07%)</span>
+        </div>
+      </div>
       <div class="source" id="fx-usd-source">Cierre BCRD · ayer</div>
-      <span class="mkt-hint">7 días <span class="chev">▾</span></span>
     </div>
-    <div class="market-cell mkt-interactive" data-fx="eur" role="button" tabindex="0" aria-expanded="false">
+    <div class="market-cell market-split" data-fx-group="eur">
       <div class="label">EUR / DOP</div>
-      <div class="value" id="fx-eur-value">66.81</div>
-      <div class="row"><span class="delta down" id="fx-eur-delta">▼ −0.12 (−0.18%) vs ayer</span></div>
+      <div class="split-rows">
+        <div class="split-row mkt-interactive" data-fx="eur-compra" role="button" tabindex="0" aria-expanded="false" aria-label="Euro compra, ver últimos 7 días">
+          <span class="split-kind">Compra <i class="chev">▾</i></span>
+          <span class="value" id="fx-eur-compra-value">65.90</span>
+          <span class="delta down" id="fx-eur-compra-delta">▼ −0.04 (−0.06%)</span>
+        </div>
+        <div class="split-row mkt-interactive" data-fx="eur" role="button" tabindex="0" aria-expanded="false" aria-label="Euro venta, ver últimos 7 días">
+          <span class="split-kind">Venta <i class="chev">▾</i></span>
+          <span class="value" id="fx-eur-value">66.81</span>
+          <span class="delta down" id="fx-eur-delta">▼ −0.12 (−0.18%)</span>
+        </div>
+      </div>
       <div class="source" id="fx-eur-source">Cierre BCRD · ayer</div>
-      <span class="mkt-hint">7 días <span class="chev">▾</span></span>
     </div>
     <div class="market-cell featured mkt-interactive" data-fx="wti" role="button" tabindex="0" aria-expanded="false">
       <div class="label">WTI Crudo</div>
@@ -4790,14 +4863,24 @@ window.addEventListener('scroll', () => {
    VISTA HOY — tarjetas de mercado con SPARKLINE EXPANDIBLE de 7 días
    (USD / EUR / WTI). Reemplaza el bloque "Pulso de la semana".
    ==================================================================== */
+// Las claves 'usd' y 'eur' son la VENTA: es el dato que el sitio ya publicaba
+// (ventanilla, venta entidades financieras) y el que sigue alimentando el
+// ticker de arriba. La compra vive aparte, con su propia serie de 7 días.
 const FX_SERIES = {
-  usd: { label:'USD / DOP', unit:'RD$ ', dec:2, up:true,
+  usd: { label:'USD / DOP · Venta', unit:'RD$ ', dec:2, up:true,
          series:[59.30,59.34,59.31,59.36,59.38,59.39,59.42] },
-  eur: { label:'EUR / DOP', unit:'RD$ ', dec:2, up:false,
+  'usd-compra': { label:'USD / DOP · Compra', unit:'RD$ ', dec:2, up:true,
+         series:[58.78,58.82,58.79,58.84,58.86,58.87,58.90] },
+  eur: { label:'EUR / DOP · Venta', unit:'RD$ ', dec:2, up:false,
          series:[67.10,67.02,66.95,66.99,66.90,66.85,66.81] },
+  'eur-compra': { label:'EUR / DOP · Compra', unit:'RD$ ', dec:2, up:false,
+         series:[66.19,66.11,66.04,66.08,65.99,65.94,65.90] },
   wti: { label:'WTI Crudo (USD/bbl)', unit:'$', dec:2, up:false,
          series:[63.40,63.05,62.88,62.70,62.55,62.40,62.18] }
 };
+// Para una divisa, subir encarece: el verde va cuando baja. Aplica igual a la
+// compra que a la venta, de ahí que se mire el prefijo de la clave.
+function fxEsDivisa(key){ return /^(usd|eur)/.test(String(key || '')); }
 
 function fmtFx(v, fx) {
   return fx.unit + v.toLocaleString('es-DO', { minimumFractionDigits: fx.dec, maximumFractionDigits: fx.dec });
@@ -4811,7 +4894,7 @@ function drawMktSpark(key) {
   const firstForColor = fx.series?.[0] ?? 0;
   const lastForColor = fx.series?.[fx.series.length - 1] ?? firstForColor;
   const rawMoveForColor = lastForColor - firstForColor;
-  const favorableForColor = (key === 'usd' || key === 'eur') ? rawMoveForColor <= 0 : rawMoveForColor >= 0;
+  const favorableForColor = fxEsDivisa(key) ? rawMoveForColor <= 0 : rawMoveForColor >= 0;
   const color = favorableForColor ? '#1E8449' : '#C0392B';
   const fill  = favorableForColor ? 'rgba(30,132,73,0.10)' : 'rgba(192,57,43,0.10)';
   const labels = fx.labels?.length === fx.series.length ? fx.labels : ['L','M','M','J','V','S','D'];
@@ -4848,7 +4931,7 @@ function drawMktSpark(key) {
   const first = fx.series[0], last = fx.series[fx.series.length - 1];
   const chg = last - first;
   const chgPct = first !== 0 ? (chg / Math.abs(first)) * 100 : 0;
-  const favorable = (key === 'usd' || key === 'eur') ? chg <= 0 : chg >= 0;
+  const favorable = fxEsDivisa(key) ? chg <= 0 : chg >= 0;
   const cls = favorable ? 'chg-up' : 'chg-down';
   const arrow = chg >= 0 ? '▲' : '▼';
   document.getElementById('mkt-spark-label').textContent = fx.label;
@@ -7887,14 +7970,55 @@ function updateMarketFxCard(key, transformed) {
   if (valueEl) valueEl.textContent = latest.value.toFixed(2);
   if (deltaEl) {
     deltaEl.classList.toggle('up', favorable); deltaEl.classList.toggle('down', !favorable);
-    deltaEl.textContent = `${diff >= 0 ? '▲' : '▼'} ${diff >= 0 ? '+' : '−'}${Math.abs(diff).toFixed(2)} (${diff >= 0 ? '+' : '−'}${Math.abs(pct).toFixed(2)}%) vs ayer`;
+    deltaEl.textContent = `${diff >= 0 ? '▲' : '▼'} ${diff >= 0 ? '+' : '−'}${Math.abs(diff).toFixed(2)} (${diff >= 0 ? '+' : '−'}${Math.abs(pct).toFixed(2)}%)`;
   }
   updateTopbarFxQuote(key, latest, diff);
   if (sourceEl) sourceEl.textContent = `BCRD · ${shortDay(latest.date)}`;
-  pulseElement(document.querySelector(`.market-cell[data-fx="${key}"]`));
+  // La mitad de compra sale de la otra columna del mismo archivo: el PDF
+  // TAC4009 y el Excel de euro traen Compra y Venta por día, y hasta ahora
+  // solo se usaba la de venta.
+  updateFxCompraSide(key, transformed.observations);
+  pulseElement(document.querySelector(`.market-cell[data-fx-group="${key}"]`) || document.querySelector(`[data-fx="${key}"]`));
   if (mktActiveKey === key) drawMktSpark(key);
+  if (mktActiveKey === `${key}-compra`) drawMktSpark(`${key}-compra`);
   refreshFxMacroChart();
   return { latest, previous, rows: obs.length };
+}
+
+function updateFxCompraSide(key, observations) {
+  const clave = `${key}-compra`;
+  if (!FX_SERIES[clave]) return null;
+
+  // Se reusa la misma tubería de la venta poniendo la compra en `value`; así
+  // el recorte a 7 días, el saneo y las etiquetas salen idénticos.
+  const crudas = (observations || [])
+    .map(o => {
+      const compra = Number(o?.compraEntidades ?? o?.compraAgentes);
+      return Number.isFinite(compra) ? { ...o, value: compra } : null;
+    })
+    .filter(Boolean);
+  if (!crudas.length) return null;
+
+  const { clean, latest, previous, last7 } = dailySparkPayload(crudas);
+  if (!clean.length || !latest) return null;
+
+  const diff = latest.value - previous.value;
+  const pct = previous.value ? diff / Math.abs(previous.value) * 100 : 0;
+  FX_SERIES[clave].series = last7.map(d => d.value);
+  FX_SERIES[clave].labels = last7.map(d => shortDay(d.date));
+  FX_SERIES[clave].periodos = last7.map(d => d.periodo);
+  FX_SERIES[clave].up = diff <= 0;
+
+  const valueEl = document.getElementById(`fx-${clave}-value`);
+  const deltaEl = document.getElementById(`fx-${clave}-delta`);
+  if (valueEl) valueEl.textContent = latest.value.toFixed(2);
+  if (deltaEl) {
+    const favorable = diff <= 0;
+    deltaEl.classList.toggle('up', favorable);
+    deltaEl.classList.toggle('down', !favorable);
+    deltaEl.textContent = `${diff >= 0 ? '▲' : '▼'} ${diff >= 0 ? '+' : '−'}${Math.abs(diff).toFixed(2)} (${diff >= 0 ? '+' : '−'}${Math.abs(pct).toFixed(2)}%)`;
+  }
+  return { latest, previous, rows: clean.length };
 }
 function refreshFxMacroChart() {
   if (!macroInited) return;
@@ -18249,19 +18373,21 @@ body.mkt-editing .market-cell { cursor: default; }
 
   // dec: decimales del valor; sufijo: lo que va pegado al número (TPM va en %).
   var CARDS = {
-    usd: { label: 'USD / DOP', dec: 2, sufijo: '',  serie: true  },
-    eur: { label: 'EUR / DOP', dec: 2, sufijo: '',  serie: true  },
-    wti: { label: 'WTI Crudo', dec: 2, sufijo: '',  serie: true  },
-    tpm: { label: 'TPM · BCRD', dec: 2, sufijo: '%', serie: false }
+    'usd-compra': { label: 'USD / DOP · Compra', dec: 2, sufijo: '',  serie: true  },
+    usd:          { label: 'USD / DOP · Venta',  dec: 2, sufijo: '',  serie: true  },
+    'eur-compra': { label: 'EUR / DOP · Compra', dec: 2, sufijo: '',  serie: true  },
+    eur:          { label: 'EUR / DOP · Venta',  dec: 2, sufijo: '',  serie: true  },
+    wti:          { label: 'WTI Crudo',          dec: 2, sufijo: '',  serie: true  },
+    tpm:          { label: 'TPM · BCRD',         dec: 2, sufijo: '%', serie: false }
   };
-  var ORDEN = ['usd', 'eur', 'wti', 'tpm'];
+  var ORDEN = ['usd-compra', 'usd', 'eur-compra', 'eur', 'wti', 'tpm'];
 
   var editando = false;
   var baseline = {};      // estado del pipeline, para poder restablecer
   var previo = {};        // texto al abrir la edición, para saber qué cambió
 
   function keyOf(fx){ return 'tarjeta:' + fx + '@' + CONTEXT; }
-  function cell(fx){ return document.querySelector('.market-cell[data-fx="' + fx + '"]'); }
+  function cell(fx){ return document.querySelector('[data-fx="' + fx + '"]'); }
   function valueEl(fx){ var c = cell(fx); return c ? c.querySelector('.value') : null; }
   function deltaEl(fx){ var c = cell(fx); return c ? c.querySelector('.delta') : null; }
   function tickerEl(fx){ return document.querySelector('.tick-val[data-ticker="' + fx + '"]'); }
@@ -18309,10 +18435,13 @@ body.mkt-editing .market-cell { cursor: default; }
     return valor.toFixed(meta.dec) + meta.sufijo;
   }
 
-  function textoDelta(diff, pct){
+  function textoDelta(diff, pct, fx){
     var arriba = diff >= 0;
+    // En las divisas partidas la fila ya dice "Compra"/"Venta" y el ancho es
+    // la mitad: el sufijo " vs ayer" solo cabe en las tarjetas enteras.
+    var sufijo = /^(usd|eur)/.test(String(fx || '')) ? '' : ' vs ayer';
     return (arriba ? '▲ +' : '▼ −') + Math.abs(diff).toFixed(2) +
-           ' (' + (arriba ? '+' : '−') + Math.abs(pct).toFixed(2) + '%) vs ayer';
+           ' (' + (arriba ? '+' : '−') + Math.abs(pct).toFixed(2) + '%)' + sufijo;
   }
 
   /* ---- 1. LÍNEA BASE DEL PIPELINE -------------------------------------- */
@@ -18529,7 +18658,7 @@ body.mkt-editing .market-cell { cursor: default; }
     bar.innerHTML =
       '<button type="button" class="mkt-edit-btn" data-act="toggle">' + PENCIL + '<span>Editar tarjetas</span></button>' +
       '<button type="button" class="mkt-edit-btn ghost" data-act="reset">Restablecer</button>' +
-      '<span class="mkt-edit-hint">Escribe el valor del día sobre el número. Al guardar, ese valor entra como último dato de la mini-gráfica y el anterior pasa a penúltimo.</span>';
+      '<span class="mkt-edit-hint">Escribe el valor del día sobre el número — compra y venta se editan por separado. Al guardar, ese valor entra como último dato de la mini-gráfica y el anterior pasa a penúltimo.</span>';
     strip.parentNode.insertBefore(bar, strip.nextSibling);
     bar.addEventListener('click', function (e){
       var btn = e.target.closest('[data-act]');
@@ -18600,7 +18729,7 @@ body.mkt-editing .market-cell { cursor: default; }
           config.labels = mov.labels;
           config.periodos = mov.periodos;
           config.anterior = mov.anterior;
-          config.delta = { texto: textoDelta(mov.diff, mov.pct), up: mov.diff >= 0 };
+          config.delta = { texto: textoDelta(mov.diff, mov.pct, fx), up: mov.diff >= 0 };
         }
       }
       pendientes.push({ fx: fx, config: config });
