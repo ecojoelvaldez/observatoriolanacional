@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-21T13:47:02.072344+00:00",
+  "generated_at": "2026-08-21T17:05:01.545508+00:00",
   "dia_editorial": "2026-08-21",
   "zona_horaria": "UTC-4 (Santo Domingo)",
   "ventana_frescura": "2026-08-20 a 2026-08-21",
@@ -10,14 +10,14 @@
     "2026-08-21": 3,
     "2026-08-20": 5
   },
-  "new_this_run": 10,
+  "new_this_run": 1,
   "already_published": 0,
   "out_of_window": 0,
   "ttl_days": 1,
   "max_age_days": 1,
   "errors": 0,
   "sources": 19,
-  "elapsed_s": 367.4,
+  "elapsed_s": 201.7,
   "candidates": [
     {
       "id": "n_d27042f0259a5053",
@@ -63,6 +63,11 @@
       "dia_lectura": "2026-08-21",
       "status": "pending",
       "tambien_en": [
+        {
+          "source_name": "El Dinero · Finanzas",
+          "url": "https://eldinero.com.do/377185/banco-santa-cruz-celebrara-primera-feria-hipotecaria-tu-hogar-santa-cruz",
+          "title": "Banco Santa Cruz celebrará primera feria hipotecaria “Tu Hogar Santa Cruz”"
+        },
         {
           "source_name": "El Dinero · Finanzas",
           "url": "https://eldinero.com.do/377185/banco-santa-cruz-celebrara-primera-feria-hipotecaria-tu-hogar-santa-cruz",
@@ -221,7 +226,7 @@
       "status": "pending"
     }
   ],
-  "discarded_count": 2,
+  "discarded_count": 4,
   "discarded": [
     {
       "id": "n_05b620ea92634fd0",
@@ -246,6 +251,30 @@
       "señales": [],
       "detalle": "",
       "fetched_at": "2026-08-21T13:41:50.956289+00:00"
+    },
+    {
+      "id": "n_2596d32d8ca488bf",
+      "motivo": "sin_cuerpo",
+      "motivo_texto": "No se pudo leer el cuerpo del articulo",
+      "title": "ABA saluda ratificación del gobernador y la vicegobernadora del Banco Central",
+      "url": "https://eldinero.com.do/377245/aba-saluda-ratificacion-del-gobernador-y-la-vicegobernadora-del-banco-central",
+      "source_name": "El Dinero · Finanzas",
+      "relevance": null,
+      "señales": [],
+      "detalle": "La pagina es un error o exige suscripcion",
+      "fetched_at": "2026-08-21T17:01:49.833156+00:00"
+    },
+    {
+      "id": "n_5176a45caad65b50",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Gasto de capital del gobierno dominicano alcanza los RD$82,119 millones a junio",
+      "url": "https://eldinero.com.do/377124/gasto-de-capital-del-gobierno-dominicano-alcanza-los-rd82119-millones-a-junio",
+      "source_name": "El Dinero · Finanzas",
+      "relevance": null,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-21T17:05:00.041558+00:00"
     }
   ]
 }
