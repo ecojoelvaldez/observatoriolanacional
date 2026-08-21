@@ -143,9 +143,16 @@ no se pierde al cambiar de pestaña y volver.
 
 ## 7. Editar las tarjetas de mercado (USD, EUR, WTI y TPM)
 
-Las cuatro tarjetas de la parte de arriba de **Hoy** solo se movían cargando
-un Excel. Cuando el dato del día llega por otra vía —una llamada, el cierre
-publicado antes que el archivo— ahora se puede escribir a mano.
+Las tarjetas de la parte de arriba de **Hoy** solo se movían cargando un Excel.
+Cuando el dato del día llega por otra vía —una llamada, el cierre publicado
+antes que el archivo— ahora se puede escribir a mano.
+
+El dólar y el euro están partidos en dos: **Compra** arriba y **Venta** abajo,
+dentro del mismo hueco de la franja. Cada mitad es independiente — su propio
+número, su propia variación y su propia mini-gráfica de 7 días— así que hay
+seis valores editables en total: compra y venta de USD, compra y venta de EUR,
+WTI y TPM. Los dos lados salen de las columnas Compra/Venta que ya trae el PDF
+TAC4009 del BCRD y el Excel de euro sondeo; antes solo se usaba la de venta.
 
 Con sesión de analista, debajo de las tarjetas aparece **✎ Editar tarjetas**.
 Pulsa, escribe el valor encima del número y pulsa **Guardar y publicar**
@@ -168,7 +175,8 @@ y escribes **64.75**. La serie queda
 operación que hace el pipeline cuando llega un cierre nuevo; aquí la hace el
 analista.
 
-La TPM no tiene serie: ahí solo cambia el número.
+La TPM no tiene serie: ahí solo cambia el número. Editar la compra no toca la
+venta, ni al revés.
 
 La tarjeta editada no lleva sello a la vista: en portada el dato es el dato. El
 rastro de quién lo puso queda en `chart_overrides`, y **Restablecer** devuelve
