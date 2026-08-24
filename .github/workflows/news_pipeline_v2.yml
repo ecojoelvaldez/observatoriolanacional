@@ -62,6 +62,31 @@ jobs:
           # Cupo del archivo: suficiente para las dos corridas del mismo día.
           MAX_STORED_CANDIDATES: "45"
           DISCARD_TTL_DAYS: "1"
+          # --- Cuota de Gemini -------------------------------------------
+          # El 24 de agosto la cuota se agotó en la séptima fuente y las 10
+          # restantes se quedaron sin procesar: la cola salió con 8 notas.
+          # Casi todo ese gasto no necesitaba modelo.
+          #
+          # Los titulares salen del RSS del propio medio: título, enlace y
+          # fecha real, sin llamada al modelo y sin lector intermedio. Con la
+          # fecha por delante, lo viejo se bota antes de gastar una lectura.
+          # Gemini queda solo para juzgar y resumir cada artículo.
+          NEWS_RSS_FIRST: "true"
+          # Si aun así se agota, la corrida sigue: la nota entra con ficha
+          # armada por reglas y marcada `sin IA · revisar` en el panel, en vez
+          # de dejar la cola a medias.
+          NEWS_FALLBACK_SIN_IA: "true"
+          # --- Buscadores de noticias, todos sin API key -----------------
+          # Se prueban en orden hasta que uno responda. Ninguno pide
+          # credenciales ni tiene cuota diaria que administrar.
+          #   gdelt      índice académico de prensa mundial; URL directa del
+          #              medio, en JSON, filtrado a prensa dominicana.
+          #   googlenews Google News como RSS, edición DO en español.
+          #   jina       s.jina.ai, el que ya estaba; queda de último porque
+          #              es el que más limita por tasa desde un runner.
+          NEWS_SEARCH_PROVIDERS: "gdelt,googlenews,jina"
+          GDELT_SOURCE_COUNTRY: "DR"
+          GDELT_SOURCE_LANG: "spanish"
         run: |
           # Un fallo de red no puede dejar la cola de ayer en pantalla: se
           # reintenta una vez antes de dar la corrida por perdida.
