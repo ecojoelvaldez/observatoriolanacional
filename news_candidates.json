@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-24T13:55:02.225953+00:00",
+  "generated_at": "2026-08-24T17:09:01.804995+00:00",
   "dia_editorial": "2026-08-24",
   "zona_horaria": "UTC-4 (Santo Domingo)",
   "ventana_frescura": "2026-08-23 a 2026-08-24",
@@ -10,14 +10,14 @@
     "2026-08-24": 6,
     "2026-08-23": 2
   },
-  "new_this_run": 9,
+  "new_this_run": 0,
   "already_published": 0,
   "out_of_window": 0,
   "ttl_days": 1,
   "max_age_days": 1,
   "errors": 0,
   "sources": 19,
-  "elapsed_s": 538.6,
+  "elapsed_s": 208.0,
   "candidates": [
     {
       "id": "n_4c658a70430e1deb",
@@ -209,22 +209,6 @@
   "discarded_count": 5,
   "discarded": [
     {
-      "id": "n_d5178e1c7fa15bf3",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Banreservas respaldará con financiamiento a inversionistas de dos nuevos proyectos residenciales en Punta Bergantín",
-      "url": "https://eldinero.com.do/377396/banreservas-respaldara-con-financiamiento-a-inversionistas-de-dos-nuevos-proyectos-residenciales-en-punta-bergantin",
-      "source_name": "El Dinero · Finanzas",
-      "relevance": 10,
-      "señales": [
-        "entidad_rd",
-        "banca",
-        "hecho"
-      ],
-      "detalle": "publicada 2026-08-22, ventana 2026-08-23 a 2026-08-24",
-      "fetched_at": "2026-08-24T13:46:44.751708+00:00"
-    },
-    {
       "id": "n_25110bff0582dbb9",
       "motivo": "vieja",
       "motivo_texto": "Publicada fuera del dia editorial en curso",
@@ -246,24 +230,10 @@
       "title": "Presidente de Coop-Aspire plantea fortalecer regulación del sector cooperativo",
       "url": "https://eldinero.com.do/377399/presidente-de-coop-aspire-plantea-fortalecer-regulacion-del-sector-cooperativo",
       "source_name": "El Dinero · Finanzas",
-      "relevance": 8,
+      "relevance": 9,
       "señales": [],
       "detalle": "publicada 2026-08-22, ventana 2026-08-23 a 2026-08-24",
-      "fetched_at": "2026-08-24T13:46:38.894541+00:00"
-    },
-    {
-      "id": "n_f42af818ee5b51d6",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Fundación Reservas del País desembolsó RD$1,365 millones en préstamos en un año",
-      "url": "https://eldinero.com.do/377368/fundacion-reservas-del-pais-desembolso-rd1365-millones-en-prestamos-en-un-ano",
-      "source_name": "El Dinero · Finanzas",
-      "relevance": 8,
-      "señales": [
-        "banca"
-      ],
-      "detalle": "publicada 2026-08-21, ventana 2026-08-23 a 2026-08-24",
-      "fetched_at": "2026-08-24T13:47:03.113707+00:00"
+      "fetched_at": "2026-08-24T17:07:02.513961+00:00"
     },
     {
       "id": "n_84a4aa0b2fe0a0e7",
@@ -275,7 +245,31 @@
       "relevance": 5,
       "señales": [],
       "detalle": "",
-      "fetched_at": "2026-08-24T13:46:50.968470+00:00"
+      "fetched_at": "2026-08-24T17:05:55.494858+00:00"
+    },
+    {
+      "id": "n_f42af818ee5b51d6",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Fundación Reservas del País desembolsó RD$1,365 millones en préstamos en un año",
+      "url": "https://eldinero.com.do/377368/fundacion-reservas-del-pais-desembolso-rd1365-millones-en-prestamos-en-un-ano",
+      "source_name": "El Dinero · Finanzas",
+      "relevance": null,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-24T17:09:00.244929+00:00"
+    },
+    {
+      "id": "n_d5178e1c7fa15bf3",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Banreservas respaldará con financiamiento a inversionistas de dos nuevos proyectos residenciales en Punta Bergantín",
+      "url": "https://eldinero.com.do/377396/banreservas-respaldara-con-financiamiento-a-inversionistas-de-dos-nuevos-proyectos-residenciales-en-punta-bergantin",
+      "source_name": "El Dinero · Finanzas",
+      "relevance": null,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-24T17:09:00.302792+00:00"
     }
   ]
 }
