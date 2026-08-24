@@ -2496,6 +2496,9 @@ body.analyst-logged .chart-data-card.analyst-only { animation: fadeUp 0.42s var(
 }
 .news-pipeline-badge.real { border-color: rgba(32,126,74,.22); background:rgba(32,126,74,.07); color:var(--green); }
 .news-pipeline-badge.proxy { border-color: rgba(0,122,153,.20); background:var(--cyan-soft); color:var(--cyan-deep); }
+/* La corrida se quedo sin cuota de Gemini y armo la ficha con reglas: el
+   resumen no paso por modelo y el analista tiene que saberlo antes de aprobar. */
+.news-pipeline-badge.sin-ia { border-color: rgba(214,158,46,.42); background:rgba(214,158,46,.12); color:#8a5a00; font-weight:700; }
 .proposal-body-mini {
   border-left: 2px solid var(--cyan-line); margin: 12px 0 10px; padding-left: 12px;
   color: var(--ink-soft); font-size: 12px; line-height:1.55; max-width: 78ch;
@@ -10244,6 +10247,8 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
       publishedAt: localEdit.publishedAt ?? row.published_at ?? '',
       published_at: localEdit.published_at ?? row.published_at ?? '',
       fetched_at: row.fetched_at || '',
+      // El pipeline la marca cuando se quedo sin cuota y armo la ficha sin modelo.
+      sin_ia: !!row.sin_ia,
       time: localEdit.time ?? formatDate(row.published_at, row.fetched_at),
       stamp: formatDate(row.fetched_at, row.published_at)
     };
@@ -10318,6 +10323,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
                   <span class="tag ${tagClass(p)}">${escapeLocal(p.tag || p.category || 'Economía')}</span>
                   <span class="tag-source">${escapeLocal(p.source || domainOf(p.url))} · ${escapeLocal(p.time || p.stamp || '')}</span>
                   <span class="news-pipeline-badge ${p.body ? 'real' : 'proxy'}">${p.body ? 'cuerpo leído' : 'sin cuerpo'}</span>
+                ${p.sin_ia ? '<span class="news-pipeline-badge sin-ia" title="La corrida se quedó sin cuota de Gemini: resumen y relevancia salieron de las reglas del pipeline, no del modelo. Revísala antes de aprobar.">sin IA · revisar</span>' : ''}
                   <span class="news-pipeline-badge">local · ${escapeLocal(p.status || 'pending')}</span>
                 </div>
                 <h4 class="serif">${escapeLocal(p.title)}</h4>
@@ -10778,6 +10784,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
                 <span class="tag ${tagClass(p)}">${esc(p.tag || p.category || 'Economía')}</span>
                 <span class="tag-source">${esc(p.source || host(p.url))} · ${esc(p.time || '')}</span>
                 <span class="news-pipeline-badge ${p.body ? 'real' : 'proxy'}">${p.body ? 'cuerpo leído' : 'sin cuerpo'}</span>
+                ${p.sin_ia ? '<span class="news-pipeline-badge sin-ia" title="La corrida se quedó sin cuota de Gemini: resumen y relevancia salieron de las reglas del pipeline, no del modelo. Revísala antes de aprobar.">sin IA · revisar</span>' : ''}
                 <span class="news-pipeline-badge">${esc(p.status || 'pending')}</span>
               </div>
               <h4 class="serif">${esc(p.title)}</h4>
@@ -11096,6 +11103,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
                 <span class="tag ${tagClass(p.cat)}">${esc(p.tag || p.category || 'Economía')}</span>
                 <span class="tag-source">${esc(p.source || host(p.url))} · ${esc(p.time || '')}</span>
                 <span class="news-pipeline-badge ${p.body ? 'real' : 'proxy'}">${p.body ? 'cuerpo leído' : 'sin cuerpo'}</span>
+                ${p.sin_ia ? '<span class="news-pipeline-badge sin-ia" title="La corrida se quedó sin cuota de Gemini: resumen y relevancia salieron de las reglas del pipeline, no del modelo. Revísala antes de aprobar.">sin IA · revisar</span>' : ''}
                 <span class="news-pipeline-badge">${esc(p.status || 'pending')}</span>
               </div>
               <h4 class="serif">${esc(p.title)}</h4>
@@ -13281,6 +13289,45 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
           try { window[name](); } catch (_) {}
         }
       });
+
+    // Sin esto la cola editorial queda vacia: este login entra por su propia
+    // puerta (no pasa por openAnalystSession), y los parches que leen
+    // /news_candidates.json cuelgan del que si pasa por ahi. El panel pintaba
+    // "Sin propuestas" con el JSON del dia lleno de candidatas.
+    cargarColaDeNoticias();
+  }
+
+  // El cargador lo instalan parches que viven mas abajo en el documento, asi
+  // que al restaurar sesion en DOMContentLoaded puede no existir todavia: se
+  // reintenta unas cuantas veces antes de darlo por perdido.
+  function cargarColaDeNoticias() {
+    var intentos = 0;
+
+    (function intentar() {
+      var cargar = window.LN_loadNewsCandidates
+                || window.loadNewsCandidatesLocal
+                || window.loadProposalsFromSupabase;
+
+      if (typeof cargar !== "function") {
+        if (++intentos > 12) {
+          console.warn("[LN-NEWS] No se encontro el cargador de candidatas.");
+          return;
+        }
+        setTimeout(intentar, 250);
+        return;
+      }
+
+      Promise.resolve()
+        .then(function () { return cargar(true); })
+        .then(function () {
+          try { window.renderProposals?.(); } catch (_) {}
+          try { window.updateCounts?.(); } catch (_) {}
+          try { window.lnRenderNewsDayBar?.(); } catch (_) {}
+        })
+        .catch(function (err) {
+          console.warn("[LN-NEWS] Fallo la carga de candidatas:", err && err.message);
+        });
+    })();
   }
 
   window.lnHardcodedAnalystLogin = function (event) {

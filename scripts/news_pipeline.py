@@ -3,8 +3,13 @@ Observatorio Estratégico La Nacional — Pipeline de Noticias v4 LOCAL/STATIC
 ============================================================================
 Flujo:
   1. Lee fuentes activas desde Supabase (news_sources). Esto es liviano.
-  2. Lee cada página índice con Jina Reader.
-  3. Gemini extrae URLs reales de artículos candidatos.
+  2. Titulares de cada fuente, por este orden:
+     a. El RSS del propio medio: título, enlace y fecha real, sin modelo y sin
+        lector intermedio (NEWS_RSS_FIRST).
+     b. Si no publica feed, la página índice con Jina Reader y Gemini
+        extrayendo las URLs, que es como se hacía antes.
+  3. Con la fecha del feed por delante, lo que cae fuera del día editorial se
+     descarta AQUÍ, sin gastar lectura ni llamada al modelo.
   4. Para cada artículo, lee la URL individual con Jina (en paralelo, 3 hilos).
      Si esa URL no abre, se busca el mismo titular en la web y se lee la
      cobertura de otro medio.
@@ -44,7 +49,15 @@ obligue a buscarla a mano.
   * Purga aunque no haya nada nuevo — si no hay fuentes o ninguna nota pasa el
     filtro, el JSON se reescribe igual: el panel muestra "hoy sin propuestas",
     nunca la cola de ayer.
-  * Corta-circuito de cuota — si Gemini se agota, terminar limpio y rápido.
+  * Corta-circuito de cuota — si Gemini se agota, dejar de pedirle llamadas.
+  * Ficha sin modelo — agotada la cuota, la nota entra igual: título y fecha del
+    feed, cuerpo leído con Jina y relevancia por las mismas reglas
+    institucionales. Queda marcada `sin_ia` y el panel la muestra como
+    "sin IA · revisar" (NEWS_FALLBACK_SIN_IA). Antes la corrida se cortaba y la
+    cola salía a medias: el 24 de agosto, 8 notas de 19 fuentes.
+  * Tres buscadores sin API key — gdelt, googlenews y jina, en el orden de
+    NEWS_SEARCH_PROVIDERS. El que falla se saca de la corrida y se pasa al
+    siguiente, así que ninguno es un punto único de fallo.
 
 El analista carga ese JSON desde el panel, lo guarda en localStorage y aprueba/rechaza localmente.
 Solo las noticias publicadas se guardan en Supabase (news_items).
@@ -65,6 +78,12 @@ Variables opcionales:
   NEWS_MIN_RELEVANCE=6        # umbral 0-10 de relevancia financiera
   ARTICLE_WORKERS=3           # hilos por fuente para leer articulos
   NEWS_SEARCH_ENABLED=true    # barrido propio en la web ademas de las fuentes
+  NEWS_SEARCH_PROVIDERS=gdelt,googlenews,jina   # buscadores, en orden; sin API key
+  GDELT_SOURCE_COUNTRY=DR     # pais de publicacion que pide GDELT
+  GDELT_SOURCE_LANG=spanish   # idioma que pide GDELT
+  NEWS_RSS_FIRST=true         # titulares del RSS del medio antes que del modelo
+  NEWS_FALLBACK_SIN_IA=true   # sin cuota de Gemini, ficha por reglas en vez de nada
+  RSS_MAX_ITEMS=25            # cuantos items se leen de cada feed
   NEWS_SEARCH_QUERIES=...     # consultas separadas por "|" (ver DEFAULT_SEARCH_QUERIES)
   NEWS_SEARCH_MAX_PER_QUERY=4
   NEWS_RESCUE_ENABLED=true    # buscar el titular en otro medio si la URL no abre
@@ -84,7 +103,8 @@ import unicodedata
 from pathlib import Path
 from datetime import date, datetime, timezone, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from urllib.parse import urlparse, urljoin, parse_qsl, urlencode, urlunparse
+from urllib.parse import urlparse, urljoin, parse_qsl, urlencode, urlunparse, quote_plus
+from xml.etree import ElementTree
 
 import httpx
 
@@ -150,11 +170,37 @@ GEMINI_MIN_INTERVAL = float(os.getenv("GEMINI_MIN_INTERVAL", "6"))
 CATEGORY_ALLOWED = {"Monetario", "Financiero", "Regulatorio", "Economia", "Global"}
 TRACKING_PARAMS = {"utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "fbclid", "gclid", "mc_cid", "mc_eid"}
 
-# --- Busqueda general en la web (s.jina.ai) --------------------------------
+# --- Busqueda general en la web --------------------------------------------
 # Barrido propio ademas de las fuentes fijas, para no depender de que la nota
-# aparezca en un indice concreto. Usa el mismo servicio que ya lee articulos,
-# asi que no agrega credenciales ni consume cuota de Gemini para buscar.
+# aparezca en un indice concreto.
+#
+# Tres buscadores, todos SIN API key y SIN cuota diaria que administrar, que se
+# prueban en el orden de NEWS_SEARCH_PROVIDERS hasta que uno responda:
+#
+#   gdelt      api.gdeltproject.org — indice academico de prensa mundial, 65
+#              idiomas. Devuelve URL directa del medio, dominio y fecha, en
+#              JSON. Filtra por pais de publicacion (sourcecountry:DR) y por
+#              idioma (sourcelang:spanish). Sin key, sin registro, sin tope
+#              documentado: es el reemplazo natural de s.jina.ai.
+#   googlenews news.google.com/rss/search — el buscador de Google News como
+#              RSS. Tampoco pide key. Cubre medios dominicanos que GDELT tarda
+#              en indexar, pero entrega enlaces envueltos en news.google.com
+#              que hay que resolver, y a veces no se dejan.
+#   jina       s.jina.ai — el que ya estaba. Queda de ultimo porque es el que
+#              mas limita por tasa cuando el runner comparte IP.
+#
+# Ninguno gasta cuota de Gemini: buscar y leer nunca fue el problema de cuota.
+GDELT_SEARCH_BASE = "https://api.gdeltproject.org/api/v2/doc/doc"
+GOOGLE_NEWS_RSS_BASE = "https://news.google.com/rss/search"
 JINA_SEARCH_BASE = "https://s.jina.ai/"
+NEWS_SEARCH_PROVIDERS = [
+    p.strip().lower()
+    for p in os.getenv("NEWS_SEARCH_PROVIDERS", "gdelt,googlenews,jina").split(",")
+    if p.strip()
+]
+# GDELT indexa por pais de publicacion; DR es Republica Dominicana.
+GDELT_SOURCE_COUNTRY = os.getenv("GDELT_SOURCE_COUNTRY", "DR").strip()
+GDELT_SOURCE_LANG = os.getenv("GDELT_SOURCE_LANG", "spanish").strip()
 NEWS_SEARCH_ENABLED = os.getenv("NEWS_SEARCH_ENABLED", "true").strip().lower() not in ("0", "false", "no")
 NEWS_SEARCH_MAX_PER_QUERY = int(os.getenv("NEWS_SEARCH_MAX_PER_QUERY", "4"))
 DEFAULT_SEARCH_QUERIES = [
@@ -169,6 +215,38 @@ NEWS_SEARCH_QUERIES = [
 ]
 # Recuperar por titular cuando no se puede leer el cuerpo en la fuente original.
 NEWS_RESCUE_ENABLED = os.getenv("NEWS_RESCUE_ENABLED", "true").strip().lower() not in ("0", "false", "no")
+
+# --- Titulares por RSS antes que por modelo --------------------------------
+# Sacar los titulares de una pagina indice era una llamada a Gemini por fuente:
+# 19 fuentes = 19 llamadas gastadas en leer una lista de enlaces, antes de
+# resumir un solo articulo. En la corrida del 2026-08-24 la cuota se agoto a la
+# septima fuente y las 10 restantes se quedaron sin procesar.
+#
+# El RSS del propio medio da lo mismo gratis y mejor: titulo, enlace y fecha de
+# publicacion REAL, sin modelo y sin lector intermedio. Con la fecha por
+# delante, ademas, lo que cae fuera del dia editorial se descarta ANTES de
+# gastar una lectura y una llamada por articulo (otras 4 llamadas perdidas en
+# esa misma corrida).
+#
+# Gemini queda para lo unico que un parser no sabe hacer: juzgar si la nota le
+# importa a la entidad y resumirla.
+NEWS_RSS_FIRST = os.getenv("NEWS_RSS_FIRST", "true").strip().lower() not in ("0", "false", "no")
+# Rutas convencionales de feed, en orden, cuando el HTML no declara ninguna.
+# La lista es corta a proposito: son 19 fuentes y probar diez rutas en cada una
+# se come el timeout del job antes de leer una sola noticia.
+RSS_PATHS_COMUNES = ("feed/", "rss/", "rss.xml", "index.xml", "atom.xml")
+# Presupuesto de descubrimiento por fuente. Pasado esto se abandona el feed y se
+# usa el camino de siempre (Jina + Gemini), que al menos avanza.
+RSS_DISCOVERY_BUDGET_S = float(os.getenv("RSS_DISCOVERY_BUDGET_S", "20"))
+RSS_MAX_ITEMS = int(os.getenv("RSS_MAX_ITEMS", "25"))
+
+# --- Ultimo recurso: candidatos sin Gemini ---------------------------------
+# Cuando la cuota se agota a mitad de corrida, la alternativa era entregar la
+# cola a medias. Con esto la nota entra igual: titulo y fecha del RSS, cuerpo
+# leido con Jina, y relevancia por las mismas reglas institucionales que ya
+# mandan sobre el modelo (SEÑALES_RELEVANCIA). Queda marcada `sin_ia` para que
+# el analista sepa que ese resumen no paso por modelo.
+NEWS_FALLBACK_SIN_IA = os.getenv("NEWS_FALLBACK_SIN_IA", "true").strip().lower() not in ("0", "false", "no")
 
 # --- Piso de relevancia por señal institucional ----------------------------
 # El modelo venia descartando noticias que para una entidad financiera son
@@ -463,9 +541,232 @@ def registrar_descarte(motivo: str, titulo: str, url: str, fuente: str = "",
 
 
 # ---------------------------------------------------------------------------
-# Busqueda en la web (s.jina.ai)
+# Busqueda en la web: tres buscadores sin API key
 # ---------------------------------------------------------------------------
-def buscar_en_web(consulta: str, max_resultados: int) -> list[dict]:
+# Un buscador que ya fallo en esta corrida no se vuelve a probar: si s.jina.ai
+# esta limitando por tasa, lo hara en las cinco consultas y solo sirve para
+# gastar cinco timeouts de 35s.
+_buscadores_caidos: set[str] = set()
+_buscadores_lock = threading.Lock()
+
+
+def _marcar_buscador_caido(nombre: str, motivo: str) -> None:
+    with _buscadores_lock:
+        if nombre in _buscadores_caidos:
+            return
+        _buscadores_caidos.add(nombre)
+    log.warning("Buscador '%s' fuera de servicio en esta corrida (%s); se pasa al siguiente.",
+                nombre, motivo)
+
+
+def _rss_items(xml_text: str) -> list[dict]:
+    """Titulo, enlace y fecha de cada item de un RSS o Atom. Sin dependencias.
+
+    Devuelve [] ante cualquier XML que no se pueda leer: un feed roto no puede
+    tumbar la corrida.
+    """
+    try:
+        raiz = ElementTree.fromstring(xml_text.strip())
+    except ElementTree.ParseError:
+        return []
+
+    def texto(nodo, *nombres):
+        for nombre in nombres:
+            hijo = nodo.find(nombre)
+            if hijo is None:
+                # Atom llega con namespace; se busca por el nombre final.
+                for candidato in nodo:
+                    if candidato.tag.rsplit("}", 1)[-1] == nombre:
+                        hijo = candidato
+                        break
+            if hijo is not None:
+                valor = (hijo.text or "").strip()
+                if not valor and nombre == "link":
+                    valor = (hijo.get("href") or "").strip()
+                if valor:
+                    return valor
+        return ""
+
+    items: list[dict] = []
+    for nodo in raiz.iter():
+        if nodo.tag.rsplit("}", 1)[-1] not in ("item", "entry"):
+            continue
+        titulo = limpiar_texto(html.unescape(texto(nodo, "title")))
+        enlace = texto(nodo, "link", "id")
+        fecha = texto(nodo, "pubDate", "published", "updated", "date")
+        if not titulo or not enlace:
+            continue
+        items.append({"title": titulo, "link": enlace.strip(), "pub": fecha})
+        if len(items) >= RSS_MAX_ITEMS:
+            break
+    return items
+
+
+def buscar_gdelt(consulta: str, max_resultados: int) -> list[dict]:
+    """GDELT DOC 2.0: prensa mundial indexada, sin API key ni cuota.
+
+    Se acota a prensa dominicana en español y a la misma ventana de frescura
+    que usa el resto del pipeline, para no traer archivo.
+    """
+    filtros = [f"({consulta})"]
+    if GDELT_SOURCE_COUNTRY:
+        filtros.append(f"sourcecountry:{GDELT_SOURCE_COUNTRY}")
+    if GDELT_SOURCE_LANG:
+        filtros.append(f"sourcelang:{GDELT_SOURCE_LANG}")
+    # timespan en horas: la ventana editorial en dias + el dia en curso.
+    horas = max(24, (NEWS_MAX_AGE_DAYS + 1) * 24)
+    try:
+        r = httpx.get(
+            GDELT_SEARCH_BASE,
+            params={
+                "query": " ".join(filtros),
+                "mode": "ArtList",
+                "maxrecords": max(10, max_resultados * 3),
+                "timespan": f"{horas}h",
+                "sort": "datedesc",
+                "format": "json",
+            },
+            headers={"User-Agent": "ObservatorioLaNacional/1.0 (news pipeline)"},
+            timeout=FETCH_TIMEOUT,
+            follow_redirects=True,
+        )
+        if r.status_code != 200:
+            _marcar_buscador_caido("gdelt", f"HTTP {r.status_code}")
+            return []
+        # GDELT devuelve HTML de error con status 200 cuando la consulta no le
+        # gusta; entonces no hay JSON que leer.
+        datos = r.json()
+    except json.JSONDecodeError:
+        log.warning("GDELT no devolvio JSON para '%s' (consulta rechazada)", consulta[:60])
+        return []
+    except Exception as exc:
+        _marcar_buscador_caido("gdelt", type(exc).__name__)
+        return []
+
+    resultados: list[dict] = []
+    vistos: set[str] = set()
+    for art in datos.get("articles", []) or []:
+        limpio = canonicalize_url(art.get("url") or "")
+        titulo = limpiar_texto(art.get("title") or "")
+        if not limpio or not titulo or limpio in vistos:
+            continue
+        vistos.add(limpio)
+        resultados.append({
+            "title": titulo,
+            "link": limpio,
+            # seendate viene como 20260824T115538Z: se normaliza a ISO para que
+            # el filtro de frescura pueda usarla sin abrir el articulo.
+            "published_at": _fecha_gdelt(art.get("seendate")),
+        })
+        if len(resultados) >= max_resultados:
+            break
+    return resultados
+
+
+def _fecha_gdelt(valor: str | None) -> str:
+    """20260824T115538Z -> 2026-08-24T11:55:38+00:00."""
+    crudo = (valor or "").strip()
+    if len(crudo) < 15 or "T" not in crudo:
+        return ""
+    try:
+        return datetime.strptime(crudo[:15], "%Y%m%dT%H%M%S").replace(tzinfo=timezone.utc).isoformat()
+    except ValueError:
+        return ""
+
+
+def buscar_google_news(consulta: str, max_resultados: int) -> list[dict]:
+    """Google News como RSS: sin API key, edicion dominicana en español.
+
+    El enlace del feed apunta a news.google.com y hay que seguirlo hasta el
+    medio. Cuando Google no suelta el destino, el resultado se descarta en vez
+    de guardar una URL de Google como fuente de la noticia.
+    """
+    ventana = f" when:{max(1, NEWS_MAX_AGE_DAYS + 1)}d"
+    try:
+        r = httpx.get(
+            GOOGLE_NEWS_RSS_BASE,
+            params={"q": consulta + ventana, "hl": "es-419", "gl": "DO", "ceid": "DO:es-419"},
+            headers={"User-Agent": "Mozilla/5.0 (compatible; ObservatorioLaNacional/1.0)"},
+            timeout=FETCH_TIMEOUT,
+            follow_redirects=True,
+        )
+        if r.status_code != 200:
+            _marcar_buscador_caido("googlenews", f"HTTP {r.status_code}")
+            return []
+        items = _rss_items(r.text)
+    except Exception as exc:
+        _marcar_buscador_caido("googlenews", type(exc).__name__)
+        return []
+
+    resultados: list[dict] = []
+    vistos: set[str] = set()
+    # Cada enlace de Google cuesta una peticion extra para llegar al medio: se
+    # intenta un poco mas de lo que se necesita y no mas.
+    intentos_restantes = max_resultados * 3
+    for item in items:
+        if intentos_restantes <= 0:
+            break
+        intentos_restantes -= 1
+        destino = _resolver_enlace_google(item["link"])
+        if not destino or destino in vistos:
+            continue
+        vistos.add(destino)
+        # El titulo del feed trae " - Medio" al final; sobra para el analista.
+        titulo = re.sub(r"\s+-\s+[^-]{2,40}$", "", item["title"]).strip() or item["title"]
+        resultados.append({
+            "title": titulo,
+            "link": destino,
+            "published_at": _fecha_rss(item.get("pub")),
+        })
+        if len(resultados) >= max_resultados:
+            break
+    return resultados
+
+
+def _resolver_enlace_google(url: str) -> str:
+    """news.google.com/rss/articles/... -> URL del medio, o cadena vacia."""
+    limpio = (url or "").strip()
+    if not limpio:
+        return ""
+    if "news.google.com" not in limpio:
+        return canonicalize_url(limpio)
+    try:
+        r = httpx.get(
+            limpio,
+            headers={"User-Agent": "Mozilla/5.0 (compatible; ObservatorioLaNacional/1.0)"},
+            timeout=20,
+            follow_redirects=True,
+        )
+        final = str(r.url)
+        if "news.google.com" in final:
+            # Algunas respuestas traen el destino en un meta refresh o en un
+            # data-attribute en vez de un redirect HTTP.
+            encontrado = re.search(r'https?://(?!news\.google\.com)[^"\'<>\s]{15,}', r.text or "")
+            final = encontrado.group(0) if encontrado else ""
+        return canonicalize_url(final) if final and "news.google.com" not in final else ""
+    except Exception:
+        return ""
+
+
+def _fecha_rss(valor: str | None) -> str:
+    """RFC 822 (Mon, 24 Aug 2026 11:55:38 GMT) o ISO -> ISO. '' si no se lee."""
+    crudo = (valor or "").strip()
+    if not crudo:
+        return ""
+    for formato in ("%a, %d %b %Y %H:%M:%S %z", "%a, %d %b %Y %H:%M:%S %Z",
+                    "%d %b %Y %H:%M:%S %z", "%a, %d %b %Y %H:%M %z"):
+        try:
+            fecha = datetime.strptime(crudo, formato)
+            if fecha.tzinfo is None:
+                fecha = fecha.replace(tzinfo=timezone.utc)
+            return fecha.isoformat()
+        except ValueError:
+            continue
+    fecha = parse_iso_date(crudo)
+    return fecha.isoformat() if fecha else ""
+
+
+def buscar_con_jina(consulta: str, max_resultados: int) -> list[dict]:
     """Devuelve [{title, url}] para una consulta. Lista vacia si algo falla."""
     try:
         r = httpx.get(
@@ -475,11 +776,11 @@ def buscar_en_web(consulta: str, max_resultados: int) -> list[dict]:
             follow_redirects=True,
         )
         if r.status_code != 200:
-            log.warning("Jina search HTTP %s para '%s'", r.status_code, consulta[:60])
+            _marcar_buscador_caido("jina", f"HTTP {r.status_code}")
             return []
         texto = r.text
     except Exception as exc:
-        log.warning("Jina search error (%s) para '%s'", type(exc).__name__, consulta[:60])
+        _marcar_buscador_caido("jina", type(exc).__name__)
         return []
 
     # El buscador devuelve markdown; se extraen los pares [titulo](url) y, como
@@ -497,6 +798,40 @@ def buscar_en_web(consulta: str, max_resultados: int) -> list[dict]:
         if len(resultados) >= max_resultados:
             break
     return resultados
+
+
+BUSCADORES = {
+    "gdelt": buscar_gdelt,
+    "googlenews": buscar_google_news,
+    "jina": buscar_con_jina,
+}
+
+
+def buscar_en_web(consulta: str, max_resultados: int) -> list[dict]:
+    """Devuelve [{title, link, published_at?}] usando el primer buscador que responda.
+
+    Se prueban en el orden de NEWS_SEARCH_PROVIDERS. Ninguno pide API key, asi
+    que caerse a otro no cuesta credenciales ni cuota: solo una peticion mas.
+    """
+    for nombre in NEWS_SEARCH_PROVIDERS:
+        buscador = BUSCADORES.get(nombre)
+        if buscador is None:
+            log.warning("Buscador desconocido en NEWS_SEARCH_PROVIDERS: %s", nombre)
+            continue
+        with _buscadores_lock:
+            caido = nombre in _buscadores_caidos
+        if caido:
+            continue
+        try:
+            resultados = buscador(consulta, max_resultados)
+        except Exception as exc:
+            _marcar_buscador_caido(nombre, type(exc).__name__)
+            continue
+        if resultados:
+            log.info("  · buscador '%s': %d resultado(s)", nombre, len(resultados))
+            return resultados
+        log.info("  · buscador '%s' sin resultados para esta consulta", nombre)
+    return []
 
 
 def recuperar_por_titular(titulo: str, url_original: str) -> str | None:
@@ -549,6 +884,120 @@ def fetch_with_jina(url: str, max_chars: int) -> str | None:
     except Exception as exc:
         log.warning("Jina error (%s): %s", type(exc).__name__, url)
         return None
+
+
+# ---------------------------------------------------------------------------
+# Titulares desde el RSS del medio (sin Gemini, sin Jina)
+# ---------------------------------------------------------------------------
+_feeds_cache: dict[str, str | None] = {}
+_feeds_lock = threading.Lock()
+
+
+def _pedir(url: str, timeout: int = FETCH_TIMEOUT):
+    return httpx.get(
+        url,
+        headers={
+            "User-Agent": "Mozilla/5.0 (compatible; ObservatorioLaNacional/1.0; +https://github.com/ecojoelvaldez)",
+            "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml, text/html;q=0.8",
+        },
+        timeout=timeout,
+        follow_redirects=True,
+    )
+
+
+def _es_feed(texto: str) -> bool:
+    cabeza = (texto or "")[:600].lstrip().lower()
+    return "<rss" in cabeza or "<feed" in cabeza or "<rdf:rdf" in cabeza
+
+
+def descubrir_feed(base_url: str) -> str | None:
+    """URL del RSS/Atom de una seccion, o None si el medio no publica ninguno.
+
+    Primero se cree lo que el propio HTML declara (<link rel="alternate">);
+    despues se prueban las rutas convencionales. El resultado se cachea por
+    seccion: dos secciones del mismo medio no vuelven a buscar lo mismo.
+    """
+    base = ensure_scheme(base_url).rstrip("/") + "/"
+    with _feeds_lock:
+        if base in _feeds_cache:
+            return _feeds_cache[base]
+
+    encontrado: str | None = None
+    html_texto = ""
+    try:
+        r = _pedir(base)
+        if r.status_code == 200:
+            # La propia URL ya puede ser un feed (fuentes configuradas asi).
+            if _es_feed(r.text):
+                encontrado = str(r.url)
+            else:
+                html_texto = r.text
+    except Exception as exc:
+        log.info("  · no se pudo abrir %s para buscar feed (%s)", base, type(exc).__name__)
+
+    if not encontrado and html_texto:
+        for etiqueta in re.findall(r"<link\b[^>]*>", html_texto[:200000], re.I):
+            if "alternate" not in etiqueta.lower():
+                continue
+            if not re.search(r'type=["\']application/(rss|atom)\+xml', etiqueta, re.I):
+                continue
+            href = re.search(r'href=["\']([^"\']+)["\']', etiqueta, re.I)
+            if href:
+                encontrado = urljoin(base, html.unescape(href.group(1)).strip())
+                break
+
+    if not encontrado:
+        limite = time.monotonic() + RSS_DISCOVERY_BUDGET_S
+        for ruta in RSS_PATHS_COMUNES:
+            if time.monotonic() > limite:
+                log.info("  · sin feed tras %.0fs de busqueda; se sigue por el camino de siempre",
+                         RSS_DISCOVERY_BUDGET_S)
+                break
+            candidato = urljoin(base, ruta)
+            try:
+                r = _pedir(candidato, timeout=8)
+            except Exception:
+                continue
+            if r.status_code == 200 and _es_feed(r.text) and _rss_items(r.text):
+                encontrado = str(r.url)
+                break
+
+    with _feeds_lock:
+        _feeds_cache[base] = encontrado
+    if encontrado:
+        log.info("  · feed encontrado: %s", encontrado)
+    return encontrado
+
+
+def titulares_desde_rss(base_url: str) -> list[dict]:
+    """Titulares de una fuente leidos de su RSS: 0 llamadas a Gemini.
+
+    Devuelve [] si el medio no tiene feed legible; el flujo de siempre
+    (Jina + Gemini sobre la pagina indice) sigue detras como respaldo.
+    """
+    feed = descubrir_feed(base_url)
+    if not feed:
+        return []
+    try:
+        r = _pedir(feed)
+        if r.status_code != 200:
+            return []
+        items = _rss_items(r.text)
+    except Exception as exc:
+        log.info("  · feed ilegible (%s): %s", type(exc).__name__, feed)
+        return []
+
+    titulares: list[dict] = []
+    for item in items:
+        link = canonicalize_url(item["link"], base_url)
+        if not link:
+            continue
+        titulares.append({
+            "title": item["title"],
+            "link": link,
+            "published_at": _fecha_rss(item.get("pub")),
+        })
+    return titulares
 
 
 def clean_json_text(raw: str) -> str:
@@ -944,6 +1393,46 @@ def load_existing_urls(publicados: set[str] | None = None) -> set[str]:
     return urls
 
 
+def detalles_sin_ia(markdown: str, titular: str) -> dict | None:
+    """Ficha de la nota sin pasar por el modelo: para cuando la cuota se agoto.
+
+    Resumen y cuerpo salen de los primeros parrafos reales del articulo; la
+    relevancia, del mismo piso institucional que ya manda sobre el juicio de
+    Gemini. Si la nota no toca ninguna señal, no se propone: sin modelo no hay
+    con que defender que le importa a la entidad.
+    """
+    piso, etiquetas = señales_detectadas(titular, markdown[:2500])
+    if piso < NEWS_MIN_RELEVANCE:
+        return None
+
+    # El markdown de Jina abre con titulo, creditos y enlaces; los parrafos
+    # utiles son las lineas largas de prosa.
+    parrafos: list[str] = []
+    for linea in markdown.splitlines():
+        limpia = limpiar_texto(re.sub(r"[*_`>#\[\]]|\(https?://[^)]+\)", " ", linea))
+        if len(limpia) < 120 or limpia.startswith("!"):
+            continue
+        if norm_texto(limpia) == norm_texto(titular):
+            continue
+        parrafos.append(limpia)
+        if len(parrafos) >= 3:
+            break
+    if not parrafos:
+        return None
+
+    cuerpo = " ".join(parrafos)[:900]
+    return {
+        "title": titular,
+        "summary": parrafos[0][:400],
+        "body": cuerpo,
+        "category": "Financiero" if "banca" in etiquetas or "entidad_rd" in etiquetas else "Economia",
+        "relevance": piso,
+        "señales": etiquetas,
+        "published_at": None,
+        "sin_ia": True,
+    }
+
+
 def build_candidate(source: dict, headline: dict, base_url: str) -> dict | None:
     headline_title = limpiar_texto(headline.get("title"))
     link = canonicalize_url(headline.get("link") or "", base_url)
@@ -965,14 +1454,27 @@ def build_candidate(source: dict, headline: dict, base_url: str) -> dict | None:
                            detalle="Ni la URL original ni una cobertura alterna se pudieron leer")
         return None
 
-    details = extract_article_details(article_markdown, headline_title, link, fuente_nombre)
+    # Con la cuota agotada, el modelo ya no responde: la nota entra igual con
+    # ficha armada a mano, marcada `sin_ia`, en vez de perderse la corrida.
+    sin_ia = False
+    if _quota_agotada.is_set() and NEWS_FALLBACK_SIN_IA:
+        details = detalles_sin_ia(article_markdown, headline_title)
+        sin_ia = bool(details)
+        if not details:
+            registrar_descarte("sin_detalle", headline_title, link, fuente_nombre,
+                               detalle="Sin cuota de Gemini y sin señal institucional que la sostenga")
+            return None
+        log.info("  ✓ candidato SIN IA (rel %s): %s", details.get("relevance"), headline_title[:70])
+    else:
+        details = extract_article_details(article_markdown, headline_title, link, fuente_nombre)
     if not details:
         log.info("  -> articulo sin detalle util: %s", headline_title[:70])
         return None
 
     # La fecha decide si la nota entra: sin fecha no hay frescura demostrable.
-    # Antes de rendirse se busca en la ruta del articulo (/2026/08/19/...).
-    published_at = details.get("published_at")
+    # El feed o el buscador suelen traerla ya; si no, se busca en la ruta del
+    # articulo (/2026/08/19/...) antes de rendirse.
+    published_at = details.get("published_at") or headline.get("published_at")
     fecha_inferida = False
     if not parse_iso_date(published_at):
         desde_url = fecha_desde_url(link)
@@ -1009,6 +1511,9 @@ def build_candidate(source: dict, headline: dict, base_url: str) -> dict | None:
         "señales": details.get("señales") or [],
         "rescatado_por_regla": bool(details.get("rescatado_por_regla")),
         "cuerpo_recuperado": recuperado,
+        # El panel lo muestra: un resumen sin modelo no se lee igual que uno
+        # curado, y el analista tiene que saber cual esta viendo.
+        "sin_ia": sin_ia,
         "published_at": published_at,
         "fecha_inferida_de_url": fecha_inferida,
         "dia_editorial": str(dia_editorial(published_at) or hoy_editorial()),
@@ -1026,15 +1531,29 @@ def process_source(source: dict, existing_urls: set[str]) -> list[dict]:
         return []
 
     log.info("Procesando fuente: %s (%s)", name, base_url)
-    index_markdown = fetch_with_jina(base_url, MAX_INDEX_MARKDOWN_CHARS)
-    if not index_markdown:
-        log.info("  -> Jina no devolvio indice util")
-        return []
 
-    headlines = extract_headlines(index_markdown)
+    # 1. El RSS del medio, que da titulo + enlace + fecha sin gastar modelo.
+    headlines: list[dict] = []
+    via_rss = False
+    if NEWS_RSS_FIRST:
+        headlines = titulares_desde_rss(base_url)
+        via_rss = bool(headlines)
+        if via_rss:
+            log.info("  · %d titulares del RSS (0 llamadas a Gemini)", len(headlines))
+
+    # 2. Respaldo: la pagina indice leida con Jina e interpretada por Gemini.
     if not headlines:
-        log.info("  -> Gemini no extrajo titulares utiles")
-        return []
+        if _quota_agotada.is_set():
+            log.info("  -> sin feed y sin cuota de Gemini: no hay de donde sacar titulares")
+            return []
+        index_markdown = fetch_with_jina(base_url, MAX_INDEX_MARKDOWN_CHARS)
+        if not index_markdown:
+            log.info("  -> Jina no devolvio indice util")
+            return []
+        headlines = extract_headlines(index_markdown)
+        if not headlines:
+            log.info("  -> Gemini no extrajo titulares utiles")
+            return []
 
     # Filtrar titulares nuevos ANTES de lanzar trabajo pesado (Jina + Gemini).
     pending: list[dict] = []
@@ -1047,8 +1566,21 @@ def process_source(source: dict, existing_urls: set[str]) -> list[dict]:
         if link in existing_urls or link in seen_in_batch:
             log.info("  -> ya vista: %s", title[:70])
             continue
+        # El RSS ya trae la fecha de publicacion: lo que cae fuera del dia
+        # editorial se descarta AQUI, antes de gastar una lectura y una llamada
+        # al modelo. En la corrida del 2026-08-24 se resumieron 4 notas viejas
+        # solo para botarlas despues.
+        fecha_previa = headline.get("published_at") or ""
+        if fecha_previa and is_stale(fecha_previa):
+            log.info("  -> fuera del dia editorial segun el feed, no se lee: %s", title[:70])
+            registrar_descarte("vieja", title, link, name,
+                               detalle=f"el feed la fecha {(dia_editorial(fecha_previa) or '?')}, "
+                                       f"ventana {ventana_frescura_texto()}")
+            continue
         seen_in_batch.add(link)
         pending.append(headline)
+        if len(pending) >= MAX_HEADLINES_PER_SOURCE:
+            break
 
     # Cada articulo requiere 1 lectura Jina + 1 llamada Gemini; se procesan
     # en paralelo con pocos hilos para no disparar los limites de tasa.
@@ -1116,13 +1648,17 @@ def procesar_busqueda_general(existing_urls: set[str], cupo: int) -> list[dict]:
     medio no la publica. Este paso pregunta directo por los temas que importan,
     asi una noticia relevante no depende de aparecer en un indice concreto.
     """
-    if not NEWS_SEARCH_ENABLED or cupo <= 0 or _quota_agotada.is_set():
+    if not NEWS_SEARCH_ENABLED or cupo <= 0:
+        return []
+    if _quota_agotada.is_set() and not NEWS_FALLBACK_SIN_IA:
         return []
 
     fuente_busqueda = {"source_key": "busqueda_web", "name": "Búsqueda web"}
     encontrados: list[dict] = []
     for consulta in NEWS_SEARCH_QUERIES:
-        if len(encontrados) >= cupo or _quota_agotada.is_set():
+        if len(encontrados) >= cupo:
+            break
+        if _quota_agotada.is_set() and not NEWS_FALLBACK_SIN_IA:
             break
         log.info("Búsqueda general: %s", consulta)
         resultados = buscar_en_web(consulta, NEWS_SEARCH_MAX_PER_QUERY)
@@ -1139,9 +1675,19 @@ def procesar_busqueda_general(existing_urls: set[str], cupo: int) -> list[dict]:
             # No re-procesar lo que ya entro por una fuente fija.
             if any(mismo_tema(titulo, c.get("title", "")) for c in encontrados):
                 continue
+            # GDELT y Google News devuelven la fecha con el resultado: lo viejo
+            # se bota antes de leerlo, igual que con el RSS de las fuentes.
+            fecha_previa = resultado.get("published_at") or ""
+            if fecha_previa and is_stale(fecha_previa):
+                log.info("  -> resultado fuera del dia editorial, no se lee: %s", titulo[:70])
+                continue
             existing_urls.add(link)
             try:
-                cand = build_candidate(fuente_busqueda, {"title": titulo, "link": link}, link)
+                cand = build_candidate(
+                    fuente_busqueda,
+                    {"title": titulo, "link": link, "published_at": fecha_previa},
+                    link,
+                )
             except Exception as exc:
                 log.warning("  -> error procesando resultado de busqueda: %s", exc)
                 continue
@@ -1325,12 +1871,17 @@ def run() -> None:
 
     all_candidates: list[dict] = []
     errors = 0
+    _aviso_sin_ia_dado = False
     for i, source in enumerate(sources):
         if len(all_candidates) >= MAX_TOTAL_PROPOSALS:
             break
-        if _quota_agotada.is_set():
+        if _quota_agotada.is_set() and not NEWS_FALLBACK_SIN_IA:
             log.warning("Sin cuota de Gemini: se omiten las %d fuentes restantes.", len(sources) - i)
             break
+        if _quota_agotada.is_set() and not _aviso_sin_ia_dado:
+            _aviso_sin_ia_dado = True
+            log.warning("Sin cuota de Gemini: las %d fuentes restantes siguen por RSS, "
+                        "con fichas armadas sin modelo (marcadas `sin_ia`).", len(sources) - i)
         try:
             remaining = MAX_TOTAL_PROPOSALS - len(all_candidates)
             all_candidates.extend(process_source(source, existing)[:remaining])
