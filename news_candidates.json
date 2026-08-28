@@ -1,88 +1,202 @@
 {
-  "generated_at": "2026-08-27T22:52:53.888726+00:00",
+  "generated_at": "2026-08-28T01:11:31.727046+00:00",
   "dia_editorial": "2026-08-27",
   "zona_horaria": "UTC-4 (Santo Domingo)",
   "ventana_frescura": "2026-08-26 a 2026-08-27",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
-  "count": 13,
+  "count": 18,
   "count_by_day": {
-    "2026-08-27": 10,
-    "2026-08-26": 3
+    "2026-08-27": 14,
+    "2026-08-26": 4
   },
-  "new_this_run": 16,
+  "new_this_run": 8,
   "already_published": 0,
   "out_of_window": 0,
   "ttl_days": 1,
   "max_age_days": 1,
   "errors": 0,
   "sources": 19,
-  "elapsed_s": 535.4,
+  "elapsed_s": 458.0,
   "candidates": [
     {
-      "id": "n_ebb9f0f640235f4a",
+      "id": "n_256045cf33f57bd4",
       "source_key": "news_gnews_banca",
       "source_name": "Google News · Banca y Superintendencia",
-      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQazRlUmxxY1hJd0t2RjBnaGNPbVJWb1BPOEo1aVliVE9rOU8tVXhJeUY0SXZnZ2pBT196V3pWYmlHZ29GSURieUhrcHgzUmJ2aEh3cG9vanpxZTlFZ2ZxQk50WlJYRG55STRMRkp2UTllX0trQ091LVlOT3Y3aGt5TmlJSkpTN3JidlZTODcyU2NBc2VGRjZTZEVoZVBVbmJjenZUWGhDZy02bzRZNnZWTg?oc=5",
-      "title": "Superintendencia de Bancos detecta 127 ‘entidades fantasmas’ en Ecuador - El Comercio",
-      "summary": "URL Source: https://lh3.googleusercontent.com/-DR60l-K8vnyi99NZovm9HlXyZwQ85GMDxiwJWzoasZYCUrPuUM P 4Rb7ei03j-0nRs0c4F=w16",
-      "body": "URL Source: https://lh3.googleusercontent.com/-DR60l-K8vnyi99NZovm9HlXyZwQ85GMDxiwJWzoasZYCUrPuUM P 4Rb7ei03j-0nRs0c4F=w16",
+      "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxPNVNOdUhIS2ZlUDdJa0VoS1ltTUlDTHlPS3pOMEhLekVabGNONnVpa0YtZmdPeDEtdEVYd3k1UnAwT3R4Y3VhNS0tS1pPS2tPNVI3X3ZnWV9xdFVXZWg1aEc3ZDhDT3JJbG9acHJBdElQU1ozOThfQmJPQk92Tk1wT3V2TU9Pc2Flam1vMDBZci1ua3BhSFphb2JrZWE3TjM0cUtrcmpIUmNFU052WE1IaS1jcnhaQWlmb0dILURxZmJIbUVoeTR3Tm4xakF5dFFDT0U5Y0N5T1NYNV82NHfSAd4BQVVfeXFMTzVTTnVISEtmZVA3SWtFaEtZbU1JQ0x5T0t6TjBIS3pFWmxjTjZ1aWtGLWZnT3gxLXRFWHd5NVJwME90eGN1YTUtLUtaT0trTzVSN192Z1lfcXRVV2VoNWhHN2Q4Q09ySWxvWnByQXRJUFNaMzk4X0JiT0JPdk5NcE91dk1PT3NhZWptbzAwWXItbmtwYUhaYW9ia2VhN04zNHFLa3JqSFJjRVNOdlhNSGktY3J4WkFpZm9HSC1EcWZiSG1FaHk0d05uMWpBeXRRQ09FOWNDeU9TWDVfNjR3?oc=5",
+      "title": "La Superintendencia de Bancos de Ecuador detecta \"127 entidades fantasmas\" - Infobae",
+      "summary": "URL Source: https://news.google.com/rss/articles/CBMi3gFBVV95cUxPNVNOdUhIS2ZlUDdJa0VoS1ltTUlDTHlPS3pOMEhLekVabGNONnVpa0YtZmdPeDEtdEVYd3k1UnAwT3R4Y3VhNS0tS1pPS2tPNVI3X3ZnWV9xdFVXZWg1aEc3ZDhDT3JJbG9acHJBdElQU1ozOThfQmJPQk92Tk1wT3V2TU9Pc2Flam1vMDBZci1ua3BhSFphb2JrZWE3TjM0cUtrcmpIUmNFU052WE1IaS1jcnhaQWlmb0dILURxZmJIbUVoeTR3Tm4xakF5dFFDT0U5Y0N5T1NYNV82NHfSAd4BQVVfeXFMTzVTTnVISEtmZVA3SWtFaEtZbU1JQ0x5T0t",
+      "body": "URL Source: https://news.google.com/rss/articles/CBMi3gFBVV95cUxPNVNOdUhIS2ZlUDdJa0VoS1ltTUlDTHlPS3pOMEhLekVabGNONnVpa0YtZmdPeDEtdEVYd3k1UnAwT3R4Y3VhNS0tS1pPS2tPNVI3X3ZnWV9xdFVXZWg1aEc3ZDhDT3JJbG9acHJBdElQU1ozOThfQmJPQk92Tk1wT3V2TU9Pc2Flam1vMDBZci1ua3BhSFphb2JrZWE3TjM0cUtrcmpIUmNFU052WE1IaS1jcnhaQWlmb0dILURxZmJIbUVoeTR3Tm4xakF5dFFDT0U5Y0N5T1NYNV82NHfSAd4BQVVfeXFMTzVTTnVISEtmZVA3SWtFaEtZbU1JQ0x5T0t6TjBIS3pFWmxjTjZ1aWtGLWZnT3gxLXRFWHd5NVJwME90eGN1YTUtLUtaT0trTzVSN192Z1lfcXRVV2VoNWhHN2Q4Q09ySWxvWnByQXRJUFNaMzk4X0JiT0JPdk5NcE91dk1PT3NhZWptbzAwWXItbmtwYUhaYW9ia2VhN04zNHFLa3JqSFJjRVNOdlhNSGktY3J4WkFpZm9HSC1EcWZiSG1FaHk0d05uMWpBeXRRQ09FOWNDeU9TWDVfNjR3?oc=5 Quito, 26 ago (EFE).- La Superintendencia de Bancos (SB) de Ecuador informó este miércoles que detectó 127 \"entidades fantasmas\" entre 2025 y 2026, que no tienen autorización para hacer intermediación financiera, y que buscan captar dinero d",
       "category": "Economia",
       "relevance": 9,
       "señales": [
         "regulador"
       ],
       "rescatado_por_regla": false,
-      "cuerpo_recuperado": true,
+      "cuerpo_recuperado": false,
       "sin_ia": true,
-      "published_at": "2026-08-27T01:32:01+00:00",
+      "published_at": "2026-08-26T20:01:56+00:00",
       "fecha_inferida_de_url": false,
       "dia_editorial": "2026-08-26",
-      "fetched_at": "2026-08-27T22:52:43.140423+00:00",
+      "fetched_at": "2026-08-28T01:10:23.014802+00:00",
       "dia_lectura": "2026-08-27",
       "status": "pending",
       "tambien_en": [
         {
           "source_name": "Google News · Banca y Superintendencia",
-          "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxPNVNOdUhIS2ZlUDdJa0VoS1ltTUlDTHlPS3pOMEhLekVabGNONnVpa0YtZmdPeDEtdEVYd3k1UnAwT3R4Y3VhNS0tS1pPS2tPNVI3X3ZnWV9xdFVXZWg1aEc3ZDhDT3JJbG9acHJBdElQU1ozOThfQmJPQk92Tk1wT3V2TU9Pc2Flam1vMDBZci1ua3BhSFphb2JrZWE3TjM0cUtrcmpIUmNFU052WE1IaS1jcnhaQWlmb0dILURxZmJIbUVoeTR3Tm4xakF5dFFDT0U5Y0N5T1NYNV82NHfSAd4BQVVfeXFMTzVTTnVISEtmZVA3SWtFaEtZbU1JQ0x5T0t6TjBIS3pFWmxjTjZ1aWtGLWZnT3gxLXRFWHd5NVJwME90eGN1YTUtLUtaT0trTzVSN192Z1lfcXRVV2VoNWhHN2Q4Q09ySWxvWnByQXRJUFNaMzk4X0JiT0JPdk5NcE91dk1PT3NhZWptbzAwWXItbmtwYUhaYW9ia2VhN04zNHFLa3JqSFJjRVNOdlhNSGktY3J4WkFpZm9HSC1EcWZiSG1FaHk0d05uMWpBeXRRQ09FOWNDeU9TWDVfNjR3?oc=5",
-          "title": "La Superintendencia de Bancos de Ecuador detecta \"127 entidades fantasmas\" - Infobae"
+          "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQazRlUmxxY1hJd0t2RjBnaGNPbVJWb1BPOEo1aVliVE9rOU8tVXhJeUY0SXZnZ2pBT196V3pWYmlHZ29GSURieUhrcHgzUmJ2aEh3cG9vanpxZTlFZ2ZxQk50WlJYRG55STRMRkp2UTllX0trQ091LVlOT3Y3aGt5TmlJSkpTN3JidlZTODcyU2NBc2VGRjZTZEVoZVBVbmJjenZUWGhDZy02bzRZNnZWTg?oc=5",
+          "title": "Superintendencia de Bancos detecta 127 ‘entidades fantasmas’ en Ecuador - El Comercio"
         }
       ]
     },
     {
-      "id": "n_78f3ce8c4c28ddb1",
+      "id": "n_c19ec087ec6db600",
       "source_key": "news_gnews_banca",
       "source_name": "Google News · Banca y Superintendencia",
-      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNa0hscUwwbV81NE5yV3JBUlZ3eVd5OG1jQlNsVnF4a2R6dkd3TEE3ekNqdnhfanhCM2d4ME52N1JEUk5KR3JsbmZ2VmlUSFdTRFJOeU84a0x0ZjU1U2V2b3hXc09LYUZ4M0ozTmtpNE9LbnA1a0RWMHhnVk5iemNNczV3VDJqTV9KLThrTEZVQzNreFpybTItS3Vla3BqV01XREoycW9n?oc=5",
-      "title": "Superintendencia de Bancos obtiene la Mención Diamante de Sostenibilidad 3Rs - primicias.net",
-      "summary": "URL Source: https://lh3.googleusercontent.com/-DR60l-K8vnyi99NZovm9HlXyZwQ85GMDxiwJWzoasZYCUrPuUM P 4Rb7ei03j-0nRs0c4F=w16",
-      "body": "URL Source: https://lh3.googleusercontent.com/-DR60l-K8vnyi99NZovm9HlXyZwQ85GMDxiwJWzoasZYCUrPuUM P 4Rb7ei03j-0nRs0c4F=w16",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPeTllYTVmak9mTlNXd1F2a2NyN2lXYWlMSzVxUGRvdVdBNm9wVEU1dUNsd2YxR2o2SlhGTmlwLXQ4bHQtdVpya1ZBV2ZqZ09OSUZkSW9wTklUbjFacHpRNnRJclRYQ2pRaVZBS2I0Vk5nTThnWDNvODZNUFBudElNM2hsQjlHS3VfSDdaUlAxRE12V1hRbWRuZTJJSFJjdDc1RUZjWlpfUy12UVdIUkVCZmVFYnRFNG140gG4AUFVX3lxTE95OWVhNWZqT2ZOU1d3UXZrY3I3aVdhaUxLNXFQZG91V0E2b3BURTV1Q2x3ZjFHajZKWEZOaXAtdDhsdC11WnJrVkFXZmpnT05JRmRJb3BOSVRuMVpwelE2dElyVFhDalFpVkFLYjRWTmdNOGdYM284Nk1QUG50SU0zaGxCOUdLdV9IN1pSUDFETXZXWFFtZG5lMklIUmN0NzVFRmNaWl9TLXZRV0hSRUJmZUVidEU0bXg?oc=5",
+      "title": "Superintendencia de Bancos obtiene Mención Diamante de Sostenibilidad 3Rs - Acento",
+      "summary": "URL Source: https://news.google.com/rss/articles/CBMiuAFBVV95cUxPeTllYTVmak9mTlNXd1F2a2NyN2lXYWlMSzVxUGRvdVdBNm9wVEU1dUNsd2YxR2o2SlhGTmlwLXQ4bHQtdVpya1ZBV2ZqZ09OSUZkSW9wTklUbjFacHpRNnRJclRYQ2pRaVZBS2I0Vk5nTThnWDNvODZNUFBudElNM2hsQjlHS3VfSDdaUlAxRE12V1hRbWRuZTJJSFJjdDc1RUZjWlpfUy12UVdIUkVCZmVFYnRFNG140gG4AUFVX3lxTE95OWVhNWZqT2ZOU1d3UXZrY3I3aVdhaUxLNXFQZG91V0E2b3BURTV1Q2x3ZjFHajZKWEZOaXAtdDhsdC11WnJ",
+      "body": "URL Source: https://news.google.com/rss/articles/CBMiuAFBVV95cUxPeTllYTVmak9mTlNXd1F2a2NyN2lXYWlMSzVxUGRvdVdBNm9wVEU1dUNsd2YxR2o2SlhGTmlwLXQ4bHQtdVpya1ZBV2ZqZ09OSUZkSW9wTklUbjFacHpRNnRJclRYQ2pRaVZBS2I0Vk5nTThnWDNvODZNUFBudElNM2hsQjlHS3VfSDdaUlAxRE12V1hRbWRuZTJJSFJjdDc1RUZjWlpfUy12UVdIUkVCZmVFYnRFNG140gG4AUFVX3lxTE95OWVhNWZqT2ZOU1d3UXZrY3I3aVdhaUxLNXFQZG91V0E2b3BURTV1Q2x3ZjFHajZKWEZOaXAtdDhsdC11WnJrVkFXZmpnT05JRmRJb3BOSVRuMVpwelE2dElyVFhDalFpVkFLYjRWTmdNOGdYM284Nk1QUG50SU0zaGxCOUdLdV9IN1pSUDFETXZXWFFtZG5lMklIUmN0NzVFRmNaWl9TLXZRV0hSRUJmZUVidEU0bXg?oc=5 La institución se convierte en la primera entidad gubernamental de República Dominicana en alcanzar el máximo reconocimiento otorgado por la firma certificadora (mailto:?subject=Te%20recomiendo%20esta%20nota%20de%20Acento&body=Lee%20esta%20nota%20de%20Acento:%20https://acento.com.do/sociales/superintendencia-de-bancos-obtiene-mencion-diaman",
       "category": "Economia",
       "relevance": 9,
       "señales": [
         "regulador"
       ],
       "rescatado_por_regla": false,
-      "cuerpo_recuperado": true,
+      "cuerpo_recuperado": false,
       "sin_ia": true,
-      "published_at": "2026-08-27T02:40:47+00:00",
+      "published_at": "2026-08-26T23:00:02+00:00",
       "fecha_inferida_de_url": false,
       "dia_editorial": "2026-08-26",
-      "fetched_at": "2026-08-27T22:52:42.453923+00:00",
+      "fetched_at": "2026-08-28T01:10:18.814727+00:00",
       "dia_lectura": "2026-08-27",
       "status": "pending",
       "tambien_en": [
         {
-          "source_name": "Google News · Banca y Superintendencia",
-          "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPeTllYTVmak9mTlNXd1F2a2NyN2lXYWlMSzVxUGRvdVdBNm9wVEU1dUNsd2YxR2o2SlhGTmlwLXQ4bHQtdVpya1ZBV2ZqZ09OSUZkSW9wTklUbjFacHpRNnRJclRYQ2pRaVZBS2I0Vk5nTThnWDNvODZNUFBudElNM2hsQjlHS3VfSDdaUlAxRE12V1hRbWRuZTJJSFJjdDc1RUZjWlpfUy12UVdIUkVCZmVFYnRFNG140gG4AUFVX3lxTE95OWVhNWZqT2ZOU1d3UXZrY3I3aVdhaUxLNXFQZG91V0E2b3BURTV1Q2x3ZjFHajZKWEZOaXAtdDhsdC11WnJrVkFXZmpnT05JRmRJb3BOSVRuMVpwelE2dElyVFhDalFpVkFLYjRWTmdNOGdYM284Nk1QUG50SU0zaGxCOUdLdV9IN1pSUDFETXZXWFFtZG5lMklIUmN0NzVFRmNaWl9TLXZRV0hSRUJmZUVidEU0bXg?oc=5",
-          "title": "Superintendencia de Bancos obtiene Mención Diamante de Sostenibilidad 3Rs - Acento"
-        },
-        {
           "source_name": "Búsqueda web",
           "url": "https://lh3.googleusercontent.com/-DR60l-K8vnyi99NZovm9HlXyZwQ85GMDxiwJWzoasZYCUrPuUM_P_4Rb7ei03j-0nRs0c4F=w16",
           "title": "Superintendencia de Bancos obtiene la Mención Diamante de Sostenibilidad 3Rs"
+        },
+        {
+          "source_name": "Google News · Banca y Superintendencia",
+          "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNa0hscUwwbV81NE5yV3JBUlZ3eVd5OG1jQlNsVnF4a2R6dkd3TEE3ekNqdnhfanhCM2d4ME52N1JEUk5KR3JsbmZ2VmlUSFdTRFJOeU84a0x0ZjU1U2V2b3hXc09LYUZ4M0ozTmtpNE9LbnA1a0RWMHhnVk5iemNNczV3VDJqTV9KLThrTEZVQzNreFpybTItS3Vla3BqV01XREoycW9n?oc=5",
+          "title": "Superintendencia de Bancos obtiene la Mención Diamante de Sostenibilidad 3Rs - primicias.net"
         }
       ]
+    },
+    {
+      "id": "n_a8b2fa0b9eca862f",
+      "source_key": "news_gnews_banca",
+      "source_name": "Google News · Banca y Superintendencia",
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQNVlDam10Y2g3d1FQUXRwNjVXSXR6dVVFckVZMmtCV0Z2YVJSSnZYa19jeFNvUC12QnM5cjY4dUd3dHFZNFUxWmlMRFZoQ21rUzl1Nld4UGNlU1V5aURYdHltWk05aDZSaWRSTmRSMzkwbmJ1MkhMMUgwNjBoTDBFVkU5c01Ga3lyUVlveWdKNjZIbUJCbUZYOV9oeTNoT2dEU1hCamFyaWE4NzQtdHg4Y18wc3VYZ1BGcy040gHAAUFVX3lxTE9TaW4zakJtc015UHI1Z3d0Y2RiMU9kT0UzWHBXZWh6bFNDY1lDY2dqN1FDY0cyZWthYmw2S1dHaHQxRURiUXVOdUhKUXk0b1VxTlhUWWc1ZDMwWlYzb0xDcmpsQlN0dndiY1BZa3pJQlZhUTJhTlFKcXNkX2xkQ0tneEo3VkFIUnZieG9qYXkxTTFSMnVZYkJWcGdNRnJzbUNkazNlMW54SFhTTkFBbHFraGs3bGtkcWxTdUREd1FTeQ?oc=5",
+      "title": "Superintendencia de Bancos reporta 127 entidades financieras ‘fantasmas’: una habría estafado con USD 50 millones - Vistazo",
+      "summary": "Title: Superintendencia de Bancos reporta 127 entidades financieras ‘fantasmas’: una habría estafado con USD 50 millones",
+      "body": "Title: Superintendencia de Bancos reporta 127 entidades financieras ‘fantasmas’: una habría estafado con USD 50 millones URL Source: https://news.google.com/rss/articles/CBMiuwFBVV95cUxQNVlDam10Y2g3d1FQUXRwNjVXSXR6dVVFckVZMmtCV0Z2YVJSSnZYa19jeFNvUC12QnM5cjY4dUd3dHFZNFUxWmlMRFZoQ21rUzl1Nld4UGNlU1V5aURYdHltWk05aDZSaWRSTmRSMzkwbmJ1MkhMMUgwNjBoTDBFVkU5c01Ga3lyUVlveWdKNjZIbUJCbUZYOV9oeTNoT2dEU1hCamFyaWE4NzQtdHg4Y18wc3VYZ1BGcy040gHAAUFVX3lxTE9TaW4zakJtc015UHI1Z3d0Y2RiMU9kT0UzWHBXZWh6bFNDY1lDY2dqN1FDY0cyZWthYmw2S1dHaHQxRURiUXVOdUhKUXk0b1VxTlhUWWc1ZDMwWlYzb0xDcmpsQlN0dndiY1BZa3pJQlZhUTJhTlFKcXNkX2xkQ0tneEo3VkFIUnZieG9qYXkxTTFSMnVZYkJWcGdNRnJzbUNkazNlMW54SFhTTkFBbHFraGs3bGtkcWxTdUREd1FTeQ?oc=5 La Superintendencia de Bancos (SB) de Ecuador informó este miércoles 26 de agosto que detectó 127 \"entidades fantasmas\" entre 2025 y 2026, que no tienen autorización para hacer intermediación financiera, y",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "regulador"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "sin_ia": true,
+      "published_at": "2026-08-26T19:42:19+00:00",
+      "fecha_inferida_de_url": false,
+      "dia_editorial": "2026-08-26",
+      "fetched_at": "2026-08-28T01:10:17.724875+00:00",
+      "dia_lectura": "2026-08-27",
+      "status": "pending"
+    },
+    {
+      "id": "n_21c5c2fc42e0ef17",
+      "source_key": "news_gnews_bcrd",
+      "source_name": "Google News · BCRD y política monetaria",
+      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxNTW5POTdVSmE3UHB5emJuMS1SU0Y5R0ZCelhiVFphc3NKWUM3VTBDRVVidlRvX2pWQm9yc2p5b1VvdkRNNEo5c1NjY3lpeXczYUl5ZjZPTUFUU2hrV0Etb1ZhWkEzR1R4VXBaVFBrVHg0dFE2VWJySTRkOTRaX01tZmpVeTdsTlZqSzBqZ2VZZWxVbC1aMEdtUm13WVFnOGx1REF3VEFWVGczel80TlFUSk9uNFBLTnpUUlQ0cHliSU9WUU9aWXg0VnFHbF9HRnowZ2dwTGRJb19mTk9jbGVn0gH6AUFVX3lxTE1Lc21YMXIyTFg2NTFzRURfU2Fpd0d0RGRhMHB6TVhVWDd5TTdoSFUtdmE2TnRSWkxId1VfMWNWZ1hjSGs0YktOb01QUG1kSGpuUGJJd1lTNnJrX00tMktOZmR1cWVhenc0blM0TGpOMEJkRy1xZFlSbVpIV0RMcHNMeVA2cFBOMnJzaFR5clp3bTJ5SmF3NXV0N2p2QmR4QWdLSjBQT0JRUHdfMnpSX1g0LVItZkdVcmV1Rll3cl81ZXYyeG1HR2VmRUVwMlY4R2JFZ1BVVmNPeHBndVZJdExqcmE2YTVmV29kYkdBUE1LMDBUeWM0TWRnTnc?oc=5",
+      "title": "Más de 200,000 jóvenes dejaron de ser “ninis” en República Dominicana, según el Banco Central - Infobae",
+      "summary": "URL Source: https://news.google.com/rss/articles/CBMi3wFBVV95cUxNTW5POTdVSmE3UHB5emJuMS1SU0Y5R0ZCelhiVFphc3NKWUM3VTBDRVVidlRvX2pWQm9yc2p5b1VvdkRNNEo5c1NjY3lpeXczYUl5ZjZPTUFUU2hrV0Etb1ZhWkEzR1R4VXBaVFBrVHg0dFE2VWJySTRkOTRaX01tZmpVeTdsTlZqSzBqZ2VZZWxVbC1aMEdtUm13WVFnOGx1REF3VEFWVGczel80TlFUSk9uNFBLTnpUUlQ0cHliSU9WUU9aWXg0VnFHbF9HRnowZ2dwTGRJb19mTk9jbGVn0gH6AUFVX3lxTE1Lc21YMXIyTFg2NTFzRURfU2Fpd0d0RGR",
+      "body": "URL Source: https://news.google.com/rss/articles/CBMi3wFBVV95cUxNTW5POTdVSmE3UHB5emJuMS1SU0Y5R0ZCelhiVFphc3NKWUM3VTBDRVVidlRvX2pWQm9yc2p5b1VvdkRNNEo5c1NjY3lpeXczYUl5ZjZPTUFUU2hrV0Etb1ZhWkEzR1R4VXBaVFBrVHg0dFE2VWJySTRkOTRaX01tZmpVeTdsTlZqSzBqZ2VZZWxVbC1aMEdtUm13WVFnOGx1REF3VEFWVGczel80TlFUSk9uNFBLTnpUUlQ0cHliSU9WUU9aWXg0VnFHbF9HRnowZ2dwTGRJb19mTk9jbGVn0gH6AUFVX3lxTE1Lc21YMXIyTFg2NTFzRURfU2Fpd0d0RGRhMHB6TVhVWDd5TTdoSFUtdmE2TnRSWkxId1VfMWNWZ1hjSGs0YktOb01QUG1kSGpuUGJJd1lTNnJrX00tMktOZmR1cWVhenc0blM0TGpOMEJkRy1xZFlSbVpIV0RMcHNMeVA2cFBOMnJzaFR5clp3bTJ5SmF3NXV0N2p2QmR4QWdLSjBQT0JRUHdfMnpSX1g0LVItZkdVcmV1Rll3cl81ZXYyeG1HR2VmRUVwMlY4R2JFZ1BVVmNPeHBndVZJdExqcmE2YTVmV29kYkdBUE1LMDBUeWM0TWRnTnc?oc=5 La Presidencia de la República Dominicana atribuyó la caída de más de 11 puntos porcentuales a políticas de empleo y expansión educativa Cuatro estudiantes dominicanos interactúan en el patio de una uni",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "regulador"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "sin_ia": true,
+      "published_at": "2026-08-27T04:20:41+00:00",
+      "fecha_inferida_de_url": false,
+      "dia_editorial": "2026-08-27",
+      "fetched_at": "2026-08-28T01:10:10.052635+00:00",
+      "dia_lectura": "2026-08-27",
+      "status": "pending"
+    },
+    {
+      "id": "n_ca26fafc4f6aef5d",
+      "source_key": "news_extra_msynflyf",
+      "source_name": "Fuente guardada",
+      "url": "https://www.fxstreet.es/news/19-la-inflacion-del-ipc-de-tokio-en-japon-sube-en-agosto-202608272331",
+      "title": "1.9%: La inflación del IPC de Tokio en Japón sube en agosto",
+      "summary": "This website uses a security service to protect against malicious bots. This page is displayed while the website verifies you are not a bot.",
+      "body": "This website uses a security service to protect against malicious bots. This page is displayed while the website verifies you are not a bot.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "politica_monetaria",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "sin_ia": true,
+      "published_at": "2026-08-27T23:31:55+00:00",
+      "fecha_inferida_de_url": false,
+      "dia_editorial": "2026-08-27",
+      "fetched_at": "2026-08-28T01:08:45.332876+00:00",
+      "dia_lectura": "2026-08-27",
+      "status": "pending"
+    },
+    {
+      "id": "n_cb667b022d7cda20",
+      "source_key": "news_extra_msynflyf",
+      "source_name": "Fuente guardada",
+      "url": "https://www.fxstreet.es/news/el-yen-japones-se-fortalece-mientras-la-inflacion-subyacente-del-ipc-de-tokio-refuerza-la-posibilidad-de-una-subida-de-tipos-del-boj-202608280054",
+      "title": "El Yen japonés se fortalece mientras la inflación subyacente del IPC de Tokio refuerza la posibilidad de una subida de tipos del BoJ",
+      "summary": "URL Source: https://www.fxstreet.es/news/el-yen-japones-se-fortalece-mientras-la-inflacion-subyacente-del-ipc-de-tokio-refuerza-la-posibilidad-de-una-subida-de-tipos-del-boj-202608280054",
+      "body": "URL Source: https://www.fxstreet.es/news/el-yen-japones-se-fortalece-mientras-la-inflacion-subyacente-del-ipc-de-tokio-refuerza-la-posibilidad-de-una-subida-de-tipos-del-boj-202608280054 This website uses a security service to protect against malicious bots. This page is displayed while the website verifies you are not a bot.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "politica_monetaria"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "sin_ia": true,
+      "published_at": "2026-08-28T00:54:08+00:00",
+      "fecha_inferida_de_url": false,
+      "dia_editorial": "2026-08-27",
+      "fetched_at": "2026-08-28T01:08:42.217533+00:00",
+      "dia_lectura": "2026-08-27",
+      "status": "pending"
+    },
+    {
+      "id": "n_fd11440e841af757",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/377926/aduanas-eleva-a-mas-de-700-las-empresas-certificadas-como-operadores-autorizados",
+      "title": "Aduanas eleva a más de 700 las empresas certificadas como operadores autorizados",
+      "summary": "La Dirección General de Aduanas ha incrementado significativamente el número de empresas certificadas como Operadores Económicos Autorizados (OEA), pasando de 303 en 2020 a más de 700 en 2026. Este crecimiento del 130% refleja una mayor confianza y facilitación comercial para empresas que demuestran cumplimiento y transparencia.",
+      "body": "La Dirección General de Aduanas (DGA) ha expandido su programa de Operadores Económicos Autorizados (OEA), certificando a más de 700 empresas para 2026, un aumento considerable desde las 303 registradas en 2020. Este avance, superior al 130%, busca fortalecer la alianza entre el sector público y privado mediante la seguridad, transparencia y buenas prácticas, facilitando así el comercio.",
+      "category": "Economia",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "sin_ia": false,
+      "published_at": "2026-08-27T19:52:14+00:00",
+      "fecha_inferida_de_url": false,
+      "dia_editorial": "2026-08-27",
+      "fetched_at": "2026-08-28T01:04:12.142862+00:00",
+      "dia_lectura": "2026-08-27",
+      "status": "pending"
     },
     {
       "id": "n_b68b61e467128412",
@@ -338,6 +452,18 @@
   "discarded_count": 60,
   "discarded": [
     {
+      "id": "n_1ede9869f0f7a078",
+      "motivo": "relevancia_baja",
+      "motivo_texto": "El modelo le puso poca relevancia financiera",
+      "title": "Municipio SDO cuenta con cerca de 5,100 empresas, la mayoría mipymes",
+      "url": "https://eldinero.com.do/377920/municipio-sdo-cuenta-con-cerca-de-5100-empresas-la-mayoria-mipymes",
+      "source_name": "El Dinero · Finanzas",
+      "relevance": 5,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-28T01:04:06.202486+00:00"
+    },
+    {
       "id": "n_ea5b3584d35a266a",
       "motivo": "relevancia_baja",
       "motivo_texto": "El modelo le puso poca relevancia financiera",
@@ -347,7 +473,19 @@
       "relevance": 5,
       "señales": [],
       "detalle": "",
-      "fetched_at": "2026-08-27T22:44:02.580674+00:00"
+      "fetched_at": "2026-08-28T01:04:23.848991+00:00"
+    },
+    {
+      "id": "n_f257aedb2aa38e21",
+      "motivo": "relevancia_baja",
+      "motivo_texto": "El modelo le puso poca relevancia financiera",
+      "title": "OMI pide evitar el estrecho de Ormuz ante riesgos para el comercio",
+      "url": "https://eldinero.com.do/377915/omi-pide-evitar-el-estrecho-de-ormuz-ante-riesgos-para-el-comercio",
+      "source_name": "El Dinero · Finanzas",
+      "relevance": 5,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-28T01:05:08.316719+00:00"
     },
     {
       "id": "n_6284074ae0bec08e",
@@ -422,40 +560,112 @@
       "fetched_at": "2026-08-27T22:46:46.669968+00:00"
     },
     {
-      "id": "n_f8854a3854536955",
-      "motivo": "modelo_irrelevante",
-      "motivo_texto": "El modelo la marco como no noticiosa",
-      "title": "Dictan prisión preventiva a Nino Dólar por accidente donde murieron padre e hija",
-      "url": "https://www.diariolibre.com/actualidad/justicia/2026/08/27/dictan-prision-a-nino-dolar-por-accidente-donde-murieron-dos-personas/3641371",
+      "id": "n_3c1643d388e7033c",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Promipyme entrega RD$55 millones en créditos a emprendedores de San José de Ocoa",
+      "url": "https://eldinero.com.do/377923/promipyme-entrega-rd55-millones-en-creditos-a-emprendedores-de-san-jose-de-ocoa",
+      "source_name": "El Dinero · Finanzas",
+      "relevance": null,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-28T01:08:00.180806+00:00"
+    },
+    {
+      "id": "n_a9d8d5b6445d50c8",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Abinader aboga por libre competencia en telecomunicaciones para reducir tarifas",
+      "url": "https://eldinero.com.do/377918/abinader-aboga-por-libre-competencia-en-telecomunicaciones-para-reducir-tarifas",
+      "source_name": "El Dinero · Finanzas",
+      "relevance": null,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-08-28T01:08:00.220730+00:00"
+    },
+    {
+      "id": "n_5e8c301ed0063649",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Muerte de madre dominicana en El Bronx fue apuñalada",
+      "url": "https://www.diariolibre.com/usa/actualidad/2026/08/27/muerte-de-madre-dominicana-en-el-bronx-fue-apunalada/3641591",
       "source_name": "Diario Libre · Economía",
-      "relevance": 0,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-27T22:44:51.507941+00:00"
-    },
-    {
-      "id": "n_66e4cff80254f5e4",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Precio del dólar hoy jueves 27 de agosto de 2026 en RD",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-27-de-agosto-2026",
-      "source_name": "El Caribe · Dinero",
       "relevance": null,
       "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-27T22:50:00.356840+00:00"
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-08-28T01:08:03.940342+00:00"
     },
     {
-      "id": "n_df90e07eae98826c",
+      "id": "n_52136fc82617ab45",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Permisología le dio mayor impulso a la construcción",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/permisologia-le-dio-mayor-impulso-a-la-construccion",
-      "source_name": "El Caribe · Dinero",
+      "title": "Reconocimiento a Frank Moya Pons Academia Dominicana de Historia",
+      "url": "https://www.diariolibre.com/politica/gobierno/2026/08/27/reconocimiento-a-frank-moya-pons-academia-dominicana-de-historia/3641569",
+      "source_name": "Diario Libre · Economía",
       "relevance": null,
       "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-27T22:50:00.357925+00:00"
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-08-28T01:08:04.365538+00:00"
+    },
+    {
+      "id": "n_4c76bb4e13e9bb63",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Corales Galápagos revelan episodios de El Niño intensificados",
+      "url": "https://www.diariolibre.com/planeta/medioambiente/2026/08/27/corales-galapagos-revelan-episodios-de-el-nino-intensificados/3641561",
+      "source_name": "Diario Libre · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-08-28T01:08:04.783811+00:00"
+    },
+    {
+      "id": "n_2a8f75b62655a49f",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Lluvias de la tormenta tropical Dolly en República Dominicana",
+      "url": "https://www.diariolibre.com/planeta/clima/2026/08/27/lluvias-de-la-tormenta-tropical-dolly-en-republica-dominicana/3641578",
+      "source_name": "Diario Libre · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-08-28T01:08:09.213859+00:00"
+    },
+    {
+      "id": "n_a6e2550647f6faa7",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Proyecto de ley para modificar Ley 47-20 en Senado",
+      "url": "https://www.diariolibre.com/politica/congreso-nacional/2026/08/27/proyecto-de-ley-para-modificar-ley-47-20-en-senado/3641489",
+      "source_name": "Diario Libre · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-08-28T01:08:09.796053+00:00"
+    },
+    {
+      "id": "n_4a5f859af3a1d72d",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "El decreto que confirma a Joel Santos en el CUED y Energía y Minas",
+      "url": "https://www.diariolibre.com/politica/gobierno/2026/08/27/el-decreto-que-confirma-a-joel-santos-en-el-cued-y-energia-y-minas/3641370",
+      "source_name": "Diario Libre · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-08-28T01:08:10.989507+00:00"
+    },
+    {
+      "id": "n_c2891eb6cd4acea8",
+      "motivo": "vieja",
+      "motivo_texto": "Publicada fuera del dia editorial en curso",
+      "title": "Hacienda y Economía ha pagado RD$1,358 millones en indemnización a 1,449 policías retirados en 2025",
+      "url": "https://www.hacienda.gob.do/hacienda-y-economia-ha-pagado-rd1358-millones-en-indemnizacion-a-1449-policias-retirados-en-2025",
+      "source_name": "Fuente guardada",
+      "relevance": null,
+      "señales": [],
+      "detalle": "el feed la fecha 2026-08-25, ventana 2026-08-26 a 2026-08-27",
+      "fetched_at": "2026-08-28T01:08:37.684130+00:00"
     },
     {
       "id": "n_0e542df2c47a7447",
@@ -467,7 +677,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-21, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:50:24.160373+00:00"
+      "fetched_at": "2026-08-28T01:08:37.684235+00:00"
     },
     {
       "id": "n_64986b5c8ce33039",
@@ -479,7 +689,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-21, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:50:24.160448+00:00"
+      "fetched_at": "2026-08-28T01:08:37.684335+00:00"
     },
     {
       "id": "n_b4f59bb16aa2e285",
@@ -491,7 +701,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-19, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:50:24.160516+00:00"
+      "fetched_at": "2026-08-28T01:08:37.684431+00:00"
     },
     {
       "id": "n_d795cccbcbcf6e94",
@@ -503,7 +713,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-17, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:50:24.160582+00:00"
+      "fetched_at": "2026-08-28T01:08:37.684528+00:00"
     },
     {
       "id": "n_75034d8c12e71ce9",
@@ -515,7 +725,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-13, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:50:24.160645+00:00"
+      "fetched_at": "2026-08-28T01:08:37.684625+00:00"
     },
     {
       "id": "n_8abf1508b635b6f0",
@@ -527,7 +737,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-06, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:50:24.160707+00:00"
+      "fetched_at": "2026-08-28T01:08:37.684723+00:00"
     },
     {
       "id": "n_0adf83e3a65d23f3",
@@ -539,7 +749,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-04, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:50:24.160767+00:00"
+      "fetched_at": "2026-08-28T01:08:37.684832+00:00"
     },
     {
       "id": "n_4efc50dd31c6dec7",
@@ -551,31 +761,43 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-03, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:50:24.160827+00:00"
+      "fetched_at": "2026-08-28T01:08:37.684949+00:00"
     },
     {
-      "id": "n_c00cc5e797b5d9da",
+      "id": "n_40913c4520b7cd18",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "El Yen japonés obtiene su subida independientemente de lo que marque el IPC de Tokio",
-      "url": "https://www.fxstreet.es/news/el-yen-japones-obtiene-su-subida-independientemente-de-lo-que-marque-el-ipc-de-tokio-202608272155",
+      "title": "Irán dice que prepara una lista de condiciones para abrir el Estrecho de Ormuz",
+      "url": "https://www.fxstreet.es/news/iran-dice-que-prepara-una-lista-de-condiciones-para-abrir-el-estrecho-de-ormuz-202608272349",
       "source_name": "Fuente guardada",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:50:35.331981+00:00"
+      "fetched_at": "2026-08-28T01:08:42.195579+00:00"
     },
     {
-      "id": "n_12dff514272d5b8b",
+      "id": "n_7143b8a225839a67",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "El Dólar australiano alcanza un máximo de tres meses por el sentimiento de apetito por el riesgo, foco en Warsh",
-      "url": "https://www.fxstreet.es/news/el-dolar-australiano-alcanza-un-maximo-de-tres-meses-por-el-sentimiento-de-apetito-por-el-riesgo-foco-en-warsh-202608272247",
+      "title": "El WTI se mantiene por encima de 82.50$ en medio del aumento de las tensiones entre el Reino Unido y Rusia",
+      "url": "https://www.fxstreet.es/news/el-wti-se-mantiene-por-encima-de-8250-en-medio-del-aumento-de-las-tensiones-entre-el-reino-unido-y-rusia-202608280102",
       "source_name": "Fuente guardada",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:50:35.528510+00:00"
+      "fetched_at": "2026-08-28T01:08:43.062526+00:00"
+    },
+    {
+      "id": "n_e19924ed88607061",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "El Euro mantiene una modesta demanda por encima de 1.1650 antes del Simposio de Jackson Hole",
+      "url": "https://www.fxstreet.es/news/el-euro-mantiene-una-modesta-demanda-por-encima-de-11650-antes-del-simposio-de-jackson-hole-202608272329",
+      "source_name": "Fuente guardada",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-08-28T01:08:44.586639+00:00"
     },
     {
       "id": "n_c2a6113d2d39e885",
@@ -587,103 +809,31 @@
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:50:35.882252+00:00"
+      "fetched_at": "2026-08-28T01:08:44.846265+00:00"
     },
     {
-      "id": "n_29dc759b079233da",
+      "id": "n_e6ac4d525b0dad85",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Oro se mantiene firme por encima de 4.600$ mientras se avecina el discurso de Warsh",
-      "url": "https://www.fxstreet.es/news/el-oro-sube-a-medida-que-la-caida-de-los-rendimientos-compensa-los-comentarios-de-linea-dura-de-la-fed-202608271743",
-      "source_name": "Fuente guardada",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:50:37.884932+00:00"
-    },
-    {
-      "id": "n_ea82a9eb68e0bd7c",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "La Libra esterlina británica toma prestado un mes que no se ganó",
-      "url": "https://www.fxstreet.es/news/la-libra-esterlina-britanica-toma-prestado-un-mes-que-no-se-gano-202608272132",
-      "source_name": "Fuente guardada",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:50:38.819048+00:00"
-    },
-    {
-      "id": "n_d74aaa2fc7dfe618",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "China: Pekín equilibra la respuesta a los aranceles y el diálogo – BNY",
-      "url": "https://www.fxstreet.es/news/china-pekin-equilibra-la-respuesta-a-los-aranceles-y-el-dialogo-bny-202608272139",
-      "source_name": "Fuente guardada",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:50:41.393122+00:00"
-    },
-    {
-      "id": "n_1ede9869f0f7a078",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Municipio SDO cuenta con cerca de 5,100 empresas, la mayoría mipymes",
-      "url": "https://eldinero.com.do/377920/municipio-sdo-cuenta-con-cerca-de-5100-empresas-la-mayoria-mipymes",
+      "title": "Gonell Cosme: “La propiedad intelectual debe ser un eje transversal de las políticas públicas”",
+      "url": "https://eldinero.com.do/377912/gonell-cosme-la-propiedad-intelectual-debe-ser-un-eje-transversal-de-las-politicas-publicas",
       "source_name": "El Dinero · RSS",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:50:48.356559+00:00"
+      "fetched_at": "2026-08-28T01:08:55.165401+00:00"
     },
     {
-      "id": "n_fd11440e841af757",
+      "id": "n_da6504f03060099c",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Aduanas eleva a más de 700 las empresas certificadas como operadores autorizados",
-      "url": "https://eldinero.com.do/377926/aduanas-eleva-a-mas-de-700-las-empresas-certificadas-como-operadores-autorizados",
-      "source_name": "El Dinero · RSS",
+      "title": "Muerte de bebés en maternidad: ¿qué se sabe hasta ahora y cuáles preguntas siguen abiertas?",
+      "url": "https://hoy.com.do/el-pais/muerte-bebes-maternidad-preguntas-siguen-abiertas_1100325.html",
+      "source_name": "Hoy Digital · Economía",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:50:49.020787+00:00"
-    },
-    {
-      "id": "n_3c1643d388e7033c",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Promipyme entrega RD$55 millones en créditos a emprendedores de San José de Ocoa",
-      "url": "https://eldinero.com.do/377923/promipyme-entrega-rd55-millones-en-creditos-a-emprendedores-de-san-jose-de-ocoa",
-      "source_name": "El Dinero · RSS",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:50:49.254075+00:00"
-    },
-    {
-      "id": "n_f257aedb2aa38e21",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "OMI pide evitar el estrecho de Ormuz ante riesgos para el comercio",
-      "url": "https://eldinero.com.do/377915/omi-pide-evitar-el-estrecho-de-ormuz-ante-riesgos-para-el-comercio",
-      "source_name": "El Dinero · RSS",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:50:49.780472+00:00"
-    },
-    {
-      "id": "n_a9d8d5b6445d50c8",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Abinader aboga por libre competencia en telecomunicaciones para reducir tarifas",
-      "url": "https://eldinero.com.do/377918/abinader-aboga-por-libre-competencia-en-telecomunicaciones-para-reducir-tarifas",
-      "source_name": "El Dinero · RSS",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:50:50.079099+00:00"
+      "fetched_at": "2026-08-28T01:09:04.184370+00:00"
     },
     {
       "id": "n_0f5b84a947319840",
@@ -695,43 +845,19 @@
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:50:59.233249+00:00"
+      "fetched_at": "2026-08-28T01:09:04.286530+00:00"
     },
     {
-      "id": "n_7ecc14e7622293a8",
+      "id": "n_acf66ef7bba30050",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Raquel Peña anuncia medidas tras las muertes de bebés en la Maternidad La Altagracia",
-      "url": "https://hoy.com.do/el-pais/raquel-pena-anuncia-medidas-muertes-bebes-maternidad-altagracia_1100293.html",
+      "title": "Senado recibe anteproyecto para reformar la Ley de Alianzas Público-Privadas",
+      "url": "https://hoy.com.do/el-pais/senado-recibe-anteproyecto-reformar-ley-alianzas-publico-privadas_1100340.html",
       "source_name": "Hoy Digital · Economía",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:50:59.360866+00:00"
-    },
-    {
-      "id": "n_ac49179273e7d984",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Agosto concentra más nacimientos prematuros: ¿qué explica este fenómeno?",
-      "url": "https://hoy.com.do/el-pais/agosto-concentra-nacimientos-prematuros-explica-fenomeno_1100309.html",
-      "source_name": "Hoy Digital · Economía",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:51:01.365013+00:00"
-    },
-    {
-      "id": "n_dc40430fd75dc900",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "DIGESETT investiga a agente por presunta negativa a usar cámara corporal",
-      "url": "https://hoy.com.do/el-pais/digesett-investiga-agente-presunta-negativa-camara-corporal_1100295.html",
-      "source_name": "Hoy Digital · Economía",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:51:01.889277+00:00"
+      "fetched_at": "2026-08-28T01:09:05.009063+00:00"
     },
     {
       "id": "n_b5c0a663bc1e882c",
@@ -743,91 +869,103 @@
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:51:07.650338+00:00"
+      "fetched_at": "2026-08-28T01:09:10.805468+00:00"
     },
     {
-      "id": "n_bdec011cc1b08c84",
+      "id": "n_dc40430fd75dc900",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Imponen dos meses de prisión preventiva a \"Nino Dollar\" por muerte de dos personas",
-      "url": "https://hoy.com.do/el-pais/imponen-dos-meses-prision-preventiva-nino-dollar-muerte-dos-personas_1100323.html",
+      "title": "DIGESETT investiga a agente por presunta negativa a usar cámara corporal",
+      "url": "https://hoy.com.do/el-pais/digesett-investiga-agente-presunta-negativa-camara-corporal_1100295.html",
       "source_name": "Hoy Digital · Economía",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:51:08.544003+00:00"
+      "fetched_at": "2026-08-28T01:09:12.411244+00:00"
     },
     {
-      "id": "n_21ad72305f0513d7",
+      "id": "n_502f86c0f35a3a29",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "DNCD decomisa más de 19 mil gramos de drogas en La Romana, La Altagracia y El Seibo y arresta a 113 personas",
-      "url": "https://eldia.com.do/dncd-decomisa-mas-de-19-mil-gramos-de-drogas-en-la-romana-la-altagracia-y-el-seibo-y-arresta-a-113-personas",
+      "title": "Premios Fundación Corripio 2026: estos son los ganadores",
+      "url": "https://hoy.com.do/vivir/premios-corripio_1100329.html",
+      "source_name": "Hoy Digital · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-08-28T01:09:12.610297+00:00"
+    },
+    {
+      "id": "n_360f01f70feecf11",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Geriatra alerta sobre el impacto físico y emocional de cuidar a un adulto mayor",
+      "url": "https://eldia.com.do/geriatra-alerta-sobre-el-impacto-fisico-y-emocional-de-cuidar-a-un-adulto-mayor",
       "source_name": "El Día · Económicas",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:51:27.160833+00:00"
+      "fetched_at": "2026-08-28T01:09:30.320474+00:00"
     },
     {
-      "id": "n_22ee8f9114e72ed9",
+      "id": "n_1e23da3679108883",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Cómo afecta a los dominicanos la pausa de citas para visas de inmigrante de Estados Unidos",
-      "url": "https://eldia.com.do/como-afecta-a-los-dominicanos-la-pausa-de-citas-para-visas-de-inmigrante",
+      "title": "Comisionado de Béisbol agradece a Abinader decreto establece reglamento béisbol",
+      "url": "https://eldia.com.do/comisionado-de-beisbol-agradece-a-abinader-decreto-establece-reglamento-beisbol",
       "source_name": "El Día · Económicas",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:51:27.715624+00:00"
+      "fetched_at": "2026-08-28T01:09:30.489450+00:00"
     },
     {
-      "id": "n_4e7baaa07c230504",
+      "id": "n_a0282f3b1fc80a6f",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Estadio Félix Sánchez será utilizado solo para competiciones de alto nivel",
-      "url": "https://eldia.com.do/estadio-felix-sanchez-sera-utilizado-solo-para-competiciones-de-alto-nivel",
+      "title": "Más allá de las mochilas transparentes: ¿cómo se combate la violencia escolar?",
+      "url": "https://eldia.com.do/mas-alla-de-las-mochilas-transparentes-como-se-combate-la-violencia-escolar",
       "source_name": "El Día · Económicas",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:51:27.908948+00:00"
+      "fetched_at": "2026-08-28T01:09:31.033625+00:00"
     },
     {
-      "id": "n_d940ddd770df6ef3",
+      "id": "n_4e68f0167c2d6c97",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "El Seibo abre sus archivos para redescubrir su historia y patrimonio",
-      "url": "https://eldia.com.do/el-seibo-abre-sus-archivos-para-redescubrir-su-historia-y-patrimonio",
+      "title": "ACOPROVI advierte ajuste salarial elevaría 6% el costo de las viviendas",
+      "url": "https://eldia.com.do/acoprovi-advierte-ajuste-salarial-elevaria-6-el-costo-de-las-viviendas",
       "source_name": "El Día · Económicas",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:51:33.613383+00:00"
+      "fetched_at": "2026-08-28T01:09:38.812049+00:00"
     },
     {
-      "id": "n_1832d9942293475a",
+      "id": "n_b01606ee1774d791",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "República Dominicana destaca capacidad y talento de América Latina y el Caribe para enfrentar desafíos",
-      "url": "https://eldia.com.do/republica-dominicana-destaca-capacidad-y-talento-de-america-latina-y-el-caribe-para-enfrentar-desafios",
+      "title": "Ambientalista llama reflexionar y cuidar recursos naturales ante tragedia de Himalaya",
+      "url": "https://eldia.com.do/ambientalista-llama-reflexionar-y-cuidar-recursos-naturales-ante-tragedia-de-himalaya",
       "source_name": "El Día · Económicas",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:51:36.234326+00:00"
+      "fetched_at": "2026-08-28T01:09:41.344626+00:00"
     },
     {
-      "id": "n_237fafcbafae0564",
+      "id": "n_2ab62992c2caecb4",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Unos 3 homicidios por día se registran en el país; la conflictividad social es la principal causa",
-      "url": "https://eldia.com.do/unos-3-homicidios-por-dia-se-registran-en-el-pais-la-conflictividad-social-es-la-principal-causa",
+      "title": "Fundación Corripio anuncia los galardonados de sus premios 2026",
+      "url": "https://eldia.com.do/fundacion-corripio-anuncia-los-galardonados-de-sus-premios-2026",
       "source_name": "El Día · Económicas",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-27T22:51:39.038334+00:00"
+      "fetched_at": "2026-08-28T01:09:42.627136+00:00"
     },
     {
       "id": "n_a61a086618bc3767",
@@ -839,7 +977,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-07, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.733831+00:00"
+      "fetched_at": "2026-08-28T01:10:02.171317+00:00"
     },
     {
       "id": "n_86fc6ce7c3195b33",
@@ -851,7 +989,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-24, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.733929+00:00"
+      "fetched_at": "2026-08-28T01:10:02.171424+00:00"
     },
     {
       "id": "n_0682980091795409",
@@ -863,7 +1001,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-25, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.734070+00:00"
+      "fetched_at": "2026-08-28T01:10:02.171551+00:00"
     },
     {
       "id": "n_c458cdd5c1138df7",
@@ -875,7 +1013,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-07-17, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.734146+00:00"
+      "fetched_at": "2026-08-28T01:10:02.171646+00:00"
     },
     {
       "id": "n_77fee8a51fec2949",
@@ -887,7 +1025,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-07-24, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.734221+00:00"
+      "fetched_at": "2026-08-28T01:10:02.171749+00:00"
     },
     {
       "id": "n_8aa83c84c7d83828",
@@ -899,7 +1037,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-07-10, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.734289+00:00"
+      "fetched_at": "2026-08-28T01:10:02.171844+00:00"
     },
     {
       "id": "n_fd5bb9cb7c09fe12",
@@ -911,7 +1049,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-09, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.734375+00:00"
+      "fetched_at": "2026-08-28T01:10:02.171944+00:00"
     },
     {
       "id": "n_d24a4bebc39e03c1",
@@ -923,7 +1061,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-24, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.734469+00:00"
+      "fetched_at": "2026-08-28T01:10:02.172082+00:00"
     },
     {
       "id": "n_f59350c2194dd4df",
@@ -935,7 +1073,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-21, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.734557+00:00"
+      "fetched_at": "2026-08-28T01:10:02.172180+00:00"
     },
     {
       "id": "n_bc864ff904404a71",
@@ -947,7 +1085,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-08, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.734669+00:00"
+      "fetched_at": "2026-08-28T01:10:02.172281+00:00"
     },
     {
       "id": "n_bc8531a50bd2aeed",
@@ -959,7 +1097,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-05-27, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.734776+00:00"
+      "fetched_at": "2026-08-28T01:10:02.172376+00:00"
     },
     {
       "id": "n_1ee417ee2203afec",
@@ -971,7 +1109,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-07-31, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.734892+00:00"
+      "fetched_at": "2026-08-28T01:10:02.172476+00:00"
     },
     {
       "id": "n_9f8479dff3899da4",
@@ -983,7 +1121,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-10, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.734975+00:00"
+      "fetched_at": "2026-08-28T01:10:02.172574+00:00"
     },
     {
       "id": "n_8143b2519ed88cba",
@@ -995,55 +1133,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-10, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.735092+00:00"
-    },
-    {
-      "id": "n_9002670803976fff",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Precio del dólar hoy en República Dominicana: martes 4 de agosto de 2026 - Acento",
-      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQYXFXRFBlQUtMeWlaeUUzaWx2QmdROVpfWGM3WXhSWjV5WFBTeENLOE9hYzlJNjRpT1JISXBqV2Zpbjc0bmhpZmtPcm1HWUI0bzFDakdPakF2VnhoSlcwOUJrQkNZZnlnWF9rM1A2Zk9zSkc0Sk42cFZFaTMzRTFCcFd6QUg3ZzlRSXhPWXFOTm1DeDBOa1R6Vk9SdHlSX0xKMmI1VzVCeXZiRkJvOHRRbEx0STBWZ9IBtgFBVV95cUxQYXFXRFBlQUtMeWlaeUUzaWx2QmdROVpfWGM3WXhSWjV5WFBTeENLOE9hYzlJNjRpT1JISXBqV2Zpbjc0bmhpZmtPcm1HWUI0bzFDakdPakF2VnhoSlcwOUJrQkNZZnlnWF9rM1A2Zk9zSkc0Sk42cFZFaTMzRTFCcFd6QUg3ZzlRSXhPWXFOTm1DeDBOa1R6Vk9SdHlSX0xKMmI1VzVCeXZiRkJvOHRRbEx0STBWZw?oc=5",
-      "source_name": "Google News · BCRD y política monetaria",
-      "relevance": null,
-      "señales": [],
-      "detalle": "el feed la fecha 2026-08-04, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.735165+00:00"
-    },
-    {
-      "id": "n_ce07f264b8e9d8ea",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "República Dominicana: Remesas suben 6.7% en el primer semestre y suman USD 6,219.3 millones, según el Banco Central - Infobae",
-      "url": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxOZXFLd0lXMTc3Wll4c05IZURic1B4UjFjMjhLWjVCRnJpTUo1bXJPYU5SLWNKX2xYZkc5c1pqZGhtRndiV0VNRktYaVE3bkxSa3V6TWZHQ1dYeFFTQ1BvLTFkQ1NoaFNNcXB5X3ZHblJIM3BHSVJNS203VVgySzlhQW9mbElOR0QyOUNCaTcwTjJvU0RfcC1WaVhNT0NaRjdRckU2cFFvVnJ4M2IybGE2Z2ZJeThLaHVrR2hOelVHN1ZONlhDUDBfbFdjQVQtUFhmWTFkbWJIOFRIUE5DX09FSmZERkdNaHhCVlFSWjRFQ2J2SnBuVm9QX3hn0gGUAkFVX3lxTFBGMFdHNDhwakFINm1pbFBwWGp6VVlVQXd2XzByRHJWQ1pRWWVTbFB5T2FZY3BRSG5NQ1JkbFBUNG5DNktVU3hlUU4taWVpbTlzVHJvQVk2VGZreExrQ29TV0NDN2VvQzdhcUVtVHIzYUZqeUkzRFdkU2hxaDdia0NLT0xKaWVfWWYxUFpMM25XOUtKX2VlU2FYZ1ZSMU53WG9CQkdNWU83NjdQdXpLbFEtY3hGZDNfWWpybzFTeE1BWk9SZXNjYTA0LXVGSmxYaGR1N3pJUDBhVE92VkVFZDlybHJUdC04cHF4czlocXh6SlUtRDNUb0lnbk04d2NCb3k0Y0kzc1djaF9tT052Yjk3dlVPTQ?oc=5",
-      "source_name": "Google News · BCRD y política monetaria",
-      "relevance": null,
-      "señales": [],
-      "detalle": "el feed la fecha 2026-07-10, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.735237+00:00"
-    },
-    {
-      "id": "n_0d0d34abc9ee54e3",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "La inflación interanual de República Dominicana sube a 5.11 % en abril, según datos del Banco Central - Infobae",
-      "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxNUWUtSm5OUWxpdU9zWlZMcFQ5cmhXMzh2YlN6YnB3NTFEeTZYMzdpbmRzTW9rYVpEaDFwOGNVVW1xUXRwZ1Zlem1Oak1CanlLZl9aRTJtWkIzQVFGUlkxZTVTSDRVN2FGLTdIRnROSG5ucTU1d0owWXJfbjdSMU9uZEsyN0VSS2wyUTZDWkZIblhYM1k0Q0NnUi0yMFdCcFkwdlhLcG5TZEJTUThaSkhTSnZubHZIaVpzTzlWT3VMTHhPbWt0aFRyQW5hOTJmQ3pLNlNXZmxCMV80SmkxT1RrWWQwWkpHc0xJcnfSAYQCQVVfeXFMTTdhV3ljSFFqSW03LXVLRDZyemJMMjZVR2NhTkwtSmxRSS10X05DdkVZdnZSRHBmVHBfczFSWDEzUjBlenhZdzZubl9qcnZ1UjctTVNkQVRWYjQ4b3VPSVBmanBVaW1aU0psWVJ2Y05VSHVtb0gwTlpBSEZMdkRGUGhDaDBUSzNUMHV5SWFQWmNGS3hQXy1DTkFPdlE1VndDWEZVSGowdlI1bTc5SmRLSktKQ0dOUzdOS3JkVTAwTlBWSV9GM0lqa01pQU1YNWR0R3prWW9TWXlTZHFlQVB3RjdSTGFTUWVGdDRYaDRuY0pNSExwSXhnanQ3emJXblg1dXVzazk?oc=5",
-      "source_name": "Google News · BCRD y política monetaria",
-      "relevance": null,
-      "señales": [],
-      "detalle": "el feed la fecha 2026-05-16, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.735308+00:00"
-    },
-    {
-      "id": "n_a96de7975d1d0149",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Banco Central de la República Dominicana mantiene la tasa de política monetaria en 5.25 % anual ante la volatilidad global - Infobae",
-      "url": "https://news.google.com/rss/articles/CBMihwJBVV95cUxPSmJOQ2N5amNuN1lQT3ItMGI5c0J6cmxZRzBDbFkyeFByOHI1eXhlRnMzbDhUQVJMc1NwcVRvNVc1RTRqZkIyWlNjc2Y2YVZIc1FKZng0SlNDNUtCcUE4Q3hGejJfaUktaHEySDMyd0QxMEhmZXRrWXdUMnZ1QUVCaE1mMU1rWlFPWDZpM3ZNTjhFUU8tOXZCVHFaTUhfakQxMDlYRFNEQ2RhOXdHTEx5T3RqTVA5dnE1dGJtOHUwY19iRjc0WmtRZ2xlOG13QklndkEySDllby1VZUNXd1FhOE1mMXZnSDZtdjV3NjFxamJXeGtxZmtKRmkxS0pYTVVacjlJeURPMNIBogJBVV95cUxOWlVwcHY0SkVpeVY1ZUdNb2Z1UF9YcUEtZ1lBRmNJOV93endNVERjUWNLYUlQeHdrZm1NYm1KUEh1aDdEZXpLMF9MempMV3BLSmxWU1l4d0gtbmg4eE5ucGhsM0lXS291TjJubkF6OVg2WWNUbkZXOWJUeHlkVlNLdVBKamdJLVJpaW9rNnRpOUZHcU5qX0xrNVZlYmZRMjl2ZFhXN0J6MExHSGxpZENNWFF1RWhxX0lXNFc0UWx5TDdzaWppOThNWGhYUGpFU2xVdENTU1BCcVg5MjN6M29KR1dVRDV1MGtEZnR6bmp6YWd1bjF3SmhMZ2FMUldWbE4xRmMwbDJFdDNuWE01bHpleV94Y2d2bXJxV1VSQjllNFNHQQ?oc=5",
-      "source_name": "Google News · BCRD y política monetaria",
-      "relevance": null,
-      "señales": [],
-      "detalle": "el feed la fecha 2026-05-06, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.735380+00:00"
+      "fetched_at": "2026-08-28T01:10:02.172675+00:00"
     },
     {
       "id": "n_f2f1214260a5eda0",
@@ -1055,7 +1145,31 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-07-31, ventana 2026-08-26 a 2026-08-27",
-      "fetched_at": "2026-08-27T22:51:57.735446+00:00"
+      "fetched_at": "2026-08-28T01:10:02.172774+00:00"
+    },
+    {
+      "id": "n_ce07f264b8e9d8ea",
+      "motivo": "vieja",
+      "motivo_texto": "Publicada fuera del dia editorial en curso",
+      "title": "República Dominicana: Remesas suben 6.7% en el primer semestre y suman USD 6,219.3 millones, según el Banco Central - Infobae",
+      "url": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxOZXFLd0lXMTc3Wll4c05IZURic1B4UjFjMjhLWjVCRnJpTUo1bXJPYU5SLWNKX2xYZkc5c1pqZGhtRndiV0VNRktYaVE3bkxSa3V6TWZHQ1dYeFFTQ1BvLTFkQ1NoaFNNcXB5X3ZHblJIM3BHSVJNS203VVgySzlhQW9mbElOR0QyOUNCaTcwTjJvU0RfcC1WaVhNT0NaRjdRckU2cFFvVnJ4M2IybGE2Z2ZJeThLaHVrR2hOelVHN1ZONlhDUDBfbFdjQVQtUFhmWTFkbWJIOFRIUE5DX09FSmZERkdNaHhCVlFSWjRFQ2J2SnBuVm9QX3hn0gGUAkFVX3lxTFBGMFdHNDhwakFINm1pbFBwWGp6VVlVQXd2XzByRHJWQ1pRWWVTbFB5T2FZY3BRSG5NQ1JkbFBUNG5DNktVU3hlUU4taWVpbTlzVHJvQVk2VGZreExrQ29TV0NDN2VvQzdhcUVtVHIzYUZqeUkzRFdkU2hxaDdia0NLT0xKaWVfWWYxUFpMM25XOUtKX2VlU2FYZ1ZSMU53WG9CQkdNWU83NjdQdXpLbFEtY3hGZDNfWWpybzFTeE1BWk9SZXNjYTA0LXVGSmxYaGR1N3pJUDBhVE92VkVFZDlybHJUdC04cHF4czlocXh6SlUtRDNUb0lnbk04d2NCb3k0Y0kzc1djaF9tT052Yjk3dlVPTQ?oc=5",
+      "source_name": "Google News · BCRD y política monetaria",
+      "relevance": null,
+      "señales": [],
+      "detalle": "el feed la fecha 2026-07-10, ventana 2026-08-26 a 2026-08-27",
+      "fetched_at": "2026-08-28T01:10:02.172875+00:00"
+    },
+    {
+      "id": "n_0d0d34abc9ee54e3",
+      "motivo": "vieja",
+      "motivo_texto": "Publicada fuera del dia editorial en curso",
+      "title": "La inflación interanual de República Dominicana sube a 5.11 % en abril, según datos del Banco Central - Infobae",
+      "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxNUWUtSm5OUWxpdU9zWlZMcFQ5cmhXMzh2YlN6YnB3NTFEeTZYMzdpbmRzTW9rYVpEaDFwOGNVVW1xUXRwZ1Zlem1Oak1CanlLZl9aRTJtWkIzQVFGUlkxZTVTSDRVN2FGLTdIRnROSG5ucTU1d0owWXJfbjdSMU9uZEsyN0VSS2wyUTZDWkZIblhYM1k0Q0NnUi0yMFdCcFkwdlhLcG5TZEJTUThaSkhTSnZubHZIaVpzTzlWT3VMTHhPbWt0aFRyQW5hOTJmQ3pLNlNXZmxCMV80SmkxT1RrWWQwWkpHc0xJcnfSAYQCQVVfeXFMTTdhV3ljSFFqSW03LXVLRDZyemJMMjZVR2NhTkwtSmxRSS10X05DdkVZdnZSRHBmVHBfczFSWDEzUjBlenhZdzZubl9qcnZ1UjctTVNkQVRWYjQ4b3VPSVBmanBVaW1aU0psWVJ2Y05VSHVtb0gwTlpBSEZMdkRGUGhDaDBUSzNUMHV5SWFQWmNGS3hQXy1DTkFPdlE1VndDWEZVSGowdlI1bTc5SmRLSktKQ0dOUzdOS3JkVTAwTlBWSV9GM0lqa01pQU1YNWR0R3prWW9TWXlTZHFlQVB3RjdSTGFTUWVGdDRYaDRuY0pNSExwSXhnanQ3emJXblg1dXVzazk?oc=5",
+      "source_name": "Google News · BCRD y política monetaria",
+      "relevance": null,
+      "señales": [],
+      "detalle": "el feed la fecha 2026-05-16, ventana 2026-08-26 a 2026-08-27",
+      "fetched_at": "2026-08-28T01:10:02.172995+00:00"
     }
   ]
 }
