@@ -1,24 +1,155 @@
 {
-  "generated_at": "2026-08-31T19:29:50.415742+00:00",
+  "generated_at": "2026-08-31T21:40:42.476329+00:00",
   "dia_editorial": "2026-08-31",
   "zona_horaria": "UTC-4 (Santo Domingo)",
   "ventana_frescura": "2026-08-30 a 2026-08-31",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
-  "count": 14,
+  "count": 18,
   "count_by_day": {
-    "2026-08-31": 12,
+    "2026-08-31": 16,
     "2026-08-30": 2
   },
-  "new_this_run": 16,
+  "new_this_run": 7,
   "already_published": 0,
   "out_of_window": 0,
   "ttl_days": 1,
   "max_age_days": 1,
   "errors": 0,
   "sources": 19,
-  "elapsed_s": 517.3,
+  "elapsed_s": 416.1,
   "candidates": [
+    {
+      "id": "n_b07274f55f3f8f0b",
+      "source_key": "news_gnews_bcrd",
+      "source_name": "Google News · BCRD y política monetaria",
+      "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQeUQ1UHdwd3ZHR2tDYm1kVUtVSjlPREJZOG5HY1NYZ2w0S1MtRUM1Ukk2UDAwdXJOWmxjWXRtTm1WSlpKUVgzRnVhWWRiMVJPUUNCUjZtTWhMY3ctQ2NHTEhSOW02aFM3QjBQdnlYV1I4VGplbHQtS01NbUw2N1NZeS03SGRBcFdsM20w0gGQAUFVX3lxTE9ZYlZBMkVBS2tEem9uTTFFczNPemZ3UFNZa0VDbHFKa3ZXQnZEQXJnVmxralNQUHpvMVpEaDNLdzRVVHpwYW9FanhkWVV3YjdYOU03NVhrMEIwalNfYWdRRnR3SG9mYnJNVVU1Q3pOSm5ZVkZkN19ZTWFKOVJIcF9qbnV2bU9uOEYxYk4zbEJsOA?oc=5",
+      "title": "BC mantiene tasa de política monetaria en 5.25% anual - remolacha.net",
+      "summary": "URL Source: https://news.google.com/rss/articles/CBMiiwFBVV95cUxQeUQ1UHdwd3ZHR2tDYm1kVUtVSjlPREJZOG5HY1NYZ2w0S1MtRUM1Ukk2UDAwdXJOWmxjWXRtTm1WSlpKUVgzRnVhWWRiMVJPUUNCUjZtTWhMY3ctQ2NHTEhSOW02aFM3QjBQdnlYV1I4VGplbHQtS01NbUw2N1NZeS03SGRBcFdsM20w0gGQAUFVX3lxTE9ZYlZBMkVBS2tEem9uTTFFczNPemZ3UFNZa0VDbHFKa3ZXQnZEQXJnVmxralNQUHpvMVpEaDNLdzRVVHpwYW9FanhkWVV3YjdYOU03NVhrMEIwalNfYWdRRnR3SG9mYnJNVVU1Q3pOSm5ZVkZ",
+      "body": "URL Source: https://news.google.com/rss/articles/CBMiiwFBVV95cUxQeUQ1UHdwd3ZHR2tDYm1kVUtVSjlPREJZOG5HY1NYZ2w0S1MtRUM1Ukk2UDAwdXJOWmxjWXRtTm1WSlpKUVgzRnVhWWRiMVJPUUNCUjZtTWhMY3ctQ2NHTEhSOW02aFM3QjBQdnlYV1I4VGplbHQtS01NbUw2N1NZeS03SGRBcFdsM20w0gGQAUFVX3lxTE9ZYlZBMkVBS2tEem9uTTFFczNPemZ3UFNZa0VDbHFKa3ZXQnZEQXJnVmxralNQUHpvMVpEaDNLdzRVVHpwYW9FanhkWVV3YjdYOU03NVhrMEIwalNfYWdRRnR3SG9mYnJNVVU1Q3pOSm5ZVkZkN19ZTWFKOVJIcF9qbnV2bU9uOEYxYk4zbEJsOA?oc=5 El Banco Central de la República Dominicana (BCRD), en su reunión de política monetaria de agosto de 2026, decidió mantener su tasa de interés de política monetaria (TPM) en 5.25 % anual. Asimismo, la tasa de la facilidad permanente de expansión de liquidez (Repos a 1 día) permanece en 5.75 % anual, mientras la tasa de depósitos remunerados (Overnight) continúa en 4.50 % anual. ( Seguir leyendo… ) Percha es la firma de Rafael Vásquez, director editori",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "politica_monetaria"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "sin_ia": true,
+      "published_at": "2026-08-31T18:17:07+00:00",
+      "fecha_inferida_de_url": false,
+      "dia_editorial": "2026-08-31",
+      "fetched_at": "2026-08-31T21:40:04.035636+00:00",
+      "dia_lectura": "2026-08-31",
+      "status": "pending",
+      "tambien_en": [
+        {
+          "source_name": "Google News · BCRD y política monetaria",
+          "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQSU9VZV9GWExVaG1qalJwdXVfUXMwbGRCT2NXcFJjRk5HbHl1ZERLamRfVWRZMGlBMFUyWFlSWmxGYXo5TW5ncXNFWTI2YnF2Vkh6T0ZnVnpKdlBpUFlyb1hwMmpNLWRESUZuVThBT2NybC1qTzFjcHlHWnNHenUyd19WeXJyQXZmRWVad3UyWWE4ZXdXNDJsTjhhelZ6QWd1TFhTVnln0gGmAUFVX3lxTFBJT1VlX0ZYTFVobWpqUnB1dV9RczBsZEJPY1dwUmNGTkdseXVkREtqZF9VZFkwaUEwVTJYWVJabEZhejlNbmdxc0VZMjZicXZWSHpPRmdWekp2UGlQWXJvWHAyak0tZERJRm5VOEFPY3JsLWpPMWNweUdac0d6dTJ3X1Z5cnJBdmZFZVp3dTJZYThld1c0MmxOOGF6VnpBZ3VMWFNWeWc?oc=5",
+          "title": "BCRD mantiene su tasa de política monetaria en 5.25 % anual - Acento"
+        },
+        {
+          "source_name": "Google News · BCRD y política monetaria",
+          "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNWE44aFQ0R1hsTGM1YldLLXhIQ0hwMnBTNXNYTjlKTm5ZZzhYd2JYU0lPQmRNVm9TNXhVWFA2YmFJclFtbFFOSHJnRnRCbDJ6dG14OGZQNDhSZnd6TE5ZTTRjSGh1VFNrWjkzY080em94bDZCcUhoSE4yME5iMGhVQzRxaXlXVmxWU3pEdktUTE5iTlJtUGp3cGw1a3pvQXBDeXVQMmlEcVpPaW1xOVVDVFEyR1huY3JleHVjMlhUbk9ndDYwUG1SSjdn0gHPAUFVX3lxTFBIcHlZUXVNTE9Vcng1RFozUjFpZlJyemxFRk1MRXVjRXphTU00UXpTZ05hZ3FZMTh6aFRIZGFvVEZ2S0RSQkI1bWVzWmFwNkg0VUtQcXhBdVEwOVVwUE1wNXVDYTNNOUNWMnNEa0JhV0ZRMWpIQzE5Z0NOUmRscXFWYUtHMlZrOFZ3aTQ3SllrU1AzUWNDUDU1T3ZrV0MzaFM3YmVkMlV4SGFmUjFNQ0tUZkNKMkxBcGozdW93bGJWQzdrOUtzNEtrT25IaFo5cw?oc=5",
+          "title": "El Banco Central mantiene su tasa de política monetaria en 5.25 % anual - Diario Libre"
+        },
+        {
+          "source_name": "El Dinero · Finanzas",
+          "url": "https://eldinero.com.do/378182/banco-central-mantiene-su-tasa-de-politica-monetaria-en-5-25-anual-12",
+          "title": "Banco Central mantiene su tasa de política monetaria en 5.25% anual"
+        }
+      ]
+    },
+    {
+      "id": "n_b5eaf936e83eb374",
+      "source_key": "news_gnews_bcrd",
+      "source_name": "Google News · BCRD y política monetaria",
+      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQdzNSbFRzWi1iZWZWRXNxY1dlTDRKVVp2WW5OVmtWTXJRaUg3VV9qb01ISjhmbjQ2VDhnMnZEZ2hHSGgwSXVoUkkwRDFqbW85bFVXb3J0SWFoU1lXOEpUeTNORmlSeUtBZDl5bmtUUHNnRTMwZWFvZl9BZHhTWUtWd05MajdranVWWGVEd3pkWGp0bm1QSnJHcXBZSjRMY2NGOEZmVWZvRnZaWF9Sb3dOdS1kM3BNRUw2M3JfeU5ZRQ?oc=5",
+      "title": "La República Dominicana mantiene en 5.25 % su tasa de política monetaria - SWI swissinfo.ch",
+      "summary": "URL Source: https://news.google.com/rss/articles/CBMivwFBVV95cUxQdzNSbFRzWi1iZWZWRXNxY1dlTDRKVVp2WW5OVmtWTXJRaUg3VV9qb01ISjhmbjQ2VDhnMnZEZ2hHSGgwSXVoUkkwRDFqbW85bFVXb3J0SWFoU1lXOEpUeTNORmlSeUtBZDl5bmtUUHNnRTMwZWFvZl9BZHhTWUtWd05MajdranVWWGVEd3pkWGp0bm1QSnJHcXBZSjRMY2NGOEZmVWZvRnZaWF9Sb3dOdS1kM3BNRUw2M3JfeU5ZRQ?oc=5",
+      "body": "URL Source: https://news.google.com/rss/articles/CBMivwFBVV95cUxQdzNSbFRzWi1iZWZWRXNxY1dlTDRKVVp2WW5OVmtWTXJRaUg3VV9qb01ISjhmbjQ2VDhnMnZEZ2hHSGgwSXVoUkkwRDFqbW85bFVXb3J0SWFoU1lXOEpUeTNORmlSeUtBZDl5bmtUUHNnRTMwZWFvZl9BZHhTWUtWd05MajdranVWWGVEd3pkWGp0bm1QSnJHcXBZSjRMY2NGOEZmVWZvRnZaWF9Sb3dOdS1kM3BNRUw2M3JfeU5ZRQ?oc=5 leer más Ante el brote de Ébola, conseguir la vacuna «es una carrera contra reloj» ! Image 3: ¿Por qué Suiza no obliga a sus bancos a devolver directamente a los Estados perjudicados los fondos procedentes de la corrupción? leer más ¿Qué hace Suiza con el dinero robado por gobernantes corruptos? ! Image 4: El Ejército suizo está apostando por los drones y la robótica",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "politica_monetaria"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "sin_ia": true,
+      "published_at": "2026-08-31T18:27:13+00:00",
+      "fecha_inferida_de_url": false,
+      "dia_editorial": "2026-08-31",
+      "fetched_at": "2026-08-31T21:39:59.909649+00:00",
+      "dia_lectura": "2026-08-31",
+      "status": "pending"
+    },
+    {
+      "id": "n_92e046a37c3b5305",
+      "source_key": "news_extra_msynflyf",
+      "source_name": "Fuente guardada",
+      "url": "https://www.fxstreet.es/news/yen-japones-el-soporte-por-debajo-de-160-frente-al-dolar-estadounidense-scotiabank-202608312012",
+      "title": "Yen japonés: El soporte por debajo de 160 frente al Dólar estadounidense – Scotiabank",
+      "summary": "URL Source: https://www.fxstreet.es/news/yen-japones-el-soporte-por-debajo-de-160-frente-al-dolar-estadounidense-scotiabank-202608312012",
+      "body": "URL Source: https://www.fxstreet.es/news/yen-japones-el-soporte-por-debajo-de-160-frente-al-dolar-estadounidense-scotiabank-202608312012 This website uses a security service to protect against malicious bots. This page is displayed while the website verifies you are not a bot.",
+      "category": "Financiero",
+      "relevance": 10,
+      "señales": [
+        "entidad_rd",
+        "banca"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "sin_ia": true,
+      "published_at": "2026-08-31T20:12:30+00:00",
+      "fecha_inferida_de_url": false,
+      "dia_editorial": "2026-08-31",
+      "fetched_at": "2026-08-31T21:38:49.324081+00:00",
+      "dia_lectura": "2026-08-31",
+      "status": "pending"
+    },
+    {
+      "id": "n_54044c19d8ec5179",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/378240/agroindustria-y-manufactura-concentran-interes-de-compradores-del-hub-camara-santo-domingo",
+      "title": "Agroindustria y manufactura concentran interés de compradores del HUB Cámara Santo Domingo",
+      "summary": "La séptima edición del HUB Cámara Santo Domingo atraerá a 150 compradores internacionales con un enfoque particular en los sectores de agroindustria y manufactura. Este evento busca potenciar la internacionalización de empresas dominicanas, incluyendo nuevos segmentos como servicios modernos.",
+      "body": "La Cámara de Comercio y Producción de Santo Domingo organiza la séptima edición del HUB, que contará con 150 compradores internacionales. Se destaca el interés en agroindustria, materiales de construcción, cosméticos y medicamentos, así como la inclusión por primera vez de empresas de servicios modernos como diseño web y ciberseguridad. El evento busca impulsar la exportación de productos y servicios dominicanos.",
+      "category": "Economia",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "sin_ia": false,
+      "published_at": "2026-08-31T20:45:57+00:00",
+      "fecha_inferida_de_url": false,
+      "dia_editorial": "2026-08-31",
+      "fetched_at": "2026-08-31T21:34:02.410581+00:00",
+      "dia_lectura": "2026-08-31",
+      "status": "pending"
+    },
+    {
+      "id": "n_3d2f53eb2c41efb2",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/378230/deuda-publica-registra-en-siete-meses-su-mayor-incremento-historico",
+      "title": "Deuda pública registra en siete meses su mayor incremento histórico",
+      "summary": "La deuda del sector público no financiero (SPNF) dominicano ha experimentado el mayor incremento absoluto en siete meses desde 2020, superando el promedio de los años anteriores. Este aumento significativo en el endeudamiento estatal genera preocupación sobre la sostenibilidad fiscal y su impacto en la economía.",
+      "body": "El Gobierno central ha incrementado la deuda del sector público no financiero (SPNF) en US$6,277.9 millones durante los primeros siete meses de 2026. Este monto representa el mayor aumento absoluto en un período similar desde 2020, año marcado por la pandemia, y casi duplica el promedio anual de crecimiento de los años subsiguientes, señalando un ritmo de endeudamiento sin precedentes.",
+      "category": "Economia",
+      "relevance": 8,
+      "señales": [
+        "macro"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "sin_ia": false,
+      "published_at": "2026-08-31T20:11:36+00:00",
+      "fecha_inferida_de_url": false,
+      "dia_editorial": "2026-08-31",
+      "fetched_at": "2026-08-31T21:33:56.445078+00:00",
+      "dia_lectura": "2026-08-31",
+      "status": "pending"
+    },
     {
       "id": "n_7cb1ef5b8c8a2d5b",
       "source_key": "news_gnews_banca",
@@ -224,42 +355,6 @@
       "status": "pending"
     },
     {
-      "id": "n_8965b668b5f89d76",
-      "source_key": "news_eldinero",
-      "source_name": "El Dinero · Finanzas",
-      "url": "https://eldinero.com.do/378182/banco-central-mantiene-su-tasa-de-politica-monetaria-en-5-25-anual-12",
-      "title": "Banco Central mantiene su tasa de política monetaria en 5.25% anual",
-      "summary": "El Banco Central de la República Dominicana ha decidido mantener su tasa de interés de política monetaria en 5.25% anual, buscando anclar las expectativas de inflación y responder a la persistencia de la incertidumbre global. Esta decisión busca equilibrar el dinamismo económico local con las presiones inflacionarias internacionales.",
-      "body": "El Banco Central de la República Dominicana (BCRD) ha decidido mantener su tasa de interés de política monetaria en 5.25% anual, así como las tasas de la facilidad permanente de expansión de liquidez y de depósitos remunerados. La medida responde al dinamismo económico local y a la incertidumbre global, buscando la convergencia de la inflación al rango objetivo.",
-      "category": "Monetario",
-      "relevance": 9,
-      "señales": [
-        "regulador",
-        "politica_monetaria"
-      ],
-      "rescatado_por_regla": false,
-      "cuerpo_recuperado": false,
-      "sin_ia": false,
-      "published_at": "2026-08-31T17:12:35+00:00",
-      "fecha_inferida_de_url": false,
-      "dia_editorial": "2026-08-31",
-      "fetched_at": "2026-08-31T19:21:46.707993+00:00",
-      "dia_lectura": "2026-08-31",
-      "status": "pending",
-      "tambien_en": [
-        {
-          "source_name": "El Caribe · Dinero",
-          "url": "https://www.elcaribe.com.do/panorama/dinero/bcrd-mantiene-tasa-politica-monetaria-en-5-25-anual",
-          "title": "Banco Central mantiene su tasa de política monetaria en 5.25 % anual"
-        },
-        {
-          "source_name": "Google News · BCRD y política monetaria",
-          "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQeUQ1UHdwd3ZHR2tDYm1kVUtVSjlPREJZOG5HY1NYZ2w0S1MtRUM1Ukk2UDAwdXJOWmxjWXRtTm1WSlpKUVgzRnVhWWRiMVJPUUNCUjZtTWhMY3ctQ2NHTEhSOW02aFM3QjBQdnlYV1I4VGplbHQtS01NbUw2N1NZeS03SGRBcFdsM20w0gGQAUFVX3lxTE9ZYlZBMkVBS2tEem9uTTFFczNPemZ3UFNZa0VDbHFKa3ZXQnZEQXJnVmxralNQUHpvMVpEaDNLdzRVVHpwYW9FanhkWVV3YjdYOU03NVhrMEIwalNfYWdRRnR3SG9mYnJNVVU1Q3pOSm5ZVkZkN19ZTWFKOVJIcF9qbnV2bU9uOEYxYk4zbEJsOA?oc=5",
-          "title": "BC mantiene tasa de política monetaria en 5.25% anual - Remolacha"
-        }
-      ]
-    },
-    {
       "id": "n_ecff5d724a49a149",
       "source_key": "news_eldinero",
       "source_name": "El Dinero · Finanzas",
@@ -349,28 +444,28 @@
   "discarded_count": 60,
   "discarded": [
     {
-      "id": "n_167e8862b5c48f96",
+      "id": "n_f17789af0b7bc572",
       "motivo": "relevancia_baja",
       "motivo_texto": "El modelo le puso poca relevancia financiera",
-      "title": "Trump busca reducir precio de gasolina con mayor producción petrolera",
-      "url": "https://eldinero.com.do/378185/trump-busca-reducir-precio-de-gasolina-con-mayor-produccion-petrolera",
+      "title": "Aduanas desarrollará una aplicación móvil para sus principales servicios",
+      "url": "https://eldinero.com.do/378234/aduanas-desarrollara-una-aplicacion-movil-para-sus-principales-servicios",
       "source_name": "El Dinero · Finanzas",
       "relevance": 5,
       "señales": [],
       "detalle": "",
-      "fetched_at": "2026-08-31T19:21:28.972329+00:00"
+      "fetched_at": "2026-08-31T21:33:50.367007+00:00"
     },
     {
-      "id": "n_f5615f9eccc192f8",
+      "id": "n_1c780fb742460fd5",
       "motivo": "relevancia_baja",
       "motivo_texto": "El modelo le puso poca relevancia financiera",
-      "title": "Alerta amarilla en el Gran Santo Domingo y San Cristóbal ante riesgo de inundaciones por lluvias",
-      "url": "https://www.diariolibre.com/planeta/medioambiente/2026/08/31/alerta-amarilla-por-inundaciones-el-gran-santo-domingo-y-san-cristobal/3644731",
-      "source_name": "Diario Libre · Economía",
+      "title": "ETED anuncia mantenimiento preventivo para este martes, miércoles y viernes",
+      "url": "https://eldinero.com.do/378228/eted-anuncia-mantenimiento-preventivo-para-este-martes-miercoles-y-viernes",
+      "source_name": "El Dinero · Finanzas",
       "relevance": 5,
       "señales": [],
       "detalle": "",
-      "fetched_at": "2026-08-31T19:21:52.642767+00:00"
+      "fetched_at": "2026-08-31T21:34:08.248311+00:00"
     },
     {
       "id": "n_f7b3e653ce08ea9b",
@@ -421,52 +516,124 @@
       "fetched_at": "2026-08-31T19:24:02.463221+00:00"
     },
     {
-      "id": "n_2c264e8aa46fecea",
-      "motivo": "sin_cuerpo",
-      "motivo_texto": "No se pudo leer el cuerpo del articulo",
-      "title": "Asociaciones de ahorros-préstamos de RD fortalecen posición financiera",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/asociaciones-de-ahorros-prestamos-de-rd-fortalecen-posicion-financiera",
-      "source_name": "El Caribe · Dinero",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Ni la URL original ni una cobertura alterna se pudieron leer",
-      "fetched_at": "2026-08-31T19:25:39.859505+00:00"
-    },
-    {
-      "id": "n_45e08798bc3ba6c3",
+      "id": "n_c1dbece5308c81b3",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "El Banco Mundial felicita Gobierno por aprobación de Plan Anticrisis",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/el-banco-mundial-felicita-gobierno-por-aprobacion-de-plan-anticrisis",
-      "source_name": "El Caribe · Dinero",
+      "title": "El petróleo de Texas cierra agosto en US$85.76 tras los ataques entre EE.UU. e Irán",
+      "url": "https://eldinero.com.do/378208/el-petroleo-de-texas-cierra-agosto-en-us85-76-tras-los-ataques-entre-ee-uu-e-iran",
+      "source_name": "El Dinero · Finanzas",
       "relevance": null,
       "señales": [],
       "detalle": "",
-      "fetched_at": "2026-08-31T19:28:00.956878+00:00"
+      "fetched_at": "2026-08-31T21:38:00.674605+00:00"
     },
     {
-      "id": "n_b4e3c8762fa5f4c1",
+      "id": "n_33b2581d6b38d9b4",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Banco Popular ingresa a los 100 mejores lugares para trabajar",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/banco-popular-ingresa-a-los-100-mejores-lugares-para-trabajar",
-      "source_name": "El Caribe · Dinero",
+      "title": "Instagram limitará los perfiles que presenten personas generadas por IA sin identificar",
+      "url": "https://eldinero.com.do/378222/instagram-limitara-los-perfiles-que-presenten-personas-generadas-por-ia-sin-identificar",
+      "source_name": "El Dinero · Finanzas",
       "relevance": null,
       "señales": [],
       "detalle": "",
-      "fetched_at": "2026-08-31T19:28:00.977789+00:00"
+      "fetched_at": "2026-08-31T21:38:00.704315+00:00"
     },
     {
-      "id": "n_ee68485dcfed8d29",
+      "id": "n_621b8399661556f8",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Precio del dólar hoy lunes 31 de agosto de 2026 en RD",
-      "url": "https://www.elcaribe.com.do/panorama/dinero/dolar-hoy-republica-dominicana-31-de-agosto-2026",
-      "source_name": "El Caribe · Dinero",
+      "title": "Rescatan a 14 menores víctimas de violencia infantil en Haina",
+      "url": "https://www.diariolibre.com/actualidad/sucesos/2026/08/31/rescatan-a-14-menores-victimas-de-violencia-infantil-en-haina/3644638",
+      "source_name": "Diario Libre · Economía",
       "relevance": null,
       "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-08-31T19:28:01.008177+00:00"
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-08-31T21:38:03.162281+00:00"
+    },
+    {
+      "id": "n_12a7a1d230e9ade0",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Defensa de hermanos Espaillat niega proceso de quiebra",
+      "url": "https://www.diariolibre.com/actualidad/justicia/2026/08/31/defensa-de-hermanos-espaillat-niega-proceso-de-quiebra/3644895",
+      "source_name": "Diario Libre · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-08-31T21:38:03.663496+00:00"
+    },
+    {
+      "id": "n_3b1b40f8e62e4021",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Investigan supuesto permiso para relleno próxima al río Ozama",
+      "url": "https://www.diariolibre.com/actualidad/ciudad/2026/08/31/investigan-supuesto-permiso-para-relleno-proxima-al-rio-ozama/3644840",
+      "source_name": "Diario Libre · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-08-31T21:38:08.003211+00:00"
+    },
+    {
+      "id": "n_f5615f9eccc192f8",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Alerta amarilla por inundaciones el Gran Santo Domingo y San Cristóbal",
+      "url": "https://www.diariolibre.com/planeta/medioambiente/2026/08/31/alerta-amarilla-por-inundaciones-el-gran-santo-domingo-y-san-cristobal/3644731",
+      "source_name": "Diario Libre · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-08-31T21:38:10.147649+00:00"
+    },
+    {
+      "id": "n_81952225dedbb5d3",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Asesinato de Emely Peguero y su impacto en la sociedad",
+      "url": "https://www.diariolibre.com/actualidad/sucesos/2026/08/31/asesinato-de-emely-peguero-y-su-impacto-en-la-sociedad/3644825",
+      "source_name": "Diario Libre · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-08-31T21:38:11.376367+00:00"
+    },
+    {
+      "id": "n_16c5c013df8df0d9",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Capacidad eléctrica de RD superó supera los 7,600 MW en 2026",
+      "url": "https://www.diariolibre.com/economia/energia/2026/08/31/capacidad-electrica-de-rd-supero-supera-los-7600-mw-en-2026/3644801",
+      "source_name": "Diario Libre · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-08-31T21:38:15.418229+00:00"
+    },
+    {
+      "id": "n_bdf8913f1b0f8e6a",
+      "motivo": "vieja",
+      "motivo_texto": "Publicada fuera del dia editorial en curso",
+      "title": "Viceministro Francos destaca rol del Plan Estadístico Nacional para la toma de decisiones que impactan en el desarrollo",
+      "url": "https://www.hacienda.gob.do/viceministro-francos-destaca-rol-del-plan-estadistico-nacional-para-la-toma-de-decisiones-que-impactan-en-el-desarrollo",
+      "source_name": "Fuente guardada",
+      "relevance": null,
+      "señales": [],
+      "detalle": "el feed la fecha 2026-08-28, ventana 2026-08-30 a 2026-08-31",
+      "fetched_at": "2026-08-31T21:38:44.606657+00:00"
+    },
+    {
+      "id": "n_b68b61e467128412",
+      "motivo": "vieja",
+      "motivo_texto": "Publicada fuera del dia editorial en curso",
+      "title": "RD aborda avances y desafíos del cambio demográfico en conferencia regional de población y desarrollo",
+      "url": "https://www.hacienda.gob.do/rd-aborda-avances-y-desafios-del-cambio-demografico-en-conferencia-regional-de-poblacion-y-desarrollo",
+      "source_name": "Fuente guardada",
+      "relevance": null,
+      "señales": [],
+      "detalle": "el feed la fecha 2026-08-27, ventana 2026-08-30 a 2026-08-31",
+      "fetched_at": "2026-08-31T21:38:44.606800+00:00"
     },
     {
       "id": "n_c2891eb6cd4acea8",
@@ -478,7 +645,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-25, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:28:15.691909+00:00"
+      "fetched_at": "2026-08-31T21:38:44.606955+00:00"
     },
     {
       "id": "n_0e542df2c47a7447",
@@ -490,7 +657,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-21, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:28:15.692000+00:00"
+      "fetched_at": "2026-08-31T21:38:44.607060+00:00"
     },
     {
       "id": "n_64986b5c8ce33039",
@@ -502,7 +669,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-21, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:28:15.692081+00:00"
+      "fetched_at": "2026-08-31T21:38:44.607164+00:00"
     },
     {
       "id": "n_b4f59bb16aa2e285",
@@ -514,7 +681,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-19, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:28:15.692160+00:00"
+      "fetched_at": "2026-08-31T21:38:44.607231+00:00"
     },
     {
       "id": "n_d795cccbcbcf6e94",
@@ -526,7 +693,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-17, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:28:15.692236+00:00"
+      "fetched_at": "2026-08-31T21:38:44.607296+00:00"
     },
     {
       "id": "n_75034d8c12e71ce9",
@@ -538,7 +705,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-13, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:28:15.692311+00:00"
+      "fetched_at": "2026-08-31T21:38:44.607360+00:00"
     },
     {
       "id": "n_8abf1508b635b6f0",
@@ -550,115 +717,67 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-06, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:28:15.692411+00:00"
+      "fetched_at": "2026-08-31T21:38:44.607420+00:00"
     },
     {
-      "id": "n_af3cc2f2fbfff3f5",
+      "id": "n_aa4223d7478a4463",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "El Oro cae mientras las apuestas por una subida de tasas elevan los rendimientos de EE.UU.",
-      "url": "https://www.fxstreet.es/news/el-oro-cae-mientras-las-apuestas-por-una-subida-de-la-fed-de-warsh-y-el-repunte-del-petroleo-elevan-los-rendimientos-de-eeuu-202608311838",
+      "title": "Pronóstico del Precio del NZD/USD: Los alcistas defienden la línea de tendencia por encima de 0.5900",
+      "url": "https://www.fxstreet.es/news/pronostico-del-precio-del-nzd-usd-los-alcistas-defienden-la-linea-de-tendencia-por-encima-de-05900-202608312046",
       "source_name": "Fuente guardada",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:28:26.346317+00:00"
+      "fetched_at": "2026-08-31T21:38:49.624058+00:00"
     },
     {
-      "id": "n_fb9a46221d76ed5c",
+      "id": "n_e49f1c49546719d2",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Dólar de Singapur: Presión a corto plazo frente al Dólar estadounidense - OCBC",
-      "url": "https://www.fxstreet.es/news/dolar-de-singapur-presion-a-corto-plazo-frente-al-dolar-estadounidense-ocbc-202608311849",
+      "title": "El presidente de EE.UU., Trump, dice que los ataques contra Irán serán limitados mientras el petróleo fluye por el estrecho de Ormuz",
+      "url": "https://www.fxstreet.es/news/el-presidente-de-eeuu-trump-dice-que-los-ataques-contra-iran-seran-limitados-mientras-fluye-el-petroleo-por-ormuz-202608311957",
       "source_name": "Fuente guardada",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:28:27.022777+00:00"
+      "fetched_at": "2026-08-31T21:38:50.994078+00:00"
     },
     {
-      "id": "n_d0840ad1725e86c5",
+      "id": "n_7943ffe79f6809ba",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Precio del Dólar en Colombia hoy 31 de agosto: El Peso colombiano firma su sexta jornada consecutiva en terreno negativo",
-      "url": "https://www.fxstreet.es/news/precio-del-dolar-en-colombia-hoy-31-de-agosto-el-peso-colombiano-firma-su-sexta-jornada-consecutiva-en-terreno-negativo-202608311920",
+      "title": "El Peso mexicano se aprecia mientras el USD/MXN se desploma por la debilidad del USD",
+      "url": "https://www.fxstreet.es/news/el-peso-mexicano-se-aprecia-mientras-el-usd-mxn-se-desploma-por-la-debilidad-del-usd-202608311948",
       "source_name": "Fuente guardada",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:28:27.819313+00:00"
+      "fetched_at": "2026-08-31T21:38:52.511420+00:00"
     },
     {
-      "id": "n_7605aa8f3e77fad7",
+      "id": "n_378e9fedb36e9250",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "USD/MXN: El Peso mexicano retoma la senda ganadora con la mira puesta en los datos laborales de EE.UU.",
-      "url": "https://www.fxstreet.es/news/usd-mxn-el-peso-mexicano-retoma-la-senda-ganadora-con-la-mira-puesta-en-los-datos-laborales-de-eeuu-202608311802",
+      "title": "Agosto tuvo tres buenos días para el Promedio Industrial Dow Jones",
+      "url": "https://www.fxstreet.es/news/agosto-tuvo-tres-buenos-dias-para-el-promedio-industrial-dow-jones-202608311956",
       "source_name": "Fuente guardada",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:28:29.095466+00:00"
+      "fetched_at": "2026-08-31T21:38:53.954583+00:00"
     },
     {
-      "id": "n_d498a1dd28708251",
+      "id": "n_6b2ead6a58d9e3aa",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Análisis de la Plata: El XAG/USD se consolida por debajo de la SMA de 100 días mientras el impulso se desvanece",
-      "url": "https://www.fxstreet.es/news/plata-analisis-del-precio-el-xag-usd-se-consolida-por-debajo-de-la-sma-de-100-dias-mientras-el-impulso-se-desvanece-202608311822",
+      "title": "China: El argumento a favor de una flexibilización se fortalece ante unos PMIs débiles – Commerzbank",
+      "url": "https://www.fxstreet.es/news/china-el-argumento-a-favor-de-una-flexibilizacion-se-fortalece-ante-unos-pmis-debiles-commerzbank-202608311931",
       "source_name": "Fuente guardada",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:28:30.843905+00:00"
-    },
-    {
-      "id": "n_ed59a7c87d5e8421",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "El Dólar australiano se mantiene firme en medio de las expectativas de línea dura de la Fed y el RBA",
-      "url": "https://www.fxstreet.es/news/el-dolar-australiano-se-mantiene-firme-en-medio-de-las-expectativas-de-linea-dura-de-la-fed-y-el-rba-202608311754",
-      "source_name": "Fuente guardada",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:28:31.675050+00:00"
-    },
-    {
-      "id": "n_d08594e85033197e",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Las crisis de las que hablan las calles de Cuba: “La situación es bastante crítica”",
-      "url": "https://eldinero.com.do/378174/las-crisis-de-las-que-hablan-las-calles-de-cuba-la-situacion-es-bastante-critica",
-      "source_name": "El Dinero · RSS",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:28:38.377119+00:00"
-    },
-    {
-      "id": "n_778dfe76b06d1852",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Trump defiende expansión de centros de datos para impulsar la economía de EE.UU.",
-      "url": "https://eldinero.com.do/378176/trump-defiende-expansion-de-centros-de-datos-para-impulsar-la-economia-de-ee-uu",
-      "source_name": "El Dinero · RSS",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:28:39.464322+00:00"
-    },
-    {
-      "id": "n_ef3e6e5846038f9b",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Amchamdr aborda junto a Joel Santos las oportunidades de la tecnología nuclear para el futuro de RD",
-      "url": "https://eldinero.com.do/378165/amchamdr-aborda-junto-a-joel-santos-las-oportunidades-de-la-tecnologia-nuclear-para-el-futuro-de-rd",
-      "source_name": "El Dinero · RSS",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:28:40.885216+00:00"
+      "fetched_at": "2026-08-31T21:38:57.295028+00:00"
     },
     {
       "id": "n_ef4eabc4f82ce0a3",
@@ -670,19 +789,31 @@
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:28:42.909874+00:00"
+      "fetched_at": "2026-08-31T21:39:06.292497+00:00"
     },
     {
-      "id": "n_c31051b02f1c5d92",
+      "id": "n_167e8862b5c48f96",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Trump busca reducir precio de gasolina con mayor producción petrolera",
+      "url": "https://eldinero.com.do/378185/trump-busca-reducir-precio-de-gasolina-con-mayor-produccion-petrolera",
+      "source_name": "El Dinero · RSS",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-08-31T21:39:08.612349+00:00"
+    },
+    {
+      "id": "n_72599c5ad03196f5",
       "motivo": "vieja",
       "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "¿Qué es el colapso glaciar que provocó la devastadora avalancha en Nepal?",
-      "url": "https://hoy.com.do/el-mundo/colapso-glaciar-provoco-devastadora-avalancha-nepal_1100526.html",
+      "title": "¿Cómo saber si mi cita de visa de EEUU está vigente?",
+      "url": "https://hoy.com.do/vivir/mi-cita-visa-eeuu-vigente_1100423.html",
       "source_name": "Hoy Digital · Economía",
       "relevance": null,
       "señales": [],
-      "detalle": "el feed la fecha 2026-08-29, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:28:44.590831+00:00"
+      "detalle": "el feed la fecha 2026-08-28, ventana 2026-08-30 a 2026-08-31",
+      "fetched_at": "2026-08-31T21:39:10.663290+00:00"
     },
     {
       "id": "n_3b46e11cf1eabdfe",
@@ -694,19 +825,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-29, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:28:44.590931+00:00"
-    },
-    {
-      "id": "n_8e71664387c269ff",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Remanentes de Dolly elevan alertas: COE coloca al Gran Santo Domingo y 3 provincias en amarillo y a 10 en verde",
-      "url": "https://hoy.com.do/el-pais/remanentes-dolly-suben-alertas-coe-coloca-gran-santo-domingo-13-provincias-alerta_1100684.html",
-      "source_name": "Hoy Digital · Economía",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:28:50.941117+00:00"
+      "fetched_at": "2026-08-31T21:39:10.663422+00:00"
     },
     {
       "id": "n_bde5cf5022531df6",
@@ -718,7 +837,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:28:51.095055+00:00"
+      "fetched_at": "2026-08-31T21:39:17.454972+00:00"
     },
     {
       "id": "n_7b3050f6e20eb71b",
@@ -730,19 +849,43 @@
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:28:51.825849+00:00"
+      "fetched_at": "2026-08-31T21:39:19.422778+00:00"
     },
     {
-      "id": "n_0c6ffc2d213f1702",
+      "id": "n_8e71664387c269ff",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Lionel Messi se retira de la Selección Argentina: \"Fue una decisión que dolió y duele en el alma\"",
-      "url": "https://hoy.com.do/deportes/futbol/messi-retira-seleccion-decision-dolio-duele-alma_1100672.html",
+      "title": "Remanentes de Dolly elevan alertas: COE coloca al Gran Santo Domingo y 3 provincias en amarillo y a 10 en verde",
+      "url": "https://hoy.com.do/el-pais/remanentes-dolly-suben-alertas-coe-coloca-gran-santo-domingo-13-provincias-alerta_1100684.html",
       "source_name": "Hoy Digital · Economía",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:28:57.777773+00:00"
+      "fetched_at": "2026-08-31T21:39:19.443784+00:00"
+    },
+    {
+      "id": "n_fb86c844bebb667c",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Incautan más de US$95,000 a hermanos dominicanos en supuesto negocio ilegal de apuestas en Paterson",
+      "url": "https://hoy.com.do/el-mundo/estados-unidos/incautan-us-95-000-hermanos-dominicanos-supuesto-negocio-ilegal-apuestas-paterson_1100708.html",
+      "source_name": "Hoy Digital · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-08-31T21:39:25.423947+00:00"
+    },
+    {
+      "id": "n_90cbc0f1b96ead82",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "¡Fin de una era! Ocho momentos inolvidables de Lionel Messi en la Copas Mundiales",
+      "url": "https://hoy.com.do/deportes/ocho-momentos-inolvidables-lionel-messi-copas-mundiales_1100690.html",
+      "source_name": "Hoy Digital · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-08-31T21:39:25.673101+00:00"
     },
     {
       "id": "n_7c2ce4050c65c308",
@@ -754,91 +897,79 @@
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:28:58.334412+00:00"
+      "fetched_at": "2026-08-31T21:39:26.824529+00:00"
     },
     {
-      "id": "n_358eff26df02f46d",
+      "id": "n_4473d47b8afa988b",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Inundación repentina en el Gran Cañón deja un muerto y 15 desaparecidos",
-      "url": "https://hoy.com.do/el-mundo/estados-unidos/inundacion-repentina-gran-canon-deja-muerto-15-desaparecidos_1100675.html",
-      "source_name": "Hoy Digital · Economía",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:28:58.693355+00:00"
-    },
-    {
-      "id": "n_ff6c17b597ecd007",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Las Reinas del Caribe ante el salto definitivo: Además de recursos, ¿qué les falta para ser olímpicas de verdad?",
-      "url": "https://eldia.com.do/las-reinas-del-caribe-ante-el-salto-definitivo-ademas-de-recursos-que-les-falta-para-ser-olimpicas-de-verdad",
+      "title": "Carlos Peña sobre pareja trans: “Lo que no puede ser es un matrimonio entre dos personas del mismo sexo”",
+      "url": "https://eldia.com.do/carlos-pena-sobre-pareja-trans-lo-que-no-puede-ser-es-un-matrimonio-entre-dos-personas-del-mismo-sexo",
       "source_name": "El Día · Económicas",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:29:11.283903+00:00"
+      "fetched_at": "2026-08-31T21:39:32.312193+00:00"
     },
     {
-      "id": "n_04186645593872e1",
+      "id": "n_d772e1ce7f9dde97",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Cinco hábitos para mejorar la alimentación y crear una rutina más saludable",
-      "url": "https://eldia.com.do/cinco-habitos-para-mejorar-la-alimentacion-y-crear-una-rutina-mas-saludable",
+      "title": "Defensa de Juan Asael acusado en caso Medusa pide extinguir proceso tras cuatro años en “limbo jurídico”",
+      "url": "https://eldia.com.do/defensa-de-juan-asael-acusado-en-caso-medusa-pide-extinguir-proceso-tras-cuatro-anos-en-limbo-juridico",
       "source_name": "El Día · Económicas",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:29:11.293938+00:00"
+      "fetched_at": "2026-08-31T21:39:39.573168+00:00"
     },
     {
-      "id": "n_5782eab722ebb5ec",
+      "id": "n_b51283e8e8af58af",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Residente inicia en República Dominicana el rodaje de su primer filme “PORTO RICO”",
-      "url": "https://eldia.com.do/residente-inicia-en-republica-dominicana-el-rodaje-de-su-primer-filme-porto-rico",
+      "title": "Compras y pagos digitales: recomendaciones para evitar fraudes en internet",
+      "url": "https://eldia.com.do/compras-y-pagos-digitales-recomendaciones-para-evitar-fraudes-en-internet",
       "source_name": "El Día · Económicas",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:29:12.981676+00:00"
+      "fetched_at": "2026-08-31T21:39:40.186693+00:00"
     },
     {
-      "id": "n_e2c19e4fe5efa46f",
+      "id": "n_dc8f75d553f44052",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "“Para decir adiós” es lo nuevo de Jandy Ventura y Zusan Correa",
-      "url": "https://eldia.com.do/para-decir-adios-es-lo-nuevo-de-jandy-ventura-y-zusan-correa",
+      "title": "Cesárea en RD, cuando el tiempo y el dinero pesan en la decisión",
+      "url": "https://eldia.com.do/cesarea-cuando-el-tiempo-y-dinero-pesan-en-decision",
       "source_name": "El Día · Económicas",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:29:13.349949+00:00"
+      "fetched_at": "2026-08-31T21:39:40.483750+00:00"
     },
     {
-      "id": "n_d41d6c2850eb57a8",
+      "id": "n_bc6b67bd36c3d6b7",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "¡Fue terrible!: el testimonio de los aún damnificados del huracán David, a 47 años de espera por una vivienda",
-      "url": "https://eldia.com.do/fue-terrible-el-testimonio-de-los-aun-damnificados-del-huracan-david-a-47-anos-de-espera-por-una-vivienda",
+      "title": "Mientras avanza evaluación de jueces, CNM abre convocatoria para cubrir cuatro vacantes en la Suprema Corte",
+      "url": "https://eldia.com.do/mientras-avanza-evaluacion-de-jueces-cnm-abre-convocatoria-para-cubrir-cuatro-vacantes-en-la-suprema-corte",
       "source_name": "El Día · Económicas",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:29:17.697999+00:00"
+      "fetched_at": "2026-08-31T21:39:40.501269+00:00"
     },
     {
-      "id": "n_afa0bfc1d3176ea2",
+      "id": "n_8cf6056aa8e36c4f",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Falta de movimiento y hábitos cotidianos influyen en el riesgo de desarrollar hipertensión",
-      "url": "https://eldia.com.do/falta-movimiento-ymalos-habitos-influyen-hipertension",
+      "title": "Trabajos forzosos, golpes y privación de alimentos eran parte de los abusos que sufrían menores rescatados en Haina",
+      "url": "https://eldia.com.do/trabajos-forzosos-golpes-y-privacion-de-alimentos-eran-parte-de-los-abusos-que-sufrian-menores-rescatados-en-haina",
       "source_name": "El Día · Económicas",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-08-31T19:29:20.780627+00:00"
+      "fetched_at": "2026-08-31T21:39:40.557756+00:00"
     },
     {
       "id": "n_a61a086618bc3767",
@@ -850,7 +981,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-07, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.895543+00:00"
+      "fetched_at": "2026-08-31T21:39:55.069544+00:00"
     },
     {
       "id": "n_7cc8b6f568932bb1",
@@ -862,19 +993,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-28, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.895639+00:00"
-    },
-    {
-      "id": "n_c458cdd5c1138df7",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Repunta la inflación en Dominicana y rebasa la meta del Banco Central - Prensa Latina",
-      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNcm9LWHB4U044Mng2MHVGQVJaR2psR1c5ZEFMeVM4WXlnMVdHcEx4RVhidEZBeFVYM21JclpEN25BTU9qQ3l3S3kwYTBleTBNRndacnZHVTh2MmF3V3kycWluOENHNUl6b1lBQnoyT013RkY4dUxUVF80YVVlOWZucy1mNWNxb1RucTM2Rk15VTBrbU5yLXBUSjRPOVlrTFo2aVQ1WnRqdmdWblF1eGs0?oc=5",
-      "source_name": "Google News · BCRD y política monetaria",
-      "relevance": null,
-      "señales": [],
-      "detalle": "el feed la fecha 2026-07-17, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.895756+00:00"
+      "fetched_at": "2026-08-31T21:39:55.069670+00:00"
     },
     {
       "id": "n_fcf18391aef78446",
@@ -886,19 +1005,31 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-28, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.895846+00:00"
+      "fetched_at": "2026-08-31T21:39:55.069840+00:00"
+    },
+    {
+      "id": "n_21c5c2fc42e0ef17",
+      "motivo": "vieja",
+      "motivo_texto": "Publicada fuera del dia editorial en curso",
+      "title": "Más de 200,000 jóvenes dejaron de ser “ninis” en República Dominicana, según el Banco Central - infobae.com",
+      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxNTW5POTdVSmE3UHB5emJuMS1SU0Y5R0ZCelhiVFphc3NKWUM3VTBDRVVidlRvX2pWQm9yc2p5b1VvdkRNNEo5c1NjY3lpeXczYUl5ZjZPTUFUU2hrV0Etb1ZhWkEzR1R4VXBaVFBrVHg0dFE2VWJySTRkOTRaX01tZmpVeTdsTlZqSzBqZ2VZZWxVbC1aMEdtUm13WVFnOGx1REF3VEFWVGczel80TlFUSk9uNFBLTnpUUlQ0cHliSU9WUU9aWXg0VnFHbF9HRnowZ2dwTGRJb19mTk9jbGVn0gH6AUFVX3lxTE1Lc21YMXIyTFg2NTFzRURfU2Fpd0d0RGRhMHB6TVhVWDd5TTdoSFUtdmE2TnRSWkxId1VfMWNWZ1hjSGs0YktOb01QUG1kSGpuUGJJd1lTNnJrX00tMktOZmR1cWVhenc0blM0TGpOMEJkRy1xZFlSbVpIV0RMcHNMeVA2cFBOMnJzaFR5clp3bTJ5SmF3NXV0N2p2QmR4QWdLSjBQT0JRUHdfMnpSX1g0LVItZkdVcmV1Rll3cl81ZXYyeG1HR2VmRUVwMlY4R2JFZ1BVVmNPeHBndVZJdExqcmE2YTVmV29kYkdBUE1LMDBUeWM0TWRnTnc?oc=5",
+      "source_name": "Google News · BCRD y política monetaria",
+      "relevance": null,
+      "señales": [],
+      "detalle": "el feed la fecha 2026-08-27, ventana 2026-08-30 a 2026-08-31",
+      "fetched_at": "2026-08-31T21:39:55.069993+00:00"
     },
     {
       "id": "n_86fc6ce7c3195b33",
       "motivo": "vieja",
       "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Inflación en República Dominicana se desacelera, pero todavía supera el rango meta del Banco Central - acento.com.do",
+      "title": "Inflación en República Dominicana se desacelera, pero todavía supera el rango meta del Banco Central - Acento",
       "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxOSjF2Z1pIcGRpdFJrVXVJQ2Y4QUllSjVlSnVCem9ab1YyeFJNazVHSWwzanNfS0d0WEtRTHhMNkpZaVRvZkhHYkJhZlVPUHc3bUVOWURGQWJ6d0JBTEk3aHNmbGppS2FqWU16UjkwYjl4OExuU212OW5vNFJwcWEydlUyNlptbGFfMUVENUFWVWdCZkNUZzFRQ2xKTGJGa2RYa3RWY2pqbzhqMzBkNHVldFNZMG5NQjc2S3VNanFlMkJKVlhPZDFxN3A4SzFSb3QxRldReDRQUUd5QVHSAdsBQVVfeXFMTkoxdmdaSHBkaXRSa1V1SUNmOEFJZUo1ZUp1QnpvWm9WMnhSTWs1R0lsM2pzX0tHdFhLUUx4TDZKWWlUb2ZIR2JCYWZVT1B3N21FTllERkFiendCQUxJN2hzZmxqaUthallNelI5MGI5eDhMblNtdjlubzRScHFhMnZVMjZabWxhXzFFRDVBVlVnQmZDVGcxUUNsSkxiRmtkWGt0VmNqam84ajMwZDR1ZXRTWTBuTUI3Nkt1TWpxZTJCSlZYT2QxcTdwOEsxUm90MUZXUXg0UFFHeUFR?oc=5",
       "source_name": "Google News · BCRD y política monetaria",
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-24, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.895935+00:00"
+      "fetched_at": "2026-08-31T21:39:55.070108+00:00"
     },
     {
       "id": "n_4217858a60792612",
@@ -910,7 +1041,19 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-07, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.896023+00:00"
+      "fetched_at": "2026-08-31T21:39:55.070219+00:00"
+    },
+    {
+      "id": "n_fd5bb9cb7c09fe12",
+      "motivo": "vieja",
+      "motivo_texto": "Publicada fuera del dia editorial en curso",
+      "title": "Las remesas hacia República Dominicana suben 6,4% hasta USD 7.316,4 millones entre enero y julio, según el Banco Central - infobae.com",
+      "url": "https://news.google.com/rss/articles/CBMiggJBVV95cUxQWExLcEszbTRXZzY0SXVHWmUyVHlrcE03c2ZRREt4RFNKR1R6ZXZoRldnNFEwSTZNeXN4SFN1eTlEendNNmctX0czQmZsVkM3bVhlS0J6MEl1cUxuaGppeWtJTUhsLWlaMHVWekZWYmM1WV9UZTFxT2dYZjZaMkRTSWM5VXA2clZXQTZnaFU4dmoyMFM5NTFrUXVtWlhDX3BsaUJBRFplYnIwZEZmMGFJRVJNZHEzTXg4cXNBRGJyZWQ3RlROWE4ydnAyMEVFenZvWjVrNXBHU1VxeUtHaFJsWDNURnF4UnY1T1RFWlVSY21BdjhMUjVheGQ1eTdFT3UwQ2fSAZwCQVVfeXFMTXNuQTRVSVJPS1l4VHF3WGxwZHpLajI1aFphdmFCMFFOakdCYWFtNFdBZDZmMzVLZ1dMb3pJTFhjZnFSRmlkWS1zcmtveGUzMFpiN3BFVkEyR2tmaGFSZXUxaUFPak9qa29MRTJZam04QXFNWlJLbGVoYWNmcWFJVURaaGYxY1RKdmU1bHo3Z01LQm1iRExXNjZQMUYtOU03QUpVbnAwQjJZVjZXMEFSY1FOOWFYNjZqMy1BRFhrT0o5QVpQbWxfWWdpeE13ekU1UzIxZkRDODRYVXVZNjNJTGdNQW5rWUxQYmZ4ZlRDS0tkMVF5UkMyYWtZaFhaNUwwendBMTF3bHg3T3R2cHBUbG5JNkZKRG4tcVlEN0E?oc=5",
+      "source_name": "Google News · BCRD y política monetaria",
+      "relevance": null,
+      "señales": [],
+      "detalle": "el feed la fecha 2026-08-09, ventana 2026-08-30 a 2026-08-31",
+      "fetched_at": "2026-08-31T21:39:55.070332+00:00"
     },
     {
       "id": "n_c5de40a764ac78db",
@@ -922,7 +1065,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-28, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.896182+00:00"
+      "fetched_at": "2026-08-31T21:39:55.070441+00:00"
     },
     {
       "id": "n_f59350c2194dd4df",
@@ -934,7 +1077,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-21, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.896267+00:00"
+      "fetched_at": "2026-08-31T21:39:55.070544+00:00"
     },
     {
       "id": "n_f9f843bf404c6de2",
@@ -946,43 +1089,43 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-12, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.896352+00:00"
-    },
-    {
-      "id": "n_fd5bb9cb7c09fe12",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Las remesas hacia República Dominicana suben 6,4% hasta USD 7.316,4 millones entre enero y julio, según el Banco Central - Infobae",
-      "url": "https://news.google.com/rss/articles/CBMiggJBVV95cUxQWExLcEszbTRXZzY0SXVHWmUyVHlrcE03c2ZRREt4RFNKR1R6ZXZoRldnNFEwSTZNeXN4SFN1eTlEendNNmctX0czQmZsVkM3bVhlS0J6MEl1cUxuaGppeWtJTUhsLWlaMHVWekZWYmM1WV9UZTFxT2dYZjZaMkRTSWM5VXA2clZXQTZnaFU4dmoyMFM5NTFrUXVtWlhDX3BsaUJBRFplYnIwZEZmMGFJRVJNZHEzTXg4cXNBRGJyZWQ3RlROWE4ydnAyMEVFenZvWjVrNXBHU1VxeUtHaFJsWDNURnF4UnY1T1RFWlVSY21BdjhMUjVheGQ1eTdFT3UwQ2fSAZwCQVVfeXFMTXNuQTRVSVJPS1l4VHF3WGxwZHpLajI1aFphdmFCMFFOakdCYWFtNFdBZDZmMzVLZ1dMb3pJTFhjZnFSRmlkWS1zcmtveGUzMFpiN3BFVkEyR2tmaGFSZXUxaUFPak9qa29MRTJZam04QXFNWlJLbGVoYWNmcWFJVURaaGYxY1RKdmU1bHo3Z01LQm1iRExXNjZQMUYtOU03QUpVbnAwQjJZVjZXMEFSY1FOOWFYNjZqMy1BRFhrT0o5QVpQbWxfWWdpeE13ekU1UzIxZkRDODRYVXVZNjNJTGdNQW5rWUxQYmZ4ZlRDS0tkMVF5UkMyYWtZaFhaNUwwendBMTF3bHg3T3R2cHBUbG5JNkZKRG4tcVlEN0E?oc=5",
-      "source_name": "Google News · BCRD y política monetaria",
-      "relevance": null,
-      "señales": [],
-      "detalle": "el feed la fecha 2026-08-09, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.896487+00:00"
+      "fetched_at": "2026-08-31T21:39:55.070655+00:00"
     },
     {
       "id": "n_bc864ff904404a71",
       "motivo": "vieja",
       "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "La inflación interanual de República Dominicana baja a 5.47% en julio, según el Banco Central - Infobae",
+      "title": "La inflación interanual de República Dominicana baja a 5.47% en julio, según el Banco Central - infobae.com",
       "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxOdXlydVRGODNRdWZEZkRieDZoa3M4UGk2Qk8zc1hBX0JaazU1MUJPYkR3Y21aX19tTUhLODhQWnVVM1lUR1ZwSU1XbmF0YUU3WnhCdmNPTzZlSGhMTFQ3anIyaFRmWU1vdGdsc0dfRHhLWnhjOHRCX3VzSlZkMmh5Y0JQU1JtU1JFWXhYSS1HaUlPTng2SWpqTGI4U3A5YklHWEZNRGZTLUV2dnctQWdhVG5pM2d6eHN1WGl2am8ydkNIdk50NGkwWEtBZk01SmhzSVBaT29nakRZTmduZHh4dtIB-wFBVV95cUxOQzFIRXJEcWRwZkExV2VESE5jRHhzZW9pNWZDM0pTRV9xbkYxNmhwOVI4N2swMlB6TnhDRTMyTFJzbHZEd0hxS1dZRXFfVHRjZ0ZGOWFXWnVJRFFFOUQ0blBRdXhnUzVmX3ZBUHBwYjFMd0ZwSE9LWmF2ZWRSMkc3LWUtczMzMlBEdFQwZV90czllUlBEbjgtWHM5MlFrSkZmYlpzYUdRdGdXY2hkTUI5dU1IU3U1a3pGbS1KUGJ2ejFuRjlSajJONzJvQk82T2FXb2ZMcjAyOXpLUDlrRWdlLW1RbmpUaWhqYUJpa0VuUGJxUEQya1U1ZDlPcw?oc=5",
       "source_name": "Google News · BCRD y política monetaria",
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-08, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.896585+00:00"
+      "fetched_at": "2026-08-31T21:39:55.070788+00:00"
+    },
+    {
+      "id": "n_c458cdd5c1138df7",
+      "motivo": "vieja",
+      "motivo_texto": "Publicada fuera del dia editorial en curso",
+      "title": "Repunta la inflación en Dominicana y rebasa la meta del Banco Central - Prensa Latina",
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNcm9LWHB4U044Mng2MHVGQVJaR2psR1c5ZEFMeVM4WXlnMVdHcEx4RVhidEZBeFVYM21JclpEN25BTU9qQ3l3S3kwYTBleTBNRndacnZHVTh2MmF3V3kycWluOENHNUl6b1lBQnoyT013RkY4dUxUVF80YVVlOWZucy1mNWNxb1RucTM2Rk15VTBrbU5yLXBUSjRPOVlrTFo2aVQ1WnRqdmdWblF1eGs0?oc=5",
+      "source_name": "Google News · BCRD y política monetaria",
+      "relevance": null,
+      "señales": [],
+      "detalle": "el feed la fecha 2026-07-17, ventana 2026-08-30 a 2026-08-31",
+      "fetched_at": "2026-08-31T21:39:55.070949+00:00"
     },
     {
       "id": "n_8143b2519ed88cba",
       "motivo": "vieja",
       "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Los créditos de consumo en República Dominicana alcanzan una tasa de 18.6% en julio y lideran el alza del financiamiento - Infobae",
+      "title": "Los créditos de consumo en República Dominicana alcanzan una tasa de 18.6% en julio y lideran el alza del financiamiento - infobae.com",
       "url": "https://news.google.com/rss/articles/CBMihgJBVV95cUxNQWtWa3BXYk84S3NjTVJVRFp5VXB1dExuT1htNkY5bmxUaTFxOEJHT1lmclNNVHNncmRUbmVORnFFejF0UWlsSzN3LXF3Nnk4UGk4QThnQkh3RjRFZkRkWm40WGxqN3dKNzVPel9RV29WQkthdU4xbXlUai0taXVFS2sxalc2Z2NJSG91M3lyTEhwV3RiVjJ3ZDhsNXBTbU1IeHcwR1BHNGdmbHU4NUxFLV80OU1DdWlSSzBuNnJJb3pudURLYVl6TmtPYU1iTlVZcXlvcVpReC1aWlhWOGdsSVQwRGdiZGtFbTBhTVRDQ1c4UGNQRlJCVWNHZ1VDV1NpdDdBRDhB0gGgAkFVX3lxTE9QVEF0N0RLYmVYVjZXTmh5N2FScXZBMW9VOTZsQ3FSSGRYaUlWVXFvOWNuZGt5c3dSb1hkM0NNcy12ZkpvQ29VZVdiRFQ3amdmakZJaDAxalZJM0RxbUJ4eUlGMDBLV2taNHpPbUV3V1hpYmNVMlNzSF82QU1jN2ZjazFSS24yMjNoUy1hOE5peHJtanFiQVRWVlgtTjFsZFowZFdJd1FfME0tRUZXVDltVzBzUlR6OXZ1WGFCZkVDRi1lbC1IekI5RUViRjBNbGRoQkUtdXUzMFQ2ZjJWSlZFRnRvdUFBaHhwUG0xMFVOWTZMYVkxTUxodGhZQmdZSlYtQ0loc1dOVG1mTUlZM2dIS1Zva0x2SHVHZjZXSEdqNA?oc=5",
       "source_name": "Google News · BCRD y política monetaria",
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-10, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.896675+00:00"
+      "fetched_at": "2026-08-31T21:39:55.071111+00:00"
     },
     {
       "id": "n_bc8531a50bd2aeed",
@@ -994,7 +1137,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-05-27, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.896759+00:00"
+      "fetched_at": "2026-08-31T21:39:55.071264+00:00"
     },
     {
       "id": "n_9f8479dff3899da4",
@@ -1006,7 +1149,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-10, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.896841+00:00"
+      "fetched_at": "2026-08-31T21:39:55.071410+00:00"
     },
     {
       "id": "n_d1ab4e9ec01afefc",
@@ -1018,55 +1161,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-16, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.896924+00:00"
-    },
-    {
-      "id": "n_bb97622345c8a666",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "El Banco Central atribuye la firmeza del peso dominicano al ingreso récord de divisas en el año - Revista Mercado",
-      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxQT01VRDRVaWNVR0t1NXRQLUw1RklrT2FEM3JkWUVnTjdPV3BkOTBpNTJaa1IyM2NNUjNPSUV3bmMycnFUVXN2Q2hSSDg0b0VnbnZrNF9RUXFpUENBSFVlRjAxcnBOelItWGp5WlZRc2ZMdTU0bDNHQzBoeG5JSGZ6VTQxY1pBZjVfWDRGUktMeU5mLVVkb2Y1RjJLWmdGQ2h6NHQ2eVR5eTdmZGxRNjBfd3AwaEgwQmxIR2N5cnJfb2ZFZ1B3S0o5ZllyQTBLcVRURVJ1RkZUU2RQb09qOC1j?oc=5",
-      "source_name": "Google News · BCRD y política monetaria",
-      "relevance": null,
-      "señales": [],
-      "detalle": "el feed la fecha 2026-08-13, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.896984+00:00"
-    },
-    {
-      "id": "n_77fee8a51fec2949",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "La inflación de Japón repunta y mantiene a su banco central en la senda de alzas de tasas - Bloomberg Línea",
-      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOcTZUYVJGQ2R5bFRaMUxvbTdQUnNaQmlzTUhjMTYxdnFyZk8wVnQ4bTZOcGF5dU9zRHRMQnlQYWJFT3gwd2VWaGpaVFZBcENOZ2xzdFdWQnAzaWUxUTJRczZQRlJCZ24tOGNHYjRyZWMtSVV3T2J5clNab2tZMFNJd0ZFR1pCMTFWRDRaa1NkeGl4XzV3MENOVFVRaG5YWGs1QlFnYXEtSWFKX1BqWXQ4YTZkd0lIYUZQYi1Ba0ZCcEJ3UFp6RUtnbmN30gHeAUFVX3lxTE1XM3lMRUEzUlI3TmJaZEJ0ZXRwdlRoWVAwVWpjQ1o5eTRBMEx5bG93b001Zi1PYWFEZTgyU3NoLUtyWDBPWVh3YkpBa2MyMGtmZHFhMjQwTWZhVTlmcEE5b2Jmci1PVl9YdGticHRmWHMxTWJoN1YxeDI0ZkRQVnZDSjZ6MGt5QTg3MFp3ZFFFWTBBMXlfMjRiWEo0ZS12ZGlVWTFnMHptbUtJc0JWbjNMamZXYTZwLWg0RTJKdV9MeFVXWmctVlpBQnRaelVOclhkX3VtaHhJaHluVjJjZw?oc=5",
-      "source_name": "Google News · BCRD y política monetaria",
-      "relevance": null,
-      "señales": [],
-      "detalle": "el feed la fecha 2026-07-24, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.897038+00:00"
-    },
-    {
-      "id": "n_f4ba91ab253bf794",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Banco Central atribuye apreciación del peso al mayor flujo de divisas y defiende régimen de flotación - acento.com.do",
-      "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxPcGh5VU1YUXZxOUwybWt2QVBkZXJsUGlfcGlzdnZSOHlqRlduVXV1dkVLV3NiQmVORG9BRDQtV1Y2Wmcwb3ExaUJTbC1EaG5EMms0R1F4ZW4wYVNxbmtwdlNUNVVpRzdKVV9iRld2RzNPWHBCM0xmS0xacVRrUU54MElLcEhqZnJDQnB0ZlNWcmI5dlVkdy15cjE5UlR2elpHejgwRVo2Qms3aUs1Z3NzVEJjT3puYjNfSXF1ZFdpcGdKeTMzR2VZeEx2bmJSWVNOd1F6aTlpOGVRX1BRckHSAd4BQVVfeXFMT3BoeVVNWFF2cTlMMm1rdkFQZGVybFBpX3Bpc3Z2Ujh5akZXblV1dXZFS1dzYkJlTkRvQUQ0LVdWNlpnMG9xMWlCU2wtRGhuRDJrNEdReGVuMGFTcW5rcHZTVDVVaUc3SlVfYkZXdkczT1hwQjNMZktMWnFUa1FOeDBJS3BIamZyQ0JwdGZTVnJiOXZVZHcteXIxOVJUdnpaR3o4MEVaNkJrN2lLNWdzc1RCY096bmIzX0lxdWRXaXBnSnkzM0dlWXhMdm5iUllTTndRemk5aThlUV9QUXJB?oc=5",
-      "source_name": "Google News · BCRD y política monetaria",
-      "relevance": null,
-      "señales": [],
-      "detalle": "el feed la fecha 2026-08-12, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.897091+00:00"
-    },
-    {
-      "id": "n_9002670803976fff",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Precio del dólar hoy en República Dominicana: martes 4 de agosto de 2026 - acento.com.do",
-      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQYXFXRFBlQUtMeWlaeUUzaWx2QmdROVpfWGM3WXhSWjV5WFBTeENLOE9hYzlJNjRpT1JISXBqV2Zpbjc0bmhpZmtPcm1HWUI0bzFDakdPakF2VnhoSlcwOUJrQkNZZnlnWF9rM1A2Zk9zSkc0Sk42cFZFaTMzRTFCcFd6QUg3ZzlRSXhPWXFOTm1DeDBOa1R6Vk9SdHlSX0xKMmI1VzVCeXZiRkJvOHRRbEx0STBWZ9IBtgFBVV95cUxQYXFXRFBlQUtMeWlaeUUzaWx2QmdROVpfWGM3WXhSWjV5WFBTeENLOE9hYzlJNjRpT1JISXBqV2Zpbjc0bmhpZmtPcm1HWUI0bzFDakdPakF2VnhoSlcwOUJrQkNZZnlnWF9rM1A2Zk9zSkc0Sk42cFZFaTMzRTFCcFd6QUg3ZzlRSXhPWXFOTm1DeDBOa1R6Vk9SdHlSX0xKMmI1VzVCeXZiRkJvOHRRbEx0STBWZw?oc=5",
-      "source_name": "Google News · BCRD y política monetaria",
-      "relevance": null,
-      "señales": [],
-      "detalle": "el feed la fecha 2026-08-04, ventana 2026-08-30 a 2026-08-31",
-      "fetched_at": "2026-08-31T19:29:38.897142+00:00"
+      "fetched_at": "2026-08-31T21:39:55.071521+00:00"
     }
   ]
 }
