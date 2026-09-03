@@ -7319,8 +7319,18 @@ function renderAiBrief(key, seccion, meta) {
   } catch (_e) { /* fecha ausente o inválida: se omite el sello */ }
   set('foot', `Generado con ${meta.modelo || 'Gemini'}${stamp ? ' · ' + stamp : ''} · Verificar cifras contra la fuente oficial antes de citar.`);
   card.hidden = false;
-  try { if (window.LN_AI_CURATION && typeof window.LN_AI_CURATION.onBaseRender === 'function') window.LN_AI_CURATION.onBaseRender(key); } catch (_) {}
+  // Se le entrega la sección base a la capa de curaduría: sin saber de qué
+  // corte y de qué fecha es el resumen de Gemini, no puede decidir si una
+  // aprobación guardada sigue vigente o ya quedó atrás.
+  try {
+    if (window.LN_AI_CURATION && typeof window.LN_AI_CURATION.onBaseRender === 'function') {
+      window.LN_AI_CURATION.onBaseRender(key, seccion, meta);
+    }
+  } catch (_) {}
 }
+// Si la curaduría se instala después de la primera pintada, necesita releer
+// la base: se guarda aquí y el propio módulo la recoge al arrancar.
+window.LN_AI_BASE = window.LN_AI_BASE || {};
 
 async function loadGeminiSummaries() {
   try {
@@ -7328,6 +7338,10 @@ async function loadGeminiSummaries() {
     if (!res.ok) return;
     const data = await res.json();
     const secciones = data.secciones || {};
+    window.LN_AI_BASE = {
+      macro: secciones.macro ? { ...secciones.macro, generado_en: secciones.macro.generado_en || data.generado_en } : null,
+      sib: secciones.sib ? { ...secciones.sib, generado_en: secciones.sib.generado_en || data.generado_en } : null
+    };
     renderAiBrief('macro', secciones.macro, data);
     renderAiBrief('sib', secciones.sib, data);
   } catch (error) {
@@ -13236,6 +13250,85 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   const USER = "estrategiaeinnovacion";
   const PASSWORD = "lanacional2";
   const SESSION_KEY = "ln_direct_analyst_bypass";
+  const AUTH_ENDPOINT = "/api/internal-auth";
+
+  /* ── Sesión del servidor ─────────────────────────────────────────────
+     Abrir el panel es una decisión del navegador: se compara usuario y
+     clave aquí mismo y se pinta la clase `analyst-logged`. Eso NO
+     autentica a nadie ante el servidor.
+
+     /api/github-actions —el que dispara los pipelines— exige la cookie
+     firmada `oe_internal_session`, y esa cookie solo la emite
+     /api/internal-auth. Como este login jamás llamaba a ese endpoint, la
+     cookie no existía nunca: el GET de estado devolvía 401 ("Estado no
+     disponible") y cada botón "Ejecutar" terminaba en "No se lanzó",
+     estuviera bien o mal el token de GitHub.
+
+     Aquí se cierra ese hueco: al abrir el panel se pide la cookie con las
+     mismas credenciales. Si el servidor no las reconoce, el panel sigue
+     abriendo igual, pero se guarda el motivo exacto para que la tarjeta de
+     pipelines lo diga en vez de un "No se lanzó" mudo. */
+  let serverSession = null;
+
+  function describeAuthFailure(status, body) {
+    const detail = (body && body.error) || "";
+
+    if (status === 401) {
+      return "El servidor no reconoce las credenciales del panel: " +
+        "INTERNAL_BYPASS_USER / INTERNAL_BYPASS_PASSWORD en Vercel no " +
+        "coinciden con las que valida este HTML.";
+    }
+    if (status === 503) {
+      return detail || "Faltan INTERNAL_BYPASS_USER, INTERNAL_BYPASS_PASSWORD " +
+        "o INTERNAL_SESSION_SECRET en las variables de entorno de Vercel.";
+    }
+    return detail || ("/api/internal-auth respondió HTTP " + status + ".");
+  }
+
+  function ensureServerSession(force) {
+    if (serverSession && !force) return serverSession;
+
+    serverSession = (async function () {
+      // Primero se pregunta si ya hay cookie viva: reemitirla en cada carga
+      // sería gratuito pero ruidoso en los logs del endpoint.
+      if (!force) {
+        try {
+          const probe = await fetch(AUTH_ENDPOINT, {
+            method: "GET",
+            credentials: "same-origin",
+            cache: "no-store"
+          });
+          if (probe.ok) return { ok: true, reason: "" };
+        } catch (_) { /* sin red: se intenta el POST igual */ }
+      }
+
+      try {
+        const res = await fetch(AUTH_ENDPOINT, {
+          method: "POST",
+          credentials: "same-origin",
+          cache: "no-store",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: USER, password: PASSWORD })
+        });
+
+        if (res.ok) return { ok: true, reason: "" };
+
+        let body = null;
+        try { body = await res.json(); } catch (_) {}
+        return { ok: false, reason: describeAuthFailure(res.status, body) };
+      } catch (error) {
+        return {
+          ok: false,
+          reason: "No se pudo hablar con /api/internal-auth: " +
+            ((error && error.message) || "error de red") + "."
+        };
+      }
+    })();
+
+    return serverSession;
+  }
+
+  window.lnEnsureAnalystServerSession = ensureServerSession;
 
   function message(text, ok) {
     let box = document.getElementById("internal-login-message");
@@ -13295,6 +13388,18 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     // /news_candidates.json cuelgan del que si pasa por ahi. El panel pintaba
     // "Sin propuestas" con el JSON del dia lleno de candidatas.
     cargarColaDeNoticias();
+
+    // La cookie del analista y el estado de los pipelines: en ese orden.
+    // Consultar el estado antes de tener cookie es lo que dejaba las cuatro
+    // tarjetas en "Estado no disponible" aunque el panel estuviera abierto.
+    ensureServerSession().then(function (session) {
+      if (typeof window.lnRefreshPipelineStatus === "function") {
+        window.lnRefreshPipelineStatus(true);
+      }
+      if (session && !session.ok) {
+        console.warn("[LN-PIPE] Sesión de servidor no emitida:", session.reason);
+      }
+    }).catch(function () {});
   }
 
   // El cargador lo instalan parches que viven mas abajo en el documento, asi
@@ -13361,6 +13466,14 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   window.lnHardcodedAnalystLogout = function () {
     sessionStorage.removeItem(SESSION_KEY);
     try { window.isLogged = false; } catch (_) {}
+
+    // Cerrar el panel sin caducar la cookie dejaba al navegador con permiso
+    // para disparar pipelines después de "Salir".
+    serverSession = null;
+    try {
+      fetch(AUTH_ENDPOINT, { method: "DELETE", credentials: "same-origin", cache: "no-store" })
+        .catch(function () {});
+    } catch (_) {}
 
     document.body.classList.remove("analyst-logged");
 
@@ -13911,6 +14024,39 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   var currentSec = {};
   var editing = {};
   var lastAiApplied = {};
+  var baseSec = {};   // último resumen de Gemini leído de data/gemini_summaries.json
+
+  /* ── Vigencia de la curaduría ────────────────────────────────────────
+     Una aprobación manual mandaba sobre el resumen base SIEMPRE, sin mirar
+     fechas. Efecto real medido en producción: la aprobación del 15 de julio
+     seguía en pantalla el 3 de septiembre, y las seis corridas verdes de
+     gemini_summaries.yml (10 y 21 jul, 31 jul, 6, 18 y 21 ago) no se veían.
+     Peor: `captureLiveState` volvía a publicar esa misma aprobación en cada
+     "Publicar", así que el congelamiento viajaba a todos los dispositivos y
+     se reinyectaba solo. Por eso parecía que el pipeline había corrido una
+     sola vez.
+
+     Regla nueva: la curaduría manda mientras hable del mismo corte. En
+     cuanto Gemini publica un corte posterior, la aprobación vieja se archiva
+     en `ln-ai-superseded-*` (no se pierde) y deja de mandar. */
+  function periodKey(sec) {
+    var p = sec && sec.periodo;
+    return (typeof p === 'string' && /^\d{4}-\d{2}$/.test(p)) ? p : null;
+  }
+  function secStamp(sec) {
+    if (!sec) return 0;
+    return Date.parse(sec.aprobado_en || sec.editado_en || sec.generado_en || 0) || 0;
+  }
+  function isSuperseded(sec, key) {
+    var base = baseSec[key];
+    if (!sec || !base) return false;
+    var pb = periodKey(base), ps = periodKey(sec);
+    // Con periodos comparables manda el corte: solo uno posterior desplaza.
+    if (pb && ps) return pb > ps;
+    // Sin periodo en la curaduría (así quedó lo guardado en producción),
+    // el desempate es la fecha.
+    return secStamp(base) > secStamp(sec);
+  }
 
   function isAnalyst() { try { return document.body.classList.contains('analyst-logged'); } catch (_) { return false; } }
   function loadJson(k) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (_) { return null; } }
@@ -14109,7 +14255,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     updateBar(key, state, sec);
   }
 
-  function updateBar(key, state, sec) {
+  function updateBar(key, state, sec, note) {
     var bar = document.getElementById('ai-brief-' + key + '-approval');
     if (!bar) return;
     bar.classList.add('is-active');
@@ -14127,7 +14273,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
       if (label) label.textContent = 'Borrador generado al publicar · pendiente de aprobación';
       if (foot) foot.textContent = 'Generado automáticamente desde los datos publicados · pendiente de curaduría del analista.';
     } else {
-      if (label) label.textContent = 'Resumen automático · pendiente de curaduría';
+      if (label) label.textContent = note || 'Resumen automático · pendiente de curaduría';
     }
     bar.dataset.state = state || 'base';
   }
@@ -14253,16 +14399,17 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   }
 
   // ── Sincronización entre dispositivos (Supabase live-state) ───────────
-  function aiStamp(sec) {
-    if (!sec) return 0;
-    return Date.parse(sec.aprobado_en || sec.editado_en || sec.generado_en || 0) || 0;
-  }
+  function aiStamp(sec) { return secStamp(sec); }
 
   function applyRemoteAi(state) {
     if (!state || !state.ai) return;
     KEYS.forEach(function (key) {
       var incoming = state.ai[key];
       if (!incoming || editing[key]) return; // no pisar una edición en curso
+      // Cada fila de LIVE_STATE arrastra la última curaduría aprobada. Sin
+      // este corte, una aprobación vieja se reinyectaba desde Supabase en
+      // cada carga y volvía a tapar el resumen nuevo de Gemini.
+      if (isSuperseded(incoming, key)) return;
       var local = loadJson('ln-ai-approved-' + key);
       var incT = aiStamp(incoming);
       var locT = local ? aiStamp(local) : -1;
@@ -14304,15 +14451,55 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     }
   }
 
-  // Hook llamado por renderAiBrief (base Gemini) para superponer curaduría.
-  function onBaseRender(key) {
+  /* Decide qué se pinta: curaduría aprobada, borrador o el resumen base de
+     Gemini. Es el único sitio que resuelve esa competencia, para que el
+     arranque, la llegada del JSON y la sincronización remota no se
+     contradigan entre sí. */
+  function reconcile(key) {
+    if (editing[key]) return;
     ensureInject(key);
+
+    var desplazada = null;
     var approved = loadJson('ln-ai-approved-' + key);
-    if (approved) { render(key, approved, 'approved'); return; }
+    if (approved && isSuperseded(approved, key)) {
+      saveJson('ln-ai-superseded-' + key, approved);
+      delKey('ln-ai-approved-' + key);
+      lastAiApplied[key] = -1;
+      desplazada = approved;
+      approved = null;
+    }
+    if (approved) {
+      lastAiApplied[key] = secStamp(approved);
+      render(key, approved, 'approved');
+      return;
+    }
+
     var draft = loadJson('ln-ai-draft-' + key);
+    if (draft && isSuperseded(draft, key)) { delKey('ln-ai-draft-' + key); draft = null; }
     if (draft && isAnalyst()) { render(key, draft, 'draft'); return; }
+
+    if (baseSec[key]) {
+      render(key, baseSec[key], 'base');
+      if (desplazada) {
+        updateBar(key, 'base', baseSec[key],
+          'Corte nuevo de Gemini · la curaduría anterior quedó desplazada');
+      }
+      return;
+    }
+
     currentSec[key] = readEdited(key);
     updateBar(key, 'base', currentSec[key]);
+  }
+
+  // Hook llamado por renderAiBrief (base Gemini) para superponer curaduría.
+  function onBaseRender(key, sec, meta) {
+    var base = sec || (window.LN_AI_BASE && window.LN_AI_BASE[key]) || null;
+    if (base) {
+      baseSec[key] = Object.assign({}, base, {
+        generado_en: base.generado_en || (meta && meta.generado_en) || null
+      });
+    }
+    reconcile(key);
   }
 
   // Enlazar el botón de Publicar SIB/BCRD.
@@ -14336,11 +14523,9 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
 
   function init() {
     KEYS.forEach(function (key) {
-      ensureInject(key);
-      var approved = loadJson('ln-ai-approved-' + key);
-      var draft = loadJson('ln-ai-draft-' + key);
-      if (approved) { lastAiApplied[key] = aiStamp(approved); render(key, approved, 'approved'); }
-      else if (draft && isAnalyst()) render(key, draft, 'draft');
+      var base = window.LN_AI_BASE && window.LN_AI_BASE[key];
+      if (base && !baseSec[key]) baseSec[key] = base;
+      reconcile(key);
     });
     wrapPublish();
     wrapLiveSync();
@@ -14348,9 +14533,21 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
   else init();
-  [600, 1400, 2400].forEach(function (t) { setTimeout(function () { KEYS.forEach(ensureInject); wrapPublish(); wrapLiveSync(); }, t); });
+  // El JSON de Gemini llega por fetch: puede caer después de init(). Cada
+  // reintento vuelve a recogerlo y a rehacer la comparación de vigencia.
+  [600, 1400, 2400].forEach(function (t) {
+    setTimeout(function () {
+      KEYS.forEach(function (key) {
+        ensureInject(key);
+        var base = window.LN_AI_BASE && window.LN_AI_BASE[key];
+        if (base && !baseSec[key]) { baseSec[key] = base; reconcile(key); }
+      });
+      wrapPublish();
+      wrapLiveSync();
+    }, t);
+  });
 
-  window.LN_AI_CURATION = { onBaseRender: onBaseRender, generate: generate, buildSib: buildSib, buildMacro: buildMacro, applyRemoteAi: applyRemoteAi, wrapLiveSync: wrapLiveSync };
+  window.LN_AI_CURATION = { onBaseRender: onBaseRender, reconcile: reconcile, generate: generate, buildSib: buildSib, buildMacro: buildMacro, applyRemoteAi: applyRemoteAi, wrapLiveSync: wrapLiveSync };
 })();
 </script>
 
@@ -16244,15 +16441,40 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
       : esc(info.text);
   }
 
-  async function callPipelineApi(options){
+  /* El endpoint exige la cookie `oe_internal_session`. Quien la emite es el
+     login del panel (ver ln-hardcoded-bypass-final); aquí solo se espera a
+     que exista antes de preguntar, y se reintenta una vez si caducó: la
+     cookie dura 8 h y la pestaña puede quedarse abierta más tiempo. */
+  async function ensurePipelineSession(force){
+    if (typeof window.lnEnsureAnalystServerSession !== 'function') return null;
+    try { return await window.lnEnsureAnalystServerSession(force); }
+    catch(_) { return null; }
+  }
+
+  async function callPipelineApi(options, retried){
+    if (!retried) await ensurePipelineSession(false);
+
     const response = await fetch(PIPELINE_ENDPOINT, {
       credentials: 'same-origin',
+      cache: 'no-store',
       headers: { 'Content-Type': 'application/json' },
       ...options
     });
 
     let payload = null;
     try { payload = await response.json(); } catch(_) { payload = null; }
+
+    if (response.status === 401 && !retried){
+      const renewed = await ensurePipelineSession(true);
+      if (renewed && renewed.ok) return callPipelineApi(options, true);
+      if (renewed && renewed.reason){
+        // Motivo real en vez de "Sesión de analista requerida": el panel está
+        // abierto, lo que falta es la configuración del servidor.
+        const error = new Error(renewed.reason);
+        error.status = 401;
+        throw error;
+      }
+    }
 
     if (!response.ok || !payload || payload.ok === false){
       const message = (payload && payload.error) || `El servidor respondió HTTP ${response.status}.`;
@@ -16278,7 +16500,16 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
       });
       if (!silent) setFeedback(`Estado consultado sobre <strong>${esc(payload.repo)}</strong> · rama ${esc(payload.ref)}.`);
     } catch (error){
-      if (!silent) setFeedback(`No se pudo consultar el estado: ${esc(error.message)}`);
+      // Un fallo de sesión o de configuración se dice siempre, aunque la
+      // consulta fuera automática: si no, las cuatro tarjetas se quedan en
+      // "Estado no disponible" sin explicar por qué.
+      if (!silent || error.status === 401 || error.status === 503){
+        setFeedback(`No se pudo consultar el estado: ${esc(error.message)}`);
+      }
+      document.querySelectorAll('[data-pipeline-state]').forEach(el => {
+        el.className = 'pipeline-state fail';
+        el.textContent = 'Estado no disponible';
+      });
     }
   };
 
