@@ -1,39 +1,38 @@
 {
-  "generado_en": "2026-08-21T12:57:45.336509+00:00",
+  "generado_en": "2026-09-06T15:16:03.585385+00:00",
   "modelo": "gemini-2.5-flash-lite",
   "secciones": {
     "macro": {
-      "periodo": "2026-08",
-      "titulo": "Economía dominicana muestra fortaleza y crecimiento en sectores clave",
-      "resumen": "La economía dominicana exhibe una notable fortaleza, evidenciada por el crecimiento en sectores como las exportaciones, que aumentaron un 12.5% a julio, impulsadas por el oro y el tabaco. Asimismo, las captaciones del sistema financiero alcanzaron un máximo histórico de RD$3.5 billones, con el mayor crecimiento semestral desde 2021.",
+      "periodo": "2026-09",
+      "titulo": "Panorama macroeconómico dominicano",
+      "resumen": "El entorno macroeconómico dominicano se ve influenciado por factores internacionales. La volatilidad en los precios del petróleo y las expectativas sobre las tasas de interés en Estados Unidos generan incertidumbre.",
       "puntos": [
-        "El gasto de capital del gobierno alcanzó RD$82,119.6 millones a junio, con casi la mitad destinado a infraestructura, el nivel más alto en siete años.",
-        "El crédito a mipymes muestra crecimiento y reducción de tasas, aunque se señala su vulnerabilidad ante desastres naturales.",
-        "Se lanzó Punto AZUL, una red de subagentes bancarios para expandir la inclusión financiera integrando 10 entidades bancarias."
+        "El precio del petróleo WTI se sitúa en US$90 por barril, con una ligera bajada.",
+        "Los mercados financieros globales muestran cautela ante datos de empleo en EE.UU. y posibles alzas de tasas.",
+        "Se observan innovaciones en canales digitales bancarios para agilizar transacciones."
       ],
       "vigilar": [
-        "Posibles impactos de desastres naturales en el crédito a mipymes y el sistema financiero.",
-        "Evolución de las tasas de interés y el comportamiento del crédito en el entorno monetario.",
-        "Publicaciones del Banco Central sobre el desempeño económico y la política monetaria."
+        "Posibles decisiones de política monetaria de la Reserva Federal de EE.UU.",
+        "Evolución de los precios del petróleo y su impacto en los costos de importación.",
+        "Publicaciones del Banco Central de la República Dominicana sobre indicadores clave."
       ],
-      "generado_en": "2026-08-21T12:57:47.728527+00:00"
+      "generado_en": "2026-09-06T15:16:06.071148+00:00"
     },
     "sib": {
       "periodo": "2026-07",
-      "titulo": "Sistema Financiero: Calidad de Cartera y Rentabilidad Estables",
-      "resumen": "El sistema financiero dominicano mantiene una calidad de cartera estable, con una morosidad general en descenso, y una rentabilidad que se recupera. Las Asociaciones de Ahorros y Préstamos (AAyP) muestran una ligera mejora en sus indicadores de rentabilidad y un control de la morosidad.",
+      "titulo": "Sistema Financiero: Calidad de Cartera y Rentabilidad en Julio 2026",
+      "resumen": "El sistema financiero dominicano muestra una ligera mejora en la calidad de su cartera, con una morosidad general de 1.87% en julio de 2026. La rentabilidad, medida por el ROE, se mantiene robusta, especialmente en el segmento de Bancos Múltiples.",
       "puntos": [
-        "La morosidad general del sistema financiero se ubicó en 1.98% en julio de 2026, mostrando una tendencia decreciente respecto al mes anterior.",
-        "El ROE promedio del sistema financiero alcanzó el 20.51% para Bancos Múltiples y el 8.85% para AAyP en julio de 2026.",
-        "Los activos totales del sistema financiero superaron los 4.3 billones de pesos dominicanos, con un crecimiento sostenido en los últimos meses.",
-        "La eficiencia (Cost-to-Income) de las AAyP se situó en 65.00% en julio de 2026, mejorando respecto a meses previos."
+        "La morosidad del sistema se ubicó en 1.87% en julio de 2026, mostrando una tendencia a la baja respecto al mes anterior.",
+        "Las Asociaciones de Ahorros y Préstamos (AAyP) registraron una morosidad de 1.98% y un ROE de 8.85% en el mismo período.",
+        "Los activos totales del sector de AAyP alcanzaron los 432.1 mil millones de pesos dominicanos en julio de 2026."
       ],
       "vigilar": [
-        "La morosidad de las AAyP se mantiene por encima del 1.90% en los últimos meses, con fluctuaciones.",
-        "La eficiencia de las AAyP, aunque mejora, aún se ubica por encima de la de los Bancos Múltiples.",
-        "Se observa una volatilidad en la morosidad de algunas asociaciones específicas, como Peravia con un 6.53%."
+        "La morosidad de las AAyP se mantiene por encima del promedio general del sistema.",
+        "La eficiencia (CTI) de las AAyP se sitúa en 65.00%, un nivel que requiere atención continua.",
+        "Se observa una volatilidad en la morosidad de algunas asociaciones específicas, como Peravia (6.53%)."
       ],
-      "generado_en": "2026-08-21T12:57:55.628268+00:00"
+      "generado_en": "2026-09-06T15:16:13.716974+00:00"
     }
   }
 }
