@@ -1,24 +1,140 @@
 {
-  "generated_at": "2026-09-11T16:59:34.126041+00:00",
+  "generated_at": "2026-09-11T19:20:48.708277+00:00",
   "dia_editorial": "2026-09-11",
   "zona_horaria": "UTC-4 (Santo Domingo)",
   "ventana_frescura": "2026-09-10 a 2026-09-11",
   "gemini_model": "gemini-2.5-flash-lite",
   "min_relevance": 6,
-  "count": 10,
+  "count": 15,
   "count_by_day": {
-    "2026-09-11": 8,
-    "2026-09-10": 2
+    "2026-09-11": 11,
+    "2026-09-10": 4
   },
-  "new_this_run": 10,
+  "new_this_run": 5,
   "already_published": 0,
   "out_of_window": 0,
   "ttl_days": 1,
   "max_age_days": 1,
   "errors": 0,
   "sources": 19,
-  "elapsed_s": 510.1,
+  "elapsed_s": 419.2,
   "candidates": [
+    {
+      "id": "n_7ef5b9f076c534e8",
+      "source_key": "news_eldinero_rss",
+      "source_name": "El Dinero · RSS",
+      "url": "https://eldinero.com.do/380068/estados-unidos-mantiene-inflacion-en-3-4-durante-agosto",
+      "title": "Estados Unidos mantiene inflación en 3.4% durante agosto",
+      "summary": "(mailto:?subject=Estados%20Unidos%20mantiene%20inflaci%C3%B3n%20en%203.4%25%20durante%20agosto&body=https%3A%2F%2Feldinero.com.do%2F380068%2Festados-unidos-mantiene-inflacion-en-3-4-durante-agosto%2F)",
+      "body": "(mailto:?subject=Estados%20Unidos%20mantiene%20inflaci%C3%B3n%20en%203.4%25%20durante%20agosto&body=https%3A%2F%2Feldinero.com.do%2F380068%2Festados-unidos-mantiene-inflacion-en-3-4-durante-agosto%2F) El Índice de Precios de Consumo (IPC) de Estados Unidos marcó el 3.4% interanual en agosto, mismo dato que el registrado en julio, con lo que la tasa de inflación se mantiene sin cambios a pesar del estancamiento del conflicto en Oriente Próximo, según ha informado la Agencia de Estadísticas Laborales del Departamento de Trabajo. Por su parte, la inflación subyacente, sin alimentos ni energía, se situó en el 2.4% anual, una décima menos que en julio, mientras que los precios de la energía se elevaron hasta un 16.3% respecto del año anterior, frente al 14.3% de julio. El precio de los alimentos experimentó un incremento del 2.7%, tres décimas por debajo.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "politica_monetaria"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "sin_ia": true,
+      "published_at": "2026-09-11T18:46:01+00:00",
+      "fecha_inferida_de_url": false,
+      "dia_editorial": "2026-09-11",
+      "fetched_at": "2026-09-11T19:19:30.701824+00:00",
+      "dia_lectura": "2026-09-11",
+      "status": "pending"
+    },
+    {
+      "id": "n_24ed4df9e7dc1cb5",
+      "source_key": "news_extra_msynflyf",
+      "source_name": "Fuente guardada",
+      "url": "https://www.fxstreet.es/news/el-yen-japones-sube-mientras-se-desvanece-el-rebote-del-dolar-impulsado-por-la-inflacion-202609111838",
+      "title": "El Yen japonés sube mientras se desvanece el rebote del Dólar impulsado por la inflación",
+      "summary": "URL Source: https://www.fxstreet.es/news/el-yen-japones-sube-mientras-se-desvanece-el-rebote-del-dolar-impulsado-por-la-inflacion-202609111838",
+      "body": "URL Source: https://www.fxstreet.es/news/el-yen-japones-sube-mientras-se-desvanece-el-rebote-del-dolar-impulsado-por-la-inflacion-202609111838 This website uses a security service to protect against malicious bots. This page is displayed while the website verifies you are not a bot.",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "politica_monetaria",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "sin_ia": true,
+      "published_at": "2026-09-11T18:38:01+00:00",
+      "fecha_inferida_de_url": false,
+      "dia_editorial": "2026-09-11",
+      "fetched_at": "2026-09-11T19:19:15.905256+00:00",
+      "dia_lectura": "2026-09-11",
+      "status": "pending"
+    },
+    {
+      "id": "n_bc4d6cb46974fb50",
+      "source_key": "news_extra_msynflyc",
+      "source_name": "Fuente guardada",
+      "url": "https://www.hacienda.gob.do/pagos-autorizados-por-comision-de-revision-aumentan-a-rd326-3-millones-para-saldar-deudas-con-contratistas-del-minerd",
+      "title": "Pagos autorizados por Comisión de Revisión aumentan a RD$326.3 millones para saldar deudas con contratistas del Minerd",
+      "summary": "Title: Pagos autorizados por Comisión de Revisión aumentan a RD$326.3 millones para saldar deudas con contratistas del Minerd",
+      "body": "Title: Pagos autorizados por Comisión de Revisión aumentan a RD$326.3 millones para saldar deudas con contratistas del Minerd URL Source: https://www.hacienda.gob.do/pagos-autorizados-por-comision-de-revision-aumentan-a-rd326-3-millones-para-saldar-deudas-con-contratistas-del-minerd Enlaces de interés ! Image 25: Logo de Servicios Gob Servicios Gob ! Image 26: Logo de Sistema 311 Sistema 311 ! Image 27: Logo de Sistema 911 Sistema 911 ! Image 28: Logo de Observatorio SP Observatorio SP ! Image 29: Logo de Beca tu futuro Beca tu futuro ! Image 30: Logo de Denuncia IWF Denuncia IWF ! Image 31: Logo de Ciberseguridad Ciberseguridad",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "sin_ia": true,
+      "published_at": "2026-09-10T16:42:23+00:00",
+      "fecha_inferida_de_url": false,
+      "dia_editorial": "2026-09-10",
+      "fetched_at": "2026-09-11T19:19:10.246266+00:00",
+      "dia_lectura": "2026-09-11",
+      "status": "pending"
+    },
+    {
+      "id": "n_615a498323dc3059",
+      "source_key": "news_extra_msynflyc",
+      "source_name": "Fuente guardada",
+      "url": "https://www.hacienda.gob.do/mhe-destaca-avances-del-protevi-en-el-impulso-a-la-productividad-y-sostenibilidad-de-las-mipymes",
+      "title": "MHE destaca avances del ProTEVI en el impulso a la productividad y sostenibilidad de las mipymes",
+      "summary": "URL Source: https://www.hacienda.gob.do/mhe-destaca-avances-del-protevi-en-el-impulso-a-la-productividad-y-sostenibilidad-de-las-mipymes",
+      "body": "URL Source: https://www.hacienda.gob.do/mhe-destaca-avances-del-protevi-en-el-impulso-a-la-productividad-y-sostenibilidad-de-las-mipymes Enlaces de interés ! Image 25: Logo de Servicios Gob Servicios Gob ! Image 26: Logo de Sistema 311 Sistema 311 ! Image 27: Logo de Sistema 911 Sistema 911 ! Image 28: Logo de Observatorio SP Observatorio SP ! Image 29: Logo de Beca tu futuro Beca tu futuro ! Image 30: Logo de Denuncia IWF Denuncia IWF ! Image 31: Logo de Ciberseguridad Ciberseguridad",
+      "category": "Economia",
+      "relevance": 9,
+      "señales": [
+        "regulador",
+        "hecho"
+      ],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "sin_ia": true,
+      "published_at": "2026-09-10T12:38:22+00:00",
+      "fecha_inferida_de_url": false,
+      "dia_editorial": "2026-09-10",
+      "fetched_at": "2026-09-11T19:18:54.290372+00:00",
+      "dia_lectura": "2026-09-11",
+      "status": "pending"
+    },
+    {
+      "id": "n_6164d36586c4b0ab",
+      "source_key": "news_eldinero",
+      "source_name": "El Dinero · Finanzas",
+      "url": "https://eldinero.com.do/380072/arancel-de-12-5-pone-en-desventaja-a-exportadores-dominicanos",
+      "title": "¿Arancel de 12.5% pone en desventaja a exportadores dominicanos?",
+      "summary": "Un arancel del 12.5% a las exportaciones dominicanas hacia Estados Unidos genera desventaja competitiva frente a otros socios comerciales. La Asociación de Industrias de República Dominicana (AIRD) confía en las gestiones gubernamentales para abordar esta problemática.",
+      "body": "Mario Pujols, vicepresidente ejecutivo de la AIRD, señaló que el arancel del 12.5% aplicado a las exportaciones dominicanas hacia Estados Unidos pone al sector en una clara desventaja frente a países con tasas del 10% o 0%. Pujols destacó la importancia de observar este impacto desde la perspectiva de las empresas locales que compiten en el mercado estadounidense y expresó confianza en las gestiones de las autoridades dominicanas.",
+      "category": "Economia",
+      "relevance": 7,
+      "señales": [],
+      "rescatado_por_regla": false,
+      "cuerpo_recuperado": false,
+      "sin_ia": false,
+      "published_at": "2026-09-11T19:01:46+00:00",
+      "fecha_inferida_de_url": false,
+      "dia_editorial": "2026-09-11",
+      "fetched_at": "2026-09-11T19:13:59.394546+00:00",
+      "dia_lectura": "2026-09-11",
+      "status": "pending"
+    },
     {
       "id": "n_dd6c57982a93d22d",
       "source_key": "news_gnews_banca",
@@ -246,6 +362,18 @@
   "discarded_count": 60,
   "discarded": [
     {
+      "id": "n_650393c56289bcfe",
+      "motivo": "relevancia_baja",
+      "motivo_texto": "El modelo le puso poca relevancia financiera",
+      "title": "AIE prevé caída de 2.5 millones de barriles diarios en demanda de petróleo",
+      "url": "https://eldinero.com.do/380063/aie-preve-caida-de-2-5-millones-de-barriles-diarios-en-demanda-de-petroleo",
+      "source_name": "El Dinero · Finanzas",
+      "relevance": 5,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-09-11T19:16:02.167363+00:00"
+    },
+    {
       "id": "n_f92badc32ce14104",
       "motivo": "relevancia_baja",
       "motivo_texto": "El modelo le puso poca relevancia financiera",
@@ -256,30 +384,6 @@
       "señales": [],
       "detalle": "",
       "fetched_at": "2026-09-11T16:52:23.983995+00:00"
-    },
-    {
-      "id": "n_a1f013617f0503b0",
-      "motivo": "relevancia_baja",
-      "motivo_texto": "El modelo le puso poca relevancia financiera",
-      "title": "Nunca imaginé que la vida me tenía eso guardado: dominicana cuenta cómo sobrevivió al 11-S",
-      "url": "https://www.diariolibre.com/usa/actualidad/2026/09/11/candy-perdomo-una-dominicana-sobreviviente-del-11-5/3653667",
-      "source_name": "Diario Libre · Economía",
-      "relevance": 5,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-09-11T16:52:34.221756+00:00"
-    },
-    {
-      "id": "n_dc9f9d2501ea2f95",
-      "motivo": "relevancia_baja",
-      "motivo_texto": "El modelo le puso poca relevancia financiera",
-      "title": "¿Por qué puede subir tu factura eléctrica aunque uses los mismos aparatos?",
-      "url": "https://www.diariolibre.com/economia/energia/2026/09/11/edesur-explica-como-cambios-en-el-consumo-elevan-la-factura-electrica/3656080",
-      "source_name": "Diario Libre · Economía",
-      "relevance": 5,
-      "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-09-11T16:53:04.278698+00:00"
     },
     {
       "id": "n_19353682173285fc",
@@ -306,28 +410,124 @@
       "fetched_at": "2026-09-11T16:53:29.758915+00:00"
     },
     {
-      "id": "n_c7fc2da494f25ed6",
-      "motivo": "sin_cuerpo",
-      "motivo_texto": "No se pudo leer el cuerpo del articulo",
-      "title": "Dictan 30 años de prisión a cabo de la Armada por muerte de médico",
-      "url": "https://www.diariolibre.com/actualidad/justicia/2026/09/11/dictan-30-anos-de-prision-a-cabo-de-la-armada-por-muerte-de-medico/3655988",
+      "id": "n_bf2f3919ce8b04f2",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Festival del Chocolate Dominicano celebra su sexta edición este fin de semana",
+      "url": "https://eldinero.com.do/380053/festival-del-chocolate-dominicano-celebra-su-sexta-edicion-este-fin-de-semana-en-santo-domingo",
+      "source_name": "El Dinero · Finanzas",
+      "relevance": null,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-09-11T19:17:00.996952+00:00"
+    },
+    {
+      "id": "n_384423d063452524",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "El petróleo de Texas abre con una bajada del 3.5% tras superar los US$100 el barril",
+      "url": "https://eldinero.com.do/380054/el-petroleo-de-texas-abre-con-una-bajada-del-3-5-tras-superar-los-us100-el-barril",
+      "source_name": "El Dinero · Finanzas",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-09-11T19:17:01.482260+00:00"
+    },
+    {
+      "id": "n_296672868192818e",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Wall Street abre en verde mientras el petróleo cae por debajo de los US$100 el barril",
+      "url": "https://eldinero.com.do/380058/wall-street-abre-en-verde-mientras-el-petroleo-cae-por-debajo-de-los-us100-el-barril",
+      "source_name": "El Dinero · Finanzas",
+      "relevance": null,
+      "señales": [],
+      "detalle": "",
+      "fetched_at": "2026-09-11T19:18:00.160137+00:00"
+    },
+    {
+      "id": "n_b68428d5eb73edec",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Polvo del Sahara y calor extremo en República Dominicana",
+      "url": "https://www.diariolibre.com/planeta/clima/2026/09/11/polvo-del-sahara-y-calor-extremo-en-republica-dominicana/3656316",
       "source_name": "Diario Libre · Economía",
       "relevance": null,
       "señales": [],
-      "detalle": "La pagina es un error o exige suscripcion",
-      "fetched_at": "2026-09-11T16:52:32.145506+00:00"
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-09-11T19:18:03.157096+00:00"
     },
     {
-      "id": "n_b4fd53dee1f09af9",
-      "motivo": "modelo_irrelevante",
-      "motivo_texto": "El modelo la marco como no noticiosa",
-      "title": "Comienza en Nueva York la ceremonia por los 25 años del 11 de septiembre",
-      "url": "https://www.diariolibre.com/usa/actualidad/2026/09/11/comienza-en-ny-la-ceremonia-por-atentados-11-de-septiembre/3656001",
-      "source_name": "Diario Libre · Finanzas",
-      "relevance": 0,
+      "id": "n_c383d723a20fe25a",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Prisión preventiva por muerte de adolescente en Santo Domingo",
+      "url": "https://www.diariolibre.com/actualidad/justicia/2026/09/11/prision-preventiva-por-muerte-de-adolescente-en-santo-domingo/3656284",
+      "source_name": "Diario Libre · Economía",
+      "relevance": null,
       "señales": [],
-      "detalle": "",
-      "fetched_at": "2026-09-11T16:56:16.029527+00:00"
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-09-11T19:18:03.394116+00:00"
+    },
+    {
+      "id": "n_dd0b66bee4c9aee6",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Restricciones a visados de periodistas y estudiantes entrarán en vigor",
+      "url": "https://www.diariolibre.com/usa/actualidad/2026/09/11/restricciones-a-visados-de-periodistas-y-estudiantes-entraran-en-vigor/3656141",
+      "source_name": "Diario Libre · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-09-11T19:18:03.849503+00:00"
+    },
+    {
+      "id": "n_eb504b926f4033d9",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "DNCD desmantela sembradíos de presunta marihuana en Azua",
+      "url": "https://www.diariolibre.com/actualidad/sucesos/2026/09/11/dncd-desmantela-sembradios-de-presunta-marihuana-en-azua/3656201",
+      "source_name": "Diario Libre · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-09-11T19:18:10.155822+00:00"
+    },
+    {
+      "id": "n_a1f013617f0503b0",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Candy Perdomo, una dominicana sobreviviente del 11-5",
+      "url": "https://www.diariolibre.com/usa/actualidad/2026/09/11/candy-perdomo-una-dominicana-sobreviviente-del-11-5/3653667",
+      "source_name": "Diario Libre · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-09-11T19:18:10.214187+00:00"
+    },
+    {
+      "id": "n_dc9f9d2501ea2f95",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Edesur explica cómo cambios en el consumo elevan la factura eléctrica",
+      "url": "https://www.diariolibre.com/economia/energia/2026/09/11/edesur-explica-como-cambios-en-el-consumo-elevan-la-factura-electrica/3656080",
+      "source_name": "Diario Libre · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-09-11T19:18:12.201320+00:00"
+    },
+    {
+      "id": "n_920a8b98c200a0ba",
+      "motivo": "vieja",
+      "motivo_texto": "Publicada fuera del dia editorial en curso",
+      "title": "Ministro Magín Díaz resalta transformación económica de RD sustentada en crecimiento y estabilidad",
+      "url": "https://www.hacienda.gob.do/ministro-magin-diaz-resalta-transformacion-economica-de-rd-sustentada-en-crecimiento-y-estabilidad",
+      "source_name": "Fuente guardada",
+      "relevance": null,
+      "señales": [],
+      "detalle": "el feed la fecha 2026-09-09, ventana 2026-09-10 a 2026-09-11",
+      "fetched_at": "2026-09-11T19:18:50.127627+00:00"
     },
     {
       "id": "n_70fc6ccd39cf4ead",
@@ -339,7 +539,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-09-08, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:57:22.267594+00:00"
+      "fetched_at": "2026-09-11T19:18:50.127740+00:00"
     },
     {
       "id": "n_c98c0bbe835a799f",
@@ -351,7 +551,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-09-08, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:57:22.267682+00:00"
+      "fetched_at": "2026-09-11T19:18:50.127843+00:00"
     },
     {
       "id": "n_0ef7aa27e9bfe4a6",
@@ -363,7 +563,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-09-07, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:57:22.267769+00:00"
+      "fetched_at": "2026-09-11T19:18:50.127941+00:00"
     },
     {
       "id": "n_0c6859a753a238a4",
@@ -375,7 +575,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-09-02, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:57:22.267847+00:00"
+      "fetched_at": "2026-09-11T19:18:50.128040+00:00"
     },
     {
       "id": "n_9ecf41f96c49aaa5",
@@ -387,7 +587,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-30, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:57:22.267922+00:00"
+      "fetched_at": "2026-09-11T19:18:50.128137+00:00"
     },
     {
       "id": "n_bdf8913f1b0f8e6a",
@@ -399,67 +599,55 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-28, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:57:22.267995+00:00"
+      "fetched_at": "2026-09-11T19:18:50.128236+00:00"
     },
     {
-      "id": "n_1d5f674ceedfbb4a",
+      "id": "n_18b03178dd234648",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "La subida de tasas del BCE deja al Euro con poco margen de maniobra mientras la Libra se mantiene firme",
-      "url": "https://www.fxstreet.es/news/la-subida-de-tasas-del-bce-deja-al-euro-con-poco-margen-de-maniobra-mientras-la-libra-se-mantiene-firme-202609111642",
+      "title": "Los rendimientos del Tesoro estadounidense bajan tras el IPC, pero persisten los riesgos de una subida de la Fed",
+      "url": "https://www.fxstreet.es/news/los-rendimientos-del-tesoro-estadounidense-bajan-tras-el-ipc-pero-persisten-los-riesgos-de-una-subida-de-la-fed-202609111852",
       "source_name": "Fuente guardada",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:57:42.924001+00:00"
+      "fetched_at": "2026-09-11T19:19:15.072571+00:00"
     },
     {
-      "id": "n_52e40c3e9ff573df",
+      "id": "n_eabbde138b74fe7a",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "La Plata borra la caída posterior al IPC y rebota desde su mínimo de tres semanas",
-      "url": "https://www.fxstreet.es/news/la-plata-borra-la-caida-posterior-al-ipc-y-rebota-desde-su-minimo-de-tres-semanas-202609111623",
+      "title": "Divisas asiáticas: La resiliencia, en riesgo ante el aumento de los rendimientos estadounidenses – MUFG",
+      "url": "https://www.fxstreet.es/news/divisas-asiaticas-la-resiliencia-en-riesgo-ante-el-aumento-de-los-rendimientos-estadounidenses-mufg-202609111841",
       "source_name": "Fuente guardada",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:57:43.920460+00:00"
+      "fetched_at": "2026-09-11T19:19:15.341600+00:00"
     },
     {
-      "id": "n_6f2bb7a5033482df",
+      "id": "n_bf8e9e4e95b9fdab",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "El Promedio Industrial Dow Jones sube durante toda la sesión mientras los rendimientos a largo plazo retroceden",
-      "url": "https://www.fxstreet.es/news/el-promedio-industrial-dow-jones-sube-durante-toda-la-sesion-mientras-los-rendimientos-a-largo-plazo-retroceden-202609111614",
+      "title": "El Índice del Dólar estadounidense retrocede desde los máximos posteriores al IPC, todas las miradas están puestas en la Fed",
+      "url": "https://www.fxstreet.es/news/el-indice-del-dolar-estadounidense-retrocede-desde-los-maximos-posteriores-al-ipc-todas-las-miradas-estan-puestas-en-la-fed-202609111808",
       "source_name": "Fuente guardada",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:57:45.020896+00:00"
+      "fetched_at": "2026-09-11T19:19:17.423057+00:00"
     },
     {
-      "id": "n_f7c0597debd20079",
+      "id": "n_ca38c6370592ce6f",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Previsión del precio del petróleo WTI: corrige a la baja tras alcanzar niveles de sobrecompra",
-      "url": "https://www.fxstreet.es/news/prevision-del-precio-del-petroleo-wti-corrige-a-la-baja-tras-alcanzar-niveles-de-sobrecompra-202609111602",
+      "title": "El precio del Oro esquiva el shock del IPC mientras los rendimientos de EE.UU. dan un salvavidas a los alcistas",
+      "url": "https://www.fxstreet.es/news/el-precio-del-oro-esquiva-el-shock-del-ipc-mientras-los-rendimientos-de-eeuu-dan-un-salvavidas-a-los-alcistas-202609111731",
       "source_name": "Fuente guardada",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:57:45.668439+00:00"
-    },
-    {
-      "id": "n_290e36be34124b78",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "El Oro rebota pero los riesgos de las apuestas por una subida de tasas de la Fed siguen actuando en contra",
-      "url": "https://www.fxstreet.es/news/el-oro-se-mantiene-firme-mientras-los-mercados-se-preparan-para-los-datos-del-ipc-de-eeuu-202609111059",
-      "source_name": "Fuente guardada",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:57:46.195077+00:00"
+      "fetched_at": "2026-09-11T19:19:18.311654+00:00"
     },
     {
       "id": "n_0ff7b8667863fc5d",
@@ -471,91 +659,55 @@
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:57:47.266470+00:00"
+      "fetched_at": "2026-09-11T19:19:23.688689+00:00"
     },
     {
-      "id": "n_b07d27512a51c5fa",
+      "id": "n_d15270b799f3a77e",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Afiliados al sistema de pensiones tendrán más facilidades para la adquisición de viviendas",
-      "url": "https://eldinero.com.do/379973/afiliados-al-sistema-de-pensiones-tendran-mas-facilidades-para-la-adquisicion-de-viviendas",
+      "title": "Gobierno destina RD$1,631.5 millones para mantener congelados los combustibles",
+      "url": "https://eldinero.com.do/380074/gobierno-destina-rd1631-5-millones-para-mantener-congelados-los-combustibles",
       "source_name": "El Dinero · RSS",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:57:53.360681+00:00"
+      "fetched_at": "2026-09-11T19:19:46.280998+00:00"
     },
     {
-      "id": "n_211d396a48963dfb",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "ProCompetencia presenta herramientas para prevenir la colusión en compras públicas",
-      "url": "https://eldinero.com.do/379967/procompetencia-presenta-herramientas-para-prevenir-la-colusion-en-compras-publicas",
-      "source_name": "El Dinero · RSS",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:57:54.495803+00:00"
-    },
-    {
-      "id": "n_be30984495fd85fe",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Amchamdr saluda nuevo diálogo comercial entre República Dominicana y Estados Unidos",
-      "url": "https://eldinero.com.do/379965/amchamdr-saluda-nuevo-dialogo-comercial-entre-republica-dominicana-y-estados-unidos",
-      "source_name": "El Dinero · RSS",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:57:55.056993+00:00"
-    },
-    {
-      "id": "n_c6b6bf457f7e3e9a",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "HUB 2026 cierra con intenciones de negocios por más de US$233.4 millones",
-      "url": "https://eldinero.com.do/379977/hub-2026-cierra-con-intenciones-de-negocios-por-mas-de-us233-4-millones",
-      "source_name": "El Dinero · RSS",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:57:56.568692+00:00"
-    },
-    {
-      "id": "n_03d14e8415fb77e4",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Asiex valora diálogo arancelario entre República Dominicana y Estados Unidos",
-      "url": "https://eldinero.com.do/379970/asiex-valora-dialogo-arancelario-entre-republica-dominicana-y-estados-unidos",
-      "source_name": "El Dinero · RSS",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:58:07.086648+00:00"
-    },
-    {
-      "id": "n_b49bde612c13189a",
+      "id": "n_8e94d7371bedb61e",
       "motivo": "vieja",
       "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Haakon VIII es proclamado rey de Noruega en emotiva ceremonia ante el Parlamento",
-      "url": "https://hoy.com.do/el-mundo/haakon-viii-proclamado-rey-noruega-emotiva-ceremonia-parlamento_1100810.html",
+      "title": "¿Qué sigue para Marileidy Paulino tras conquistar la Liga Diamante 2026?",
+      "url": "https://hoy.com.do/deportes/sigue-marileidy-paulino-conquistar-liga-diamante-2026_1101557.html",
       "source_name": "Hoy Digital · Economía",
       "relevance": null,
       "señales": [],
-      "detalle": "el feed la fecha 2026-09-01, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:58:08.784559+00:00"
+      "detalle": "el feed la fecha 2026-09-07, ventana 2026-09-10 a 2026-09-11",
+      "fetched_at": "2026-09-11T19:19:48.196072+00:00"
     },
     {
-      "id": "n_b8dd393f2146c655",
+      "id": "n_910132a7bc1d8b3c",
+      "motivo": "vieja",
+      "motivo_texto": "Publicada fuera del dia editorial en curso",
+      "title": "“Le prometí un vestido y una corona”: madre de Wilmaris revela que preparaba una gran fiesta para sus 15 años",
+      "url": "https://hoy.com.do/el-pais/le-prometi-vestido-corona-madre-wilmaris-revela-preparaba-gran-fiesta-15-anos_1101666.html",
+      "source_name": "Hoy Digital · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "el feed la fecha 2026-09-08, ventana 2026-09-10 a 2026-09-11",
+      "fetched_at": "2026-09-11T19:19:48.196189+00:00"
+    },
+    {
+      "id": "n_8c4f67787c4af482",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Hermanos Espaillat enfrentan juicio de fondo por tragedia en el Jet Set",
-      "url": "https://hoy.com.do/el-pais/hermanos-espaillat-enfrentan-juicio-fondo-tragedia-jet-set_1102040.html",
+      "title": "Marileidy Paulino vuelve a reinar en los 400 metros del World Athletics Ultimate Championship",
+      "url": "https://hoy.com.do/deportes/marileidy-paulino-vuelve-reinar-400-metros-world-athletics-ultimate-championship_1102068.html",
       "source_name": "Hoy Digital · Economía",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:58:14.910668+00:00"
+      "fetched_at": "2026-09-11T19:19:54.231170+00:00"
     },
     {
       "id": "n_b3717f4c128893a3",
@@ -567,7 +719,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:58:19.721497+00:00"
+      "fetched_at": "2026-09-11T19:19:54.798324+00:00"
     },
     {
       "id": "n_d135905a9d6507a5",
@@ -579,19 +731,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:58:21.617864+00:00"
-    },
-    {
-      "id": "n_f057c49be4bb28d3",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Ozuna: “Pesistas RD se alistan ir a China y a Qatar”",
-      "url": "https://hoy.com.do/deportes/ozuna-pesistas-rd-alistan-china-qatar_1101999.html",
-      "source_name": "Hoy Digital · Economía",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:58:26.524676+00:00"
+      "fetched_at": "2026-09-11T19:19:56.383727+00:00"
     },
     {
       "id": "n_5298ff1a75d77f99",
@@ -603,91 +743,103 @@
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:58:28.492696+00:00"
+      "fetched_at": "2026-09-11T19:20:00.713900+00:00"
     },
     {
-      "id": "n_baa29a705309378b",
+      "id": "n_f02f3ab136a1f038",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Muere la princesa Astrid de Noruega dos días después del funeral de su hermano",
-      "url": "https://hoy.com.do/el-mundo/muere-princesa-astrid-noruega-dos-dias-despues-funeral-hermano_1102049.html",
+      "title": "Pide tiempo para solucionar tema de cobro con verifones",
+      "url": "https://hoy.com.do/economia/pide-solucionar-tema-cobro-verifones_1101855.html",
       "source_name": "Hoy Digital · Economía",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:58:34.270275+00:00"
+      "fetched_at": "2026-09-11T19:20:02.162846+00:00"
     },
     {
-      "id": "n_8c94be62a36c31c9",
+      "id": "n_ef62cc433e825bb3",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Qué tierras raras tiene República Dominicana, dónde están y cuánto podrían valer",
-      "url": "https://eldia.com.do/que-tierras-raras-tiene-republica-dominicana-donde-estan-y-cuanto-podrian-valer",
+      "title": "Abogado de raso acusado de matar a adolescente: “Los hechos no ocurrieron como los establece el Ministerio Público”",
+      "url": "https://hoy.com.do/el-pais/abogado-raso-acusado-matar-adolescente-hechos-ocurrieron-establece-ministerio-publico_1102062.html",
+      "source_name": "Hoy Digital · Economía",
+      "relevance": null,
+      "señales": [],
+      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
+      "fetched_at": "2026-09-11T19:20:03.388347+00:00"
+    },
+    {
+      "id": "n_c9e50afb0ff8b1ca",
+      "motivo": "sin_detalle",
+      "motivo_texto": "El articulo no devolvio datos utiles",
+      "title": "Chicho Severino cambia el amargue por el romanticismo en inglés con “I Love You”",
+      "url": "https://eldia.com.do/chicho-severino-cambia-el-amargue-por-el-romanticismo-en-ingles-con-i-love-you",
       "source_name": "El Día · Económicas",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:58:45.572038+00:00"
+      "fetched_at": "2026-09-11T19:20:15.306111+00:00"
     },
     {
-      "id": "n_72ea73b2ddac9992",
+      "id": "n_51f33faba7219762",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "¿Vives en una de estas zonas? Los \"triángulos del calor\" que tienen al país ardiendo",
-      "url": "https://eldia.com.do/vives-en-una-de-estas-zonas-los-triangulos-del-calor-que-tienen-al-pais-ardiendo",
+      "title": "ADP pone en pausa las protestas y reducción de horarios; exige reunión urgente con autoridades educativas",
+      "url": "https://eldia.com.do/adp-pone-en-pausa-las-protestas-y-reduccion-de-horarios-exige-reunion-urgente-con-autoridades-educativas",
       "source_name": "El Día · Económicas",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:58:45.874192+00:00"
+      "fetched_at": "2026-09-11T19:20:15.331298+00:00"
     },
     {
-      "id": "n_4b4bb8a9dcc09c69",
+      "id": "n_a3169d870442d56d",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Trump aprovecha el 11S para defender la guerra contra Irán: \"No tendrán un arma nuclear\"",
-      "url": "https://eldia.com.do/trump-aprovecha-el-11s-para-defender-la-guerra-contra-iran-no-tendran-un-arma-nuclear",
+      "title": "Autoridades decomisan más de 5, 300 plantas de marihuana en Azua y arrestan una persona",
+      "url": "https://eldia.com.do/autoridades-decomisan-mas-de-5-300-plantas-de-marihuana-en-azua-y-arrestan-una-persona",
       "source_name": "El Día · Económicas",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:58:46.455959+00:00"
+      "fetched_at": "2026-09-11T19:20:15.905820+00:00"
     },
     {
-      "id": "n_767492ee95947db6",
+      "id": "n_8c064e765c9da964",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Tribunal dicta 3 meses de prisión a raso imputado de muerte de una menor en Mendoza",
-      "url": "https://eldia.com.do/tribunal-dicta-3-meses-de-prision-a-raso-imputado-de-muerte-de-una-menor-en-mendoza",
+      "title": "¡Marileidy Paulino va por otra gloria! Avanza a la final de los 400 metros en el Mundial Budapest",
+      "url": "https://eldia.com.do/marileidy-paulino-avanza-a-final-del-mundial-atletismo-en-budapest",
       "source_name": "El Día · Económicas",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:58:47.399665+00:00"
+      "fetched_at": "2026-09-11T19:20:15.909244+00:00"
     },
     {
-      "id": "n_342208d100b8a660",
+      "id": "n_cdb2e259288cb331",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Equipos de rescate recuperan 30 cadáveres en la primera inspección del ferri incendiado en Filipinas",
-      "url": "https://eldia.com.do/equipos-de-rescate-recuperan-30-cadaveres-en-la-primera-inspeccion-del-ferri-incendiado-en-filipinas",
+      "title": "Cinco errores con tu tarjeta de crédito que pueden salirte caros",
+      "url": "https://eldia.com.do/cinco-errores-con-tu-tarjeta-de-credito-que-pueden-salirte-caros",
       "source_name": "El Día · Económicas",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:58:52.908493+00:00"
+      "fetched_at": "2026-09-11T19:20:16.289995+00:00"
     },
     {
-      "id": "n_9e9b649666a8a4e8",
+      "id": "n_08e542e5bc5e0759",
       "motivo": "sin_detalle",
       "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Aduanas destruye más de 253 mil mercancías falsificadas",
-      "url": "https://eldia.com.do/aduanas-destruye-mas-de-253-mil-mercancias-falsificadas",
+      "title": "Por qué Estados Unidos está buscando tierras raras en RD y otros 26 países",
+      "url": "https://eldia.com.do/por-que-estados-unidos-esta-buscando-tierras-raras-en-rd-y-otros-26-paises",
       "source_name": "El Día · Económicas",
       "relevance": null,
       "señales": [],
       "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:58:53.182134+00:00"
+      "fetched_at": "2026-09-11T19:20:18.557690+00:00"
     },
     {
       "id": "n_1bf2ac89c963f793",
@@ -699,7 +851,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-09-07, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.082932+00:00"
+      "fetched_at": "2026-09-11T19:20:25.496890+00:00"
     },
     {
       "id": "n_5f0a0d700275d215",
@@ -711,19 +863,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-21, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.083080+00:00"
-    },
-    {
-      "id": "n_ce9d87a3156bde6b",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Dólar en República Dominicana: tasa de compra y venta para el 06 de septiembre de 2026 - Hoy Digital",
-      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOcDJDcTNDWlhDeUJ1NFU5TXFVOWlnYTVUWUV3Yy01S2Izd1RxYVpSRFVGcmZGUGU2SEszdWpaQTlMRVZzUEhwWm9sRld6cjUtSUNCNHZNRTlVWnZ6Qk5lc19XS2Q2RWJEbEhsWXpJYVpWUDk5aHNqXzhXQTlJbk1KRjRrOWxHeVJrREJGUnNWTlRUWEFVNG96Vmh4WktkSTVSdzNtaWxzVdIBrAFBVV95cUxQanR4SUJoVndoaE93ZlMzeUI1YU16QjZiQl9ySlRuR3RoT0xDckEzT2hKVDJkSlFUaEM2dEtkM2lIeFNZemlZNHR1ejNiOWdsM05fbmgydWtTQlpVYm9xanlxZ3gxd0p1U1d6YnEwYzN2X2pQOElHeFU1eHYyWTFKR3JzUVJfRkx4SmtRTlc4VWh3YlpSRVh2YXRBcmh3ME1hNG51Vi1SRkRNTF9h?oc=5",
-      "source_name": "Google News · BCRD y política monetaria",
-      "relevance": null,
-      "señales": [],
-      "detalle": "el feed la fecha 2026-09-06, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.083163+00:00"
+      "fetched_at": "2026-09-11T19:20:25.497043+00:00"
     },
     {
       "id": "n_1b696a86de68f0ce",
@@ -735,7 +875,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-31, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.083236+00:00"
+      "fetched_at": "2026-09-11T19:20:25.497152+00:00"
     },
     {
       "id": "n_d6e40598c42f9e26",
@@ -747,7 +887,19 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-09-04, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.083316+00:00"
+      "fetched_at": "2026-09-11T19:20:25.497261+00:00"
+    },
+    {
+      "id": "n_ce9d87a3156bde6b",
+      "motivo": "vieja",
+      "motivo_texto": "Publicada fuera del dia editorial en curso",
+      "title": "Dólar en República Dominicana: tasa de compra y venta para el 06 de septiembre de 2026 - Hoy Digital",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOcDJDcTNDWlhDeUJ1NFU5TXFVOWlnYTVUWUV3Yy01S2Izd1RxYVpSRFVGcmZGUGU2SEszdWpaQTlMRVZzUEhwWm9sRld6cjUtSUNCNHZNRTlVWnZ6Qk5lc19XS2Q2RWJEbEhsWXpJYVpWUDk5aHNqXzhXQTlJbk1KRjRrOWxHeVJrREJGUnNWTlRUWEFVNG96Vmh4WktkSTVSdzNtaWxzVdIBrAFBVV95cUxQanR4SUJoVndoaE93ZlMzeUI1YU16QjZiQl9ySlRuR3RoT0xDckEzT2hKVDJkSlFUaEM2dEtkM2lIeFNZemlZNHR1ejNiOWdsM05fbmgydWtTQlpVYm9xanlxZ3gxd0p1U1d6YnEwYzN2X2pQOElHeFU1eHYyWTFKR3JzUVJfRkx4SmtRTlc4VWh3YlpSRVh2YXRBcmh3ME1hNG51Vi1SRkRNTF9h?oc=5",
+      "source_name": "Google News · BCRD y política monetaria",
+      "relevance": null,
+      "señales": [],
+      "detalle": "el feed la fecha 2026-09-06, ventana 2026-09-10 a 2026-09-11",
+      "fetched_at": "2026-09-11T19:20:25.497368+00:00"
     },
     {
       "id": "n_c4113eaa08db770c",
@@ -759,7 +911,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-09-06, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.083417+00:00"
+      "fetched_at": "2026-09-11T19:20:25.497527+00:00"
     },
     {
       "id": "n_7471bd3c82760e22",
@@ -771,19 +923,19 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-09-08, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.083492+00:00"
+      "fetched_at": "2026-09-11T19:20:25.497633+00:00"
     },
     {
       "id": "n_e33d58830458e8ae",
       "motivo": "vieja",
       "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Banco Central informa inflación interanual a agosto de 2026 es de 5.13% - Periódico elDinero",
+      "title": "Banco Central informa inflación interanual a agosto de 2026 es de 5.13% - eldinero.com.do",
       "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNbTNhWDR3UUVNMjdGZ242WVd5dTd2SUY1STJXSWk2VXhMQ2hjV1ZtZzZsNW9ocFU5NEVMRmg1cFNvTTdoWVBfZ0VsY1JPSXhvcTB6U282b084YmgzWDZySlhrRXJJOVZvSDExUndUUUI5UUJjd2hKbE44bXcxd05IbGgybGV3VEhCdl8wWm9sM0FBcG9QcFBxSWFscXJTMGh5T2VENQ?oc=5",
       "source_name": "Google News · BCRD y política monetaria",
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-09-06, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.083560+00:00"
+      "fetched_at": "2026-09-11T19:20:25.497734+00:00"
     },
     {
       "id": "n_e873fe41bebf4205",
@@ -795,7 +947,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-31, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.083661+00:00"
+      "fetched_at": "2026-09-11T19:20:25.497839+00:00"
     },
     {
       "id": "n_8a17dff59593a88d",
@@ -807,7 +959,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-09-08, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.083742+00:00"
+      "fetched_at": "2026-09-11T19:20:25.497947+00:00"
     },
     {
       "id": "n_8aa83c84c7d83828",
@@ -819,7 +971,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-07-10, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.083809+00:00"
+      "fetched_at": "2026-09-11T19:20:25.498048+00:00"
     },
     {
       "id": "n_c458cdd5c1138df7",
@@ -831,7 +983,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-07-17, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.083873+00:00"
+      "fetched_at": "2026-09-11T19:20:25.498155+00:00"
     },
     {
       "id": "n_9cfb08478e8c42fd",
@@ -843,55 +995,7 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-09-06, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.083941+00:00"
-    },
-    {
-      "id": "n_77fee8a51fec2949",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "La inflación de Japón repunta y mantiene a su banco central en la senda de alzas de tasas - Bloomberg Línea",
-      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOcTZUYVJGQ2R5bFRaMUxvbTdQUnNaQmlzTUhjMTYxdnFyZk8wVnQ4bTZOcGF5dU9zRHRMQnlQYWJFT3gwd2VWaGpaVFZBcENOZ2xzdFdWQnAzaWUxUTJRczZQRlJCZ24tOGNHYjRyZWMtSVV3T2J5clNab2tZMFNJd0ZFR1pCMTFWRDRaa1NkeGl4XzV3MENOVFVRaG5YWGs1QlFnYXEtSWFKX1BqWXQ4YTZkd0lIYUZQYi1Ba0ZCcEJ3UFp6RUtnbmN30gHeAUFVX3lxTE1XM3lMRUEzUlI3TmJaZEJ0ZXRwdlRoWVAwVWpjQ1o5eTRBMEx5bG93b001Zi1PYWFEZTgyU3NoLUtyWDBPWVh3YkpBa2MyMGtmZHFhMjQwTWZhVTlmcEE5b2Jmci1PVl9YdGticHRmWHMxTWJoN1YxeDI0ZkRQVnZDSjZ6MGt5QTg3MFp3ZFFFWTBBMXlfMjRiWEo0ZS12ZGlVWTFnMHptbUtJc0JWbjNMamZXYTZwLWg0RTJKdV9MeFVXWmctVlpBQnRaelVOclhkX3VtaHhJaHluVjJjZw?oc=5",
-      "source_name": "Google News · BCRD y política monetaria",
-      "relevance": null,
-      "señales": [],
-      "detalle": "el feed la fecha 2026-07-24, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.084010+00:00"
-    },
-    {
-      "id": "n_806b22bc4a8e520d",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Precio del dólar hoy en República Dominicana: miércoles 9 de septiembre de 2026 - Acento",
-      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPeEZySVVoemFjUjE3ZUNzLXNVYXNvY0ZxUWNZS21VUl94Ym9CZVhRbng5d0MtYVpqLXFnc1Ztc0ltT2lHbnhYNjEtcV9IckphNWFCZm9nNUhUenAtVUVkMWVDRHNiZ2lmcV84ME1yeEtuMlE1R0N5YTRMY2xFZUdBT1FYbHpRZU01YWFwM1E1bHRfY3VySWFMSlFtbk9ILWxMZXVMUlpISDRqODluclFKVWtuOVhRb0FtTWI4a0hTb9IBvwFBVV95cUxPeEZySVVoemFjUjE3ZUNzLXNVYXNvY0ZxUWNZS21VUl94Ym9CZVhRbng5d0MtYVpqLXFnc1Ztc0ltT2lHbnhYNjEtcV9IckphNWFCZm9nNUhUenAtVUVkMWVDRHNiZ2lmcV84ME1yeEtuMlE1R0N5YTRMY2xFZUdBT1FYbHpRZU01YWFwM1E1bHRfY3VySWFMSlFtbk9ILWxMZXVMUlpISDRqODluclFKVWtuOVhRb0FtTWI4a0hTbw?oc=5",
-      "source_name": "Google News · BCRD y política monetaria",
-      "relevance": null,
-      "señales": [],
-      "detalle": "el feed la fecha 2026-09-09, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.084079+00:00"
-    },
-    {
-      "id": "n_bc8531a50bd2aeed",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Según informó el organismo monetario, la tasa de compra del dólar se fijó en RD$58.0844 y la de venta en RD$58.8939, ambas por debajo de los RD$60 por unidad. De acuerdo a economistas este comportamiento evidencia la estabilidad del mercado cam - instagram.com",
-      "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBsMnE5VENWU2FsTS0zbVZEQzJiTHZQaTl1LUZVclIwcDlRNDRFb0VDVGp1REJSOFZ4QkV6T28waVhGTHlHemFGVV9kdWwxWUpJNmc?oc=5",
-      "source_name": "Google News · BCRD y política monetaria",
-      "relevance": null,
-      "señales": [],
-      "detalle": "el feed la fecha 2026-05-27, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.084139+00:00"
-    },
-    {
-      "id": "n_3925c7ad29264346",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Dólar hoy lunes 7 de septiembre: ¿subió o bajó el precio del dólar en República Dominicana? - Acento",
-      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQamxIR0Y0X3N2a1o0MXpMUkhFdWRYYWF0NjFPekc4VU53X3A0dGsyU2pQYnZkSi1RQXVKOUljU0RMcUhQOTRxM2dfcHVvWkhCVzh1SWp2dGRsUHFkQU5oX21zSUdpU3dVemtZS0dmT1hiZC1UQ3lKOGt1ZWRrbEY2VV9oVjJEYmNNTDdsd3BDMGRmc2ZNQnlnc1Z1aU0tR2VsMHNiWlhwUDVSMVVZVFpiLU1aOTloUkJxdVlsUE1DZWMwYWljLW90QUdGT0_SAcwBQVVfeXFMUGpsSEdGNF9zdmtaNDF6TFJIRXVkWGFhdDYxT3pHOFVOd19wNHRrMlNqUGJ2ZEotUUF1SjlJY1NETHFIUDk0cTNnX3B1b1pIQlc4dUlqdnRkbFBxZEFOaF9tc0lHaVN3VXprWUtHZk9YYmQtVEN5SjhrdWVka2xGNlVfaFYyRGJjTUw3bHdwQzBkZnNmTUJ5Z3NWdWlNLUdlbDBzYlpYcFA1UjFVWVRaYi1NWjk5aFJCcXVZbFBNQ2VjMGFpYy1vdEFHRk9P?oc=5",
-      "source_name": "Google News · BCRD y política monetaria",
-      "relevance": null,
-      "señales": [],
-      "detalle": "el feed la fecha 2026-09-07, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.084206+00:00"
+      "fetched_at": "2026-09-11T19:20:25.498274+00:00"
     },
     {
       "id": "n_a2e1a9fe95dd568b",
@@ -903,31 +1007,55 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-09-09, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.084267+00:00"
+      "fetched_at": "2026-09-11T19:20:25.498378+00:00"
+    },
+    {
+      "id": "n_806b22bc4a8e520d",
+      "motivo": "vieja",
+      "motivo_texto": "Publicada fuera del dia editorial en curso",
+      "title": "Precio del dólar hoy en República Dominicana: miércoles 9 de septiembre de 2026 - Acento",
+      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPeEZySVVoemFjUjE3ZUNzLXNVYXNvY0ZxUWNZS21VUl94Ym9CZVhRbng5d0MtYVpqLXFnc1Ztc0ltT2lHbnhYNjEtcV9IckphNWFCZm9nNUhUenAtVUVkMWVDRHNiZ2lmcV84ME1yeEtuMlE1R0N5YTRMY2xFZUdBT1FYbHpRZU01YWFwM1E1bHRfY3VySWFMSlFtbk9ILWxMZXVMUlpISDRqODluclFKVWtuOVhRb0FtTWI4a0hTb9IBvwFBVV95cUxPeEZySVVoemFjUjE3ZUNzLXNVYXNvY0ZxUWNZS21VUl94Ym9CZVhRbng5d0MtYVpqLXFnc1Ztc0ltT2lHbnhYNjEtcV9IckphNWFCZm9nNUhUenAtVUVkMWVDRHNiZ2lmcV84ME1yeEtuMlE1R0N5YTRMY2xFZUdBT1FYbHpRZU01YWFwM1E1bHRfY3VySWFMSlFtbk9ILWxMZXVMUlpISDRqODluclFKVWtuOVhRb0FtTWI4a0hTbw?oc=5",
+      "source_name": "Google News · BCRD y política monetaria",
+      "relevance": null,
+      "señales": [],
+      "detalle": "el feed la fecha 2026-09-09, ventana 2026-09-10 a 2026-09-11",
+      "fetched_at": "2026-09-11T19:20:25.498563+00:00"
+    },
+    {
+      "id": "n_bc8531a50bd2aeed",
+      "motivo": "vieja",
+      "motivo_texto": "Publicada fuera del dia editorial en curso",
+      "title": "Según informó el organismo monetario, la tasa de compra del dólar se fijó en RD$58.0844 y la de venta en RD$58.8939, ambas por debajo de los RD$60 por unidad. De acuerdo a economistas este comportamiento evidencia la estabilidad del mercado cam - instagram.com",
+      "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBsMnE5VENWU2FsTS0zbVZEQzJiTHZQaTl1LUZVclIwcDlRNDRFb0VDVGp1REJSOFZ4QkV6T28waVhGTHlHemFGVV9kdWwxWUpJNmc?oc=5",
+      "source_name": "Google News · BCRD y política monetaria",
+      "relevance": null,
+      "señales": [],
+      "detalle": "el feed la fecha 2026-05-27, ventana 2026-09-10 a 2026-09-11",
+      "fetched_at": "2026-09-11T19:20:25.498688+00:00"
+    },
+    {
+      "id": "n_3925c7ad29264346",
+      "motivo": "vieja",
+      "motivo_texto": "Publicada fuera del dia editorial en curso",
+      "title": "Dólar hoy lunes 7 de septiembre: ¿subió o bajó el precio del dólar en República Dominicana? - Acento",
+      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQamxIR0Y0X3N2a1o0MXpMUkhFdWRYYWF0NjFPekc4VU53X3A0dGsyU2pQYnZkSi1RQXVKOUljU0RMcUhQOTRxM2dfcHVvWkhCVzh1SWp2dGRsUHFkQU5oX21zSUdpU3dVemtZS0dmT1hiZC1UQ3lKOGt1ZWRrbEY2VV9oVjJEYmNNTDdsd3BDMGRmc2ZNQnlnc1Z1aU0tR2VsMHNiWlhwUDVSMVVZVFpiLU1aOTloUkJxdVlsUE1DZWMwYWljLW90QUdGT0_SAcwBQVVfeXFMUGpsSEdGNF9zdmtaNDF6TFJIRXVkWGFhdDYxT3pHOFVOd19wNHRrMlNqUGJ2ZEotUUF1SjlJY1NETHFIUDk0cTNnX3B1b1pIQlc4dUlqdnRkbFBxZEFOaF9tc0lHaVN3VXprWUtHZk9YYmQtVEN5SjhrdWVka2xGNlVfaFYyRGJjTUw3bHdwQzBkZnNmTUJ5Z3NWdWlNLUdlbDBzYlpYcFA1UjFVWVRaYi1NWjk5aFJCcXVZbFBNQ2VjMGFpYy1vdEFHRk9P?oc=5",
+      "source_name": "Google News · BCRD y política monetaria",
+      "relevance": null,
+      "señales": [],
+      "detalle": "el feed la fecha 2026-09-07, ventana 2026-09-10 a 2026-09-11",
+      "fetched_at": "2026-09-11T19:20:25.498845+00:00"
     },
     {
       "id": "n_e381257799ab86f1",
       "motivo": "vieja",
       "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Inflación en República Dominicana baja a 5.13 % - almomento.net",
+      "title": "Inflación en República Dominicana baja a 5.13 % - AlMomento.net",
       "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9peDZDc3NYQ1JkWWxDT0VMaTBRWkVJaDBod0pMTEllWE81YVJIb1hqWjlXS0dOb3BOQlhYdWRqY0dFX3BTc0xybXFoaXRGV2VENnQtWXljWUtwZEpiNWRScXZESW95cnJnXzJ2M0k4eTNlRmRBeHRJ?oc=5",
       "source_name": "Google News · BCRD y política monetaria",
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-09-06, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.084328+00:00"
-    },
-    {
-      "id": "n_daa5670fe21f68fb",
-      "motivo": "vieja",
-      "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Inflación sigue por encima del rango meta del BC por quinto mes pese a tres meses a la baja - El Nacional — La voz de todos",
-      "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNeWJWVTBRNDBYWHk5R3N1V1Fia0haZkRlSGU1RGxvamd1SG9Ua3M2dTEzdDE5WTN5WE04UHRtcnRvb3hvYkJ2VTI1YkNyN2thTHdvRUF5NEdEUXluREU4N1pEYXNsa2MtSUVremRzaDlkTVJsN1NaZi1xaDFCXzFXU0YwWFpWMHRickZod0dBRUdaelNfb2l5czI5SWZoNWlHOW5LWmpiNnB1MGRvX1JSRjJwVWxzMkFXRHVaUkRJbEZSR3BvZm5UanpLd1g0V3B4cDBtU0trQjB2UdIB3wFBVV95cUxOWElzTHdnaVp3Z0tMNHJLenZ3YWtLU09ENk1uQUNVVGtfY0k3dzdQcVVzampnRW1uNmVCQVNUQnlieFF5RmNBMGxITEU3LTJRSDdtM1I4Y1oxMEk1M1RtZmlENVlmOUtKbm5qMDBjSVhMZkQxSzc5NG9zTmVJYm1fQTlWdXh4Rm5maVVSWWFidFZEWHNHem9XOVFUbVN0Y215QUIyN2dBa0c1RU5JYnlMcUpiUnVMSUdzR2RzQ2lZLS1GT2JCZFA0bVNrbFZnZUFFT2hxYk1QS1FxajhJNzFF?oc=5",
-      "source_name": "Google News · BCRD y política monetaria",
-      "relevance": null,
-      "señales": [],
-      "detalle": "el feed la fecha 2026-09-07, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.084402+00:00"
+      "fetched_at": "2026-09-11T19:20:25.498977+00:00"
     },
     {
       "id": "n_2e4de76e09a8a41c",
@@ -939,31 +1067,19 @@
       "relevance": null,
       "señales": [],
       "detalle": "el feed la fecha 2026-08-31, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.084470+00:00"
+      "fetched_at": "2026-09-11T19:20:25.499077+00:00"
     },
     {
-      "id": "n_1ea4c2bb884940e8",
+      "id": "n_daa5670fe21f68fb",
       "motivo": "vieja",
       "motivo_texto": "Publicada fuera del dia editorial en curso",
-      "title": "Inflación en República Dominicana dizque bajó un 5.13% - Remolacha",
-      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE81bG9MbmJwNW5UbUNuc2h1YklOX2R4QnRELU1DWVNQZ1BRb2JRaFFfenJHRFRJY2hEZ0pHeXdQaXhtSXB6aW5XNUdmZUMtNGYwYVkzWU1R0gFbQVVfeXFMTkc2MXQtZVNnMS1rSUhmUUVPZjZ0TVJrT0t4U2NhZTJsSjNkT0dZYUw4YnE3LTFjc2ZwdFJlcUpvZVZFLTZRU2lJa1E3Rnc5MDhXdDRqLTh3ZXBzMA?oc=5",
+      "title": "Inflación sigue por encima del rango meta del BC por quinto mes pese a tres meses a la baja - El Nacional — La voz de todos",
+      "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNeWJWVTBRNDBYWHk5R3N1V1Fia0haZkRlSGU1RGxvamd1SG9Ua3M2dTEzdDE5WTN5WE04UHRtcnRvb3hvYkJ2VTI1YkNyN2thTHdvRUF5NEdEUXluREU4N1pEYXNsa2MtSUVremRzaDlkTVJsN1NaZi1xaDFCXzFXU0YwWFpWMHRickZod0dBRUdaelNfb2l5czI5SWZoNWlHOW5LWmpiNnB1MGRvX1JSRjJwVWxzMkFXRHVaUkRJbEZSR3BvZm5UanpLd1g0V3B4cDBtU0trQjB2UdIB3wFBVV95cUxOWElzTHdnaVp3Z0tMNHJLenZ3YWtLU09ENk1uQUNVVGtfY0k3dzdQcVVzampnRW1uNmVCQVNUQnlieFF5RmNBMGxITEU3LTJRSDdtM1I4Y1oxMEk1M1RtZmlENVlmOUtKbm5qMDBjSVhMZkQxSzc5NG9zTmVJYm1fQTlWdXh4Rm5maVVSWWFidFZEWHNHem9XOVFUbVN0Y215QUIyN2dBa0c1RU5JYnlMcUpiUnVMSUdzR2RzQ2lZLS1GT2JCZFA0bVNrbFZnZUFFT2hxYk1QS1FxajhJNzFF?oc=5",
       "source_name": "Google News · BCRD y política monetaria",
       "relevance": null,
       "señales": [],
-      "detalle": "el feed la fecha 2026-09-06, ventana 2026-09-10 a 2026-09-11",
-      "fetched_at": "2026-09-11T16:59:13.084531+00:00"
-    },
-    {
-      "id": "n_b622402d6031fccd",
-      "motivo": "sin_detalle",
-      "motivo_texto": "El articulo no devolvio datos utiles",
-      "title": "Precio del dólar hoy en República Dominicana este viernes 11 de septiembre del 2026 - Revista Mercado",
-      "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxNNWxxOHU4NjVaQWlqRU5OZVJrWk9ObFY0SEZGSW95VzI2MkRiZlZOUEJ2VEZCWUpvdUdsRGFjNlBIQVFONEYtU0NqYWRxd18wcC12TFdQVXZKTFpaWVdqN3p0YUJFRzFkM2QzalFmVHhlb1JTc2tDVWVJNWRSLUc3bGtzaVVEQmRpdUlFY1k2OGhvRlJXWE5QbkxMNjZOelk3cjFaWm84VDhaUThVdV9CVHVrZTVWZkpBaXdiTWtiYmFFZWFRT1NtdmtkNnRwdEc4ckhIS3BtZEFnTzVt?oc=5",
-      "source_name": "Google News · BCRD y política monetaria",
-      "relevance": null,
-      "señales": [],
-      "detalle": "Sin cuota de Gemini y sin señal institucional que la sostenga",
-      "fetched_at": "2026-09-11T16:59:24.228184+00:00"
+      "detalle": "el feed la fecha 2026-09-07, ventana 2026-09-10 a 2026-09-11",
+      "fetched_at": "2026-09-11T19:20:25.499151+00:00"
     }
   ]
 }
