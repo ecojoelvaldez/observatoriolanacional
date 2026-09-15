@@ -66,14 +66,22 @@ jobs:
             python scripts/fetch_sib_indicadores.py
           fi
 
+      # Antes del commit para que la linea base viaje en el mismo push; el paso
+      # final convierte el fallo en run rojo sin impedir que se publique lo que
+      # si llego.
+      - name: Verificar frescura de los datos
+        id: frescura
+        continue-on-error: true
+        run: python scripts/verificar_frescura.py --solo indicadores
+
       - name: Commit del snapshot si cambio
         env:
           SALIDA: ${{ github.event.inputs.salida || 'data/sib_snapshot.json' }}
         run: |
-          if [ -n "$(git status --porcelain "$SALIDA")" ]; then
+          if [ -n "$(git status --porcelain "$SALIDA" data/_frescura_baseline.json)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add "$SALIDA"
+            git add "$SALIDA" data/_frescura_baseline.json
             git commit -m "Actualizar snapshot SIB indicadores [skip ci]"
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
@@ -81,3 +89,9 @@ jobs:
           else
             echo "Sin cambios en el snapshot SIB."
           fi
+
+      - name: Fallar si el corte quedo atras
+        if: ${{ steps.frescura.outcome == 'failure' }}
+        run: |
+          echo "::error::El corte de indicadores quedo atras. Ver el detalle en el paso 'Verificar frescura de los datos'."
+          exit 1

@@ -55,6 +55,7 @@ env:
   OUT_CARTERA: data/cartera_sistema.json
   OUT_CARTERA_MN: data/cartera_sistema_mn.json
   OUT_CAPTACION: data/captacion_sistema.json
+  OUT_CARTERA_MENSUAL: data/sib_cartera_snapshot.json
 
 jobs:
   sib-cartera-pipeline:
@@ -88,6 +89,18 @@ jobs:
           SIB_CARTERA_SNAPSHOT_PATH: data/_probe_tmp.json
         run: python scripts/fetch_sib_cartera.py --diagnostico
 
+      # La serie mensual de cartera va primero y aparte del desglose granular:
+      # usa el endpoint carteras/creditos/moneda, que la SIB publica al dia,
+      # mientras que el granular de carteras/creditos viene con mucho mas
+      # rezago. Van en pasos separados para que el corte reciente del front no
+      # dependa de que termine la descarga larga.
+      - name: Descargar serie mensual de cartera (balance por entidad)
+        if: ${{ github.event.inputs.diagnostico != 'true' }}
+        env:
+          SIB_SUBSCRIPTION_KEY: ${{ secrets.SIB_SUBSCRIPTION_KEY }}
+          SIB_CARTERA_SNAPSHOT_PATH: ${{ env.OUT_CARTERA_MENSUAL }}
+        run: python scripts/fetch_sib_cartera.py
+
       - name: Descargar desglose granular (cartera + captacion)
         if: ${{ github.event.inputs.diagnostico != 'true' }}
         env:
@@ -113,10 +126,20 @@ jobs:
             --moneda nacional \
             --out-cartera "$OUT_CARTERA_MN"
 
+      # Corre antes del commit para que la linea base viaje en el mismo push,
+      # pero sin cortar el flujo: el dato que si llego debe publicarse igual.
+      # El paso final convierte el fallo en un run rojo, que es lo que dispara
+      # el correo de GitHub al dueno del repositorio.
+      - name: Verificar frescura de los datos
+        id: frescura
+        if: ${{ github.event.inputs.diagnostico != 'true' }}
+        continue-on-error: true
+        run: python scripts/verificar_frescura.py
+
       - name: Commit de snapshot y entregables si cambiaron
         if: ${{ github.event.inputs.diagnostico != 'true' }}
         run: |
-          ARCHIVOS="$SNAPSHOT $OUT_CARTERA $OUT_CARTERA_MN $OUT_CAPTACION"
+          ARCHIVOS="$SNAPSHOT $OUT_CARTERA $OUT_CARTERA_MN $OUT_CAPTACION $OUT_CARTERA_MENSUAL data/_frescura_baseline.json"
           if [ -n "$(git status --porcelain $ARCHIVOS)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -127,3 +150,9 @@ jobs:
           else
             echo "Sin cambios en los datos SIB."
           fi
+
+      - name: Fallar si algun corte quedo atras
+        if: ${{ github.event.inputs.diagnostico != 'true' && steps.frescura.outcome == 'failure' }}
+        run: |
+          echo "::error::Uno o mas cortes de datos quedaron atras. Ver el detalle en el paso 'Verificar frescura de los datos'."
+          exit 1
