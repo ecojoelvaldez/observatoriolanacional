@@ -33,6 +33,7 @@
 # ==============================================================================
 
 import os
+import re
 import sys
 import json
 import time
@@ -189,6 +190,82 @@ def build_sib_context():
 # ------------------------------------------------------------------
 # Contexto Macro (Supabase bcrd_series + titulares recientes)
 # ------------------------------------------------------------------
+# Etiquetas legibles de las series que el analista publica desde el panel.
+SERIE_LABEL = {
+    "ipc": "IPC · variación interanual (%)",
+    "imae": "IMAE · índice mensual de actividad económica",
+    "remesas": "Remesas",
+    "usd": "Dólar ventanilla (RD$)",
+    "eur": "Euro (RD$)",
+    "wti": "Petróleo WTI (US$/barril)",
+}
+
+
+def fetch_bcrd_live_state():
+    """Series macro tomadas del estado en vivo del sitio.
+
+    La tabla bcrd_series nunca llegó a poblarse: el panel guarda las series que
+    el analista carga dentro de data_update_log (metadata.state.macro y .daily),
+    que es lo que viaja entre dispositivos. Leyendo de ahí el resumen usa los
+    mismos números que el tablero muestra, sin pedirle a nadie un paso extra.
+
+    Cada serie se rotula con su propio corte: van a ritmos distintos -el IPC
+    puede ir meses por detrás del tipo de cambio- y sin decirlo el modelo
+    presenta como actual un dato viejo.
+    """
+    url = f"{SUPABASE_URL}/rest/v1/data_update_log"
+    headers = {"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"}
+    params = {
+        "select": "updated_at,metadata",
+        "section": "eq.front_state",
+        "order": "updated_at.desc",
+        "limit": "20",
+    }
+    try:
+        resp = httpx.get(url, headers=headers, params=params, timeout=45)
+        if resp.status_code != 200:
+            log(f"!! live_state HTTP {resp.status_code}: {resp.text[:200]}")
+            return None
+        filas = resp.json()
+    except Exception as exc:
+        log(f"!! live_state no disponible: {type(exc).__name__}: {exc}")
+        return None
+
+    for fila in filas or []:
+        estado = ((fila.get("metadata") or {}).get("state")) or {}
+        macro = estado.get("macro") or {}
+        daily = estado.get("daily") or {}
+        lineas = []
+
+        for kind in ("ipc", "imae", "remesas"):
+            obs = ((macro.get(kind) or {}).get("obs")) or []
+            obs = [o for o in obs if isinstance(o, dict)
+                   and o.get("periodo") and o.get("value") is not None]
+            if not obs:
+                continue
+            obs = obs[-MESES_CONTEXTO:]
+            pares = " | ".join(f"{o['periodo']}: {float(o['value']):,.2f}" for o in obs)
+            lineas.append(f"- {SERIE_LABEL.get(kind, kind)} "
+                          f"[último corte {obs[-1]['periodo']}]: {pares}")
+
+        for kind in ("usd", "eur", "wti"):
+            serie = daily.get(kind) or []
+            serie = [o for o in serie if isinstance(o, dict)
+                     and o.get("periodo") and o.get("value") is not None]
+            if not serie:
+                continue
+            ult = serie[-1]
+            previos = serie[-6:]
+            pares = " | ".join(f"{o['periodo']}: {float(o['value']):,.2f}" for o in previos)
+            lineas.append(f"- {SERIE_LABEL.get(kind, kind)} "
+                          f"[último dato {ult['periodo']}]: {pares}")
+
+        if lineas:
+            log(f"   BCRD desde estado en vivo del {str(fila.get('updated_at'))[:10]}")
+            return "\n".join(lineas)
+    return None
+
+
 def fetch_bcrd_series():
     """Lee las series BCRD publicadas por el analista. Devuelve texto o None."""
     url = f"{SUPABASE_URL}/rest/v1/bcrd_series"
@@ -253,19 +330,34 @@ def load_news_headlines():
 
 
 def build_macro_context():
+    """Arma el contexto macro. Devuelve (texto, fuentes).
+
+    `fuentes` dice sobre qué se apoya el resumen: "bcrd" cuando hay series del
+    Banco Central y "titulares" cuando hay noticias curadas. Si va vacía no hay
+    nada verificable y no debe emitirse sección macro.
+
+    Antes, al faltar las series, aquí se le decía al modelo que se apoyara "en
+    el panorama general dominicano". Eso es una licencia para inventar, y el
+    modelo la tomó: el resumen publicado el 6 de septiembre de 2026 afirmaba un
+    WTI de US$90 y alzas de la Fed que no salían de ninguna fuente del
+    Observatorio. Un tablero que la dirección cita no puede llevar cifras sin
+    procedencia, así que cuando no hay datos no se escribe.
+    """
     partes = []
-    series = fetch_bcrd_series()
+    fuentes = []
+    series = fetch_bcrd_series() or fetch_bcrd_live_state()
     if series:
-        partes.append("== SERIES MACRO BCRD (publicadas en el Observatorio) ==\n" + series)
-    else:
         partes.append(
-            "== SERIES MACRO BCRD ==\n(No disponibles en esta corrida; "
-            "apóyate en los titulares y en el panorama general dominicano.)"
+            "== SERIES MACRO (publicadas en el Observatorio) ==\n" + series +
+            "\n\nCada serie trae su propio corte entre corchetes. No presentes un "
+            "dato como actual si su corte es viejo: di de qué mes es."
         )
+        fuentes.append("bcrd")
     noticias = load_news_headlines()
     if noticias:
         partes.append("== TITULARES RECIENTES (curados por el Observatorio) ==\n" + noticias)
-    return "\n\n".join(partes)
+        fuentes.append("titulares")
+    return "\n\n".join(partes), fuentes
 
 
 # ------------------------------------------------------------------
@@ -294,6 +386,25 @@ TAREA: redacta el resumen ejecutivo mensual del panorama macroeconómico dominic
 el contexto. Prioriza tendencias (aceleración/desaceleración, cambios de nivel) sobre cifras \
 sueltas, y en "vigilar" señala publicaciones o riesgos concretos a seguir (BCRD, Fed, precios \
 del petróleo, remesas, tipo de cambio), sin alarmismo.
+
+CONTEXTO:
+"""
+
+# Cuando no hay series del Banco Central, lo único verificable son los
+# titulares. El resumen sigue siendo útil en clave cualitativa, pero no puede
+# llevar ni una cifra que no esté escrita en ellos.
+MACRO_PROMPT_SOLO_TITULARES = BASE_PROMPT + """
+SECCIÓN: "Estadísticas Macro" del Observatorio (tablero macro-financiero dominicano).
+
+AVISO: en esta corrida NO hay series del Banco Central. Tu única fuente son los titulares del \
+contexto. Por tanto:
+- NO cites ninguna cifra que no aparezca literalmente en un titular del contexto.
+- NO menciones niveles de inflación, tipo de cambio, IMAE, remesas, precios del petróleo ni \
+tasas de la Fed salvo que un titular los diga con todas sus letras.
+- Escribe en clave cualitativa: qué temas están sobre la mesa y qué conviene seguir.
+- Si los titulares no dan para un panorama macroeconómico, dilo en el resumen en vez de rellenar.
+
+TAREA: redacta el resumen ejecutivo del mes a partir de los titulares, sin inventar magnitudes.
 
 CONTEXTO:
 """
@@ -420,6 +531,52 @@ def _clean_lista(value, maximo):
     return out
 
 
+# Cifras sueltas: "1.87", "432.1", "US$90", "2,904"
+_NUM_RE = re.compile(r"\d[\d,]*(?:\.\d+)?")
+
+
+def _cifras_de(texto):
+    """Conjunto de cifras que aparecen en un texto, sin separadores de miles.
+
+    Se comparan cifras completas, no fragmentos: buscar "90" como subcadena lo
+    daba por bueno dentro de "901.40" (remesas), que es justo el falso negativo
+    que dejaría pasar un "US$90" inventado.
+    """
+    return {m.group(0).replace(",", "") for m in _NUM_RE.finditer(texto or "")}
+
+
+def cifras_sin_respaldo(seccion, contexto):
+    """Cifras del resumen que no aparecen en el contexto.
+
+    El prompt ya ordena "SOLO puedes citar números que aparezcan en el
+    CONTEXTO", pero nada lo comprobaba: por eso llegó a publicarse un WTI de
+    US$90 que no salía de ninguna fuente. Esto lo verifica.
+
+    Se ignoran los enteros hasta 31 (días, conteos, ordinales, "top 10"), que
+    generan ruido sin ser afirmaciones económicas. Toda cifra con decimales o
+    mayor que eso tiene que estar respaldada.
+    """
+    respaldadas = _cifras_de(contexto)
+    texto = " ".join([
+        seccion.get("titulo") or "",
+        seccion.get("resumen") or "",
+        " ".join(seccion.get("puntos") or []),
+        " ".join(seccion.get("vigilar") or []),
+    ])
+    huerfanas = []
+    for bruto in _NUM_RE.findall(texto):
+        limpio = bruto.replace(",", "")
+        try:
+            valor = float(limpio)
+        except ValueError:
+            continue
+        if "." not in limpio and valor <= 31:
+            continue
+        if limpio not in respaldadas:
+            huerfanas.append(bruto)
+    return sorted(set(huerfanas))
+
+
 def validar_seccion(parsed, periodo):
     """Normaliza y valida la respuesta de Gemini; None si no sirve."""
     if not isinstance(parsed, dict):
@@ -440,6 +597,49 @@ def validar_seccion(parsed, periodo):
     }
 
 
+def generar_seccion(nombre, prompt, contexto, periodo, api_key, intentos=2):
+    """Pide una sección a Gemini y la devuelve solo si todas sus cifras están
+    respaldadas por el contexto. Si no, corrige y reintenta; si vuelve a fallar
+    devuelve None, porque no publicar es mejor que publicar algo inventado."""
+    correccion = ""
+    for intento in range(1, intentos + 1):
+        parsed = gemini_json(prompt + contexto + correccion, api_key)
+        seccion = validar_seccion(parsed, periodo)
+        if not seccion:
+            log(f"   {nombre}: respuesta inutilizable (intento {intento}/{intentos})")
+            continue
+        huerfanas = cifras_sin_respaldo(seccion, contexto)
+        if not huerfanas:
+            return seccion
+        log(f"   {nombre}: cifras sin respaldo en el contexto "
+            f"{huerfanas} (intento {intento}/{intentos})")
+        correccion = (
+            "\n\nCORRECCIÓN: tu respuesta anterior citó cifras que NO están en el "
+            "CONTEXTO: " + ", ".join(huerfanas) + ". Reescribe el resumen usando "
+            "únicamente cifras que aparezcan literalmente en el CONTEXTO, o sin "
+            "cifras. No aproximes ni redondees los valores del contexto."
+        )
+    return None
+
+
+def conservar_previa(previas, nombre, periodo):
+    """Resumen anterior reutilizable cuando Gemini falla hoy.
+
+    Solo sirve si es del mismo corte -si no, se estaría mostrando un mes viejo
+    como si fuera el nuevo- y si trae `fuentes`, es decir si pasó por la
+    verificación de cifras. Los resúmenes anteriores a ese control se descartan:
+    entre ellos está el que afirmaba un WTI de US$90.
+    """
+    prev = previas.get(nombre)
+    if not isinstance(prev, dict):
+        return None
+    if prev.get("periodo") != periodo:
+        return None
+    if not prev.get("fuentes"):
+        return None
+    return prev
+
+
 # ------------------------------------------------------------------
 # Main
 # ------------------------------------------------------------------
@@ -458,11 +658,12 @@ def main():
     log(f"   SIB: {'OK · corte ' + str(sib_periodo) if sib_ctx else 'sin datos'}")
 
     log(">> Construyendo contexto Macro...")
-    macro_ctx = build_macro_context()
-    log("   Macro: OK")
+    macro_ctx, macro_fuentes = build_macro_context()
+    log("   Macro: " + (", ".join(macro_fuentes) if macro_fuentes
+                        else "SIN FUENTES VERIFICABLES"))
 
     if dry_run:
-        log("\n===== CONTEXTO MACRO =====\n" + macro_ctx)
+        log("\n===== CONTEXTO MACRO =====\n" + (macro_ctx or "(vacío)"))
         log("\n===== CONTEXTO SIB =====\n" + (sib_ctx or "(vacío)"))
         log("\n[dry-run] No se llamó a Gemini ni se escribió salida.")
         return
@@ -476,34 +677,48 @@ def main():
         pass
 
     secciones = {}
+    descartadas = []
 
-    log(">> Generando resumen MACRO con Gemini...")
-    parsed = gemini_json(MACRO_PROMPT + macro_ctx, api_key)
-    nueva = validar_seccion(parsed, periodo_actual)
-    if nueva:
-        secciones["macro"] = nueva
-        log("   Macro: OK")
-    elif previas.get("macro"):
-        secciones["macro"] = previas["macro"]
-        log("   Macro: FALLÓ · se conserva el resumen previo")
+    if macro_fuentes:
+        # Con series del Banco Central el resumen puede llevar cifras; sin
+        # ellas solo quedan los titulares y el prompt restringido.
+        prompt_macro = MACRO_PROMPT if "bcrd" in macro_fuentes else MACRO_PROMPT_SOLO_TITULARES
+        log(">> Generando resumen MACRO con Gemini...")
+        nueva = generar_seccion("Macro", prompt_macro, macro_ctx, periodo_actual, api_key)
+        if nueva:
+            nueva["fuentes"] = macro_fuentes
+            secciones["macro"] = nueva
+            log("   Macro: OK · fuentes: " + ", ".join(macro_fuentes))
+        else:
+            previa = conservar_previa(previas, "macro", periodo_actual)
+            if previa:
+                secciones["macro"] = previa
+                log("   Macro: falló hoy · se conserva el resumen previo del mismo corte")
+            else:
+                descartadas.append("macro (no se pudo verificar ninguna respuesta)")
     else:
-        log("   Macro: FALLÓ · sin resumen previo")
+        descartadas.append("macro (sin series BCRD ni titulares)")
 
     if sib_ctx:
+        periodo_sib = sib_periodo or periodo_actual
         log(">> Generando resumen SIB con Gemini...")
-        parsed = gemini_json(SIB_PROMPT + sib_ctx, api_key)
-        nueva = validar_seccion(parsed, sib_periodo or periodo_actual)
+        nueva = generar_seccion("SIB", SIB_PROMPT, sib_ctx, periodo_sib, api_key)
         if nueva:
+            nueva["fuentes"] = ["sib_snapshot"]
             secciones["sib"] = nueva
-            log("   SIB: OK")
-        elif previas.get("sib"):
-            secciones["sib"] = previas["sib"]
-            log("   SIB: FALLÓ · se conserva el resumen previo")
+            log("   SIB: OK · corte " + str(periodo_sib))
         else:
-            log("   SIB: FALLÓ · sin resumen previo")
-    elif previas.get("sib"):
-        secciones["sib"] = previas["sib"]
-        log("   SIB: sin snapshot · se conserva el resumen previo")
+            previa = conservar_previa(previas, "sib", periodo_sib)
+            if previa:
+                secciones["sib"] = previa
+                log("   SIB: falló hoy · se conserva el resumen previo del mismo corte")
+            else:
+                descartadas.append("sib (no se pudo verificar ninguna respuesta)")
+    else:
+        descartadas.append("sib (sin snapshot)")
+
+    for d in descartadas:
+        log(f"!! Sección omitida: {d}")
 
     if not secciones:
         log("\n!! Ninguna sección disponible. No se escribe salida.")

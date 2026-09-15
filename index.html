@@ -4452,7 +4452,7 @@ footer .mark{
           <h3>Mapa de créditos</h3>
           <p>Seguimiento ejecutivo por tipo de crédito: balance, participación de La Nacional, distribución regional, ranking competitivo y composición de la cartera.</p>
         </div>
-        <div class="source" id="cartera-source-note">SIB · Abril 2026</div>
+        <div class="source" id="cartera-source-note">SIB · cargando corte…</div>
       </div>
 
       <div class="capta-product-tabs" id="cartera-tipo-product-tabs" aria-label="Tipo de cartera">
@@ -4561,7 +4561,7 @@ footer .mark{
           <h3>Mapa de captación</h3>
           <p>Seguimiento ejecutivo del balance captado, cuota de La Nacional, distribución regional, ranking competitivo y composición del fondeo.</p>
         </div>
-        <div class="source" id="capta-source-note">SIB · Abril 2026</div>
+        <div class="source" id="capta-source-note">SIB · cargando corte…</div>
       </div>
 
       <div class="capta-product-tabs" id="captacion-product-tabs" aria-label="Tipo de captación">
@@ -6589,9 +6589,11 @@ function carteraTipoUpdateKpis(productKey, d) {
   document.getElementById('cartera-kpi-yoy').textContent = carteraTipoFmtPct(yoy);
   document.getElementById('cartera-kpi-region').textContent = topRegion ? topRegion.name.replace('Región ', '') : 'N/A';
   document.getElementById('cartera-kpi-region-note').textContent = topRegion ? carteraTipoFmtMM(topRegion.value) : 'Sin balance regional LN';
-  document.getElementById('cartera-kpi-ln-note').textContent = d.label + ' · corte 2026';
+  document.getElementById('cartera-kpi-ln-note').textContent = d.label +
+    ((typeof window.lnCorteBreve === 'function') ? ' · ' + window.lnCorteBreve('cartera') : '');
   document.getElementById('cartera-kpi-share-note').textContent = 'LN / sistema · ' + d.label;
-  document.getElementById('cartera-source-note').textContent = 'SIB · Abril 2026';
+  document.getElementById('cartera-source-note').textContent =
+    (typeof window.lnCorteTexto === 'function') ? window.lnCorteTexto('cartera') : 'SIB';
   document.getElementById('cartera-title-evolucion').textContent = 'Evolución · ' + d.label;
   if (insightText) {
     insightText.textContent = productKey === 'hipotecario'
@@ -6737,9 +6739,12 @@ function captaUpdateKpis(productKey, d) {
   document.getElementById('capta-kpi-yoy').textContent = captaFmtPct(yoy);
   document.getElementById('capta-kpi-region').textContent = topRegion ? topRegion.name.replace('Región ', '') : 'N/A';
   document.getElementById('capta-kpi-region-note').textContent = topRegion ? captaFmtMM(topRegion.value) : 'Sin balance regional LN';
-  document.getElementById('capta-kpi-ln-note').textContent = hasLatest ? d.label + ' · corte 2026' : 'Sin saldo LN en este producto';
+  document.getElementById('capta-kpi-ln-note').textContent = hasLatest
+    ? d.label + ((typeof window.lnCorteBreve === 'function') ? ' · ' + window.lnCorteBreve('captacion') : '')
+    : 'Sin saldo LN en este producto';
   document.getElementById('capta-kpi-share-note').textContent = hasLatest ? 'LN / sistema · ' + d.label : 'Participación no calculable';
-  document.getElementById('capta-source-note').textContent = 'SIB · Abril 2026';
+  document.getElementById('capta-source-note').textContent =
+    (typeof window.lnCorteTexto === 'function') ? window.lnCorteTexto('captacion') : 'SIB';
   document.getElementById('capta-title-evolucion').textContent = 'Evolución · ' + d.label;
 
   if (insightText) {
@@ -7299,7 +7304,11 @@ function renderAiBrief(key, seccion, meta) {
   };
   set('title', seccion.titulo || 'Resumen ejecutivo');
   set('lead', seccion.resumen);
-  set('period', seccion.periodo ? `Corte ${seccion.periodo}` : '');
+  // Mismo formato que la tarjeta curada: si no, el lector ve "Corte 2026-07"
+  // en una y "Corte julio 2026" en la otra según quién la haya rendereado.
+  let periodoTxt = seccion.periodo || '';
+  try { if (periodoTxt && typeof formatMonthYearEs === 'function') periodoTxt = formatMonthYearEs(periodoTxt); } catch (_e) {}
+  set('period', periodoTxt ? `Corte ${periodoTxt}` : '');
   const fillList = (suffix, items) => {
     const ul = document.getElementById(`ai-brief-${key}-${suffix}`);
     if (!ul) return;
@@ -7319,7 +7328,9 @@ function renderAiBrief(key, seccion, meta) {
   } catch (_e) { /* fecha ausente o inválida: se omite el sello */ }
   set('foot', `Generado con ${meta.modelo || 'Gemini'}${stamp ? ' · ' + stamp : ''} · Verificar cifras contra la fuente oficial antes de citar.`);
   card.hidden = false;
-  try { if (window.LN_AI_CURATION && typeof window.LN_AI_CURATION.onBaseRender === 'function') window.LN_AI_CURATION.onBaseRender(key); } catch (_) {}
+  // La sección base viaja al hook: sin ella la curaduría no puede saber si el
+  // resumen que un analista aprobó quedó atrás del corte recién publicado.
+  try { if (window.LN_AI_CURATION && typeof window.LN_AI_CURATION.onBaseRender === 'function') window.LN_AI_CURATION.onBaseRender(key, seccion, meta); } catch (_) {}
 }
 
 async function loadGeminiSummaries() {
@@ -7330,6 +7341,16 @@ async function loadGeminiSummaries() {
     const secciones = data.secciones || {};
     renderAiBrief('macro', secciones.macro, data);
     renderAiBrief('sib', secciones.sib, data);
+    // Una sección puede faltar a propósito: el generador omite la macro cuando
+    // no tiene fuentes verificables. Sin avisar, un curado viejo de esa sección
+    // se quedaría en pantalla para siempre, que es justo lo que se corrigió.
+    try {
+      if (window.LN_AI_CURATION && typeof window.LN_AI_CURATION.onBaseMissing === 'function') {
+        ['macro', 'sib'].forEach(k => {
+          if (!secciones[k] || !secciones[k].resumen) window.LN_AI_CURATION.onBaseMissing(k, data);
+        });
+      }
+    } catch (_) {}
   } catch (error) {
     console.info('[LN-IA] Resumen ejecutivo no disponible:', error.message);
   }
@@ -11801,7 +11822,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
       if (subfilter) subfilter.hidden = requested !== 'consumo' && realKey !== 'consumo_general' && realKey !== 'tarjetas_credito' && realKey !== 'pymes';
       document.querySelectorAll('.consumo-subfilter-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.consumoSlice === lnSelectedConsumoSlice));
       const source = document.getElementById('cartera-source-note');
-      if (source) source.textContent = 'SIB · Abril 2026' + ((CARTERA_TIPO_DATA.products[realKey] || {})._requiresCsv ? ' · requiere desagregación CSV' : '');
+      if (source) source.textContent = (typeof window.lnCorteTexto === 'function' ? window.lnCorteTexto('cartera') : 'SIB') + ((CARTERA_TIPO_DATA.products[realKey] || {})._requiresCsv ? ' · requiere desagregación CSV' : '');
     };
     patched.__lnPatched = true;
     try { drawCarteraTipoDashboard = patched; window.drawCarteraTipoDashboard = patched; } catch {}
@@ -12347,7 +12368,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
       if (latest) {
         CARTERA_TIPO_DATA.cut = monthLabel(latest);
         const src = document.getElementById('cartera-source-note');
-        if (src) src.textContent = `SIB · ${monthLabel(latest)}`;
+        if (src) src.textContent = (typeof window.lnCorteTexto === 'function' ? window.lnCorteTexto('cartera') : 'SIB');
       }
     } catch (err) {
       console.warn('[LN-SIB] No se pudo aplicar cubo al dashboard:', err);
@@ -12433,7 +12454,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
 
     const latestLabel = d.latestPeriod ? monthLabel(d.latestPeriod) : 'corte disponible';
     const source = document.getElementById('cartera-source-note');
-    if (source) source.textContent = `SIB · ${latestLabel}`;
+    if (source) source.textContent = (typeof window.lnCorteTexto === 'function' ? window.lnCorteTexto('cartera') : 'SIB');
     const title = document.getElementById('cartera-title-evolucion');
     if (title) title.textContent = 'Evolución · ' + (d.label || 'cartera');
     const subfilter = document.getElementById('consumo-subfilter');
@@ -12804,7 +12825,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
       window.LN_CREDIT_EXCEL_DATA = LN_CREDIT_EXCEL_DATA;
       window.LN_SIB_ENTITY_OPTIONS = LN_CREDIT_EXCEL_DATA.entityOptions || [{ value: DEFAULT_ENTITY_VALUE, label:'Sistema financiero' }];
       const src = document.getElementById('cartera-source-note');
-      if (src) src.textContent = 'SIB · Abril 2026';
+      if (src) src.textContent = (typeof window.lnCorteTexto === 'function' ? window.lnCorteTexto('cartera') : 'SIB');
       populateEntitySelectors();
     } catch (err) { console.warn('[LN] No se pudo aplicar data fija de cartera:', err); }
   }
@@ -13663,7 +13684,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     try {
       var srcNote = document.getElementById('cartera-source-note');
       var cut = (creditData() && creditData().cut) || '';
-      if (srcNote && cut) srcNote.textContent = 'SIB · ' + cut;
+      if (srcNote) srcNote.textContent = (typeof window.lnCorteTexto === 'function' ? window.lnCorteTexto('cartera') : 'SIB');
     } catch (_) {}
 
     // Evolución (barras agrupadas por año) ───────────────────────────────
@@ -13911,6 +13932,8 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   var currentSec = {};
   var editing = {};
   var lastAiApplied = {};
+  var baseSec = {};   // último resumen automático (Gemini) visto por clave
+  var retired = {};   // claves cuyo curado quedó atrás del corte publicado
 
   function isAnalyst() { try { return document.body.classList.contains('analyst-logged'); } catch (_) { return false; } }
   function loadJson(k) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (_) { return null; } }
@@ -14127,7 +14150,12 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
       if (label) label.textContent = 'Borrador generado al publicar · pendiente de aprobación';
       if (foot) foot.textContent = 'Generado automáticamente desde los datos publicados · pendiente de curaduría del analista.';
     } else {
-      if (label) label.textContent = 'Resumen automático · pendiente de curaduría';
+      // Si aquí se retiró un curado vencido hay que decirlo: el analista firmó
+      // ese texto y tiene que enterarse de que el corte nuevo lo dejó atrás.
+      var previo = retired[key] ? loadJson('ln-ai-retirado-' + key) : null;
+      if (label) label.textContent = previo
+        ? ('Resumen automático del corte nuevo · el curado de ' + (previo.periodo ? mesEs(previo.periodo) : 'antes') + ' quedó atrás')
+        : 'Resumen automático · pendiente de curaduría';
     }
     bar.dataset.state = state || 'base';
   }
@@ -14258,11 +14286,40 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     return Date.parse(sec.aprobado_en || sec.editado_en || sec.generado_en || 0) || 0;
   }
 
+  // ¿El resumen curado quedó atrás del automático más reciente?
+  // El criterio primario es el corte (periodo YYYY-MM), que es justo lo que el
+  // lector ve en la tarjeta. Un curado sin periodo viene de una versión previa
+  // del panel, donde aprobar descartaba ese campo; ahí solo cabe comparar
+  // cuándo se produjo cada uno.
+  function isStale(curado, base) {
+    if (!curado || !base) return false;
+    var pc = typeof curado.periodo === 'string' ? curado.periodo : '';
+    var pb = typeof base.periodo === 'string' ? base.periodo : '';
+    if (pc && pb) return pb > pc;
+    return aiStamp(base) > aiStamp(curado);
+  }
+
+  // Un curado vencido se archiva en vez de borrarse: deja rastro de lo que el
+  // analista había aprobado y evita que vuelva a instalarse solo.
+  function retireApproved(key, sec) {
+    saveJson('ln-ai-retirado-' + key, sec);
+    delKey('ln-ai-approved-' + key);
+    delKey('ln-ai-draft-' + key);
+    lastAiApplied[key] = -1;
+    retired[key] = true;
+    console.info('[LN-IA] Curado vencido retirado (' + key + '): corte',
+      (sec && sec.periodo) || 's/d', '· aprobado', (sec && sec.aprobado_en) || 's/d');
+  }
+
   function applyRemoteAi(state) {
     if (!state || !state.ai) return;
     KEYS.forEach(function (key) {
       var incoming = state.ai[key];
       if (!incoming || editing[key]) return; // no pisar una edición en curso
+      // Un curado que llega de otro dispositivo pero es anterior al corte ya
+      // publicado no debe reinstalarse: por ahí volvía el resumen viejo aunque
+      // este navegador ya lo hubiera retirado.
+      if (isStale(incoming, baseSec[key])) return;
       var local = loadJson('ln-ai-approved-' + key);
       var incT = aiStamp(incoming);
       var locT = local ? aiStamp(local) : -1;
@@ -14282,8 +14339,11 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
         var st = origCapture.apply(this, arguments) || {};
         try {
           var ai = {};
-          var s = loadJson('ln-ai-approved-sib'); if (s) ai.sib = s;
-          var m = loadJson('ln-ai-approved-macro'); if (m) ai.macro = m;
+          // Solo viaja lo que sigue vigente. Antes cualquier publicación -aunque
+          // fuera de noticias- volvía a empujar el curado viejo a todos los
+          // dispositivos, así que el resumen vencido se reponía solo.
+          var s = loadJson('ln-ai-approved-sib'); if (s && !isStale(s, baseSec.sib)) ai.sib = s;
+          var m = loadJson('ln-ai-approved-macro'); if (m && !isStale(m, baseSec.macro)) ai.macro = m;
           if (Object.keys(ai).length) st.ai = ai;
         } catch (_) {}
         return st;
@@ -14304,13 +14364,42 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     }
   }
 
-  // Hook llamado por renderAiBrief (base Gemini) para superponer curaduría.
-  function onBaseRender(key) {
-    ensureInject(key);
+  // Un curado sobrevive mientras el dato nuevo no lo desplace. Si la sección
+  // deja de emitirse -por ejemplo porque la macro se quedó sin fuentes-, nada
+  // lo desplazaría nunca, así que caduca por tiempo. El pipeline corre dos
+  // veces al mes: 75 días son más de dos ciclos perdidos.
+  var CADUCIDAD_CURADO_MS = 75 * 24 * 60 * 60 * 1000;
+
+  function onBaseMissing(key, meta) {
     var approved = loadJson('ln-ai-approved-' + key);
+    if (!approved) return;
+    var edad = Date.now() - aiStamp(approved);
+    if (edad <= CADUCIDAD_CURADO_MS) return;
+    retireApproved(key, approved);
+    var card = document.getElementById('ai-brief-' + key);
+    if (card) card.hidden = true;   // sin dato nuevo, mejor nada que algo viejo
+    console.info('[LN-IA] Curado caducado (' + key + '): ' +
+      Math.round(edad / 86400000) + ' días sin resumen nuevo que lo reemplace.');
+  }
+
+  // Hook llamado por renderAiBrief (base Gemini) para superponer curaduría.
+  // La curaduría solo gana mientras no se haya quedado atrás del corte: antes
+  // ganaba siempre, y una aprobación vieja tapaba cada dato nuevo que llegara.
+  function onBaseRender(key, base, meta) {
+    ensureInject(key);
+    if (base) {
+      if (!base.generado_en && meta && meta.generado_en) base.generado_en = meta.generado_en;
+      baseSec[key] = base;
+    }
+    var approved = loadJson('ln-ai-approved-' + key);
+    if (approved && isStale(approved, baseSec[key])) { retireApproved(key, approved); approved = null; }
     if (approved) { render(key, approved, 'approved'); return; }
     var draft = loadJson('ln-ai-draft-' + key);
+    if (draft && isStale(draft, baseSec[key])) { delKey('ln-ai-draft-' + key); draft = null; }
     if (draft && isAnalyst()) { render(key, draft, 'draft'); return; }
+    // Sembrar con la base antes de leer el DOM conserva el periodo del corte:
+    // sin él, aprobar producía un resumen que no sabía de cuándo era.
+    if (baseSec[key]) currentSec[key] = baseSec[key];
     currentSec[key] = readEdited(key);
     updateBar(key, 'base', currentSec[key]);
   }
@@ -14350,7 +14439,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
   else init();
   [600, 1400, 2400].forEach(function (t) { setTimeout(function () { KEYS.forEach(ensureInject); wrapPublish(); wrapLiveSync(); }, t); });
 
-  window.LN_AI_CURATION = { onBaseRender: onBaseRender, generate: generate, buildSib: buildSib, buildMacro: buildMacro, applyRemoteAi: applyRemoteAi, wrapLiveSync: wrapLiveSync };
+  window.LN_AI_CURATION = { onBaseRender: onBaseRender, onBaseMissing: onBaseMissing, generate: generate, buildSib: buildSib, buildMacro: buildMacro, applyRemoteAi: applyRemoteAi, wrapLiveSync: wrapLiveSync };
 })();
 </script>
 
@@ -18868,6 +18957,107 @@ body.mkt-editing .market-cell { cursor: default; }
      controladores del pipeline reescriben estas tarjetas en cada carga de
      Excel y sin esto pisarían lo que puso el analista. */
   setInterval(function (){ if (!editando) aplicarTodo(); }, 1500);
+})();
+</script>
+
+<style id="ln-cortes-reales-css">
+/* Corte con rezago: el lector debe notarlo sin que el tablero grite. */
+.source.corte-rezagado { color: #b45309; cursor: help; }
+.source.corte-rezagado::after { content: ' \26A0'; font-size: .9em; }
+</style>
+<script id="ln-cortes-reales">
+/* ═══════════════════════════════════════════════════════════════════════
+   Corte real de cada tablero
+   ═══════════════════════════════════════════════════════════════════════
+   Las notas de fuente decían "SIB · Abril 2026" como cadena fija, reescrita
+   en cada redibujado. Ninguno de los dos tableros estaba en abril: créditos
+   viene de carteras/creditos, que la SIB publica en cierres anuales y a
+   septiembre de 2026 seguía en 2025-12, mientras captación sí llegaba a
+   2026-07. Dos cortes distintos bajo el mismo rótulo, y ninguno cierto.
+
+   El corte se lee de los mismos archivos que alimentan las gráficas, así que
+   no puede desincronizarse de lo que se ve. Si no se puede determinar, se
+   dice; no se inventa una fecha.
+   ═══════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  var CORTES = { cartera: null, captacion: null };
+  var FUENTES = {
+    cartera:   'data/cartera_sistema_mn.json',
+    captacion: 'data/captacion_sistema.json'
+  };
+  // Meses de rezago a partir de los cuales conviene avisar al lector.
+  var REZAGO_AVISO = 6;
+
+  function mesEs(periodo) {
+    try {
+      if (typeof formatMonthYearEs === 'function') {
+        var t = formatMonthYearEs(periodo);
+        return t ? t.charAt(0).toUpperCase() + t.slice(1) : periodo;
+      }
+    } catch (_) {}
+    return periodo || '';
+  }
+
+  function rezagoMeses(periodo) {
+    if (!periodo || periodo.length < 7) return null;
+    var hoy = new Date();
+    return (hoy.getFullYear() - Number(periodo.slice(0, 4))) * 12 +
+           (hoy.getMonth() + 1 - Number(periodo.slice(5, 7)));
+  }
+
+  // Texto de la nota de fuente. Lo llaman los controladores al pintar KPIs.
+  window.lnCorteTexto = function (clave) {
+    var p = CORTES[clave];
+    return p ? ('SIB · ' + mesEs(p)) : 'SIB · corte no disponible';
+  };
+
+  // Etiqueta corta para las notas de KPI, que antes decían "corte 2026".
+  window.lnCorteBreve = function (clave) {
+    var p = CORTES[clave];
+    return p ? ('corte ' + mesEs(p)) : 'corte no disponible';
+  };
+
+  function pintar() {
+    [['cartera', 'cartera-source-note'], ['captacion', 'capta-source-note']].forEach(function (par) {
+      var el = document.getElementById(par[1]);
+      if (!el) return;
+      el.textContent = window.lnCorteTexto(par[0]);
+      var rez = rezagoMeses(CORTES[par[0]]);
+      if (rez !== null && rez > REZAGO_AVISO) {
+        el.title = 'La SIB no ha publicado cortes posteriores para esta serie: ' +
+                   rez + ' meses de rezago. Verificar antes de citar.';
+        el.classList.add('corte-rezagado');
+      } else {
+        el.removeAttribute('title');
+        el.classList.remove('corte-rezagado');
+      }
+    });
+  }
+
+  function cargar(clave) {
+    return fetch(FUENTES[clave], { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        var cortes = d && Array.isArray(d.cortes) ? d.cortes.filter(Boolean) : [];
+        if (cortes.length) CORTES[clave] = cortes.slice().sort().pop();
+      })
+      .catch(function (e) { console.info('[LN-CORTE] ' + clave + ' no disponible:', e.message); });
+  }
+
+  function init() {
+    Promise.all([cargar('cartera'), cargar('captacion')]).then(function () {
+      console.info('[LN-CORTE] cartera:', CORTES.cartera, '· captación:', CORTES.captacion);
+      pintar();
+      // Los controladores repintan al cambiar de pestaña o producto; se
+      // refresca unas veces más para no quedar detrás de ese redibujado.
+      [400, 1200, 2500].forEach(function (t) { setTimeout(pintar, t); });
+    });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
+  else init();
 })();
 </script>
 

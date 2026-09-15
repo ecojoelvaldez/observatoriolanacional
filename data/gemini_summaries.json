@@ -2,22 +2,6 @@
   "generado_en": "2026-09-06T15:16:03.585385+00:00",
   "modelo": "gemini-2.5-flash-lite",
   "secciones": {
-    "macro": {
-      "periodo": "2026-09",
-      "titulo": "Panorama macroeconómico dominicano",
-      "resumen": "El entorno macroeconómico dominicano se ve influenciado por factores internacionales. La volatilidad en los precios del petróleo y las expectativas sobre las tasas de interés en Estados Unidos generan incertidumbre.",
-      "puntos": [
-        "El precio del petróleo WTI se sitúa en US$90 por barril, con una ligera bajada.",
-        "Los mercados financieros globales muestran cautela ante datos de empleo en EE.UU. y posibles alzas de tasas.",
-        "Se observan innovaciones en canales digitales bancarios para agilizar transacciones."
-      ],
-      "vigilar": [
-        "Posibles decisiones de política monetaria de la Reserva Federal de EE.UU.",
-        "Evolución de los precios del petróleo y su impacto en los costos de importación.",
-        "Publicaciones del Banco Central de la República Dominicana sobre indicadores clave."
-      ],
-      "generado_en": "2026-09-06T15:16:06.071148+00:00"
-    },
     "sib": {
       "periodo": "2026-07",
       "titulo": "Sistema Financiero: Calidad de Cartera y Rentabilidad en Julio 2026",
@@ -34,5 +18,6 @@
       ],
       "generado_en": "2026-09-06T15:16:13.716974+00:00"
     }
-  }
+  },
+  "_nota_macro": "Sección macro retirada el 2026-09-15: sus cifras no provenían de ninguna fuente del Observatorio. El generador ahora lee las series del estado en vivo y verifica que toda cifra publicada esté en el contexto."
 }
