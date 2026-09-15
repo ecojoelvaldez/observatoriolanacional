@@ -4452,7 +4452,7 @@ footer .mark{
           <h3>Mapa de créditos</h3>
           <p>Seguimiento ejecutivo por tipo de crédito: balance, participación de La Nacional, distribución regional, ranking competitivo y composición de la cartera.</p>
         </div>
-        <div class="source" id="cartera-source-note">SIB · Abril 2026</div>
+        <div class="source" id="cartera-source-note">SIB · cargando corte…</div>
       </div>
 
       <div class="capta-product-tabs" id="cartera-tipo-product-tabs" aria-label="Tipo de cartera">
@@ -4561,7 +4561,7 @@ footer .mark{
           <h3>Mapa de captación</h3>
           <p>Seguimiento ejecutivo del balance captado, cuota de La Nacional, distribución regional, ranking competitivo y composición del fondeo.</p>
         </div>
-        <div class="source" id="capta-source-note">SIB · Abril 2026</div>
+        <div class="source" id="capta-source-note">SIB · cargando corte…</div>
       </div>
 
       <div class="capta-product-tabs" id="captacion-product-tabs" aria-label="Tipo de captación">
@@ -6589,9 +6589,11 @@ function carteraTipoUpdateKpis(productKey, d) {
   document.getElementById('cartera-kpi-yoy').textContent = carteraTipoFmtPct(yoy);
   document.getElementById('cartera-kpi-region').textContent = topRegion ? topRegion.name.replace('Región ', '') : 'N/A';
   document.getElementById('cartera-kpi-region-note').textContent = topRegion ? carteraTipoFmtMM(topRegion.value) : 'Sin balance regional LN';
-  document.getElementById('cartera-kpi-ln-note').textContent = d.label + ' · corte 2026';
+  document.getElementById('cartera-kpi-ln-note').textContent = d.label +
+    ((typeof window.lnCorteBreve === 'function') ? ' · ' + window.lnCorteBreve('cartera') : '');
   document.getElementById('cartera-kpi-share-note').textContent = 'LN / sistema · ' + d.label;
-  document.getElementById('cartera-source-note').textContent = 'SIB · Abril 2026';
+  document.getElementById('cartera-source-note').textContent =
+    (typeof window.lnCorteTexto === 'function') ? window.lnCorteTexto('cartera') : 'SIB';
   document.getElementById('cartera-title-evolucion').textContent = 'Evolución · ' + d.label;
   if (insightText) {
     insightText.textContent = productKey === 'hipotecario'
@@ -6737,9 +6739,12 @@ function captaUpdateKpis(productKey, d) {
   document.getElementById('capta-kpi-yoy').textContent = captaFmtPct(yoy);
   document.getElementById('capta-kpi-region').textContent = topRegion ? topRegion.name.replace('Región ', '') : 'N/A';
   document.getElementById('capta-kpi-region-note').textContent = topRegion ? captaFmtMM(topRegion.value) : 'Sin balance regional LN';
-  document.getElementById('capta-kpi-ln-note').textContent = hasLatest ? d.label + ' · corte 2026' : 'Sin saldo LN en este producto';
+  document.getElementById('capta-kpi-ln-note').textContent = hasLatest
+    ? d.label + ((typeof window.lnCorteBreve === 'function') ? ' · ' + window.lnCorteBreve('captacion') : '')
+    : 'Sin saldo LN en este producto';
   document.getElementById('capta-kpi-share-note').textContent = hasLatest ? 'LN / sistema · ' + d.label : 'Participación no calculable';
-  document.getElementById('capta-source-note').textContent = 'SIB · Abril 2026';
+  document.getElementById('capta-source-note').textContent =
+    (typeof window.lnCorteTexto === 'function') ? window.lnCorteTexto('captacion') : 'SIB';
   document.getElementById('capta-title-evolucion').textContent = 'Evolución · ' + d.label;
 
   if (insightText) {
@@ -11817,7 +11822,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
       if (subfilter) subfilter.hidden = requested !== 'consumo' && realKey !== 'consumo_general' && realKey !== 'tarjetas_credito' && realKey !== 'pymes';
       document.querySelectorAll('.consumo-subfilter-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.consumoSlice === lnSelectedConsumoSlice));
       const source = document.getElementById('cartera-source-note');
-      if (source) source.textContent = 'SIB · Abril 2026' + ((CARTERA_TIPO_DATA.products[realKey] || {})._requiresCsv ? ' · requiere desagregación CSV' : '');
+      if (source) source.textContent = (typeof window.lnCorteTexto === 'function' ? window.lnCorteTexto('cartera') : 'SIB') + ((CARTERA_TIPO_DATA.products[realKey] || {})._requiresCsv ? ' · requiere desagregación CSV' : '');
     };
     patched.__lnPatched = true;
     try { drawCarteraTipoDashboard = patched; window.drawCarteraTipoDashboard = patched; } catch {}
@@ -12363,7 +12368,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
       if (latest) {
         CARTERA_TIPO_DATA.cut = monthLabel(latest);
         const src = document.getElementById('cartera-source-note');
-        if (src) src.textContent = `SIB · ${monthLabel(latest)}`;
+        if (src) src.textContent = (typeof window.lnCorteTexto === 'function' ? window.lnCorteTexto('cartera') : 'SIB');
       }
     } catch (err) {
       console.warn('[LN-SIB] No se pudo aplicar cubo al dashboard:', err);
@@ -12449,7 +12454,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
 
     const latestLabel = d.latestPeriod ? monthLabel(d.latestPeriod) : 'corte disponible';
     const source = document.getElementById('cartera-source-note');
-    if (source) source.textContent = `SIB · ${latestLabel}`;
+    if (source) source.textContent = (typeof window.lnCorteTexto === 'function' ? window.lnCorteTexto('cartera') : 'SIB');
     const title = document.getElementById('cartera-title-evolucion');
     if (title) title.textContent = 'Evolución · ' + (d.label || 'cartera');
     const subfilter = document.getElementById('consumo-subfilter');
@@ -12820,7 +12825,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
       window.LN_CREDIT_EXCEL_DATA = LN_CREDIT_EXCEL_DATA;
       window.LN_SIB_ENTITY_OPTIONS = LN_CREDIT_EXCEL_DATA.entityOptions || [{ value: DEFAULT_ENTITY_VALUE, label:'Sistema financiero' }];
       const src = document.getElementById('cartera-source-note');
-      if (src) src.textContent = 'SIB · Abril 2026';
+      if (src) src.textContent = (typeof window.lnCorteTexto === 'function' ? window.lnCorteTexto('cartera') : 'SIB');
       populateEntitySelectors();
     } catch (err) { console.warn('[LN] No se pudo aplicar data fija de cartera:', err); }
   }
@@ -13679,7 +13684,7 @@ window.addEventListener('DOMContentLoaded', () => { renderNewsLog(); renderPropo
     try {
       var srcNote = document.getElementById('cartera-source-note');
       var cut = (creditData() && creditData().cut) || '';
-      if (srcNote && cut) srcNote.textContent = 'SIB · ' + cut;
+      if (srcNote) srcNote.textContent = (typeof window.lnCorteTexto === 'function' ? window.lnCorteTexto('cartera') : 'SIB');
     } catch (_) {}
 
     // Evolución (barras agrupadas por año) ───────────────────────────────
@@ -18952,6 +18957,107 @@ body.mkt-editing .market-cell { cursor: default; }
      controladores del pipeline reescriben estas tarjetas en cada carga de
      Excel y sin esto pisarían lo que puso el analista. */
   setInterval(function (){ if (!editando) aplicarTodo(); }, 1500);
+})();
+</script>
+
+<style id="ln-cortes-reales-css">
+/* Corte con rezago: el lector debe notarlo sin que el tablero grite. */
+.source.corte-rezagado { color: #b45309; cursor: help; }
+.source.corte-rezagado::after { content: ' \26A0'; font-size: .9em; }
+</style>
+<script id="ln-cortes-reales">
+/* ═══════════════════════════════════════════════════════════════════════
+   Corte real de cada tablero
+   ═══════════════════════════════════════════════════════════════════════
+   Las notas de fuente decían "SIB · Abril 2026" como cadena fija, reescrita
+   en cada redibujado. Ninguno de los dos tableros estaba en abril: créditos
+   viene de carteras/creditos, que la SIB publica en cierres anuales y a
+   septiembre de 2026 seguía en 2025-12, mientras captación sí llegaba a
+   2026-07. Dos cortes distintos bajo el mismo rótulo, y ninguno cierto.
+
+   El corte se lee de los mismos archivos que alimentan las gráficas, así que
+   no puede desincronizarse de lo que se ve. Si no se puede determinar, se
+   dice; no se inventa una fecha.
+   ═══════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  var CORTES = { cartera: null, captacion: null };
+  var FUENTES = {
+    cartera:   'data/cartera_sistema_mn.json',
+    captacion: 'data/captacion_sistema.json'
+  };
+  // Meses de rezago a partir de los cuales conviene avisar al lector.
+  var REZAGO_AVISO = 6;
+
+  function mesEs(periodo) {
+    try {
+      if (typeof formatMonthYearEs === 'function') {
+        var t = formatMonthYearEs(periodo);
+        return t ? t.charAt(0).toUpperCase() + t.slice(1) : periodo;
+      }
+    } catch (_) {}
+    return periodo || '';
+  }
+
+  function rezagoMeses(periodo) {
+    if (!periodo || periodo.length < 7) return null;
+    var hoy = new Date();
+    return (hoy.getFullYear() - Number(periodo.slice(0, 4))) * 12 +
+           (hoy.getMonth() + 1 - Number(periodo.slice(5, 7)));
+  }
+
+  // Texto de la nota de fuente. Lo llaman los controladores al pintar KPIs.
+  window.lnCorteTexto = function (clave) {
+    var p = CORTES[clave];
+    return p ? ('SIB · ' + mesEs(p)) : 'SIB · corte no disponible';
+  };
+
+  // Etiqueta corta para las notas de KPI, que antes decían "corte 2026".
+  window.lnCorteBreve = function (clave) {
+    var p = CORTES[clave];
+    return p ? ('corte ' + mesEs(p)) : 'corte no disponible';
+  };
+
+  function pintar() {
+    [['cartera', 'cartera-source-note'], ['captacion', 'capta-source-note']].forEach(function (par) {
+      var el = document.getElementById(par[1]);
+      if (!el) return;
+      el.textContent = window.lnCorteTexto(par[0]);
+      var rez = rezagoMeses(CORTES[par[0]]);
+      if (rez !== null && rez > REZAGO_AVISO) {
+        el.title = 'La SIB no ha publicado cortes posteriores para esta serie: ' +
+                   rez + ' meses de rezago. Verificar antes de citar.';
+        el.classList.add('corte-rezagado');
+      } else {
+        el.removeAttribute('title');
+        el.classList.remove('corte-rezagado');
+      }
+    });
+  }
+
+  function cargar(clave) {
+    return fetch(FUENTES[clave], { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        var cortes = d && Array.isArray(d.cortes) ? d.cortes.filter(Boolean) : [];
+        if (cortes.length) CORTES[clave] = cortes.slice().sort().pop();
+      })
+      .catch(function (e) { console.info('[LN-CORTE] ' + clave + ' no disponible:', e.message); });
+  }
+
+  function init() {
+    Promise.all([cargar('cartera'), cargar('captacion')]).then(function () {
+      console.info('[LN-CORTE] cartera:', CORTES.cartera, '· captación:', CORTES.captacion);
+      pintar();
+      // Los controladores repintan al cambiar de pestaña o producto; se
+      // refresca unas veces más para no quedar detrás de ese redibujado.
+      [400, 1200, 2500].forEach(function (t) { setTimeout(pintar, t); });
+    });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
+  else init();
 })();
 </script>
 
