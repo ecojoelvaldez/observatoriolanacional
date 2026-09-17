@@ -231,6 +231,33 @@ def main():
     tipos = _tipos()
     solo = os.environ.get("SIB_DESGLOSE_SOLO", "both").strip().lower()
 
+    # Dimensiones extra opcionales de la cartera. Default vacio => comportamiento
+    # historico intacto (produccion no cambia). Ejemplo de uso:
+    #   SIB_EXTRA_DIMS="facilidad,tipoCliente"
+    # Cada dimension se agrega a la clave de agregacion de cartera y a los
+    # catalogos del snapshot. Esto permite, por ejemplo, aislar los fideicomisos
+    # (facilidades fiduciarias) dentro de "Creditos Hipotecarios" y calcular su
+    # balance y crecimiento / market share. El endpoint carteras/creditos ya
+    # devuelve estos campos por fila micro; aqui solo se dejan de colapsar.
+    _EXTRA_DIM_FIELDS = {
+        "facilidad": ("facilidad", "facilidad"),
+        "tipocliente": ("tipocliente", "tipoCliente"),
+        "genero": ("genero", "genero"),
+        "provincia": ("provincia", "provincia"),
+    }
+    extra_src, extra_out = [], []
+    for d in os.environ.get("SIB_EXTRA_DIMS", "").split(","):
+        d = d.strip()
+        if not d:
+            continue
+        par = _EXTRA_DIM_FIELDS.get(_normalizar(d))
+        if not par:
+            print(f"  !! SIB_EXTRA_DIMS: dimension desconocida, ignorada: {d}")
+            continue
+        if par[0] not in extra_src:
+            extra_src.append(par[0])
+            extra_out.append(par[1])
+
     hoy = date.today()
     # SIB_PERIODOS: lista explicita de cortes "YYYY-MM" separados por coma.
     # Tiene prioridad sobre el rango; permite bajar solo ciertos cortes
@@ -296,11 +323,13 @@ def main():
             # La region alimenta el drilldown regional y el market share por
             # producto/region del reporte. Se agrega solo region (4 valores);
             # provincia multiplicaria el snapshot por ~32 sin usarse hoy.
-            # A cambio se sueltan facilidad y tipoCliente: ningun producto se
+            # Por defecto se sueltan facilidad/tipoCliente/etc: ningun producto se
             # clasifica con ellos (el clasificador usa tipoCartera/tipoCredito).
+            # Con SIB_EXTRA_DIMS se conservan (ver main): se anexan a la clave.
             reg_geo = (rn.get("region") or "N/D")
+            extra_vals = tuple(str(rn.get(f) or "N/D") for f in extra_src)
             clave = (periodo, str(entidad), str(tc), str(tcred),
-                     str(mon), str(reg_geo))
+                     str(mon), str(reg_geo)) + extra_vals
             cartera[clave] = cartera.get(clave, 0.0) + deuda
             if clave not in cart_meta:
                 cart_meta[clave] = tipo
@@ -342,14 +371,17 @@ def main():
 
     cartera_rows = []
     for clave, val in cartera.items():
-        periodo, entidad, tc, tcred, mon, reg_geo = clave
-        cartera_rows.append({
+        periodo, entidad, tc, tcred, mon, reg_geo = clave[:6]
+        fila = {
             "periodo": periodo, "entidad": entidad,
             "tipo_entidad": cart_meta[clave],
             "tipoCartera": tc, "tipoCredito": tcred,
             "moneda": mon, "region": reg_geo,
             "deuda": round(val, 2),
-        })
+        }
+        for name, v in zip(extra_out, clave[6:]):
+            fila[name] = v
+        cartera_rows.append(fila)
     captacion_rows = []
     for (periodo, entidad, partida, instr), val in captacion.items():
         captacion_rows.append({
@@ -383,6 +415,13 @@ def main():
         "cartera_agg": cartera_rows,
         "captacion_agg": captacion_rows,
     }
+    # Catalogos de las dimensiones extra (facilidad, tipoCliente, ...) para
+    # inspeccionar sus valores reales tras la primera corrida.
+    for name in extra_out:
+        snapshot["catalogos"][name] = sorted({r.get(name, "N/D")
+                                              for r in cartera_rows})
+    if extra_out:
+        snapshot["dimensiones_extra"] = extra_out
 
     os.makedirs(os.path.dirname(OUTPUT_PATH) or ".", exist_ok=True)
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
@@ -393,6 +432,8 @@ def main():
     print(f"  filas captacion agregadas: {len(captacion_rows)}")
     print(f"  periodos: {len(periodos)} | ultimo: {periodos[-1] if periodos else None}")
     print(f"  catalogos tipoCartera: {snapshot['catalogos']['tipoCartera']}")
+    for name in extra_out:
+        print(f"  catalogos {name}: {snapshot['catalogos'][name]}")
     print(f"  salida: {OUTPUT_PATH}")
 
 

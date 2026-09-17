@@ -19,6 +19,10 @@ on:
         description: "cartera | captacion | both"
         required: false
         default: "both"
+      extra_dims:
+        description: "Dimensiones extra de cartera coma-sep (ej: facilidad,tipoCliente)"
+        required: false
+        default: ""
       salida:
         description: "Ruta del snapshot de salida"
         required: false
@@ -56,6 +60,7 @@ jobs:
           SIB_PERIODO_FINAL: ${{ github.event.inputs.periodo_final }}
           SIB_TIPOS: ${{ github.event.inputs.tipos }}
           SIB_DESGLOSE_SOLO: ${{ github.event.inputs.solo }}
+          SIB_EXTRA_DIMS: ${{ github.event.inputs.extra_dims }}
         run: python scripts/fetch_sib_cartera_desglose.py
 
       - name: Commit del snapshot si cambio
