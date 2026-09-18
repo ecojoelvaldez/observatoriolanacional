@@ -3,12 +3,16 @@ name: Pipeline SIB Cartera Desglose
 on:
   workflow_dispatch:
     inputs:
+      periodos:
+        description: "Cortes YYYY-MM coma-sep (prioridad sobre el rango), o 'auto'. Vacío = usar rango."
+        required: false
+        default: "2021-12,2022-12,2023-12,2024-12,2025-12,2026-01,2026-02,2026-03,2026-04,2026-05"
       periodo_inicial:
-        description: "Mes inicial YYYY-MM (def 2021-01)"
+        description: "Mes inicial YYYY-MM (solo si 'periodos' está vacío)"
         required: false
         default: ""
       periodo_final:
-        description: "Mes final YYYY-MM (def mes actual)"
+        description: "Mes final YYYY-MM (solo si 'periodos' está vacío)"
         required: false
         default: ""
       tipos:
@@ -34,7 +38,9 @@ permissions:
 jobs:
   sib-cartera-desglose:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    # El granular de bancos multiples (BM) es pesado; con 120 min el job se
+    # cancelaba a mitad de descarga (~2h). Se alinea con el pipeline principal.
+    timeout-minutes: 350
 
     steps:
       - name: Checkout repositorio
@@ -56,6 +62,7 @@ jobs:
         env:
           SIB_SUBSCRIPTION_KEY: ${{ secrets.SIB_SUBSCRIPTION_KEY }}
           SIB_DESGLOSE_SNAPSHOT_PATH: ${{ github.event.inputs.salida || 'data/sib_cartera_desglose_snapshot.json' }}
+          SIB_PERIODOS: ${{ github.event.inputs.periodos }}
           SIB_PERIODO_INICIAL: ${{ github.event.inputs.periodo_inicial }}
           SIB_PERIODO_FINAL: ${{ github.event.inputs.periodo_final }}
           SIB_TIPOS: ${{ github.event.inputs.tipos }}
